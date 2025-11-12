@@ -1,241 +1,91 @@
 <div align="center">
 
-# 🍱 Bentofolio
+# kyxzhe.github.io
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Next.js](https://img.shields.io/badge/Next.js-15-black)](https://nextjs.org/)
-[![React](https://img.shields.io/badge/React-19-blue)](https://reactjs.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-38B2AC)](https://tailwindcss.com/)
+_Kevin Zheng 的个人网站，基于 Bentofolio 模板构建并部署在 GitHub Pages。_
 
-A modern, animated bento-style portfolio template built with cutting-edge web technologies. Perfect for developers and designers who want to showcase their work with style.
-
-[View Demo](https://lavanya-bentofolio.vercel.app) · [Report Bug](https://github.com/mkhoirulwafa18/bentofolio/issues) · [Request Feature](https://github.com/mkhoirulwafa18/bentofolio/issues)
+[访问站点](https://kyxzhe.github.io)
 
 </div>
 
-## ✨ Preview
+## 项目简介
 
-<p align="center">
-  <video src="docs/preview/lavanya-bento-preview.webm" autoplay loop muted playsinline alt="Bentofolio — homepage overview"></video>
-</p>
+- **技术栈**：Next.js 15（App Router、Turbopack）、React 19、Tailwind CSS v4、Motion 动效
+- **部署方式**：GitHub Actions 构建 → GitHub Pages 静态托管（`output: "export"`）
+- **本地运行要求**：Node.js ≥ 18.18（推荐 20 LTS）+ pnpm 9（Corepack 自动管理）
 
-## 📸 Screenshots
+## 快速开始
 
-<p align="center">
-  <img src="docs/preview/lavanya-bento-desktop.png" alt="Home Desktop" width="40%" />
-  <img src="docs/preview/lavanya-bento-desktop-contact.png" alt="Contact modal Desktop" width="40%" />
-</p>
-<p align="center">
-  <img src="docs/preview/lavanya-bento-tab.png" alt="Home Tab" width="28%" />
-  <img src="docs/preview/lavanya-bento-tab-contact.png" alt="Contact modal Tab" width="28%" />
-  <img src="docs/preview/lavanya-bento-mobile.png" alt="Home Mobile" width="18%" />
-  <img src="docs/preview/lavanya-bento-mobile-contact.png" alt="Contact modal Mobile" width="18%" />
-</p>
+```bash
+git clone https://github.com/kyxzhe/kyxzhe.github.io.git
+cd kyxzhe.github.io
+corepack enable pnpm           # 首次需要
+pnpm install                   # 安装依赖
+pnpm run dev                   # http://localhost:3000
+pnpm run build                 # 生产构建，输出到 out/
+```
 
-## 🚀 Features
+> **提示**：项目根目录已经携带 `pnpm-lock.yaml`，请勿使用 npm/yarn 重新生成锁文件。
 
-### Core Features
-- 📱 Fully responsive bento-grid layout
-- 🎯 SEO optimized with Next.js
-- 🎨 Modern UI with Tailwind CSS
-- ✨ Smooth animations powered by Motion
-- 📦 Zero-config deployment
+## 内容编辑指南
 
-### Technical Highlights
-- 🔥 Server-side rendering with Next.js 15
-- 🎭 Animated interactions via Motion variants
-- 📱 Mobile-first responsive design
-- ♿ ARIA-compliant accessibility features
-- 🎨 Custom theming with CSS variables
-- 🔤 Local font optimization with `next/font`
+| 模块                     | 修改文件                                               | 说明 |
+| ------------------------ | ------------------------------------------------------ | ---- |
+| 站点文案（Hero、卡片）   | `src/lib/constants/siteContent.ts`                     | `hero`, `bentoItems` 等字段控制首页标题、描述、技能标签及卡片正文。 |
+| 联系方式                | `src/lib/constants/contact.ts`                         | 修改邮箱、电话、所在地；`socials` 里可控制 CTA。 |
+| 社交链接                | `src/lib/constants/socials.ts`                         | 对应导航右上角与 Contact 模态框的社交按钮。 |
+| 导航/移动菜单           | `src/lib/constants/navItems.ts`                        | `href` 使用页面内锚点（例如 `#projects`）。 |
+| 项目列表                | `src/lib/constants/projects.ts`                        | 每个项目包含 `title`, `description`, `tags`, `image`, `link`。图片放在 `public/projects/`。 |
+| 控制台欢迎文案          | `src/components/Console.tsx` 与 `src/lib/utils/consoleUtil.ts` | 决定控制台彩蛋文本。 |
+| 元数据 / SEO            | `src/app/layout.tsx`                                   | `metadata` 对象中设置站点标题、描述、OG/Twitter 信息。 |
+| 主题与全局样式          | `src/app/globals.css`                                  | CSS 变量（颜色、阴影、栅格间距）以及基础排版。 |
+| 个人头像 / 媒体资源     | `public/person2.jpg`、`public/projects/*`、`public/svgs/*` | 替换为你自己的图片，文件名保持一致或同步更新引用路径。 |
 
-## 🛠️ Tech Stack
+### 修改建议
+1. **复制 assets**：保持 JPG/PNG/MP4 等文件位于 `public/` 内，Next.js 静态导出会直接拷贝。
+2. **图片尺寸**：Hero 头像建议 800×800 以内；项目缩略图 1200×900 左右可减少体积。
+3. **动画/布局**：所有动效定义集中在 `src/lib/animation/variants.ts`，如需统一调节时长或缓动可在此修改。
+4. **表单/联系按钮**：当前按钮默认打开邮件链接（`mailto:`）；可在 `ContactModal.tsx` 中自定义为表单或外部链接。
 
-- **Framework:** Next.js 15 (Turbopack)
-- **UI Library:** React 19
-- **Styling:** Tailwind CSS v4
-- **Animation:** Motion (Framer Motion API)
-- **Icons:** Lucide React
-- **Utilities:** clsx, tailwind-merge
+## 部署与发布
 
-## 📦 Getting Started
+1. 推送到 `main` 即可触发 `.github/workflows/deploy.yml`。流程：
+   - 使用 Node 20 + pnpm 安装依赖；
+   - 执行 `pnpm run build`（自动导出静态资源到 `out/`）；
+   - 上传 `out/` 并通过 `actions/deploy-pages@v4` 发布。
+2. 首次使用需在 **GitHub → Repository → Settings → Pages** 选择 “GitHub Actions” 作为部署来源。
+3. 若需自定义域名，在同一页面绑定 `CNAME`，并在仓库 `public/` 内添加 `CNAME` 文件。
 
-### Prerequisites
+## 常见问题
 
-- Node.js 18 or later
-- npm or yarn package manager
+- **构建时报 Node 版本错误**：请确认 `node -v` ≥ 18.18；推荐使用 `nvm install 20 && nvm use 20`。
+- **图片加载失败**：检查 `public/` 路径与 `src/lib/constants` 中 `image` 字段是否一致；远程图片需在 `next.config.ts` 的 `images.remotePatterns` 中允许域名。
+- **GitHub Pages 未更新**：在 Actions 页查看 `Deploy to GitHub Pages` workflow 结果；如失败，可手动 rerun 并查看日志。
 
-### Installation
-
-1. Clone the repository
-   ```bash
-   git clone https://github.com/mkhoirulwafa18/bentofolio.git
-   cd bentofolio
-   ```
-
-2. Install dependencies
-   ```bash
-   npm install
-   # or
-   yarn install
-   ```
-
-3. Set up environment variables
-   ```bash
-   cp .env.example .env.local
-   ```
-   Then edit `.env.local` with your configuration
-
-4. Start the development server
-   ```bash
-   npm run dev
-   # or
-   yarn dev
-   ```
-
-5. Open [http://localhost:3000](http://localhost:3000) in your browser
-
-### Build for Production
-   ```bash
-   npm run build
-   # or
-   yarn build
-   ```
-
-## 📁 Project Structure
+## 目录结构
 
 ```
-bentofolio/
-├── public/
-│   ├── fonts/                 # Local Gilroy font files
-│   ├── projects/              # Project thumbnail images
-│   ├── svgs/                  # SVG icons and graphics
-│   └── person2.jpg            # Profile image
+kyxzhe.github.io/
+├── public/                 # 字体、图片、SVG、humans.txt
 ├── src/
-│   ├── app/
-│   │   ├── globals.css        # Global styles and CSS variables
-│   │   ├── layout.tsx         # Root layout with metadata
-│   │   └── page.tsx           # Home page composition
-│   ├── components/
-│   │   ├── AboutContactSection.tsx
-│   │   ├── ContactModal.tsx
-│   │   ├── HamburgerButton.tsx
-│   │   ├── HeroSection.tsx
-│   │   ├── MobileNav.tsx
-│   │   ├── Navbar.tsx
-│   │   ├── PersonImageSection.tsx
-│   │   └── ProjectsSection.tsx
-│   ├── hooks/
-│   │   └── useNavigation.ts   # Navigation state management
+│   ├── app/                # Next.js App Router (layout/page/全局样式)
+│   ├── components/         # UI 组件（Navbar、Hero、Projects 等）
+│   ├── hooks/              # 自定义 hook（菜单状态）
 │   └── lib/
-│       ├── animation/         # Motion variants and animations
-│       ├── constants/         # Centralized data (contact, projects, etc.)
-│       └── utils/             # Utility functions
-├── .gitignore
-├── eslint.config.mjs
-├── next.config.ts
-├── package.json
-├── postcss.config.mjs
-├── README.md
+│       ├── animation/      # Motion 动画 variants
+│       ├── constants/      # 所有可配置内容
+│       └── utils/          # 辅助函数
+├── .github/workflows/      # GitHub Pages 部署流水线
+├── next.config.ts          # 静态导出 + 远程图片
+├── package.json            # 脚本、依赖、包管理器信息
+├── pnpm-lock.yaml
 └── tsconfig.json
 ```
 
-## 🔧 Available Scripts
+## 待办/可选优化
 
-- `npm run dev` - Start development server with Turbopack
-- `npm run build` - Build for production with Turbopack
-- `npm run start` - Start production server
-- `npm run lint` - Run ESLint for code quality
+- 将 `public/fonts/` 中的 Gilroy 字体替换为有授权的字体或系统字体；
+- 根据真实作品更新 `projects` 数据并添加外链；
+- 在 `ContactModal` 中集成表单服务（Formspree / Resend），实现在线消息。
 
-## 🎨 Customization
-
-### Content Management
-All content is centralized in `src/lib/constants/` for easy customization:
-
-- **Hero Content**: Edit `src/lib/constants/siteContent.ts`
-- **Contact Info**: Edit `src/lib/constants/contact.ts`
-- **Social Links**: Edit `src/lib/constants/socials.ts`
-- **Projects**: Edit `src/lib/constants/projects.ts`
-- **Navigation**: Edit `src/lib/constants/navItems.ts`
-
-### Styling & Theming
-- **CSS Variables**: Modify `src/app/globals.css` for colors and spacing
-- **Fonts**: Replace files in `public/fonts/` and update `src/app/layout.tsx`
-- **Images**: Replace `public/person2.jpg` and project images in `public/projects/`
-
-### SEO & Metadata
-Update metadata in `src/app/layout.tsx` for:
-- Page title and description
-- Open Graph tags
-- Twitter card settings
-- Author information
-
-## 🤝 Contributing
-
-Contributions are welcome! Please follow these steps:
-
-1. **Fork the repository**
-   ```bash
-   git clone https://github.com/mkhoirulwafa18/bentofolio.git
-   ```
-
-2. **Create a feature branch**
-   ```bash
-   git checkout -b feature/amazing-feature
-   ```
-
-3. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-4. **Make your changes**
-   - Follow the existing code style
-   - Add comments for complex logic
-   - Test your changes locally
-
-5. **Commit your changes**
-   ```bash
-   git commit -m "feat: add amazing feature"
-   ```
-
-6. **Push to your branch**
-   ```bash
-   git push origin feature/amazing-feature
-   ```
-
-7. **Open a Pull Request**
-
-### Development Guidelines
-- Use TypeScript for type safety
-- Follow the existing component structure
-- Maintain responsive design principles
-- Test on multiple screen sizes
-- Ensure accessibility standards
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-### MIT License Summary
-- ✅ Commercial use
-- ✅ Modification
-- ✅ Distribution
-- ✅ Private use
-- ❌ Liability
-- ❌ Warranty
-
-## 🙏 Acknowledgments
-
-- [Next.js](https://nextjs.org/) - The React framework for production
-- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
-- [Motion](https://motion.dev/) - Animation library
-- [Lucide React](https://lucide.dev/) - Beautiful & consistent icons
-- [Vercel](https://vercel.com/) - Deployment platform
-
----
-
-<div align="center">
-  <p>Made with ❤️ by <a href="https://github.com/mkhoirulwafa18">Wafastarz</a></p>
-  <p>⭐ Star this repo if you found it helpful!</p>
-</div>
+如需我继续协助（例如批量替换内容、编写自定义 section、接入后端 API），欢迎随时提出。🎉
