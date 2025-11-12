@@ -12,6 +12,9 @@ import {
   ArrowLeft,
   SendHorizonal,
   CalendarDays,
+  Check,
+  Loader2,
+  AlertCircle,
 } from "lucide-react";
 import {
   modalVariants,
@@ -55,7 +58,9 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     email: "",
     note: "",
   });
-  const [hasComposedEmail, setHasComposedEmail] = useState(false);
+  const [submissionState, setSubmissionState] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
 
   const slotsForDate = useMemo(() => {
     return availability.find((day) => day.dateISO === selectedDate)?.slots ?? [];
@@ -68,32 +73,58 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     setSelectedDate(availability[0]?.dateISO ?? "");
     setSelectedSlotId(null);
     setFormValues({ name: "", email: "", note: "" });
-    setHasComposedEmail(false);
+    setSubmissionState("idle");
   };
 
-  const handleComposeEmail = () => {
-    if (!selectedSlot || !formValues.name || !formValues.email) return;
+  const handleSubmitBooking = async () => {
+    if (!selectedSlot || !formValues.name || !formValues.email || !selectedDate) return;
     const dayMeta = availability.find((d) => d.dateISO === selectedDate);
-    const subject = `Meeting request: ${selectedSlot.label} (${dayMeta?.displayLabel})`;
+    if (!dayMeta) return;
+
+    const subject = `Meeting request: ${selectedSlot.label} (${dayMeta.displayLabel})`;
     const body = [
       `Hi Kevin,`,
       ``,
-      `I'd like to reserve the slot ${dayMeta?.displayLabel} · ${selectedSlot.label}.`,
+      `I'd like to reserve ${dayMeta.displayLabel} at ${selectedSlot.label}.`,
       ``,
       `Name: ${formValues.name}`,
       `Email: ${formValues.email}`,
-      formValues.note ? `Notes: ${formValues.note}` : ``,
+      formValues.note ? `Context: ${formValues.note}` : ``,
       ``,
-      `Looking forward to chatting!`,
+      `Best,`,
+      formValues.name,
     ]
       .filter(Boolean)
       .join("\n");
 
-    const mailto = `mailto:${contactInfo.email}?subject=${encodeURIComponent(
-      subject
-    )}&body=${encodeURIComponent(body)}`;
-    window.open(mailto);
-    setHasComposedEmail(true);
+    setSubmissionState("loading");
+    try {
+      const response = await fetch("https://formsubmit.co/ajax/Kevin.Zheng@student.uts.edu.au", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          _subject: subject,
+          name: formValues.name,
+          email: formValues.email,
+          message: body,
+          slot: `${dayMeta.displayLabel} · ${selectedSlot.label}`,
+        }),
+      });
+
+      if (!response.ok) throw new Error("Failed to send");
+
+      setSubmissionState("success");
+      setTimeout(() => {
+        resetScheduler();
+        setMode("info");
+      }, 1800);
+    } catch (error) {
+      console.error(error);
+      setSubmissionState("error");
+    }
   };
 
   return (
@@ -302,9 +333,14 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                           Back
                         </button>
                       </div>
-                      {hasComposedEmail && (
-                        <span className="text-xs uppercase tracking-[0.3em] text-green-500">
-                          Draft prepared — check your email client
+                      {submissionState === "success" && (
+                        <span className="inline-flex items-center gap-1 text-xs uppercase tracking-[0.3em] text-green-500">
+                          <Check size={14} /> Confirmed
+                        </span>
+                      )}
+                      {submissionState === "error" && (
+                        <span className="inline-flex items-center gap-1 text-xs uppercase tracking-[0.3em] text-red-500">
+                          <AlertCircle size={14} /> Failed
                         </span>
                       )}
                     </div>
@@ -333,27 +369,35 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      {slotsForDate.map((slot) => (
-                        <button
-                          key={slot.id}
-                          disabled={slot.booked}
-                          onClick={() => setSelectedSlotId(slot.id)}
-                          className={`rounded-[16px] border px-4 py-4 text-left transition-colors ${
-                            slot.booked
-                              ? "border-border/30 text-muted-foreground cursor-not-allowed line-through"
-                              : selectedSlotId === slot.id
-                                ? "border-brand-accent bg-brand-accent/10"
-                                : "border-border hover:bg-background/10"
-                          }`}
-                        >
-                          <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
-                            Meeting
-                          </p>
-                          <p className="text-lg font-medium">{slot.label}</p>
-                        </button>
-                      ))}
-                    </div>
+                    <motion.div className="grid grid-cols-1 md:grid-cols-2 gap-3" layout>
+                      {slotsForDate.map((slot) => {
+                        const isSelected = selectedSlotId === slot.id;
+                        return (
+                          <button
+                            key={slot.id}
+                            disabled={slot.booked || submissionState === "loading"}
+                            onClick={() => setSelectedSlotId(slot.id)}
+                            className={`rounded-[16px] border px-4 py-4 text-left transition-all ${
+                              slot.booked
+                                ? "border-border/30 text-muted-foreground cursor-not-allowed line-through"
+                                : isSelected
+                                  ? "border-brand-accent bg-brand-accent/10 shadow-[0_12px_30px_-20px_rgba(255,255,255,0.8)]"
+                                  : "border-border hover:bg-background/10"
+                            }`}
+                          >
+                            <div className="flex items-center justify-between">
+                              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
+                                Meeting
+                              </p>
+                              {isSelected && (
+                                <Check size={16} className="text-brand-accent" />
+                              )}
+                            </div>
+                            <p className="text-lg font-medium">{slot.label}</p>
+                          </button>
+                        );
+                      })}
+                    </motion.div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="flex flex-col gap-2">
@@ -390,12 +434,23 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                     </div>
 
                     <button
-                      onClick={handleComposeEmail}
-                      disabled={!selectedSlot || !formValues.name || !formValues.email}
+                      onClick={handleSubmitBooking}
+                      disabled={
+                        !selectedSlot || !formValues.name || !formValues.email || submissionState === "loading"
+                      }
                       className="inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold transition-colors bg-foreground text-background disabled:bg-foreground/40 disabled:text-background/40"
                     >
-                      <SendHorizonal size={18} />
-                      Compose email draft
+                      {submissionState === "loading" ? (
+                        <>
+                          <Loader2 size={18} className="animate-spin" />
+                          Scheduling…
+                        </>
+                      ) : (
+                        <>
+                          <SendHorizonal size={18} />
+                          Confirm meeting
+                        </>
+                      )}
                     </button>
                   </motion.div>
                 </motion.div>
