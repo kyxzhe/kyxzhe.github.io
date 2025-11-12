@@ -32,18 +32,23 @@ export const consoleUtil = {
     github: "https://github.com/kyxzhe",
     website: "https://kyxzhe.github.io",
     email: "Kevin.Zheng@student.uts.edu.au",
-    message: "Researching robust learning and trustworthy AI — let’s collaborate! 🚀"
+    message: "I’m exploring how information spreads online and how ML can stay robust in messy reality."
   },
   researchHighlights: [
-    "🧠 PhD @ UTS focused on trustworthy ML & misinformation detection.",
-    "📚 Reviewer for ICLR · ICML · CVPR · AAAI.",
-    "🧪 Built noisy-label, Bayesian PLL & continual learning frameworks.",
-    "🎓 Teaching COMP5328: Advanced Machine Learning."
+    "🧠 PhD student @ UTS working with Dr. Marian-Andrei Rizoiu in the Behavioral Data Science Lab.",
+    "🌐 Studying misinformation diffusion + data-centric methods for robust machine learning.",
+    "🏅 University Medal grad from USyd; spent years teaching data science / ML.",
   ],
   funFacts: [
-    "🔭 Favorite puzzle: making noisy real-world data behave.",
-    "🌏 Survived ETH Zürich winters to study ML theory.",
-    "⚡ Motto: rigorous math, practical impact."
+    "📷 Usually carrying a film camera while hunting for the next flat white.",
+    "🏹 Sporadic hobbies: archery, gym sessions, dreaming about diving or skydiving.",
+    "✈️ Travel style: wander off-plan, chase good food, better coffee."
+  ],
+  story: [
+    "Before the PhD, I somehow walked out of the University of Sydney with a University Medal.",
+    "Explaining ML and data science to students became my favorite way to understand the hard bits.",
+    "Off campus, it’s film photography, coffee quests, and picking up new activities whenever possible.",
+    "If you want to chat about research, photography, or the best flat white in Sydney, say hi!"
   ],
 
   // Console styles
@@ -85,6 +90,10 @@ export const consoleUtil = {
 
     // Display message
     console.log(`%c💬 ${this.developerInfo.message}`, this.styles.message);
+    console.log(`%c\n📝 Story`, this.styles.info);
+    this.story.forEach((line) =>
+      console.log(`%c${line}`, this.styles.info)
+    );
     
     // Add interactive commands
     console.log(`%c\n🎮 Try these commands:`, this.styles.info);
@@ -126,9 +135,10 @@ export const consoleUtil = {
       collab: () => {
         console.log(`%c🤝 Collaboration`, this.styles.title);
         console.log(`%cAvailable for:`, this.styles.info);
-        console.log(`%c• Research partnerships on robust & trustworthy ML`, this.styles.info);
+        console.log(`%c• Research chats on misinformation & robust ML`, this.styles.info);
         console.log(`%c• Technical consulting for data-centric AI teams`, this.styles.info);
         console.log(`%c• Guest lectures / workshops on advanced ML`, this.styles.info);
+        console.log(`%c• Or compare coffee notes & film stocks`, this.styles.info);
         console.log(`%cSay hi: ${this.developerInfo.email}`, this.styles.link);
       }
     };
