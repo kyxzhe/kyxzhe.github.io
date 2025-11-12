@@ -63,13 +63,29 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
   const [submissionState, setSubmissionState] = useState<
     "idle" | "loading" | "success" | "error"
   >("idle");
+  const [bookedSlots, setBookedSlots] = useState<Record<string, boolean>>(() => {
+    const initial: Record<string, boolean> = {};
+    availability.forEach((day) =>
+      day.slots.forEach((slot) => {
+        if (slot.booked) initial[slot.id] = true;
+      })
+    );
+    return initial;
+  });
 
   const visibleDays = availability.slice(windowStart, windowStart + WINDOW_SIZE);
   const maxWindowIndex = Math.max(0, availability.length - WINDOW_SIZE);
 
   const slotsForDate = useMemo(() => {
-    return availability.find((day) => day.dateISO === selectedDate)?.slots ?? [];
-  }, [availability, selectedDate]);
+    return (
+      availability
+        .find((day) => day.dateISO === selectedDate)
+        ?.slots.map((slot) => ({
+          ...slot,
+          booked: slot.booked || bookedSlots[slot.id],
+        })) ?? []
+    );
+  }, [availability, bookedSlots, selectedDate]);
 
   const selectedSlot = slotsForDate.find((slot) => slot.id === selectedSlotId);
 
@@ -143,6 +159,10 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
       if (!response.ok) throw new Error("Failed to send");
 
       setSubmissionState("success");
+      setBookedSlots((prev) => ({
+        ...prev,
+        [selectedSlot.id]: true,
+      }));
       setTimeout(() => {
         resetScheduler();
         setMode("info");
