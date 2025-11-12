@@ -88,10 +88,10 @@ export const textVariants: Variants = {
 
 // Icon animations
 export const iconVariants: Variants = {
-  hidden: { opacity: 0, y: 12, scale: 0.9 },
+  hidden: { opacity: 0, rotate: -15, scale: 0.9 },
   visible: { 
     opacity: 1, 
-    y: 0,
+    rotate: 0,
     scale: 1,
     transition: {
       duration: 0.5,
@@ -99,10 +99,10 @@ export const iconVariants: Variants = {
     }
   },
   hover: {
-    scale: 1.06,
-    y: -2,
+    scale: 1.08,
+    rotate: 6,
     transition: {
-      duration: 0.25,
+      duration: 0.35,
       ease: [0.33, 1, 0.68, 1]
     }
   }
