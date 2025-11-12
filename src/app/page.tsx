@@ -6,11 +6,12 @@ import HeroSection from "@/components/HeroSection";
 import PersonImageSection from "@/components/PersonImageSection";
 import AboutContactSection from "@/components/AboutContactSection";
 import ProjectsSection from "@/components/ProjectsSection";
+import Footer from "@/components/Footer";
 import { containerVariants } from "@/lib/animation/variants";
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen font-sans py-4 md:py-6 lg:py-8 px-2 md:px-4 lg:px-6 overflow-auto lg:overflow-hidden gap-4">
+    <div className="flex flex-col h-screen min-h-screen font-sans pt-2 md:pt-0 lg:py-6 xl:py-0 xl:pb-6 overflow-auto lg:overflow-hidden">
       <Navbar />
       <motion.div 
         className="flex flex-col lg:flex-row flex-1 gap-4 pb-4 md:pb-0 lg:h-[calc(100vh-130px)]"
@@ -27,6 +28,7 @@ export default function Home() {
         </div>
         <ProjectsSection />
       </motion.div>
+      <Footer className="mb-4" />
     </div>
   );
 }
