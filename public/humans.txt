@@ -1,0 +1,49 @@
+/* TEAM */
+
+Developer: Muhammad Khoirul Wafa (Wafastarz)
+Contact: wafastarzteam@gmail.com
+GitHub: https://github.com/mkhoirulwafa18
+Website: https://wafastarz.site
+Location: Indonesia
+
+/* THANKS */
+
+Next.js Team: For the amazing React framework
+Tailwind CSS: For the utility-first CSS framework
+Framer Motion: For smooth animations
+Lucide React: For beautiful icons
+Vercel: For hosting and deployment
+
+/* SITE */
+
+Last update: 2025/09/10
+Language: English
+Doctype: HTML5
+IDE: Visual Studio Code, Trae AI
+Components: React, TypeScript, Next.js 15
+Styling: Tailwind CSS, CSS Modules
+Animations: Motion
+Icons: Lucide React
+Fonts: Gilroy
+Hosting: Vercel
+
+/* EASTER EGGS */
+
+🎮 Try the Konami Code: ↑↑↓↓←→←→BA
+🖥️ Check the browser console for surprises
+🐭 Hover over the footer for developer info
+🔍 Look for hidden interactive elements
+
+/* PHILOSOPHY */
+
+"Code is poetry written in logic."
+"Design is not just what it looks like - design is how it works." - Steve Jobs
+"The best way to predict the future is to create it." - Peter Drucker
+
+/* COLOPHON */
+
+This portfolio was crafted with love, coffee, and countless hours of debugging.
+Built with modern web technologies and a passion for clean, accessible design.
+Open source and available for the community to learn from and contribute to.
+
+Made with ❤️ by Wafastarz
