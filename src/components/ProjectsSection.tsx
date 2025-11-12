@@ -11,7 +11,7 @@ import { GoogleScholarIcon, OrcidIcon } from "@/components/icons/AcademicIcons";
 export default function ProjectsSection() {
   const [featured, ...others] = projects;
   return (
-    <div id="projects" className="flex flex-col w-full lg:w-[30%] gap-4 md:justify-between lg:mb-6 overflow-x-hidden">
+    <div id="projects" className="flex flex-col w-full lg:w-[30%] gap-4 md:justify-between lg:mb-6 overflow-visible">
       {/* === CARD 3: Projects List === */}
       <motion.div 
         className="bg-foreground text-background p-4 md:p-6 rounded-[20px] flex-grow md:flex-wrap flex flex-col min-h-[400px] md:min-h-0"
