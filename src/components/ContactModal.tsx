@@ -21,7 +21,7 @@ import {
 } from "@/lib/animation/variants";
 import { contactInfo } from "@/lib/constants/contact";
 import { socials } from "@/lib/constants/socials";
-import { availabilitySlots } from "@/lib/constants/availability";
+import { generateAvailability } from "@/lib/constants/availability";
 import { GoogleScholarIcon, OrcidIcon } from "@/components/icons/AcademicIcons";
 
 interface ContactModalProps {
@@ -45,11 +45,10 @@ const innerSwapVariants: Variants = {
 
 export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
   const [mode, setMode] = useState<"info" | "schedule">("info");
-  const days = useMemo(
-    () => Array.from(new Set(availabilitySlots.map((slot) => slot.day))),
-    []
+  const availability = useMemo(() => generateAvailability(new Date(), 12), []);
+  const [selectedDate, setSelectedDate] = useState<string>(
+    availability[0]?.dateISO ?? ""
   );
-  const [selectedDay, setSelectedDay] = useState(days[0]);
   const [selectedSlotId, setSelectedSlotId] = useState<string | null>(null);
   const [formValues, setFormValues] = useState({
     name: "",
@@ -58,16 +57,15 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
   });
   const [hasComposedEmail, setHasComposedEmail] = useState(false);
 
-  const slotsForDay = useMemo(
-    () => availabilitySlots.filter((slot) => slot.day === selectedDay),
-    [selectedDay]
-  );
+  const slotsForDate = useMemo(() => {
+    return availability.find((day) => day.dateISO === selectedDate)?.slots ?? [];
+  }, [availability, selectedDate]);
 
-  const selectedSlot = availabilitySlots.find((slot) => slot.id === selectedSlotId);
+  const selectedSlot = slotsForDate.find((slot) => slot.id === selectedSlotId);
 
   const resetScheduler = () => {
     setMode("info");
-    setSelectedDay(days[0]);
+    setSelectedDate(availability[0]?.dateISO ?? "");
     setSelectedSlotId(null);
     setFormValues({ name: "", email: "", note: "" });
     setHasComposedEmail(false);
@@ -75,11 +73,12 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
   const handleComposeEmail = () => {
     if (!selectedSlot || !formValues.name || !formValues.email) return;
-    const subject = `Meeting request: ${selectedSlot.label} (${selectedSlot.day} ${selectedSlot.timeRange})`;
+    const dayMeta = availability.find((d) => d.dateISO === selectedDate);
+    const subject = `Meeting request: ${selectedSlot.label} (${dayMeta?.displayLabel})`;
     const body = [
       `Hi Kevin,`,
       ``,
-      `I'd like to reserve the slot ${selectedSlot.day} ${selectedSlot.timeRange}.`,
+      `I'd like to reserve the slot ${dayMeta?.displayLabel} · ${selectedSlot.label}.`,
       ``,
       `Name: ${formValues.name}`,
       `Email: ${formValues.email}`,
@@ -158,12 +157,15 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                   animate="center"
                   exit="exit"
                 >
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-8">
+                  <motion.div
+                    className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-8"
+                    layout
+                    variants={textVariants}
+                    initial="hidden"
+                    animate="visible"
+                  >
                     <motion.div
                       className="flex items-center gap-4 p-4 rounded-lg bg-background/5 hover:bg-background/10 transition-colors cursor-pointer"
-                      variants={textVariants}
-                      initial="hidden"
-                      animate="visible"
                       whileHover={{ scale: 1.02 }}
                       onClick={() => window.open(`mailto:${contactInfo.email}`)}
                     >
@@ -175,12 +177,8 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                         <p className="text-muted-foreground break-all">{contactInfo.email}</p>
                       </div>
                     </motion.div>
-
                     <motion.div
                       className="flex items-center gap-4 p-4 rounded-lg bg-background/5 hover:bg-background/10 transition-colors cursor-pointer"
-                      variants={textVariants}
-                      initial="hidden"
-                      animate="visible"
                       whileHover={{ scale: 1.02 }}
                       onClick={() => window.open(`tel:${contactInfo.phoneRaw}`)}
                     >
@@ -217,7 +215,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                       onClick={() => setMode("schedule")}
                     >
                       <motion.div
-                        className="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center"
+                        className="w-11 h-11 rounded-full border border-green-500/40 bg-green-500/5 flex items-center justify-center"
                         variants={iconVariants}
                         initial="hidden"
                         animate="visible"
@@ -231,7 +229,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                         </p>
                       </div>
                     </motion.div>
-                  </div>
+                  </motion.div>
 
                   <motion.div
                     className="border-t border-border pt-6"
@@ -313,30 +311,30 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
                     <div className="bg-background/5 rounded-[20px] p-4">
                       <p className="text-xs uppercase tracking-[0.4em] text-muted-foreground mb-2">
-                        Choose a day
+                        Choose a date
                       </p>
                       <div className="flex flex-wrap gap-2">
-                        {days.map((day) => (
+                        {availability.map((day) => (
                           <button
-                            key={day}
+                            key={day.dateISO}
                             onClick={() => {
-                              setSelectedDay(day);
+                              setSelectedDate(day.dateISO);
                               setSelectedSlotId(null);
                             }}
                             className={`px-4 py-2 rounded-full text-sm transition-colors border ${
-                              selectedDay === day
+                              selectedDate === day.dateISO
                                 ? "bg-foreground text-background border-foreground"
                                 : "border-border hover:bg-background/10"
                             }`}
                           >
-                            {day}
+                            {day.displayLabel}
                           </button>
                         ))}
                       </div>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      {slotsForDay.map((slot) => (
+                      {slotsForDate.map((slot) => (
                         <button
                           key={slot.id}
                           disabled={slot.booked}
@@ -350,9 +348,9 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                           }`}
                         >
                           <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
-                            {slot.label}
+                            Meeting
                           </p>
-                          <p className="text-lg font-medium">{slot.timeRange}</p>
+                          <p className="text-lg font-medium">{slot.label}</p>
                         </button>
                       ))}
                     </div>

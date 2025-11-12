@@ -15,10 +15,12 @@ import Footer from "@/components/Footer";
 import { cardVariants, containerVariants, iconVariants, textVariants } from "@/lib/animation/variants";
 import { contactInfo } from "@/lib/constants/contact";
 import { socials } from "@/lib/constants/socials";
-import { availabilitySlots } from "@/lib/constants/availability";
+import { generateAvailability } from "@/lib/constants/availability";
 import { GoogleScholarIcon, OrcidIcon } from "@/components/icons/AcademicIcons";
+import { useMemo } from "react";
 
 export default function ContactPage() {
+  const availabilityPreview = useMemo(() => generateAvailability(new Date(), 5), []);
   return (
     <div className="flex flex-col min-h-screen font-sans pt-2 md:pt-0 lg:py-6 xl:py-0 xl:pb-6 overflow-auto lg:overflow-hidden">
       <Navbar />
@@ -129,20 +131,26 @@ export default function ContactPage() {
               initial="hidden"
               animate="visible"
             >
-              {availabilitySlots.map((slot) => (
+              {availabilityPreview.map((day) => (
                 <li
-                  key={slot.id}
-                  className="rounded-[16px] border border-background/30 px-4 py-3"
+                  key={day.dateISO}
+                  className="rounded-[16px] border border-background/30 px-4 py-4"
                 >
-                  <p className="text-xs uppercase tracking-[0.3em] text-background/60">
-                    {slot.label}
+                  <p className="text-xs uppercase tracking-[0.3em] text-background/60 mb-2">
+                    {day.displayLabel}
                   </p>
-                  <p className="text-lg font-medium">{slot.timeRange}</p>
-                  {slot.booked && (
-                    <span className="text-xs uppercase tracking-[0.2em] text-background/50">
-                      Reserved
-                    </span>
-                  )}
+                  <div className="flex flex-wrap gap-2 text-sm">
+                    {day.slots.map((slot) => (
+                      <span
+                        key={slot.id}
+                        className={`px-3 py-1 rounded-full border border-background/30 ${
+                          slot.booked ? "line-through text-background/50" : ""
+                        }`}
+                      >
+                        {slot.label}
+                      </span>
+                    ))}
+                  </div>
                 </li>
               ))}
             </motion.ul>
