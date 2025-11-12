@@ -9,7 +9,7 @@ import {
   MessageCircle,
   Github,
   Linkedin,
-  Twitter,
+  BookOpenCheck,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -229,7 +229,7 @@ export default function ContactPage() {
               {[
                 { icon: Github, label: "GitHub", href: socials.github },
                 { icon: Linkedin, label: "LinkedIn", href: socials.linkedin },
-                { icon: Twitter, label: "Twitter", href: socials.twitter },
+                { icon: BookOpenCheck, label: "Google Scholar", href: socials.googleScholar },
               ].map(({ icon: Icon, label, href }) => (
                 <a
                   key={label}

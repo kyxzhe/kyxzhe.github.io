@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { ArrowUpRight, Instagram, Twitter, Linkedin } from "lucide-react";
+import { ArrowUpRight, Github, Linkedin, BookOpenCheck } from "lucide-react";
 import { motion } from "motion/react";
 import { cardVariants, projectsVariants, projectItemVariants, socialVariants, textVariants, iconVariants } from "@/lib/animation/variants";
 import { projects } from "@/lib/constants/projects";
@@ -82,24 +82,24 @@ export default function ProjectsSection() {
         animate="visible"
       >
         <motion.a 
-          href={socials.instagram} 
+          href={socials.github} 
           className="text-light hover:text-accent transition-colors"
           variants={socialVariants}
           initial="hidden"
           animate="visible"
           whileHover="hover"
         >
-          <Instagram size={20} />
+          <Github size={20} />
         </motion.a>
         <motion.a 
-          href={socials.twitter} 
+          href={socials.googleScholar} 
           className="text-light hover:text-accent transition-colors"
           variants={socialVariants}
           initial="hidden"
           animate="visible"
           whileHover="hover"
         >
-          <Twitter size={20} />
+          <BookOpenCheck size={20} />
         </motion.a>
         <motion.a 
           href={socials.linkedin} 

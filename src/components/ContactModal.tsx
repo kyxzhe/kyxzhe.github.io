@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "motion/react";
-import { X, Mail, Phone, MapPin, Github, Linkedin, Twitter } from "lucide-react";
+import { X, Mail, Phone, MapPin, Github, Linkedin, BookOpenCheck } from "lucide-react";
 import { modalVariants, backdropVariants, textVariants, iconVariants } from "@/lib/animation/variants";
 import { contactInfo } from "@/lib/constants/contact";
 import { socials } from "@/lib/constants/socials";
@@ -156,7 +156,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                 {[
                   { icon: Github, href: socials.github, label: "GitHub" },
                   { icon: Linkedin, href: socials.linkedin, label: "LinkedIn" },
-                  { icon: Twitter, href: socials.twitter, label: "Twitter" },
+                  { icon: BookOpenCheck, href: socials.googleScholar, label: "Google Scholar" },
                 ].map(({ icon: Icon, href, label }) => (
                   <motion.a
                     key={label}
