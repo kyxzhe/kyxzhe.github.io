@@ -15,13 +15,8 @@ import Footer from "@/components/Footer";
 import { cardVariants, containerVariants, iconVariants, textVariants } from "@/lib/animation/variants";
 import { contactInfo } from "@/lib/constants/contact";
 import { socials } from "@/lib/constants/socials";
+import { availabilitySlots } from "@/lib/constants/availability";
 import { GoogleScholarIcon, OrcidIcon } from "@/components/icons/AcademicIcons";
-
-const availabilitySlots = [
-  { label: "Mentoring / Guest talks", time: "Wed 4pm – 6pm AEDT" },
-  { label: "Research syncs", time: "Thu 10am – 12pm AEDT" },
-  { label: "Consulting office hours", time: "Fri 2pm – 5pm AEDT" },
-];
 
 export default function ContactPage() {
   return (
@@ -136,13 +131,18 @@ export default function ContactPage() {
             >
               {availabilitySlots.map((slot) => (
                 <li
-                  key={slot.label}
+                  key={slot.id}
                   className="rounded-[16px] border border-background/30 px-4 py-3"
                 >
                   <p className="text-xs uppercase tracking-[0.3em] text-background/60">
                     {slot.label}
                   </p>
-                  <p className="text-lg font-medium">{slot.time}</p>
+                  <p className="text-lg font-medium">{slot.timeRange}</p>
+                  {slot.booked && (
+                    <span className="text-xs uppercase tracking-[0.2em] text-background/50">
+                      Reserved
+                    </span>
+                  )}
                 </li>
               ))}
             </motion.ul>
