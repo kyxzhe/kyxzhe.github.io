@@ -227,10 +227,10 @@ export default function ContactPage() {
               animate="visible"
             >
               {[
-                { label: "GitHub", href: socials.github, icon: <Github size={18} /> },
                 { label: "LinkedIn", href: socials.linkedin, icon: <Linkedin size={18} /> },
                 { label: "Google Scholar", href: socials.googleScholar, icon: <GoogleScholarIcon className="w-5 h-5" /> },
                 { label: "ORCID", href: socials.orcid, icon: <OrcidIcon className="w-5 h-5" /> },
+                { label: "GitHub", href: socials.github, icon: <Github size={18} /> },
               ].map(({ label, href, icon }) => (
                 <a
                   key={label}

@@ -83,14 +83,14 @@ export default function ProjectsSection() {
         animate="visible"
       >
         <motion.a 
-          href={socials.github} 
+          href={socials.linkedin} 
           className="text-light hover:text-accent transition-colors"
           variants={socialVariants}
           initial="hidden"
           animate="visible"
           whileHover="hover"
         >
-          <Github size={20} />
+          <Linkedin size={20} />
         </motion.a>
         <motion.a 
           href={socials.googleScholar} 
@@ -113,14 +113,14 @@ export default function ProjectsSection() {
           <OrcidIcon className="w-5 h-5" />
         </motion.a>
         <motion.a 
-          href={socials.linkedin} 
+          href={socials.github} 
           className="text-light hover:text-accent transition-colors"
           variants={socialVariants}
           initial="hidden"
           animate="visible"
           whileHover="hover"
         >
-          <Linkedin size={20} />
+          <Github size={20} />
         </motion.a>
       </motion.div>
     </div>

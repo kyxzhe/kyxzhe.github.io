@@ -243,11 +243,6 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                     <div className="flex flex-wrap justify-center gap-4">
                       {[
                         {
-                          label: "GitHub",
-                          href: socials.github,
-                          icon: <Github size={24} className="text-brand-accent" />,
-                        },
-                        {
                           label: "LinkedIn",
                           href: socials.linkedin,
                           icon: <Linkedin size={24} className="text-brand-accent" />,
@@ -261,6 +256,11 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                           label: "ORCID",
                           href: socials.orcid,
                           icon: <OrcidIcon className="w-6 h-6" />,
+                        },
+                        {
+                          label: "GitHub",
+                          href: socials.github,
+                          icon: <Github size={24} className="text-brand-accent" />,
                         },
                       ].map(({ icon, href, label }) => (
                         <motion.a
