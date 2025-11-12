@@ -60,6 +60,10 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     email: "",
     note: "",
   });
+  const emailValid = useMemo(
+    () => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formValues.email),
+    [formValues.email]
+  );
   const [submissionState, setSubmissionState] = useState<
     "idle" | "loading" | "success" | "error"
   >("idle");
@@ -482,7 +486,11 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                           onChange={(e) => setFormValues((prev) => ({ ...prev, email: e.target.value }))}
                           className="rounded-[12px] border border-border bg-transparent px-4 py-3 focus:outline-none focus:border-foreground placeholder:text-muted-foreground/70"
                           placeholder="you@example.com"
+                          aria-invalid={!emailValid}
                         />
+                        {!emailValid && formValues.email.length > 0 && (
+                          <span className="text-xs text-red-400">Please enter a valid email.</span>
+                        )}
                       </div>
                     </div>
 
@@ -500,7 +508,11 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                     <button
                       onClick={handleSubmitBooking}
                       disabled={
-                        !selectedSlot || !formValues.name || !formValues.email || submissionState === "loading"
+                        !selectedSlot ||
+                        !formValues.name ||
+                        !formValues.email ||
+                        !emailValid ||
+                        submissionState === "loading"
                       }
                       className="inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold transition-colors bg-foreground text-background disabled:bg-foreground/40 disabled:text-background/40"
                     >
