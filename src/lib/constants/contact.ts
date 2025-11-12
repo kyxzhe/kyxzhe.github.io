@@ -1,5 +1,5 @@
 export const contactInfo = {
-  email: "kyx.zhe@gmail.com",
+  email: "Kevin.Zheng@student.uts.edu.au",
   phone: "+61 416 276 898",
   phoneRaw: "+61416276898",
   location: "Sydney, Australia",

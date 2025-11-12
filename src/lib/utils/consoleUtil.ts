@@ -28,9 +28,9 @@ export const consoleUtil = {
   // Developer information
   developerInfo: {
     name: "Yuxiang (Kevin) Zheng",
-    github: "https://github.com/KevinCarpricorn",
+    github: "https://github.com/kyxzhe",
     website: "https://kyxzhe.github.io",
-    email: "kyx.zhe@gmail.com",
+    email: "Kevin.Zheng@student.uts.edu.au",
     message: "Researching robust learning and trustworthy AI — let’s collaborate! 🚀"
   },
 

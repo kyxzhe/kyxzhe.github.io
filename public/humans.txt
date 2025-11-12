@@ -1,7 +1,7 @@
 /* TEAM */
 
 Developer: Yuxiang (Kevin) Zheng
-Contact: kyx.zhe@gmail.com
+Contact: Kevin.Zheng@student.uts.edu.au
 GitHub: https://github.com/KevinCarpricorn
 Website: https://kyxzhe.github.io
 Location: Sydney, Australia
