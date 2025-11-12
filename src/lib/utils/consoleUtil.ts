@@ -3,10 +3,10 @@
  * Displays developer credits and ASCII art in browser console
  */
 
-// Extend Window interface for wafastarz object
+// Extend Window interface for console helper
 declare global {
   interface Window {
-    wafastarz?: {
+    kevinZheng?: {
       info: () => void;
       links: () => void;
       ascii: () => void;
@@ -16,23 +16,22 @@ declare global {
 }
 
 export const consoleUtil = {
-  // ASCII Art for Wafastarz
+  // ASCII Art for Kevin Zheng
   asciiArt: `
-██╗    ██╗ █████╗ ███████╗ █████╗ ███████╗████████╗ █████╗ ██████╗ ███████╗
-██║    ██║██╔══██╗██╔════╝██╔══██╗██╔════╝╚══██╔══╝██╔══██╗██╔══██╗╚══███╔╝
-██║ █╗ ██║███████║█████╗  ███████║███████╗   ██║   ███████║██████╔╝  ███╔╝ 
-██║███╗██║██╔══██║██╔══╝  ██╔══██║╚════██║   ██║   ██╔══██║██╔══██╗ ███╔╝  
-╚███╔███╔╝██║  ██║██║     ██║  ██║███████║   ██║   ██║  ██║██║  ██║███████╗
- ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝     ╚═╝  ╚═╝╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝
+ _  __                 _             ______                 
+| |/ /___  ___ _   _  | | _____ _ __|___  /___  ___  _ __   
+| ' // _ \\/ __| | | | | |/ / _ \\ '__| / // _ \\/ _ \\| '_ \\  
+| . \\  __/\\__ \\ |_| | |   <  __/ |   / /|  __/ (_) | | | | 
+|_|\\_\\___||___/\\__,_| |_|\\_\\___|_|  /_/  \\___|\\___/|_| |_| 
 `,
 
   // Developer information
   developerInfo: {
-    name: "Wafastarz (Muhammad Khoirul Wafa)",
-    github: "https://github.com/mkhoirulwafa18",
-    website: "https://wafastarz.site",
-    email: "wafastarzteam@gmail.com",
-    message: "Thanks for checking out the code! 🚀"
+    name: "Yuxiang (Kevin) Zheng",
+    github: "https://github.com/KevinCarpricorn",
+    website: "https://kyxzhe.github.io",
+    email: "kyx.zhe@gmail.com",
+    message: "Researching robust learning and trustworthy AI — let’s collaborate! 🚀"
   },
 
   // Console styles
@@ -54,7 +53,7 @@ export const consoleUtil = {
     console.log(`%c${this.asciiArt}`, this.styles.ascii);
     
     // Display title
-    console.log(`%c🎨 Made with ❤️ by ${this.developerInfo.name}`, this.styles.title);
+    console.log(`%c🧠 Built with curiosity by ${this.developerInfo.name}`, this.styles.title);
     // taking a peek huh?
     console.log(`%c👀👀 Taking a peek huh? 👀👀 checkout links below!`, this.styles.title);
     // Display links
@@ -67,15 +66,15 @@ export const consoleUtil = {
     
     // Add interactive commands
     console.log(`%c\n🎮 Try these commands:`, this.styles.info);
-    console.log(`%c• wafastarz.info() - Show developer info`, this.styles.info);
-    console.log(`%c• wafastarz.links() - Show all links`, this.styles.info);
-    console.log(`%c• wafastarz.ascii() - Show ASCII art again`, this.styles.info);
+    console.log(`%c• kevinZheng.info() - Show developer info`, this.styles.info);
+    console.log(`%c• kevinZheng.links() - Show all links`, this.styles.info);
+    console.log(`%c• kevinZheng.ascii() - Show ASCII art again`, this.styles.info);
   },
 
   // Interactive commands
   setupCommands() {
     // Create global wafastarz object
-    window.wafastarz = {
+    window.kevinZheng = {
       info: () => {
         console.log(`%c👨‍💻 Developer Information`, this.styles.title);
         console.log(`%cName: ${this.developerInfo.name}`, this.styles.info);
@@ -125,7 +124,7 @@ export const consoleUtil = {
         if (!devtools.open) {
           devtools.open = true;
           console.log(`%c🔍 Welcome to the developer console!`, this.styles.title);
-          console.log(`%c💡 Tip: Try typing 'wafastarz.info()' for more info!`, this.styles.message);
+          console.log(`%c💡 Tip: Try typing 'kevinZheng.info()' for more info!`, this.styles.message);
         }
       } else {
         devtools.open = false;

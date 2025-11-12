@@ -6,7 +6,6 @@ import HeroSection from "@/components/HeroSection";
 import PersonImageSection from "@/components/PersonImageSection";
 import AboutContactSection from "@/components/AboutContactSection";
 import ProjectsSection from "@/components/ProjectsSection";
-import Footer from "@/components/Footer";
 import { containerVariants } from "@/lib/animation/variants";
 
 export default function Home() {
@@ -28,7 +27,6 @@ export default function Home() {
         </div>
         <ProjectsSection />
       </motion.div>
-      <Footer className="mb-4" />
     </div>
   );
 }

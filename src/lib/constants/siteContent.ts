@@ -1,15 +1,15 @@
 export const heroContent = {
-  line1: "Pixel Perfectionist",
-  line2Prefix: "Turning",
-  line2Emphasis: "Dreams",
-  line2Suffix: "Into",
-  line3: "Digital Magic",
+  line1: "Trustworthy AI Researcher",
+  line2Prefix: "Grounding",
+  line2Emphasis: "Theory",
+  line2Suffix: " for",
+  line3: "Real-World Impact",
 };
 
 export const aboutDescription =
-  "Lavanya Yasmeen is a pixel perfectionist graphic designer, renowned for transforming dreams into digital magic. Based in Indonesia, she crafts visually stunning designs that captivate audiences worldwide.";
+  "Yuxiang (Kevin) Zheng is a Sydney-based PhD candidate at UTS. His work bridges machine learning theory with practical systems, focusing on misinformation detection, robust learning, and generalisation for high-stakes AI.";
 
 export const personImage = {
   src: "/person2.jpg",
-  alt: "Photo by Cherry Ann Gonzales: https://www.pexels.com/photo/colorful-portrait-of-woman-with-sunglasses-and-balls-33819483/",
+  alt: "Stylised portrait placeholder for Kevin Zheng",
 };

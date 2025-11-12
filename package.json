@@ -1,21 +1,21 @@
 {
   "name": "bentofolio",
   "version": "0.1.0",
-  "description": "A modern, customizable portfolio template built with Next.js and TailwindCSS",
+  "description": "Kevin Zheng's personal research portfolio built with Next.js and TailwindCSS",
   "private": false,
   "author": {
-    "name": "Wafastarz (Muhammad Khoirul Wafa)",
-    "email": "wafastarzteam@gmail.com",
-    "url": "https://wafastarz.site"
+    "name": "Yuxiang (Kevin) Zheng",
+    "email": "kyx.zhe@gmail.com",
+    "url": "https://kyxzhe.github.io"
   },
   "license": "MIT",
-  "homepage": "https://github.com/mkhoirulwafa18/bentofolio",
+  "homepage": "https://kyxzhe.github.io",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mkhoirulwafa18/bentofolio.git"
+    "url": "git+https://github.com/kyxzhe/kyxzhe.github.io.git"
   },
   "bugs": {
-    "url": "https://github.com/mkhoirulwafa18/bentofolio/issues"
+    "url": "https://github.com/kyxzhe/kyxzhe.github.io/issues"
   },
   "keywords": [
     "portfolio",

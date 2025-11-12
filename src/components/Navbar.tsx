@@ -15,8 +15,8 @@ export default function Navbar() {
           className="flex flex-row gap-1 items-center"
           aria-label="Go to homepage"
         >
-          <span className="text-xl lg:text-2xl uppercase font-light italic">Lavanya</span>
-          <span className="text-xl lg:text-2xl uppercase font-medium">Yasmeen</span>
+          <span className="text-xl lg:text-2xl uppercase font-light italic">Kevin</span>
+          <span className="text-xl lg:text-2xl uppercase font-medium">Zheng</span>
         </Link>
         <HamburgerButton open={menuOpen} onClick={toggleMenu} />
         <ul className="hidden md:flex flex-row gap-20 list-none m-0 items-center">

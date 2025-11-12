@@ -20,7 +20,7 @@ export default function AboutContactSection() {
   };
 
   return (
-    <div className="flex flex-row gap-1 md:gap-4 md:h-[40%] min-h-[200px] md:min-h-0">
+    <div id="contact" className="flex flex-row gap-1 md:gap-4 md:h-[40%] min-h-[200px] md:min-h-0">
       <motion.div 
         className="w-[50%] bg-foreground text-background rounded-[20px] flex flex-col items-start justify-between p-3 md:p-6"
         variants={cardVariants}
@@ -35,7 +35,7 @@ export default function AboutContactSection() {
         >
           <Image
             src="/svgs/Vector.svg"
-            alt="Lavanya Yasmeen"
+            alt="Kevin Zheng"
             width={150}
             height={150}
             className="w-8 md:w-auto"

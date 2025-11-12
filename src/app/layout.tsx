@@ -32,26 +32,26 @@ const gilroy = localFont({
   display: 'swap',
 });
 export const metadata: Metadata = {
-  title: "Lavanya Yasmeen | Personal Portfolio",
-  description: "A modern and minimalist portfolio showcasing my work, skills, and experiences in web development and design.",
-  keywords: ["portfolio", "web development", "design", "projects", "skills"],
-  authors: [{ name: "Wafastarz (Muhammad Khoirul Wafa)" }],
-  creator: "Wafastarz (Muhammad Khoirul Wafa)",
-  publisher: "Wafastarz (Muhammad Khoirul Wafa)",
+  title: "Kevin Zheng | Trustworthy AI Researcher",
+  description: "PhD candidate and ML researcher focused on misinformation detection, robust learning, and data-centric AI systems.",
+  keywords: ["Kevin Zheng", "machine learning", "trustworthy AI", "robust learning", "misinformation detection"],
+  authors: [{ name: "Yuxiang (Kevin) Zheng" }],
+  creator: "Yuxiang (Kevin) Zheng",
+  publisher: "Yuxiang (Kevin) Zheng",
   robots: {
     index: true,
     follow: true,
   },
   openGraph: {
     type: "website",
-    title: "Lavanya Yasmeen | Personal Portfolio",
-    description: "A modern and minimalist portfolio showcasing my work, skills, and experiences in web development and design.",
-    siteName: "Lavanya Yasmeen",
+    title: "Kevin Zheng | Trustworthy AI Researcher",
+    description: "PhD candidate and ML researcher focused on misinformation detection, robust learning, and data-centric AI systems.",
+    siteName: "Kevin Zheng",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Lavanya Yasmeen | Personal Portfolio",
-    description: "A modern and minimalist portfolio showcasing my work, skills, and experiences in web development and design.",
+    title: "Kevin Zheng | Trustworthy AI Researcher",
+    description: "PhD candidate and ML researcher focused on misinformation detection, robust learning, and data-centric AI systems.",
   },
 };
 export default function RootLayout({

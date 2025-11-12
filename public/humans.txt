@@ -1,10 +1,10 @@
 /* TEAM */
 
-Developer: Muhammad Khoirul Wafa (Wafastarz)
-Contact: wafastarzteam@gmail.com
-GitHub: https://github.com/mkhoirulwafa18
-Website: https://wafastarz.site
-Location: Indonesia
+Developer: Yuxiang (Kevin) Zheng
+Contact: kyx.zhe@gmail.com
+GitHub: https://github.com/KevinCarpricorn
+Website: https://kyxzhe.github.io
+Location: Sydney, Australia
 
 /* THANKS */
 
@@ -16,7 +16,7 @@ Vercel: For hosting and deployment
 
 /* SITE */
 
-Last update: 2025/09/10
+Last update: 2025/01/15
 Language: English
 Doctype: HTML5
 IDE: Visual Studio Code, Trae AI
@@ -45,5 +45,3 @@ Hosting: Vercel
 This portfolio was crafted with love, coffee, and countless hours of debugging.
 Built with modern web technologies and a passion for clean, accessible design.
 Open source and available for the community to learn from and contribute to.
-
-Made with ❤️ by Wafastarz

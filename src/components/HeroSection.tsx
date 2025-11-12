@@ -8,6 +8,7 @@ import { heroContent } from "@/lib/constants/siteContent";
 export default function HeroSection() {
   return (
     <motion.div 
+      id="about"
       className="w-full lg:w-[65%] bg-card rounded-[20px] flex flex-col items-start justify-between p-6 min-h-[250px] lg:min-h-0"
       variants={heroVariants}
       initial="hidden"
@@ -22,7 +23,7 @@ export default function HeroSection() {
       >
         <Image
           src="/svgs/Vector2.svg"
-          alt="Lavanya Yasmeen"
+          alt="Kevin Zheng monogram"
           width={150}
           height={150}
           className="w-12 lg:w-auto self-end"
