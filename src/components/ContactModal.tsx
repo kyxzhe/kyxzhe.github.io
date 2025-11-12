@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence, type Variants } from "motion/react";
 import {
   X,
@@ -48,7 +48,9 @@ const innerSwapVariants: Variants = {
 
 export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
   const [mode, setMode] = useState<"info" | "schedule">("info");
-  const availability = useMemo(() => generateAvailability(new Date(), 12), []);
+  const availability = useMemo(() => generateAvailability(new Date(), 30), []);
+  const WINDOW_SIZE = 5;
+  const [windowStart, setWindowStart] = useState(0);
   const [selectedDate, setSelectedDate] = useState<string>(
     availability[0]?.dateISO ?? ""
   );
@@ -62,6 +64,9 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     "idle" | "loading" | "success" | "error"
   >("idle");
 
+  const visibleDays = availability.slice(windowStart, windowStart + WINDOW_SIZE);
+  const maxWindowIndex = Math.max(0, availability.length - WINDOW_SIZE);
+
   const slotsForDate = useMemo(() => {
     return availability.find((day) => day.dateISO === selectedDate)?.slots ?? [];
   }, [availability, selectedDate]);
@@ -70,10 +75,31 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
   const resetScheduler = () => {
     setMode("info");
+    setWindowStart(0);
     setSelectedDate(availability[0]?.dateISO ?? "");
     setSelectedSlotId(null);
     setFormValues({ name: "", email: "", note: "" });
     setSubmissionState("idle");
+  };
+
+  useEffect(() => {
+    if (!availability.find((day) => day.dateISO === selectedDate)) {
+      setSelectedDate(availability[windowStart]?.dateISO ?? "");
+      setSelectedSlotId(null);
+    }
+  }, [availability, selectedDate, windowStart]);
+
+  const shiftWindow = (direction: -1 | 1) => {
+    const nextStart = Math.min(
+      maxWindowIndex,
+      Math.max(0, windowStart + direction * WINDOW_SIZE)
+    );
+    setWindowStart(nextStart);
+    const nextVisible = availability[nextStart];
+    if (nextVisible) {
+      setSelectedDate(nextVisible.dateISO);
+      setSelectedSlotId(null);
+    }
   };
 
   const handleSubmitBooking = async () => {
@@ -346,11 +372,29 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                     </div>
 
                     <div className="bg-background/5 rounded-[20px] p-4">
-                      <p className="text-xs uppercase tracking-[0.4em] text-muted-foreground mb-2">
-                        Choose a date
-                      </p>
+                      <div className="flex items-center justify-between mb-2">
+                        <p className="text-xs uppercase tracking-[0.4em] text-muted-foreground">
+                          Choose a date
+                        </p>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => shiftWindow(-1)}
+                            disabled={windowStart === 0}
+                            className="px-2 py-1 rounded-full border border-border text-xs disabled:opacity-40"
+                          >
+                            Prev
+                          </button>
+                          <button
+                            onClick={() => shiftWindow(1)}
+                            disabled={windowStart >= maxWindowIndex}
+                            className="px-2 py-1 rounded-full border border-border text-xs disabled:opacity-40"
+                          >
+                            Next
+                          </button>
+                        </div>
+                      </div>
                       <div className="flex flex-wrap gap-2">
-                        {availability.map((day) => (
+                        {visibleDays.map((day) => (
                           <button
                             key={day.dateISO}
                             onClick={() => {

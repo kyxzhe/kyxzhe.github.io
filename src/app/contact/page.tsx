@@ -15,12 +15,9 @@ import Footer from "@/components/Footer";
 import { cardVariants, containerVariants, iconVariants, textVariants } from "@/lib/animation/variants";
 import { contactInfo } from "@/lib/constants/contact";
 import { socials } from "@/lib/constants/socials";
-import { generateAvailability } from "@/lib/constants/availability";
 import { GoogleScholarIcon, OrcidIcon } from "@/components/icons/AcademicIcons";
-import { useMemo } from "react";
 
 export default function ContactPage() {
-  const availabilityPreview = useMemo(() => generateAvailability(new Date(), 5), []);
   return (
     <div className="flex flex-col min-h-screen font-sans pt-2 md:pt-0 lg:py-6 xl:py-0 xl:pb-6 overflow-auto lg:overflow-hidden">
       <Navbar />
@@ -123,47 +120,27 @@ export default function ContactPage() {
               initial="hidden"
               animate="visible"
             >
-              Office hours
+              Scheduling policy
             </motion.h2>
-            <motion.ul
-              className="flex flex-col gap-3 text-background/80"
+            <motion.p
+              className="text-sm text-background/80"
               variants={textVariants}
               initial="hidden"
               animate="visible"
             >
-              {availabilityPreview.map((day) => (
-                <li
-                  key={day.dateISO}
-                  className="rounded-[16px] border border-background/30 px-4 py-4"
-                >
-                  <p className="text-xs uppercase tracking-[0.3em] text-background/60 mb-2">
-                    {day.displayLabel}
-                  </p>
-                  <div className="flex flex-wrap gap-2 text-sm">
-                    {day.slots.map((slot) => (
-                      <span
-                        key={slot.id}
-                        className={`px-3 py-1 rounded-full border border-background/30 ${
-                          slot.booked ? "line-through text-background/50" : ""
-                        }`}
-                      >
-                        {slot.label}
-                      </span>
-                    ))}
-                  </div>
-                </li>
-              ))}
-            </motion.ul>
+              Meetings are available Monday to Friday between 10:00–17:00 AEDT (with a lunch
+              break between 12:00–13:30). Use the “Contact me” button to pick a real-time slot—
+              the modal includes all upcoming availability, so this section stays clutter-free.
+            </motion.p>
             <motion.div
-              className="mt-2 rounded-[16px] border border-background/30 px-4 py-4 flex gap-3 items-center"
+              className="rounded-[16px] border border-background/30 px-4 py-4 flex gap-3 items-center"
               variants={iconVariants}
               initial="hidden"
               animate="visible"
             >
               <MessageCircle size={20} />
               <p className="text-sm">
-                For urgent collaborations, mention the topic in the email subject
-                line for quick triage.
+                Need an urgent chat? Mention the topic in your email subject for a quicker response.
               </p>
             </motion.div>
           </motion.div>

@@ -34,12 +34,12 @@ export type DailyAvailability = {
   slots: SlotInstance[];
 };
 
-export function generateAvailability(startDate = new Date(), days = 10): DailyAvailability[] {
+export function generateAvailability(startDate = new Date(), workdays = 30): DailyAvailability[] {
   const result: DailyAvailability[] = [];
   const cursor = new Date(startDate);
   cursor.setHours(0, 0, 0, 0);
 
-  while (result.length < days) {
+  while (result.length < workdays) {
     const weekday = weekdays[cursor.getDay()];
     if (weekday !== "Saturday" && weekday !== "Sunday") {
       const iso = cursor.toISOString().split("T")[0];
