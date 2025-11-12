@@ -11,6 +11,7 @@ declare global {
       links: () => void;
       ascii: () => void;
       heart: () => void;
+      collab: () => void;
     };
   }
 }
@@ -18,11 +19,11 @@ declare global {
 export const consoleUtil = {
   // ASCII Art for Kevin Zheng
   asciiArt: `
- _  __                 _             ______                 
-| |/ /___  ___ _   _  | | _____ _ __|___  /___  ___  _ __   
-| ' // _ \\/ __| | | | | |/ / _ \\ '__| / // _ \\/ _ \\| '_ \\  
-| . \\  __/\\__ \\ |_| | |   <  __/ |   / /|  __/ (_) | | | | 
-|_|\\_\\___||___/\\__,_| |_|\\_\\___|_|  /_/  \\___|\\___/|_| |_| 
+ _  __                 _             ______
+| |/ /___  ___ _   _  | | _____ _ __|___  /___  ___  _ __
+| ' // _ \\/ __| | | | | |/ / _ \\ '__| / // _ \\/ _ \\| '_ \\
+| . \\  __/\\__ \\ |_| | |   <  __/ |   / /|  __/ (_) | | | |
+|_|\\_\\___||___/\\__,_| |_|\\_\\___|_|  /_/  \\___|\\___/|_| |_|
 `,
 
   // Developer information
@@ -33,6 +34,17 @@ export const consoleUtil = {
     email: "Kevin.Zheng@student.uts.edu.au",
     message: "Researching robust learning and trustworthy AI — let’s collaborate! 🚀"
   },
+  researchHighlights: [
+    "🧠 PhD @ UTS focused on trustworthy ML & misinformation detection.",
+    "📚 Reviewer for ICLR · ICML · CVPR · AAAI.",
+    "🧪 Built noisy-label, Bayesian PLL & continual learning frameworks.",
+    "🎓 Teaching COMP5328: Advanced Machine Learning."
+  ],
+  funFacts: [
+    "🔭 Favorite puzzle: making noisy real-world data behave.",
+    "🌏 Survived ETH Zürich winters to study ML theory.",
+    "⚡ Motto: rigorous math, practical impact."
+  ],
 
   // Console styles
   styles: {
@@ -61,6 +73,16 @@ export const consoleUtil = {
     console.log(`%c🌐 Website: ${this.developerInfo.website}`, this.styles.link);
     console.log(`%c📧 Email: ${this.developerInfo.email}`, this.styles.link);
     
+    console.log(`%c\n📌 Research Highlights`, this.styles.info);
+    this.researchHighlights.forEach((line) =>
+      console.log(`%c${line}`, this.styles.info)
+    );
+
+    console.log(`%c\n🎲 Fun Facts`, this.styles.message);
+    this.funFacts.forEach((line) =>
+      console.log(`%c${line}`, this.styles.message)
+    );
+
     // Display message
     console.log(`%c💬 ${this.developerInfo.message}`, this.styles.message);
     
@@ -69,11 +91,12 @@ export const consoleUtil = {
     console.log(`%c• kevinZheng.info() - Show developer info`, this.styles.info);
     console.log(`%c• kevinZheng.links() - Show all links`, this.styles.info);
     console.log(`%c• kevinZheng.ascii() - Show ASCII art again`, this.styles.info);
+    console.log(`%c• kevinZheng.collab() - Ways we can work together`, this.styles.info);
   },
 
   // Interactive commands
   setupCommands() {
-    // Create global wafastarz object
+    // Create global helper object
     window.kevinZheng = {
       info: () => {
         console.log(`%c👨‍💻 Developer Information`, this.styles.title);
@@ -97,7 +120,16 @@ export const consoleUtil = {
       },
       
       heart: () => {
-        console.log(`%c❤️ Made with love and lots of coffee! ☕`, this.styles.heart);
+        console.log(`%c❤️ Fueled by coffee, proofs, and midnight experiments!`, this.styles.heart);
+      },
+
+      collab: () => {
+        console.log(`%c🤝 Collaboration`, this.styles.title);
+        console.log(`%cAvailable for:`, this.styles.info);
+        console.log(`%c• Research partnerships on robust & trustworthy ML`, this.styles.info);
+        console.log(`%c• Technical consulting for data-centric AI teams`, this.styles.info);
+        console.log(`%c• Guest lectures / workshops on advanced ML`, this.styles.info);
+        console.log(`%cSay hi: ${this.developerInfo.email}`, this.styles.link);
       }
     };
   },
