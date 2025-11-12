@@ -11,7 +11,7 @@ import { containerVariants } from "@/lib/animation/variants";
 
 export default function Home() {
   return (
-    <div className="flex flex-col h-screen min-h-screen font-sans pt-2 md:pt-0 lg:py-6 xl:py-0 xl:pb-6 overflow-auto lg:overflow-hidden">
+    <div className="flex flex-col h-screen min-h-screen font-sans pt-2 md:pt-0 lg:py-6 xl:py-0 xl:pb-6 overflow-auto lg:overflow-visible">
       <Navbar />
       <motion.div 
         className="flex flex-col lg:flex-row flex-1 gap-4 pb-4 md:pb-0 lg:h-[calc(100vh-130px)]"
