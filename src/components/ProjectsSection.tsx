@@ -1,11 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { ArrowUpRight, Github, Linkedin, BookOpenCheck } from "lucide-react";
+import { ArrowUpRight, Github, Linkedin } from "lucide-react";
 import { motion } from "motion/react";
 import { cardVariants, projectsVariants, projectItemVariants, socialVariants, textVariants, iconVariants } from "@/lib/animation/variants";
 import { projects } from "@/lib/constants/projects";
 import { socials } from "@/lib/constants/socials";
+import { GoogleScholarIcon, OrcidIcon } from "@/components/icons/AcademicIcons";
 
 export default function ProjectsSection() {
   const [featured, ...others] = projects;
@@ -99,7 +100,17 @@ export default function ProjectsSection() {
           animate="visible"
           whileHover="hover"
         >
-          <BookOpenCheck size={20} />
+          <GoogleScholarIcon className="w-5 h-5" />
+        </motion.a>
+        <motion.a 
+          href={socials.orcid} 
+          className="text-light hover:text-accent transition-colors"
+          variants={socialVariants}
+          initial="hidden"
+          animate="visible"
+          whileHover="hover"
+        >
+          <OrcidIcon className="w-5 h-5" />
         </motion.a>
         <motion.a 
           href={socials.linkedin} 

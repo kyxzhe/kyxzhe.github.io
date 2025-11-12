@@ -9,13 +9,13 @@ import {
   MessageCircle,
   Github,
   Linkedin,
-  BookOpenCheck,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { cardVariants, containerVariants, iconVariants, textVariants } from "@/lib/animation/variants";
 import { contactInfo } from "@/lib/constants/contact";
 import { socials } from "@/lib/constants/socials";
+import { GoogleScholarIcon, OrcidIcon } from "@/components/icons/AcademicIcons";
 
 const availabilitySlots = [
   { label: "Mentoring / Guest talks", time: "Wed 4pm – 6pm AEDT" },
@@ -227,10 +227,11 @@ export default function ContactPage() {
               animate="visible"
             >
               {[
-                { icon: Github, label: "GitHub", href: socials.github },
-                { icon: Linkedin, label: "LinkedIn", href: socials.linkedin },
-                { icon: BookOpenCheck, label: "Google Scholar", href: socials.googleScholar },
-              ].map(({ icon: Icon, label, href }) => (
+                { label: "GitHub", href: socials.github, icon: <Github size={18} /> },
+                { label: "LinkedIn", href: socials.linkedin, icon: <Linkedin size={18} /> },
+                { label: "Google Scholar", href: socials.googleScholar, icon: <GoogleScholarIcon className="w-5 h-5" /> },
+                { label: "ORCID", href: socials.orcid, icon: <OrcidIcon className="w-5 h-5" /> },
+              ].map(({ label, href, icon }) => (
                 <a
                   key={label}
                   href={href}
@@ -238,7 +239,7 @@ export default function ContactPage() {
                   rel="noopener noreferrer"
                   className="flex items-center gap-3 border border-background/30 rounded-[16px] px-4 py-3 hover:bg-background/10 transition-colors"
                 >
-                  <Icon size={18} />
+                  {icon}
                   <span>{label}</span>
                 </a>
               ))}

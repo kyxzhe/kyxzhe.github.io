@@ -1,10 +1,11 @@
 "use client";
 
 import { motion, AnimatePresence } from "motion/react";
-import { X, Mail, Phone, MapPin, Github, Linkedin, BookOpenCheck } from "lucide-react";
+import { X, Mail, Phone, MapPin, Github, Linkedin } from "lucide-react";
 import { modalVariants, backdropVariants, textVariants, iconVariants } from "@/lib/animation/variants";
 import { contactInfo } from "@/lib/constants/contact";
 import { socials } from "@/lib/constants/socials";
+import { GoogleScholarIcon, OrcidIcon } from "@/components/icons/AcademicIcons";
 
 interface ContactModalProps {
   isOpen: boolean;
@@ -154,10 +155,27 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
               <h3 className="text-xl font-medium mb-4 text-center">Connect with me</h3>
               <div className="flex justify-center gap-4">
                 {[
-                  { icon: Github, href: socials.github, label: "GitHub" },
-                  { icon: Linkedin, href: socials.linkedin, label: "LinkedIn" },
-                  { icon: BookOpenCheck, href: socials.googleScholar, label: "Google Scholar" },
-                ].map(({ icon: Icon, href, label }) => (
+                  {
+                    label: "GitHub",
+                    href: socials.github,
+                    icon: <Github size={24} className="text-brand-accent" />,
+                  },
+                  {
+                    label: "LinkedIn",
+                    href: socials.linkedin,
+                    icon: <Linkedin size={24} className="text-brand-accent" />,
+                  },
+                  {
+                    label: "Google Scholar",
+                    href: socials.googleScholar,
+                    icon: <GoogleScholarIcon className="w-6 h-6" />,
+                  },
+                  {
+                    label: "ORCID",
+                    href: socials.orcid,
+                    icon: <OrcidIcon className="w-6 h-6" />,
+                  },
+                ].map(({ icon, href, label }) => (
                   <motion.a
                     key={label}
                     href={href}
@@ -169,7 +187,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                     animate="visible"
                     whileHover="hover"
                   >
-                    <Icon size={24} className="text-brand-accent" />
+                    {icon}
                   </motion.a>
                 ))}
               </div>
