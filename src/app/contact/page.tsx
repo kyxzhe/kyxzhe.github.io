@@ -1,0 +1,252 @@
+"use client";
+
+import { motion } from "motion/react";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Clock,
+  MessageCircle,
+  Github,
+  Linkedin,
+  Twitter,
+} from "lucide-react";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { cardVariants, containerVariants, iconVariants, textVariants } from "@/lib/animation/variants";
+import { contactInfo } from "@/lib/constants/contact";
+import { socials } from "@/lib/constants/socials";
+
+const availabilitySlots = [
+  { label: "Mentoring / Guest talks", time: "Wed 4pm – 6pm AEDT" },
+  { label: "Research syncs", time: "Thu 10am – 12pm AEDT" },
+  { label: "Consulting office hours", time: "Fri 2pm – 5pm AEDT" },
+];
+
+export default function ContactPage() {
+  return (
+    <div className="flex flex-col min-h-screen font-sans pt-2 md:pt-0 lg:py-6 xl:py-0 xl:pb-6 overflow-auto lg:overflow-hidden">
+      <Navbar />
+      <motion.main
+        className="flex-1 flex flex-col gap-4 px-2 md:px-4 lg:px-6 pb-6"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <motion.div
+            className="bg-card rounded-[20px] p-6 flex flex-col gap-6"
+            variants={cardVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <motion.p
+              className="uppercase tracking-[0.3em] text-xs text-muted-foreground"
+              variants={textVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              Contact
+            </motion.p>
+            <motion.h1
+              className="text-3xl md:text-4xl font-semibold leading-tight"
+              variants={textVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              Let&apos;s collaborate on trustworthy machine learning.
+            </motion.h1>
+            <motion.p
+              className="text-base md:text-lg text-foreground/80"
+              variants={textVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              Whether you&apos;re exploring misinformation detection, data-centric
+              pipelines, or looking for a speaker, feel free to reach out.
+            </motion.p>
+            <motion.div
+              className="grid grid-cols-1 sm:grid-cols-2 gap-3"
+              variants={textVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              {[
+                {
+                  icon: Mail,
+                  label: "Email",
+                  value: contactInfo.email,
+                  link: `mailto:${contactInfo.email}`,
+                },
+                {
+                  icon: Phone,
+                  label: "Phone",
+                  value: contactInfo.phone,
+                  link: `tel:${contactInfo.phoneRaw}`,
+                },
+                {
+                  icon: MapPin,
+                  label: "Location",
+                  value: contactInfo.location,
+                },
+                {
+                  icon: Clock,
+                  label: "Availability",
+                  value: contactInfo.availability,
+                },
+              ].map(({ icon: Icon, label, value, link }) => (
+                <motion.a
+                  key={label}
+                  className="rounded-[16px] border border-border bg-background/40 px-4 py-4 flex flex-col gap-1"
+                  variants={iconVariants}
+                  initial="hidden"
+                  animate="visible"
+                  whileHover={{ scale: link ? 1.02 : 1 }}
+                  href={link}
+                >
+                  <div className="flex items-center gap-2 text-sm uppercase tracking-[0.25em] text-muted-foreground">
+                    <Icon size={16} />
+                    <span>{label}</span>
+                  </div>
+                  <p className="text-lg font-medium text-foreground/90">{value}</p>
+                </motion.a>
+              ))}
+            </motion.div>
+          </motion.div>
+
+          <motion.div
+            className="bg-foreground text-background rounded-[20px] p-6 flex flex-col gap-4"
+            variants={cardVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <motion.h2
+              className="text-2xl font-semibold"
+              variants={textVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              Office hours
+            </motion.h2>
+            <motion.ul
+              className="flex flex-col gap-3 text-background/80"
+              variants={textVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              {availabilitySlots.map((slot) => (
+                <li
+                  key={slot.label}
+                  className="rounded-[16px] border border-background/30 px-4 py-3"
+                >
+                  <p className="text-xs uppercase tracking-[0.3em] text-background/60">
+                    {slot.label}
+                  </p>
+                  <p className="text-lg font-medium">{slot.time}</p>
+                </li>
+              ))}
+            </motion.ul>
+            <motion.div
+              className="mt-2 rounded-[16px] border border-background/30 px-4 py-4 flex gap-3 items-center"
+              variants={iconVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              <MessageCircle size={20} />
+              <p className="text-sm">
+                For urgent collaborations, mention the topic in the email subject
+                line for quick triage.
+              </p>
+            </motion.div>
+          </motion.div>
+        </section>
+
+        <section className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <motion.div
+            className="bg-card rounded-[20px] p-6 flex flex-col gap-4 lg:col-span-2"
+            variants={cardVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <motion.h2
+              className="text-2xl font-semibold"
+              variants={textVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              Project & research enquiries
+            </motion.h2>
+            <motion.p
+              className="text-foreground/80 text-sm"
+              variants={textVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              Provide a short brief covering goals, timeline, collaborators, and
+              technical constraints. I typically respond within 48 hours.
+            </motion.p>
+            <motion.ul
+              className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-foreground/80"
+              variants={textVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              <li className="rounded-[16px] border border-border px-4 py-3 bg-background/40">
+                • Data integrity audits & noisy-label pipelines
+              </li>
+              <li className="rounded-[16px] border border-border px-4 py-3 bg-background/40">
+                • Trust & safety assessments for LLM deployments
+              </li>
+              <li className="rounded-[16px] border border-border px-4 py-3 bg-background/40">
+                • Research mentorship & reading groups
+              </li>
+              <li className="rounded-[16px] border border-border px-4 py-3 bg-background/40">
+                • Talks/workshops on data-centric AI
+              </li>
+            </motion.ul>
+          </motion.div>
+
+          <motion.div
+            className="bg-foreground text-background rounded-[20px] p-6 flex flex-col gap-4"
+            variants={cardVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <motion.h3
+              className="text-xl font-semibold"
+              variants={textVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              Social channels
+            </motion.h3>
+            <motion.div
+              className="flex flex-col gap-3"
+              variants={iconVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              {[
+                { icon: Github, label: "GitHub", href: socials.github },
+                { icon: Linkedin, label: "LinkedIn", href: socials.linkedin },
+                { icon: Twitter, label: "Twitter", href: socials.twitter },
+              ].map(({ icon: Icon, label, href }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 border border-background/30 rounded-[16px] px-4 py-3 hover:bg-background/10 transition-colors"
+                >
+                  <Icon size={18} />
+                  <span>{label}</span>
+                </a>
+              ))}
+            </motion.div>
+          </motion.div>
+        </section>
+      </motion.main>
+      <Footer className="mb-4" />
+    </div>
+  );
+}

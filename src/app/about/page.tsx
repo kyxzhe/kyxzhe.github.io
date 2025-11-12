@@ -4,7 +4,6 @@ import Link from "next/link";
 import { motion } from "motion/react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import PersonImageSection from "@/components/PersonImageSection";
 import { aboutDescription } from "@/lib/constants/siteContent";
 import { contactInfo } from "@/lib/constants/contact";
 import {
@@ -62,9 +61,9 @@ export default function AboutPage() {
         initial="hidden"
         animate="visible"
       >
-        <section className="flex flex-col lg:flex-row gap-4">
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <motion.div
-            className="bg-card rounded-[20px] p-6 flex-1 flex flex-col justify-between"
+            className="bg-card rounded-[20px] p-6 flex flex-col gap-6"
             variants={cardVariants}
             initial="hidden"
             animate="visible"
@@ -97,7 +96,7 @@ export default function AboutPage() {
               </motion.p>
             </div>
             <motion.ul
-              className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-2"
+              className="grid grid-cols-1 sm:grid-cols-2 gap-2"
               variants={textVariants}
               initial="hidden"
               animate="visible"
@@ -105,16 +104,65 @@ export default function AboutPage() {
               {researchFocus.map((item) => (
                 <li
                   key={item}
-                  className="text-sm bg-background/60 rounded-full px-3 py-2 text-foreground/80 border border-background/20"
+                  className="text-sm bg-background/60 rounded-[16px] px-3 py-2 text-foreground/80 border border-background/20"
                 >
                   {item}
                 </li>
               ))}
             </motion.ul>
           </motion.div>
-          <div className="w-full lg:w-[35%]">
-            <PersonImageSection />
-          </div>
+
+          <motion.div
+            className="bg-foreground text-background rounded-[20px] p-6 flex flex-col justify-between"
+            variants={cardVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <div>
+              <motion.p
+                className="text-xs uppercase tracking-[0.3em] text-background/50 mb-2"
+                variants={textVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                Snapshot
+              </motion.p>
+              <motion.h2
+                className="text-2xl font-semibold mb-4"
+                variants={textVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                Researcher · Lecturer · Collaborator
+              </motion.h2>
+              <motion.ul
+                className="flex flex-col gap-3 text-sm text-background/80"
+                variants={textVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                <li>📍 Based in Sydney, Australia</li>
+                <li>🏛 Trustworthy Machine Learning Lab (UTS)</li>
+                <li>🧑‍🏫 COMP5328 Advanced ML teaching team</li>
+                <li>📰 Focus on robust learning & misinformation</li>
+              </motion.ul>
+            </div>
+            <motion.div
+              className="mt-6 grid grid-cols-2 gap-3"
+              variants={iconVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              <div className="bg-background/10 rounded-[16px] p-4 text-center">
+                <p className="text-3xl font-semibold">15+</p>
+                <p className="text-xs uppercase tracking-[0.3em]">Talks</p>
+              </div>
+              <div className="bg-background/10 rounded-[16px] p-4 text-center">
+                <p className="text-3xl font-semibold">8</p>
+                <p className="text-xs uppercase tracking-[0.3em]">Papers</p>
+              </div>
+            </motion.div>
+          </motion.div>
         </section>
 
         <section className="grid grid-cols-1 lg:grid-cols-3 gap-4">

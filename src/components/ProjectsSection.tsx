@@ -8,6 +8,7 @@ import { projects } from "@/lib/constants/projects";
 import { socials } from "@/lib/constants/socials";
 
 export default function ProjectsSection() {
+  const [featured, ...others] = projects;
   return (
     <div id="projects" className="flex flex-col w-full lg:w-[30%] gap-4 md:justify-between lg:mb-6 overflow-x-hidden">
       {/* === CARD 3: Projects List === */}
@@ -19,14 +20,14 @@ export default function ProjectsSection() {
         whileHover="hover"
       >
         <div className="flex justify-between items-center mb-4">
-          <motion.h2 
-            className="text-xl md:text-2xl font-medium"
+          <motion.div 
             variants={textVariants}
             initial="hidden"
             animate="visible"
           >
-            {projects[0].name}
-          </motion.h2>
+            <p className="text-xs uppercase tracking-[0.3em] text-foreground/60">Latest Publications</p>
+            <h2 className="text-xl md:text-2xl font-medium">{featured.name}</h2>
+          </motion.div>
           <motion.div
             variants={iconVariants}
             initial="hidden"
@@ -43,8 +44,8 @@ export default function ProjectsSection() {
           animate="visible"
         >
           <Image
-            src={projects[0].imgSrc}
-            alt={`${projects[0].name} Project Showcase`}
+            src={featured.imgSrc}
+            alt={`${featured.name} visual`}
             width={300}
             height={170}
             priority
@@ -57,7 +58,7 @@ export default function ProjectsSection() {
           initial="hidden"
           animate="visible"
         >
-          {projects.slice(1).map((project) => (
+          {others.map((project) => (
             <motion.div 
               key={project.name}
               variants={projectItemVariants}
