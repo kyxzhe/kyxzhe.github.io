@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "motion/react";
-import { heroVariants, textVariants, iconVariants } from "@/lib/animation/variants";
+import { heroVariants, textVariants, heroIconVariants } from "@/lib/animation/variants";
 import { heroContent } from "@/lib/constants/siteContent";
 
 export default function HeroSection() {
@@ -16,7 +16,7 @@ export default function HeroSection() {
       whileHover="hover"
     >
       <motion.div
-        variants={iconVariants}
+        variants={heroIconVariants}
         initial="hidden"
         animate="visible"
         whileHover="hover"
