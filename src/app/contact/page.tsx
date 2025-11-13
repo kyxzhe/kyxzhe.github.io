@@ -109,7 +109,7 @@ export default function ContactPage() {
           </motion.div>
 
           <motion.div
-            className="glass-panel text-foreground p-6 flex flex-col gap-4"
+            className="surface-card p-6 flex flex-col gap-4"
             variants={cardVariants}
             initial="hidden"
             animate="visible"
@@ -192,7 +192,7 @@ export default function ContactPage() {
           </motion.div>
 
           <motion.div
-            className="glass-panel text-foreground p-6 flex flex-col gap-4"
+            className="surface-card p-6 flex flex-col gap-4"
             variants={cardVariants}
             initial="hidden"
             animate="visible"

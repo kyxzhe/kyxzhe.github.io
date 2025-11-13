@@ -57,7 +57,7 @@ export default function PublicationsPage() {
             </motion.p>
           </motion.div>
           <motion.div
-            className="glass-panel text-foreground p-6 flex flex-col gap-4"
+            className="surface-card p-6 flex flex-col gap-4"
             variants={cardVariants}
             initial="hidden"
             animate="visible"
@@ -81,7 +81,7 @@ export default function PublicationsPage() {
 
         <section className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           <motion.div
-            className="glass-panel text-foreground p-6 flex flex-col gap-4"
+            className="surface-card p-6 flex flex-col gap-4"
             variants={cardVariants}
             initial="hidden"
             animate="visible"
