@@ -63,7 +63,7 @@ export default function AboutPage() {
       >
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <motion.div
-            className="bg-card rounded-[20px] p-6 flex flex-col gap-6"
+            className="surface-card p-6 flex flex-col gap-6"
             variants={cardVariants}
             initial="hidden"
             animate="visible"
@@ -273,7 +273,7 @@ export default function AboutPage() {
             >
               <Link
                 href={`mailto:${contactInfo.email}`}
-                className="bg-background text-foreground rounded-full px-4 py-3 text-center font-medium hover:bg-background/80 transition-colors"
+                className="btn-primary inline-flex justify-center"
               >
                 Email Kevin
               </Link>
