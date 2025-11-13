@@ -154,7 +154,7 @@ export default function ChatBotModal({ open, onClose }: ChatBotModalProps) {
                 type="button"
                 onClick={handleSend}
                 disabled={!canSend}
-                className="btn-primary w-11 h-11 rounded-full flex items-center justify-center disabled:opacity-50"
+                className="h-11 w-11 rounded-full bg-[var(--accent)] text-white flex items-center justify-center disabled:opacity-50 disabled:bg-[var(--accent-soft)] transition-opacity"
                 aria-label="Send message"
               >
                 {isLoading ? <Loader2 size={16} className="animate-spin" /> : <ArrowUp size={16} />}
