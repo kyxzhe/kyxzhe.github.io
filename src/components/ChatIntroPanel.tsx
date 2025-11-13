@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
-import { AlertTriangle, Loader2, Send, Sparkles } from "lucide-react";
+import { AlertTriangle, ArrowUp, Loader2, Sparkles } from "lucide-react";
 import { cardVariants } from "@/lib/animation/variants";
 import { type ChatMessage, sendChatRequest } from "@/lib/api/chat";
 
@@ -132,10 +132,10 @@ export default function ChatIntroPanel() {
                 type="button"
                 onClick={handleSend}
                 disabled={!canSend}
-                className="btn-primary inline-flex items-center gap-2 px-4 py-2 disabled:opacity-50"
+                className="btn-primary w-10 h-10 rounded-full flex items-center justify-center disabled:opacity-50"
+                aria-label="Send message"
               >
-                {isLoading ? <Loader2 size={14} className="animate-spin" /> : <Send size={14} />}
-                {isLoading ? "Thinking" : "Send"}
+                {isLoading ? <Loader2 size={14} className="animate-spin" /> : <ArrowUp size={14} />}
               </button>
             </div>
             <p className="text-xs text-muted-foreground text-center mt-2">

@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { AlertTriangle, Loader2, MessagesSquare, Send, Sparkles, X } from "lucide-react";
+import { AlertTriangle, ArrowUp, Loader2, MessagesSquare, Sparkles, X } from "lucide-react";
 import { type ChatMessage, sendChatRequest } from "@/lib/api/chat";
 
 interface ChatBotModalProps {
@@ -154,19 +154,10 @@ export default function ChatBotModal({ open, onClose }: ChatBotModalProps) {
                 type="button"
                 onClick={handleSend}
                 disabled={!canSend}
-                className="btn-primary inline-flex items-center gap-2 px-4 disabled:opacity-50"
+                className="btn-primary w-11 h-11 rounded-full flex items-center justify-center disabled:opacity-50"
+                aria-label="Send message"
               >
-                {isLoading ? (
-                  <>
-                    <Loader2 size={16} className="animate-spin" />
-                    Thinking
-                  </>
-                ) : (
-                  <>
-                    <Send size={16} />
-                    Send
-                  </>
-                )}
+                {isLoading ? <Loader2 size={16} className="animate-spin" /> : <ArrowUp size={16} />}
               </button>
             </div>
           </motion.div>
