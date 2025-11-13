@@ -192,7 +192,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
           }}
         >
           <motion.div
-            className="glass-panel rounded-[20px] p-6 md:p-8 lg:p-12 border border-accent/30 w-full max-w-4xl max-h-[90vh] overflow-y-auto relative"
+            className="surface-card p-6 md:p-8 lg:p-12 w-full max-w-4xl max-h-[90vh] overflow-y-auto relative"
             variants={modalVariants}
             initial="hidden"
             animate="visible"
