@@ -112,7 +112,14 @@ export default function ProjectsSection() {
           animate="visible"
           whileHover="hover"
         >
-          <GoogleScholarIcon className="w-5 h-5" />
+          <Image
+            src="/icons/google-scholar-white.svg"
+            alt="Google Scholar"
+            width={20}
+            height={20}
+            className="w-5 h-5"
+            priority={false}
+          />
         </motion.a>
         <motion.a 
           href={socials.orcid} 
