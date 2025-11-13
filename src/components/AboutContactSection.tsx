@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { motion } from "motion/react";
@@ -21,12 +22,26 @@ export default function AboutContactSection() {
   return (
     <div id="contact" className="flex flex-row gap-1 md:gap-4 md:h-[40%] min-h-[200px] md:min-h-0">
       <motion.div 
-        className="w-[50%] surface-card text-foreground flex flex-col items-start justify-between p-3 md:p-6"
+        className="w-[50%] surface-card text-foreground flex flex-col items-start justify-between p-3 md:p-6 gap-4"
         variants={cardVariants}
         initial="hidden"
         animate="visible"
         whileHover="hover"
       >
+        <motion.div
+          variants={iconVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <Image
+            src="/svgs/Vector.svg"
+            alt="Monogram icon"
+            width={120}
+            height={120}
+            className="w-10 md:w-16 lg:w-20"
+            priority
+          />
+        </motion.div>
         <motion.p 
           className="text-sm md:text-xl lg:text-lg xl:text-xl 2xl:text-2xl"
           variants={textVariants}
