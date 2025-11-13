@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
 import { AlertTriangle, Loader2, Send, Sparkles } from "lucide-react";
 import { cardVariants } from "@/lib/animation/variants";
@@ -48,7 +48,13 @@ export default function ChatIntroPanel() {
     }
   };
 
-  const latestMessages = useMemo(() => messages.slice(-6), [messages]);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
+    }
+  }, [messages]);
 
   return (
     <motion.div
@@ -61,7 +67,7 @@ export default function ChatIntroPanel() {
       <div className="absolute inset-0 pointer-events-none opacity-60" style={{
         background: "radial-gradient(circle at 20% 20%, rgba(232,206,194,0.25), transparent 50%), radial-gradient(circle at 80% 0%, rgba(102,156,70,0.25), transparent 45%)"
       }} />
-      <div className="relative flex flex-col gap-4 min-h-[320px]">
+      <div className="relative flex h-[360px] flex-col gap-4">
         <motion.div
           className="flex items-center justify-between"
           initial={{ opacity: 0, y: 10 }}
@@ -78,8 +84,8 @@ export default function ChatIntroPanel() {
             Online
           </div>
         </motion.div>
-        <div className="flex-1 space-y-2 text-sm overflow-y-auto pr-1">
-          {latestMessages.map((msg, idx) => (
+        <div ref={scrollRef} className="flex-1 space-y-2 text-sm overflow-y-auto pr-1">
+          {messages.map((msg, idx) => (
             <div
               key={`${msg.role}-${idx}-${msg.content.slice(0, 8)}`}
               className={`rounded-2xl px-4 py-2 ${
@@ -101,7 +107,7 @@ export default function ChatIntroPanel() {
             </div>
           )}
         </div>
-        <div className="mt-auto flex flex-col gap-2 pt-3 border-t border-[var(--card-border)]">
+        <div className="flex flex-col gap-2 pt-3 border-t border-[var(--card-border)]">
           <div className="flex gap-2">
             <input
               ref={inputRef}
