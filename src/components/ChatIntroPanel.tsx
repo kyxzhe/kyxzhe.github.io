@@ -67,7 +67,7 @@ export default function ChatIntroPanel() {
       <div className="absolute inset-0 pointer-events-none opacity-60" style={{
         background: "radial-gradient(circle at 20% 20%, rgba(232,206,194,0.25), transparent 50%), radial-gradient(circle at 80% 0%, rgba(102,156,70,0.25), transparent 45%)"
       }} />
-      <div className="relative flex flex-col gap-4 min-h-[360px]">
+      <div className="relative flex flex-col gap-4 min-h-[360px] h-full">
         <motion.div
           className="flex items-center justify-between"
           initial={{ opacity: 0, y: 10 }}
