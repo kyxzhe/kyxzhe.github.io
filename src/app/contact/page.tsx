@@ -222,7 +222,7 @@ export default function ContactPage() {
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="card-row hoverable justify-between"
+                  className="card-row hoverable gap-3"
                 >
                   {icon}
                   <span>{label}</span>
