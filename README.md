@@ -15,7 +15,7 @@ pnpm run build  # generates out/ for Pages
 
 - Hero/About copy: `src/lib/constants/siteContent.ts`
 - Contact & socials: `src/lib/constants/contact.ts`, `src/lib/constants/socials.ts`
-- Publication cards: `src/lib/constants/projects.ts`
+- Publication cards: `src/lib/constants/publications.ts`
 - Console easter egg: `src/lib/utils/consoleUtil.ts`
 
 Everything else is standard Next.js plumbing (App Router under `src/app`, components in `src/components`). No fancy CMS—just edit the files and push to `main`. GitHub Actions (`.github/workflows/deploy.yml`) handles the export + Pages deployment.
