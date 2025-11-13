@@ -133,7 +133,7 @@ export default function ContactPage() {
               the modal includes all upcoming availability, so this section stays clutter-free.
             </motion.p>
             <motion.div
-              className="surface-card-dark px-4 py-4 flex gap-3 items-center text-white/90"
+              className="surface-card px-4 py-4 flex gap-3 items-center text-muted-foreground dark:bg-[#101016] dark:text-white/90"
               variants={iconVariants}
               initial="hidden"
               animate="visible"
