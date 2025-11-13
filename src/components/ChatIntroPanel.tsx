@@ -38,10 +38,10 @@ export default function ChatIntroPanel() {
         background: "radial-gradient(circle at 20% 20%, rgba(232,206,194,0.25), transparent 50%), radial-gradient(circle at 80% 0%, rgba(102,156,70,0.25), transparent 45%)"
       }} />
       <div className="relative flex flex-col gap-4">
-      <motion.div
-        className="flex items-center justify-between"
-        variants={textVariants}
-        initial="hidden"
+        <motion.div
+          className="flex items-center justify-between"
+          variants={textVariants}
+          initial="hidden"
         animate="visible"
       >
         <div className="flex items-center gap-2">
