@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { motion } from "motion/react";
 import { MessageCircle, Sparkles, Send } from "lucide-react";
 import { cardVariants, textVariants } from "@/lib/animation/variants";
@@ -90,13 +89,13 @@ export default function ChatIntroPanel() {
         initial="hidden"
         animate="visible"
       >
-        <Link
-          href="#contact"
-          className="inline-flex items-center justify-center gap-2 rounded-full bg-foreground text-background py-3 text-sm font-semibold transition hover:bg-foreground/80"
+        <button
+          type="button"
+          className="inline-flex items-center justify-center gap-2 rounded-full bg-foreground text-background py-3 text-sm font-semibold cursor-default"
         >
           <Send size={16} />
           Say hi or book a chat
-        </Link>
+        </button>
         <p className="text-xs text-muted-foreground">
           I’m a PhD student at UTS working with Dr. Marian-Andrei Rizoiu in the Behavioral Data Science Lab.
           The chatbot will share stories about research, photography, and the best flat whites in Sydney soon.

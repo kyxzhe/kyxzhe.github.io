@@ -4,12 +4,12 @@ import Image from "next/image";
 import { ArrowUpRight, Github, Linkedin } from "lucide-react";
 import { motion } from "motion/react";
 import { cardVariants, projectsVariants, projectItemVariants, socialVariants, textVariants, iconVariants } from "@/lib/animation/variants";
-import { projects } from "@/lib/constants/projects";
+import { newsItems } from "@/lib/constants/news";
 import { socials } from "@/lib/constants/socials";
 import { GoogleScholarIcon, OrcidIcon } from "@/components/icons/AcademicIcons";
 
 export default function ProjectsSection() {
-  const [featured, ...others] = projects;
+  const [headline, ...others] = newsItems;
   return (
     <div id="projects" className="flex flex-col w-full lg:w-[30%] gap-4 md:justify-between lg:mb-6 overflow-visible">
       {/* === CARD 3: Projects List === */}
@@ -26,8 +26,9 @@ export default function ProjectsSection() {
             initial="hidden"
             animate="visible"
           >
-            <p className="text-xs uppercase tracking-[0.3em] text-foreground/60">Latest Publications</p>
-            <h2 className="text-xl md:text-2xl font-medium">{featured.name}</h2>
+            <p className="text-xs uppercase tracking-[0.3em] text-foreground/60">Lab News</p>
+            <h2 className="text-xl md:text-2xl font-medium">{headline.title}</h2>
+            <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">{headline.date}</p>
           </motion.div>
           <motion.div
             variants={iconVariants}
@@ -45,8 +46,8 @@ export default function ProjectsSection() {
           animate="visible"
         >
           <Image
-            src={featured.imgSrc}
-            alt={`${featured.name} visual`}
+            src={headline.cover}
+            alt={`${headline.title} visual`}
             width={300}
             height={170}
             priority
@@ -59,17 +60,28 @@ export default function ProjectsSection() {
           initial="hidden"
           animate="visible"
         >
-          {others.map((project) => (
-            <motion.div 
-              key={project.name}
-              variants={projectItemVariants}
-              whileHover="hover"
+          <p className="text-sm text-muted-foreground mb-4">{headline.summary}</p>
+          <div className="flex items-center justify-between text-sm mb-4">
+            <a
+              href={headline.link ?? "/news"}
+              className="inline-flex items-center gap-2 text-brand-accent hover:underline"
             >
+              Read more <ArrowUpRight size={16} />
+            </a>
+            <span className="text-foreground/60 uppercase tracking-[0.2em] text-xs">Latest</span>
+          </div>
+
+          {others.map((item) => (
+            <motion.div key={item.title} variants={projectItemVariants} whileHover="hover">
               <hr className="border-0 h-[1px] bg-accent" />
-              <div className="flex justify-between items-center group cursor-pointer p-2 md:p-4">
-                <span className="text-lg md:text-xl">{project.name}</span>
+              <div className="flex justify-between items-start group cursor-pointer p-3 md:p-4">
+                <div className="flex flex-col">
+                  <span className="text-xs uppercase tracking-[0.3em] text-foreground/40">{item.date}</span>
+                  <span className="text-lg md:text-xl">{item.title}</span>
+                  <p className="text-sm text-foreground/60 max-w-[220px]">{item.summary}</p>
+                </div>
                 <div className="flex items-center">
-                  <Image src={project.imgSrc} alt={project.name} width={60} height={36} loading="lazy" quality={80} className="md:w-[100px] md:h-[68px] lg:w-[80px] lg:h-[48px] rounded-lg object-cover" />
+                  <Image src={item.cover} alt={item.title} width={60} height={36} loading="lazy" quality={80} className="md:w-[100px] md:h-[68px] lg:w-[80px] lg:h-[48px] rounded-lg object-cover" />
                 </div>
               </div>
             </motion.div>
