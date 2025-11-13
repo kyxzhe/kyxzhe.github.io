@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "motion/react";
-import { AlertTriangle, Loader2, MessageCircle, Send, Sparkles } from "lucide-react";
+import { AlertTriangle, Loader2, Send, Sparkles } from "lucide-react";
 import { cardVariants, textVariants } from "@/lib/animation/variants";
 import { type ChatMessage, sendChatRequest } from "@/lib/api/chat";
 
@@ -83,15 +83,8 @@ export default function ChatIntroPanel() {
         </div>
       </motion.div>
 
-      <div className="surface-card p-4 flex flex-col gap-3 min-h-[240px] overflow-hidden relative">
-        <div className="flex items-center justify-between text-sm text-muted-foreground">
-          <span className="inline-flex items-center gap-2">
-            <MessageCircle size={16} />
-            Live beta
-          </span>
-          <span className="text-xs uppercase tracking-[0.3em] text-foreground/50">Cloudflare AI</span>
-        </div>
-        <div className="space-y-2 text-sm max-h-[160px] overflow-y-auto pr-1">
+      <div className="p-0 flex flex-col gap-3 min-h-[240px] overflow-hidden relative">
+        <div className="space-y-2 text-sm max-h-[200px] overflow-y-auto pr-1">
           {latestMessages.map((msg, idx) => (
             <div
               key={`${msg.role}-${idx}-${msg.content.slice(0, 8)}`}
@@ -155,7 +148,7 @@ export default function ChatIntroPanel() {
       </motion.div>
 
       <p className="text-xs text-muted-foreground">
-        Powered by Cloudflare Workers AI · responses are contextual references, not formal advice.
+        Chatbot can make mistakes. Check important info.
       </p>
       </div>
     </motion.div>
