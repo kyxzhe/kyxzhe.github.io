@@ -419,22 +419,33 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                         </div>
                       </div>
                       <div className="flex flex-wrap gap-2">
-                        {visibleDays.map((day) => (
-                          <button
-                            key={day.dateISO}
-                            onClick={() => {
-                              setSelectedDate(day.dateISO);
-                              setSelectedSlotId(null);
-                            }}
-                            className={`chip text-sm ${
-                              selectedDate === day.dateISO
-                                ? "bg-[var(--accent)] text-white border-[var(--accent)]"
-                                : "hover:bg-[var(--accent-soft)]"
-                            }`}
-                          >
-                            {day.displayLabel}
-                          </button>
-                        ))}
+                        {visibleDays.map((day) => {
+                          const isActive = selectedDate === day.dateISO;
+                          return (
+                            <button
+                              key={day.dateISO}
+                              onClick={() => {
+                                setSelectedDate(day.dateISO);
+                                setSelectedSlotId(null);
+                              }}
+                              aria-pressed={isActive}
+                              className={`chip text-sm transition-colors ${
+                                isActive
+                                  ? "bg-[var(--accent)] text-white border-[var(--accent)] shadow-[0_10px_25px_rgba(0,102,204,0.25)]"
+                                  : "hover:bg-[var(--accent-soft)]"
+                              }`}
+                            >
+                              <span className="flex items-center gap-2">
+                                {day.displayLabel}
+                                {isActive && (
+                                  <span className="text-[0.65rem] uppercase tracking-[0.2em] opacity-80">
+                                    ✓
+                                  </span>
+                                )}
+                              </span>
+                            </button>
+                          );
+                        })}
                       </div>
                     </div>
 
