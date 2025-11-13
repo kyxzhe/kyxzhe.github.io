@@ -8,32 +8,32 @@ export type NewsItem = {
 
 export const newsItems: NewsItem[] = [
   {
-    title: "Self-Paced Noisy Label Learning accepted to NeurIPS workshop",
-    date: "Dec 2024",
+    title: "Tracing election misinformation cascades on X",
+    date: "Jan 2025",
     summary:
-      "Wrapping up experiments on generative filtering for noisy labels and preparing the public release of code + write-up.",
-    link: "https://github.com/KevinCarpricorn/NeurIPS2024",
+      "Probing how ranking tweaks reshape the reach of rumours during the recent election cycle, complete with diffusion stats and intervention simulations.",
+    link: "https://github.com/kyxzhe/misinfo-diffusion-notes",
     cover: "/projects/work-1.jpg",
   },
   {
-    title: "Launching the Trustworthy AI + Misinformation reading group",
+    title: "Releasing multimodal traces across Reddit, YouTube, and X",
     date: "Nov 2024",
     summary:
-      "Bi-weekly sessions with Behavioral Data Science Lab and friends—reach out if you’d like to join or present.",
+      "Cleaning and aligning text, video, and network signals so students can study cross-platform narratives without reinventing the pipeline each time.",
     cover: "/projects/work-2.jpg",
   },
   {
-    title: "Guest lecture: COMP5328 Advanced Machine Learning",
+    title: "Teaching messier ML labs at the University of Sydney",
     date: "Oct 2024",
     summary:
-      "Walked through scaling LLMs and practical tooling for data-centric evaluation with a room full of curious students.",
+      "Piloted new assignments that bridge diffusion modelling, causal reasoning, and responsible deployment for COMP5328 and data science cohorts.",
     cover: "/projects/work-3.jpg",
   },
   {
-    title: "Field notes: film photography + coffee crawl in Tokyo",
+    title: "Field notes: film cameras, cafes, and archery resets",
     date: "Sep 2024",
     summary:
-      "Documenting urban motion on Portra 400 and mapping cafe recommendations—will share highlights via the future chatbot.",
+      "Documenting how slowing down with photography, coffee walks, and occasional archery practice feeds back into long-horizon research thinking.",
     cover: "/projects/work-4.jpg",
   },
 ];

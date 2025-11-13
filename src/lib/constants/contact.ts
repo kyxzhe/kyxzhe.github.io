@@ -3,5 +3,5 @@ export const contactInfo = {
   phone: "+61 416 276 898",
   phoneRaw: "+61416276898",
   location: "Sydney, Australia",
-  availability: "Open to research collaborations & ML consulting",
+  availability: "Best via email · open to info diffusion & robust ML collaborations",
 };

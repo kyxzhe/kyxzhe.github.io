@@ -15,40 +15,40 @@ import {
 
 const timeline = [
   {
-    title: "PhD — Trustworthy Machine Learning",
+    title: "PhD — Behavioural Data Science Lab",
     org: "University of Technology Sydney",
     period: "2025 – Present",
     detail:
-      "Researching misinformation detection, robust learning, and generalisation theory with Trustworthy ML Lab.",
+      "Studying information diffusion, algorithmic interventions, and robust learning with Marian-Andrei Rizoiu.",
   },
   {
-    title: "B.Adv. Computing (Honours) & B.Sc.",
+    title: "B.Adv. Computing (Honours) + B.Sc.",
     org: "The University of Sydney",
-    period: "2021 – 2025",
+    period: "2021 – 2024",
     detail:
-      "Double degree in Computational Data Science & Mathematics. Dalyell Scholar, University Medal.",
+      "Honours thesis on noisy-label and generative models, graduating with a University Medal and a love for messy datasets.",
   },
   {
-    title: "Worldwide Exchange Programme",
-    org: "ETH Zürich",
-    period: "2023 – 2024",
+    title: "Exchange & vision research sprints",
+    org: "ETH Zürich · USYD CV labs",
+    period: "2022 – 2023",
     detail:
-      "Focused on mathematical foundations for machine learning theory during semester abroad.",
+      "Explored video action recognition and temporal representation learning—foundations for multi-modal diffusion work.",
   },
 ];
 
 const researchFocus = [
-  "Noisy label learning & reliability audits",
-  "Semi/partial-label and continual learning systems",
-  "Large-scale misinformation & content integrity",
-  "Interpretable optimisation + statistical learning theory",
+  "Information diffusion & narrative evolution",
+  "Robust ML under noisy or biased supervision",
+  "Temporal + graph representations for social data",
+  "Evaluation of ranking and moderation interventions",
 ];
 
 const contributions = [
-  "Reviewer: ICLR · ICML · CVPR · AAAI · ACMMM",
-  "Lecturer/tutor for COMP5328 Advanced ML",
-  "Built PyTorch research pipelines end-to-end",
-  "Led NeurIPS-style independent research projects",
+  "Designing messy-data assignments for DS + ML courses",
+  "Facilitating diffusion + trustworthy ML reading groups",
+  "Mentoring honours students on social data pipelines",
+  "Collaborating with teams on ranking/red-teaming audits",
 ];
 
 export default function AboutPage() {
@@ -84,7 +84,7 @@ export default function AboutPage() {
                 initial="hidden"
                 animate="visible"
               >
-                Building trustworthy AI systems grounded in theory and real-world impact.
+                Understanding how information spreads and how to keep our models honest while it does.
               </motion.h1>
               <motion.p
                 className="text-base md:text-lg text-foreground/80"
@@ -92,7 +92,7 @@ export default function AboutPage() {
                 initial="hidden"
                 animate="visible"
               >
-                {aboutDescription}
+                {aboutDescription} I approach projects slowly and iteratively—mapping links between diffusion, causal inference, and robust learning before narrowing to questions that feel principled and practical.
               </motion.p>
             </div>
             <motion.ul
@@ -128,23 +128,23 @@ export default function AboutPage() {
                 Snapshot
               </motion.p>
               <motion.h2
-                className="text-2xl font-semibold mb-4"
-                variants={textVariants}
-                initial="hidden"
-                animate="visible"
-              >
-                Researcher · Lecturer · Collaborator
-              </motion.h2>
+              className="text-2xl font-semibold mb-4"
+              variants={textVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              Researcher · Mentor · Collaborator
+            </motion.h2>
               <motion.ul
                 className="flex flex-col gap-3 text-sm text-foreground/70"
                 variants={textVariants}
                 initial="hidden"
                 animate="visible"
               >
-                <li>📍 Based in Sydney, Australia</li>
-                <li>🏛 Trustworthy Machine Learning Lab (UTS)</li>
-                <li>🧑‍🏫 COMP5328 Advanced ML teaching team</li>
-                <li>📰 Focus on robust learning & misinformation</li>
+                <li>📍 Based in Sydney, exploring cities via coffee walks</li>
+                <li>🏛 Behavioural Data Science Lab (UTS) with Marian-Andrei Rizoiu</li>
+                <li>🧑‍🏫 Tutor for DS + ML courses at the University of Sydney</li>
+                <li>📰 Researching diffusion, ranking, and robustness</li>
               </motion.ul>
             </div>
             <motion.div
@@ -159,7 +159,7 @@ export default function AboutPage() {
               </div>
               <div className="card-row flex-col text-center justify-center">
                 <p className="text-3xl font-semibold">8</p>
-                <p className="text-xs uppercase tracking-[0.3em]">Papers</p>
+                <p className="text-xs uppercase tracking-[0.3em]">Manuscripts</p>
               </div>
             </motion.div>
           </motion.div>
@@ -206,14 +206,14 @@ export default function AboutPage() {
             initial="hidden"
             animate="visible"
           >
-            <motion.h2
-              className="text-2xl font-semibold"
-              variants={textVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              Contributions
-            </motion.h2>
+              <motion.h2
+                className="text-2xl font-semibold"
+                variants={textVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                Teaching & community
+              </motion.h2>
             <motion.ul
               className="flex flex-col gap-3 text-foreground/80"
               variants={textVariants}
@@ -261,8 +261,8 @@ export default function AboutPage() {
                 initial="hidden"
                 animate="visible"
               >
-                I work with research labs and product teams on data-centric ML,
-                safety reviews, and technical storytelling for advanced AI.
+                I work with researchers and product teams on diffusion modelling,
+                moderation strategy, and responsible experimentation with social data.
               </motion.p>
             </div>
             <motion.div

@@ -1,10 +1,10 @@
 export const heroContent = {
-  line1: "Trustworthy AI Researcher",
-  line2Prefix: "Grounding",
-  line2Emphasis: "Theory",
-  line2Suffix: " for",
-  line3: "Real-World Impact",
+  line1: "Social Data Scientist",
+  line2Prefix: "Tracing",
+  line2Emphasis: "Information Flows",
+  line2Suffix: " across platforms",
+  line3: "Designing robust ML interventions",
 };
 
 export const aboutDescription =
-  "Yuxiang (Kevin) Zheng is a Sydney-based PhD candidate at UTS. His work bridges machine learning theory with practical systems, focusing on misinformation detection, robust learning, and generalisation for high-stakes AI.";
+  "Yuxiang (Kevin) Zheng is a PhD student in the Behavioural Data Science Lab at UTS, supervised by Marian-Andrei Rizoiu. He studies how information spreads through social platforms and how to build models that stay reliable when data are noisy, biased, or shifting.";

@@ -32,18 +32,18 @@ export const consoleUtil = {
     github: "https://github.com/kyxzhe",
     website: "https://kyxzhe.github.io",
     email: "kevin.zheng@student.uts.edu.au",
-    message: "Researching robust learning and trustworthy AI — let’s collaborate! 🚀"
+    message: "Mapping information diffusion and building robust ML for social platforms — say hi! 🚀"
   },
   researchHighlights: [
-    "🧠 PhD @ UTS focused on trustworthy ML & misinformation detection.",
-    "📚 Reviewer for ICLR · ICML · CVPR · AAAI.",
-    "🧪 Built noisy-label, Bayesian PLL & continual learning frameworks.",
-    "🎓 Teaching COMP5328: Advanced Machine Learning."
+    "🧠 PhD @ UTS Behavioural Data Science Lab with Marian-Andrei Rizoiu.",
+    "🌐 Studying how narratives travel across X, Reddit, and YouTube.",
+    "🧪 Recasting noisy labels as useful signals for robust learning.",
+    "🎓 Designing messy-data labs for DS + ML students."
   ],
   funFacts: [
-    "🔭 Favorite puzzle: making noisy real-world data behave.",
-    "🌏 Survived ETH Zürich winters to study ML theory.",
-    "⚡ Motto: rigorous math, practical impact."
+    "📷 Film photography addict—still scans negatives at 2 a.m.",
+    "☕ Will cross a city for a recommendation-worthy flat white.",
+    "🏹 Balances research sprints with archery, diving daydreams, and gym resets."
   ],
 
   // Console styles

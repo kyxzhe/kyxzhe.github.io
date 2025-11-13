@@ -224,8 +224,8 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
               </h1>
               <p className="text-lg md:text-xl text-muted-foreground">
                 {mode === "info"
-                  ? "Let’s work together and create something meaningful."
-                  : "Pick a time, leave details, and we’ll send a crafted email draft."}
+                  ? "Let’s talk about diffusion experiments, moderation strategy, or teaching collaborations."
+                  : "Pick a time, leave context, and I’ll reply with a confirmation email."}
               </p>
             </motion.div>
 

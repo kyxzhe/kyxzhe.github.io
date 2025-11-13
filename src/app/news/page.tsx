@@ -39,7 +39,7 @@ export default function NewsPage() {
               initial="hidden"
               animate="visible"
             >
-              News, field notes, and the odd coffee crawl.
+              Diffusion notes, teaching experiments, and the coffee breaks in between.
             </motion.h1>
             <motion.p
               className="text-base md:text-lg text-foreground/80"
@@ -47,13 +47,12 @@ export default function NewsPage() {
               initial="hidden"
               animate="visible"
             >
-              Bits of progress from research projects, teaching, travel, and experiments that don’t
-              quite fit into a publication. The upcoming chatbot will reference many of these updates.
+              I use this space to log investigations into social platforms, sketches of moderation interventions, reflections from tutorials, and the hobbies that keep ideas simmering.
             </motion.p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-foreground/80">
               <div className="surface-card px-4 py-3 flex items-center gap-3">
                 <CalendarRange size={18} />
-                Weekly refresh
+                Near-weekly refresh
               </div>
               <div className="surface-card px-4 py-3 flex items-center gap-3">
                 <Newspaper size={18} />
@@ -83,8 +82,7 @@ export default function NewsPage() {
               initial="hidden"
               animate="visible"
             >
-              The chatbot module will index these posts so you can ask “What’s Kevin working on?” or
-              “Where’s the latest film diary?” and get a contextual reply.
+              The chatbot module is learning to cite these entries so you can ask “How are the cascades behaving?” and get a grounded reply.
             </motion.p>
             <Link href="/contact" className="btn-primary inline-flex items-center gap-2 justify-center">
               Subscribe for updates <ArrowUpRight size={16} />

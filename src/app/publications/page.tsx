@@ -45,7 +45,7 @@ export default function PublicationsPage() {
               initial="hidden"
               animate="visible"
             >
-              Researching reliable learning systems from noise-aware data curation to safety evaluations.
+              Researching social platforms as dynamic systems and keeping models robust when supervision is weak.
             </motion.h1>
             <motion.p
               className="text-base md:text-lg text-foreground/80"
@@ -53,7 +53,7 @@ export default function PublicationsPage() {
               initial="hidden"
               animate="visible"
             >
-              Below is a snapshot of recent manuscripts. Detailed versions, artefacts, and code are available on request.
+              Below is a snapshot of recent manuscripts. Artefacts and code—ranging from diffusion pipelines to noisy-label toolkits—are available on request.
             </motion.p>
           </motion.div>
           <motion.div
@@ -101,10 +101,10 @@ export default function PublicationsPage() {
               initial="hidden"
               animate="visible"
             >
-              <li>Robust learning under label noise & adversarial shifts</li>
-              <li>Probabilistic modelling for weak supervision</li>
-              <li>Trust & safety measurements for LLM deployments</li>
-              <li>Learning theory & generalisation bounds in practice</li>
+              <li>Information diffusion, narrative emergence, and network interventions</li>
+              <li>Robust learning under noisy, biased, or shifting labels</li>
+              <li>Temporal and graph representations for social data</li>
+              <li>Evaluation protocols for ranking and moderation systems</li>
             </motion.ul>
           </motion.div>
 
@@ -129,9 +129,9 @@ export default function PublicationsPage() {
               initial="hidden"
               animate="visible"
             >
-              <li>Improved noisy label baselines by 7% on curated benchmarks.</li>
-              <li>Designed Bayesian transitions now referenced in partial-label tutorials.</li>
-              <li>Developed continual learning prototype used in safety evaluations.</li>
+              <li>Repurposed noisy annotations as signals to stabilise downstream models.</li>
+              <li>Built feature-space selection routines that control diffusion-induced shift.</li>
+              <li>Paired qualitative platform audits with quantitative robustness metrics.</li>
             </motion.ul>
           </motion.div>
 
@@ -157,8 +157,8 @@ export default function PublicationsPage() {
               animate="visible"
             >
               <li>Reviewer: ICLR, ICML, CVPR, AAAI, ACMMM.</li>
-              <li>Session chair & organizer for ML theory reading groups.</li>
-              <li>Mentor for honours theses on data-centric AI.</li>
+              <li>Organiser of information diffusion + trustworthy ML reading groups.</li>
+              <li>Mentor for honours theses on social data science.</li>
             </motion.ul>
           </motion.div>
         </section>

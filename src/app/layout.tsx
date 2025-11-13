@@ -32,9 +32,9 @@ const gilroy = localFont({
   display: 'swap',
 });
 export const metadata: Metadata = {
-  title: "Kevin Zheng | Trustworthy AI Researcher",
-  description: "PhD candidate and ML researcher focused on misinformation detection, robust learning, and data-centric AI systems.",
-  keywords: ["Kevin Zheng", "machine learning", "trustworthy AI", "robust learning", "misinformation detection"],
+  title: "Kevin Zheng | Social Data Science & Robust ML",
+  description: "PhD student mapping information diffusion, social data science, and robust machine learning in the Behavioural Data Science Lab at UTS.",
+  keywords: ["Kevin Zheng", "information diffusion", "social data science", "robust machine learning", "misinformation"],
   authors: [{ name: "Yuxiang (Kevin) Zheng" }],
   creator: "Yuxiang (Kevin) Zheng",
   publisher: "Yuxiang (Kevin) Zheng",
@@ -44,14 +44,14 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    title: "Kevin Zheng | Trustworthy AI Researcher",
-    description: "PhD candidate and ML researcher focused on misinformation detection, robust learning, and data-centric AI systems.",
+    title: "Kevin Zheng | Social Data Science & Robust ML",
+    description: "Researching how information travels online and how to keep models trustworthy under messy supervision.",
     siteName: "Kevin Zheng",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Kevin Zheng | Trustworthy AI Researcher",
-    description: "PhD candidate and ML researcher focused on misinformation detection, robust learning, and data-centric AI systems.",
+    title: "Kevin Zheng | Social Data Science & Robust ML",
+    description: "Information diffusion, social data science, and robust machine learning at UTS.",
   },
 };
 export default function RootLayout({

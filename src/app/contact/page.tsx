@@ -48,7 +48,7 @@ export default function ContactPage() {
               initial="hidden"
               animate="visible"
             >
-              Let&apos;s collaborate on trustworthy machine learning.
+              Let&apos;s reason about information diffusion and robust ML together.
             </motion.h1>
             <motion.p
               className="text-base md:text-lg text-foreground/80"
@@ -56,8 +56,7 @@ export default function ContactPage() {
               initial="hidden"
               animate="visible"
             >
-              Whether you&apos;re exploring misinformation detection, data-centric
-              pipelines, or looking for a speaker, feel free to reach out.
+              I enjoy conversations about modelling social platforms as dynamic systems, evaluating interventions, and teaching with slightly messy datasets. Email is the fastest way to reach me.
             </motion.p>
             <motion.div
               className="grid grid-cols-1 sm:grid-cols-2 gap-3"
@@ -128,9 +127,7 @@ export default function ContactPage() {
               initial="hidden"
               animate="visible"
             >
-              Meetings are available Monday to Friday between 10:00–17:00 AEDT (with a lunch
-              break between 12:00–13:30). Use the “Contact me” button to pick a real-time slot—
-              the modal includes all upcoming availability, so this section stays clutter-free.
+              I keep a few slots free each week between 10:00–17:00 AEDT (lunch reset around 12:00–13:30). Tap “Contact me” on the homepage or send context by email and I&apos;ll suggest times.
             </motion.p>
             <motion.div
               className="surface-card px-4 py-4 flex gap-3 items-center text-muted-foreground dark:bg-[#101016] dark:text-white/90"
@@ -167,8 +164,7 @@ export default function ContactPage() {
               initial="hidden"
               animate="visible"
             >
-              Provide a short brief covering goals, timeline, collaborators, and
-              technical constraints. I typically respond within 48 hours.
+              Provide a short brief covering goals, timeline, collaborators, and the messy realities of the data. I typically respond within 48 hours.
             </motion.p>
             <motion.ul
               className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-foreground/80"
@@ -177,16 +173,16 @@ export default function ContactPage() {
               animate="visible"
             >
               <li className="pill border border-border px-4 py-3 bg-[var(--accent-soft)] text-[var(--accent)]">
-                • Data integrity audits & noisy-label pipelines
+                • Diffusion modelling & intervention strategy
               </li>
               <li className="pill border border-border px-4 py-3 bg-[var(--accent-soft)] text-[var(--accent)]">
-                • Trust & safety assessments for LLM deployments
+                • Robust learning with noisy, biased supervision
               </li>
               <li className="pill border border-border px-4 py-3 bg-[var(--accent-soft)] text-[var(--accent)]">
-                • Research mentorship & reading groups
+                • Teaching, mentoring, and reading groups
               </li>
               <li className="pill border border-border px-4 py-3 bg-[var(--accent-soft)] text-[var(--accent)]">
-                • Talks/workshops on data-centric AI
+                • Evaluating ranking/moderation pipelines
               </li>
             </motion.ul>
           </motion.div>

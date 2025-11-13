@@ -7,23 +7,23 @@ import { cardVariants, textVariants } from "@/lib/animation/variants";
 const previewMessages = [
   {
     role: "visitor",
-    text: "Hey Kevin, what are you researching right now?",
+    text: "What’s on your desk this week?",
   },
   {
     role: "kevin",
-    text: "I’m mapping how information flows online and how to keep ML models robust in the wild.",
+    text: "Diffusion traces from X, Reddit, and YouTube—seeing how ranking nudges change who hears what.",
   },
   {
     role: "visitor",
-    text: "Nice. Do you ever leave the lab?",
+    text: "And how do you keep the models honest with all that noisy data?",
   },
   {
     role: "kevin",
-    text: "Absolutely — film camera in hand, looking for a good flat white or the next trail run.",
+    text: "Treat the noise as signal: rewrite instances, surface disagreements, and reweight what we trust.",
   },
 ];
 
-const interests = ["Trustworthy ML", "Misinformation", "Teaching", "Film Photography", "Coffee chats"];
+const interests = ["Information diffusion", "Robust ML", "Social data science", "Teaching", "Film photography", "Coffee walks"];
 
 export default function ChatIntroPanel() {
   return (
@@ -49,7 +49,7 @@ export default function ChatIntroPanel() {
             <Sparkles size={12} />
             Chatbot
           </span>
-          <span className="text-xs text-muted-foreground">coming soon</span>
+          <span className="text-xs text-muted-foreground">lab notes alpha</span>
         </div>
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
@@ -98,11 +98,11 @@ export default function ChatIntroPanel() {
           className="btn-primary inline-flex items-center justify-center gap-2 cursor-default"
         >
           <Send size={16} />
-          Say hi or book a chat
+          Ask about research ideas
         </button>
         <p className="text-xs text-muted-foreground">
-          I’m a PhD student at UTS working with Dr. Marian-Andrei Rizoiu in the Behavioral Data Science Lab.
-          The chatbot will share stories about research, photography, and the best flat whites in Sydney soon.
+          I’m a PhD student at UTS working with Marian-Andrei Rizoiu in the Behavioural Data Science Lab.
+          This assistant shares ongoing diffusion experiments, messy-label tricks, and the best cafes to debrief in.
         </p>
       </motion.div>
       </div>
