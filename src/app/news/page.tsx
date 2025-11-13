@@ -39,7 +39,7 @@ export default function NewsPage() {
               initial="hidden"
               animate="visible"
             >
-              Diffusion notes, teaching experiments, and the coffee breaks in between.
+              Milestones, credentials, and the side quests that keep research grounded.
             </motion.h1>
             <motion.p
               className="text-base md:text-lg text-foreground/80"
@@ -47,12 +47,12 @@ export default function NewsPage() {
               initial="hidden"
               animate="visible"
             >
-              I use this space to log investigations into social platforms, sketches of moderation interventions, reflections from tutorials, and the hobbies that keep ideas simmering.
+              From certifications and honours to field notes and new chapters, this logbook keeps the personal and professional timeline honest.
             </motion.p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-foreground/80">
               <div className="surface-card px-4 py-3 flex items-center gap-3">
                 <CalendarRange size={18} />
-                Near-weekly refresh
+                Quarterly refresh
               </div>
               <div className="surface-card px-4 py-3 flex items-center gap-3">
                 <Newspaper size={18} />

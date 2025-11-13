@@ -8,30 +8,30 @@ export type NewsItem = {
 
 export const newsItems: NewsItem[] = [
   {
-    title: "Tracing election misinformation cascades on X",
+    title: "Certified: AWS Machine Learning – Specialty",
     date: "Jan 2025",
     summary:
-      "Probing how ranking tweaks reshape the reach of rumours during the recent election cycle, complete with diffusion stats and intervention simulations.",
-    link: "https://github.com/kyxzhe/misinfo-diffusion-notes",
+      "Passed the AWS ML Specialty exam to benchmark production-ready practices for future platform-scale experiments.",
+    link: "https://www.credly.com/badges/b324db7a-0cb4-41b9-b3a7-a3275dde8f6b/public_url",
     cover: "/projects/work-1.jpg",
   },
   {
-    title: "Releasing multimodal traces across Reddit, YouTube, and X",
-    date: "Nov 2024",
+    title: "Awarded: University Medal · University of Sydney",
+    date: "Sep 2024",
     summary:
-      "Cleaning and aligning text, video, and network signals so students can study cross-platform narratives without reinventing the pipeline each time.",
+      "Honours thesis on noisy-label learning capped off with the University Medal—grateful for every messy dataset that led here.",
     cover: "/projects/work-2.jpg",
   },
   {
-    title: "Teaching messier ML labs at the University of Sydney",
-    date: "Oct 2024",
+    title: "Started PhD at UTS Behavioural Data Science Lab",
+    date: "Sep 2024",
     summary:
-      "Piloted new assignments that bridge diffusion modelling, causal reasoning, and responsible deployment for COMP5328 and data science cohorts.",
+      "Joined Marian-Andrei Rizoiu and the Behavioural Data Science Lab to study information diffusion and robust ML for social platforms.",
     cover: "/projects/work-3.jpg",
   },
   {
     title: "Field notes: film cameras, cafes, and archery resets",
-    date: "Sep 2024",
+    date: "Aug 2024",
     summary:
       "Documenting how slowing down with photography, coffee walks, and occasional archery practice feeds back into long-horizon research thinking.",
     cover: "/projects/work-4.jpg",
