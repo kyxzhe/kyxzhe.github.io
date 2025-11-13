@@ -21,11 +21,11 @@ const timeline = [
       "Working with Dr. Marian-Andrei Rizoiu on information diffusion, social data science, and robust machine learning.",
   },
   {
-    title: "Guest lecturer & tutor · COMP5328/4328",
+    title: "Guest lecturer & tutor",
     org: "University of Sydney",
-    period: "2024",
+    period: "2024 – Present",
     detail:
-      "Led Advanced Machine Learning tutorials and delivered a guest lecture on data-centric evaluation.",
+      "Lead tutorials for Advanced ML and Informatics courses, plus a guest lecture on data-centric evaluation.",
   },
   {
     title: "B.Adv. Computing (Honours) + B.Sc.",
