@@ -431,7 +431,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                               aria-pressed={isActive}
                               className={`chip text-sm transition-colors ${
                                 isActive
-                                  ? "bg-[var(--accent)] text-white border-[var(--accent)] shadow-[0_10px_25px_rgba(0,102,204,0.25)]"
+                                  ? "bg-[rgba(41,151,255,0.18)] text-[var(--accent-link)] border-[var(--accent-link)] shadow-[0_10px_25px_rgba(41,151,255,0.25)]"
                                   : "hover:bg-[var(--accent-soft)]"
                               }`}
                             >
