@@ -9,9 +9,9 @@ import { publications } from "@/lib/constants/publications";
 import { cardVariants, containerVariants, iconVariants, projectsVariants, textVariants } from "@/lib/animation/variants";
 
 const metrics = [
-  { label: "Peer-reviewed & workshop papers", value: "8" },
-  { label: "Review assignments (ICLR/ICML/etc.)", value: "25+" },
-  { label: "Invited talks & lectures", value: "15+" },
+  { label: "Preprints & manuscripts", value: "1" },
+  { label: "Review assignments (ICLR/ICML/etc.)", value: "10+" },
+  { label: "Citations", value: "2" },
 ];
 
 export default function PublicationsPage() {
@@ -45,7 +45,7 @@ export default function PublicationsPage() {
               initial="hidden"
               animate="visible"
             >
-              Researching social platforms as dynamic systems and keeping models robust when supervision is weak.
+              Treating noisy supervision as a signal rather than a problem.
             </motion.h1>
             <motion.p
               className="text-base md:text-lg text-foreground/80"
@@ -53,7 +53,7 @@ export default function PublicationsPage() {
               initial="hidden"
               animate="visible"
             >
-              Below is a snapshot of recent manuscripts. Artefacts and code—ranging from diffusion pipelines to noisy-label toolkits—are available on request.
+              I’m currently focused on one core manuscript exploring how messy annotations can be reinterpreted to build more trustworthy models. Code, data traces, and replication materials are available on request.
             </motion.p>
           </motion.div>
           <motion.div
@@ -129,9 +129,9 @@ export default function PublicationsPage() {
               initial="hidden"
               animate="visible"
             >
-              <li>Repurposed noisy annotations as signals to stabilise downstream models.</li>
+              <li>Repurposed noisy annotations as useful guidance for downstream models.</li>
               <li>Built feature-space selection routines that control diffusion-induced shift.</li>
-              <li>Paired qualitative platform audits with quantitative robustness metrics.</li>
+              <li>Paired platform audits with quantitative robustness measurements.</li>
             </motion.ul>
           </motion.div>
 
