@@ -146,7 +146,8 @@ body {
     background: color-mix(in srgb, var(--card) 90%, transparent);
     color: color-mix(in srgb, var(--foreground) 85%, var(--accent));
   }
-}
+
   .pill {
     border-radius: var(--radius-pill);
   }
+}
