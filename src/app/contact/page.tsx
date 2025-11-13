@@ -91,7 +91,7 @@ export default function ContactPage() {
               ].map(({ icon: Icon, label, value, link }) => (
                 <motion.a
                   key={label}
-                  className="rounded-[16px] border border-border bg-background/40 px-4 py-4 flex flex-col gap-1"
+                  className="surface-card px-4 py-4 flex flex-col gap-1"
                   variants={iconVariants}
                   initial="hidden"
                   animate="visible"

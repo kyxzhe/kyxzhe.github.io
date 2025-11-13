@@ -45,7 +45,7 @@ export default function ChatIntroPanel() {
         animate="visible"
       >
         <div className="flex items-center gap-2">
-          <span className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-1 text-xs uppercase tracking-[0.3em] text-muted-foreground">
+          <span className="chip inline-flex items-center gap-2">
             <Sparkles size={12} />
             Chatbot
           </span>
@@ -75,13 +75,13 @@ export default function ChatIntroPanel() {
       </div>
 
       <motion.div
-        className="flex flex-wrap gap-2 text-xs uppercase tracking-[0.3em] text-muted-foreground"
+        className="flex flex-wrap gap-2"
         variants={textVariants}
         initial="hidden"
         animate="visible"
       >
         {interests.map((tag) => (
-          <span key={tag} className="border border-border/60 rounded-full px-3 py-1">
+          <span key={tag} className="chip">
             {tag}
           </span>
         ))}

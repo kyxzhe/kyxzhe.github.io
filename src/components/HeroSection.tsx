@@ -9,7 +9,7 @@ export default function HeroSection() {
   return (
     <motion.div 
       id="about"
-      className="w-full lg:w-[65%] bg-card rounded-[20px] flex flex-col items-start justify-between p-6 min-h-[250px] lg:min-h-0"
+      className="w-full lg:w-[65%] glass-panel flex flex-col items-start justify-between p-6 min-h-[250px] lg:min-h-0"
       variants={heroVariants}
       initial="hidden"
       animate="visible"

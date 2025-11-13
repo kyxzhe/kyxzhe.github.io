@@ -51,11 +51,11 @@ export default function NewsPage() {
               quite fit into a publication. The upcoming chatbot will reference many of these updates.
             </motion.p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-foreground/80">
-              <div className="rounded-[16px] border border-border px-4 py-3 bg-background/40 flex items-center gap-3">
+              <div className="surface-card px-4 py-3 flex items-center gap-3">
                 <CalendarRange size={18} />
                 Weekly refresh
               </div>
-              <div className="rounded-[16px] border border-border px-4 py-3 bg-background/40 flex items-center gap-3">
+              <div className="surface-card px-4 py-3 flex items-center gap-3">
                 <Newspaper size={18} />
                 Research + life updates
               </div>

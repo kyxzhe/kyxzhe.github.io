@@ -104,7 +104,7 @@ export default function AboutPage() {
               {researchFocus.map((item) => (
                 <li
                   key={item}
-                  className="text-sm bg-background/60 rounded-[16px] px-3 py-2 text-foreground/80 border border-background/20"
+                  className="chip"
                 >
                   {item}
                 </li>
