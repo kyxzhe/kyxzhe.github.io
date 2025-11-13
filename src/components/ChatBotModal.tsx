@@ -11,7 +11,7 @@ interface ChatBotModalProps {
 }
 
 const assistantGreeting =
-  "Hi, I’m KevinBot. Ask me about research, teaching, certifications, or the best flat white in Sydney.";
+  "Hi there! Ask me about research, teaching, certifications, or the best flat white in Sydney.";
 
 export default function ChatBotModal({ open, onClose }: ChatBotModalProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([

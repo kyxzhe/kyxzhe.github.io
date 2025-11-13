@@ -11,7 +11,7 @@ export default function ChatIntroPanel() {
     {
       role: "assistant",
       content:
-        "Hi! I’m KevinBot. Ask me about research, teaching, certifications, or where to find a good flat white.",
+        "Hi there! Ask me about research, teaching, certifications, or where to find a good flat white.",
     },
   ]);
   const [input, setInput] = useState("");
