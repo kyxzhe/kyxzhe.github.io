@@ -157,8 +157,8 @@ export default function PublicationsPage() {
               animate="visible"
             >
               <li>Reviewer: ICLR, ICML, CVPR, AAAI, ACMMM.</li>
-              <li>Organiser of information diffusion + trustworthy ML reading groups.</li>
-              <li>Mentor for honours theses on social data science.</li>
+              <li>Teaching assistant & guest lecturer for COMP5328/4328 and DATA1002/1902.</li>
+              <li>Available for collaborations on diffusion, noisy-label learning, and teaching support.</li>
             </motion.ul>
           </motion.div>
         </section>

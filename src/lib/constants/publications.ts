@@ -14,8 +14,8 @@ export const publications: Publication[] = [
     venue: "arXiv",
     year: "2024",
     summary:
-      "Shows how to reinterpret human and platform-generated noise as useful signal by modifying instances, selecting reliable samples, and controlling shift in feature space.",
-    tags: ["Noisy Labels", "Robust Learning", "Social Data"],
+      "EchoAlign reframes noisy-label learning by editing instances instead of relabelling them. EchoMod uses controllable generative models to align features with noisy annotations, while EchoSelect keeps distribution shifts in check by retaining trustworthy originals through feature-space similarity tests.",
+    tags: ["Noisy Labels", "Instance Editing", "Robust Learning"],
     link: "https://arxiv.org/abs/2405.12969",
     status: "Preprint",
   },
