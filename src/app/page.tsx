@@ -3,7 +3,7 @@
 import { motion } from "motion/react";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
-import PersonImageSection from "@/components/PersonImageSection";
+import ChatIntroPanel from "@/components/ChatIntroPanel";
 import AboutContactSection from "@/components/AboutContactSection";
 import ProjectsSection from "@/components/ProjectsSection";
 import Footer from "@/components/Footer";
@@ -22,7 +22,7 @@ export default function Home() {
         <div className="flex flex-col w-full lg:w-[70%] gap-4 lg:mb-6">
           <div className="flex flex-col-reverse lg:flex-row gap-4 md:h-[60%]">
             <HeroSection />
-            <PersonImageSection />
+            <ChatIntroPanel />
           </div>
           <AboutContactSection />
         </div>
