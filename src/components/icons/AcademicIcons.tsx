@@ -2,22 +2,24 @@ import { SVGProps } from "react";
 
 export function GoogleScholarIcon(props: SVGProps<SVGSVGElement>) {
   return (
-    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false" {...props}>
+    <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false" {...props}>
       <path
-        d="M3 7.5 12 12l9-4.5-9-4.5-9 4.5Z"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+        d="M32 6 6 22l26 14 26-14L32 6Z"
+        fill="#4285F4"
       />
       <path
-        d="M7 11.5v5.2c0 .5.3.9.8 1.2l4.2 2.1c.6.3 1.4.3 2 0l4.2-2.1c.5-.3.8-.7.8-1.2v-5.2"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+        d="M6 24v18.5c0 2 1.1 3.8 2.8 4.7L28 57.5V36L6 24Z"
+        fill="#34A853"
       />
-      <circle cx="12" cy="11.3" r="1.8" fill="currentColor" />
+      <path
+        d="M58 24 36 36v21.5l19.2-10.3c1.7-.9 2.8-2.7 2.8-4.7V24Z"
+        fill="#FBBC04"
+      />
+      <circle cx="32" cy="33" r="6.5" fill="#1A73E8" />
+      <path
+        d="M32 29.8c-1.8 0-3.2 1.5-3.2 3.3 0 1.8 1.4 3.3 3.2 3.3 1.4 0 2.6-.9 3-2.1h-3v-2.1h5.6c.1.4.2.8.2 1.2 0 3.1-2.4 5.5-5.8 5.5-3.5 0-6-2.5-6-5.6 0-3.1 2.5-5.7 6-5.7 2.2 0 4 .9 5 2.3l-1.8 1.3c-.7-1-1.8-1.4-3.2-1.4Z"
+        fill="#fff"
+      />
     </svg>
   );
 }
