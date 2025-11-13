@@ -81,15 +81,22 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
   const maxWindowIndex = Math.max(0, availability.length - WINDOW_SIZE);
 
   const slotsForDate = useMemo(() => {
-    return (
+    const slots =
       availability
         .find((day) => day.dateISO === selectedDate)
         ?.slots.map((slot) => ({
           ...slot,
           booked: slot.booked || bookedSlots[slot.id],
-        })) ?? []
-    );
+        })) ?? [];
+
+    return slots.filter((slot) => !slot.booked);
   }, [availability, bookedSlots, selectedDate]);
+
+  useEffect(() => {
+    if (selectedSlotId && !slotsForDate.some((slot) => slot.id === selectedSlotId)) {
+      setSelectedSlotId(null);
+    }
+  }, [selectedSlotId, slotsForDate]);
 
   const selectedSlot = slotsForDate.find((slot) => slot.id === selectedSlotId);
 
@@ -450,33 +457,37 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                     </div>
 
                     <motion.div className="grid grid-cols-1 md:grid-cols-2 gap-3" layout>
-                      {slotsForDate.map((slot) => {
-                        const isSelected = selectedSlotId === slot.id;
-                        return (
-                          <button
-                            key={slot.id}
-                            disabled={slot.booked || submissionState === "loading"}
-                            onClick={() => setSelectedSlotId(slot.id)}
-                            className={`surface-card px-4 py-4 text-left transition-all ${
-                              slot.booked
-                                ? "border-border/30 text-muted-foreground cursor-not-allowed line-through opacity-60"
-                                : isSelected
+                      {slotsForDate.length === 0 ? (
+                        <div className="surface-card px-4 py-6 text-sm text-muted-foreground text-center md:col-span-2">
+                          All slots for this day are booked. Try another date.
+                        </div>
+                      ) : (
+                        slotsForDate.map((slot) => {
+                          const isSelected = selectedSlotId === slot.id;
+                          return (
+                            <button
+                              key={slot.id}
+                              disabled={submissionState === "loading"}
+                              onClick={() => setSelectedSlotId(slot.id)}
+                              className={`surface-card px-4 py-4 text-left transition-all ${
+                                isSelected
                                   ? "border-brand-accent bg-[rgba(41,151,255,0.12)] shadow-[0_12px_30px_-20px_rgba(0,0,0,0.8)]"
                                   : "border-border hover:bg-[var(--accent-soft)]"
-                            }`}
-                          >
-                            <div className="flex items-center justify-between">
-                              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
-                                Meeting
-                              </p>
-                              {isSelected && (
-                                <Check size={16} className="text-brand-accent" />
-                              )}
-                            </div>
-                            <p className="text-lg font-medium">{slot.label}</p>
-                          </button>
-                        );
-                      })}
+                              }`}
+                            >
+                              <div className="flex items-center justify-between">
+                                <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
+                                  Meeting
+                                </p>
+                                {isSelected && (
+                                  <Check size={16} className="text-brand-accent" />
+                                )}
+                              </div>
+                              <p className="text-lg font-medium">{slot.label}</p>
+                            </button>
+                          );
+                        })
+                      )}
                     </motion.div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
