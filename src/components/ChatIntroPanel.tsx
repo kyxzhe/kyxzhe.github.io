@@ -1,34 +1,56 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "motion/react";
-import { MessageCircle, Sparkles, Send } from "lucide-react";
+import { AlertTriangle, Loader2, MessageCircle, Send, Sparkles } from "lucide-react";
 import { cardVariants, textVariants } from "@/lib/animation/variants";
-import ChatBotModal from "./ChatBotModal";
-
-const previewMessages = [
-  {
-    role: "visitor",
-    text: "Hey Kevin, what are you researching right now?",
-  },
-  {
-    role: "kevin",
-    text: "I’m mapping how information flows online and how to keep ML models robust in the wild.",
-  },
-  {
-    role: "visitor",
-    text: "Nice. Do you ever leave the lab?",
-  },
-  {
-    role: "kevin",
-    text: "Absolutely — film camera in hand, looking for a good flat white or the next trail run.",
-  },
-];
+import { type ChatMessage, sendChatRequest } from "@/lib/api/chat";
 
 const interests = ["Trustworthy ML", "Misinformation", "Teaching", "Film Photography", "Coffee chats"];
 
 export default function ChatIntroPanel() {
-  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [messages, setMessages] = useState<ChatMessage[]>([
+    {
+      role: "assistant",
+      content:
+        "Hi! I’m KevinBot. Ask me about research, teaching, certifications, or where to find a good flat white.",
+    },
+  ]);
+  const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const canSend = input.trim().length > 0 && !isLoading;
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
+
+  const handleSend = async () => {
+    if (!canSend) return;
+    const nextInput = input.trim();
+    setInput("");
+    setError(null);
+
+    const nextHistory: ChatMessage[] = [
+      ...messages,
+      { role: "user" as const, content: nextInput },
+    ];
+    setMessages(nextHistory);
+    setIsLoading(true);
+
+    try {
+      const reply = await sendChatRequest(nextHistory);
+      setMessages((prev) => [...prev, { role: "assistant" as const, content: reply }]);
+    } catch (err) {
+      console.error(err);
+      setError(err instanceof Error ? err.message : "Something went wrong.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const latestMessages = useMemo(() => messages.slice(-6), [messages]);
 
   return (
     <motion.div
@@ -62,19 +84,60 @@ export default function ChatIntroPanel() {
       </motion.div>
 
       <div className="surface-card p-4 flex flex-col gap-3 min-h-[240px] overflow-hidden relative">
-        <div className="space-y-2 text-sm">
-          {previewMessages.map((msg, idx) => (
+        <div className="flex items-center justify-between text-sm text-muted-foreground">
+          <span className="inline-flex items-center gap-2">
+            <MessageCircle size={16} />
+            Live beta
+          </span>
+          <span className="text-xs uppercase tracking-[0.3em] text-foreground/50">Cloudflare AI</span>
+        </div>
+        <div className="space-y-2 text-sm max-h-[160px] overflow-y-auto pr-1">
+          {latestMessages.map((msg, idx) => (
             <div
-              key={idx}
-              className={`max-w-[90%] rounded-2xl px-4 py-2 ${msg.role === "kevin" ? "bg-[var(--accent)] text-white ml-auto" : "bubble-muted"}`}
+              key={`${msg.role}-${idx}-${msg.content.slice(0, 8)}`}
+              className={`max-w-[90%] rounded-2xl px-4 py-2 ${
+                msg.role === "assistant"
+                  ? "bg-[var(--accent)] text-white ml-auto"
+                  : "bubble-muted"
+              }`}
             >
-              {msg.text}
+              <p className="text-[0.65rem] uppercase tracking-[0.3em] text-white/70 mb-1">
+                {msg.role === "assistant" ? "KevinBot" : "You"}
+              </p>
+              <p className="whitespace-pre-line">{msg.content}</p>
             </div>
           ))}
         </div>
-        <div className="card-row text-sm text-muted-foreground">
-          <MessageCircle size={16} />
-          Ask me anything about research, coffee, or film cameras.
+        {error && (
+          <div className="card-row text-xs text-red-500">
+            <AlertTriangle size={14} />
+            {error}
+          </div>
+        )}
+        <div className="flex gap-2 mt-2">
+          <input
+            ref={inputRef}
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                handleSend();
+              }
+            }}
+            placeholder="Ask KevinBot..."
+            className="flex-1 rounded-2xl border border-border px-3 py-2 bg-transparent focus:outline-none focus:border-foreground text-sm"
+          />
+          <button
+            type="button"
+            onClick={handleSend}
+            disabled={!canSend}
+            className="btn-primary inline-flex items-center gap-2 px-4 py-2 disabled:opacity-50"
+          >
+            {isLoading ? <Loader2 size={14} className="animate-spin" /> : <Send size={14} />}
+            {isLoading ? "Thinking" : "Send"}
+          </button>
         </div>
       </div>
 
@@ -91,27 +154,10 @@ export default function ChatIntroPanel() {
         ))}
       </motion.div>
 
-      <motion.div
-        className="flex flex-col gap-2"
-        variants={textVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        <button
-          type="button"
-          className="btn-primary inline-flex items-center justify-center gap-2"
-          onClick={() => setIsChatOpen(true)}
-        >
-          <Send size={16} />
-          Chat now
-        </button>
-        <p className="text-xs text-muted-foreground">
-          I’m a PhD student at UTS working with Dr. Marian-Andrei Rizoiu in the Behavioral Data Science Lab.
-          The chatbot will share stories about research, photography, and the best flat whites in Sydney soon.
-        </p>
-      </motion.div>
+      <p className="text-xs text-muted-foreground">
+        Powered by Cloudflare Workers AI · responses are contextual references, not formal advice.
+      </p>
       </div>
-      <ChatBotModal open={isChatOpen} onClose={() => setIsChatOpen(false)} />
     </motion.div>
   );
 }
