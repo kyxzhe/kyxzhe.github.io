@@ -78,7 +78,7 @@ export default function NewsPage() {
               Coming soon
             </motion.h2>
             <motion.p
-              className="text-sm text-background/80"
+              className="text-sm text-foreground/70"
               variants={textVariants}
               initial="hidden"
               animate="visible"

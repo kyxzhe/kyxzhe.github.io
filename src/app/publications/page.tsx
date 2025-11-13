@@ -71,7 +71,7 @@ export default function PublicationsPage() {
                 animate="visible"
               >
                 <p className="text-3xl font-semibold">{metric.value}</p>
-                <p className="text-xs uppercase tracking-[0.3em] text-background/60">
+                <p className="text-xs uppercase tracking-[0.3em] text-foreground/60">
                   {metric.label}
                 </p>
               </motion.div>
@@ -96,7 +96,7 @@ export default function PublicationsPage() {
               Areas of interest
             </motion.h2>
             <motion.ul
-              className="flex flex-col gap-3 text-sm text-background/80"
+              className="flex flex-col gap-3 text-sm text-foreground/70"
               variants={textVariants}
               initial="hidden"
               animate="visible"

@@ -120,7 +120,7 @@ export default function AboutPage() {
           >
             <div>
               <motion.p
-                className="text-xs uppercase tracking-[0.3em] text-background/50 mb-2"
+                className="text-xs uppercase tracking-[0.3em] text-foreground/50 mb-2"
                 variants={textVariants}
                 initial="hidden"
                 animate="visible"
@@ -136,7 +136,7 @@ export default function AboutPage() {
                 Researcher · Lecturer · Collaborator
               </motion.h2>
               <motion.ul
-                className="flex flex-col gap-3 text-sm text-background/80"
+                className="flex flex-col gap-3 text-sm text-foreground/70"
                 variants={textVariants}
                 initial="hidden"
                 animate="visible"
@@ -189,12 +189,12 @@ export default function AboutPage() {
                   initial="hidden"
                   animate="visible"
                 >
-                  <p className="text-xs uppercase tracking-[0.2em] text-background/60 mb-1">
+                  <p className="text-xs uppercase tracking-[0.2em] text-foreground/50 mb-1">
                     {item.period}
                   </p>
                   <h3 className="text-lg font-medium">{item.title}</h3>
                   <p className="text-sm font-light mb-1">{item.org}</p>
-                  <p className="text-sm text-background/80">{item.detail}</p>
+                  <p className="text-sm text-foreground/70">{item.detail}</p>
                 </motion.div>
               ))}
             </div>
@@ -232,7 +232,7 @@ export default function AboutPage() {
           </motion.div>
 
           <motion.div
-            className="bg-foreground text-background rounded-[20px] p-6 flex flex-col justify-between"
+            className="glass-panel text-foreground rounded-[20px] p-6 flex flex-col justify-between"
             variants={cardVariants}
             initial="hidden"
             animate="visible"
@@ -240,7 +240,7 @@ export default function AboutPage() {
           >
             <div>
               <motion.p
-                className="text-xs uppercase tracking-[0.3em] text-background/50 mb-2"
+                className="text-xs uppercase tracking-[0.3em] text-foreground/50 mb-2"
                 variants={textVariants}
                 initial="hidden"
                 animate="visible"
@@ -256,7 +256,7 @@ export default function AboutPage() {
                 Interested in teaming up?
               </motion.h2>
               <motion.p
-                className="text-sm text-background/80"
+                className="text-sm text-foreground/70"
                 variants={textVariants}
                 initial="hidden"
                 animate="visible"
@@ -279,7 +279,7 @@ export default function AboutPage() {
               </Link>
               <Link
                 href="/"
-                className="text-background/70 text-center text-sm underline underline-offset-4 hover:text-background transition-colors"
+                className="text-foreground/60 text-center text-sm underline underline-offset-4 hover:text-foreground transition-colors"
               >
                 Back to work overview
               </Link>

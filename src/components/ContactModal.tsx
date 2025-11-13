@@ -427,7 +427,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                             }}
                             className={`px-4 py-2 rounded-full text-sm transition-colors border ${
                               selectedDate === day.dateISO
-                                ? "bg-foreground text-background border-foreground"
+                                ? "bg-[var(--accent)] text-white border-[var(--accent)]"
                                 : "border-border hover:bg-background/10"
                             }`}
                           >
@@ -514,7 +514,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                         !emailValid ||
                         submissionState === "loading"
                       }
-                      className="inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold transition-colors bg-foreground text-background disabled:bg-foreground/40 disabled:text-background/40"
+                      className="btn-primary inline-flex items-center justify-center gap-2 disabled:opacity-50"
                     >
                       {submissionState === "loading" ? (
                         <>
