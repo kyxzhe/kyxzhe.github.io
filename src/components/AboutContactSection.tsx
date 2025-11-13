@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import { motion } from "motion/react";
 import { cardVariants, textVariants, iconVariants, contactCardVariants } from "@/lib/animation/variants";
@@ -22,25 +21,12 @@ export default function AboutContactSection() {
   return (
     <div id="contact" className="flex flex-row gap-1 md:gap-4 md:h-[40%] min-h-[200px] md:min-h-0">
       <motion.div 
-        className="w-[50%] bg-foreground text-background rounded-[20px] flex flex-col items-start justify-between p-3 md:p-6"
+        className="w-[50%] glass-panel rounded-[20px] flex flex-col items-start justify-between p-3 md:p-6"
         variants={cardVariants}
         initial="hidden"
         animate="visible"
         whileHover="hover"
       >
-        <motion.div
-          variants={iconVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          <Image
-            src="/svgs/Vector.svg"
-            alt="Kevin Zheng"
-            width={150}
-            height={150}
-            className="w-8 md:w-auto"
-          />
-        </motion.div>
         <motion.p 
           className="text-sm md:text-xl lg:text-lg xl:text-xl 2xl:text-2xl"
           variants={textVariants}
