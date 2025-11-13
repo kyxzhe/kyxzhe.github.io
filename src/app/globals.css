@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 :root {
   --background: #f7f7f2;
@@ -9,8 +7,6 @@
   --card-border: rgba(15, 17, 21, 0.08);
   --accent: #8e6cff;
   --accent-soft: rgba(142, 108, 255, 0.12);
-  --glass-nav-bg: rgba(255, 255, 255, 0.82);
-  --glass-nav-border: rgba(15, 17, 21, 0.08);
   --font-gilroy: 'Gilroy', sans-serif;
 }
 
@@ -22,8 +18,6 @@
     --card-border: rgba(255, 255, 255, 0.08);
     --accent: #c7b5ff;
     --accent-soft: rgba(199, 181, 255, 0.18);
-    --glass-nav-bg: rgba(12, 14, 18, 0.78);
-    --glass-nav-border: rgba(255, 255, 255, 0.08);
   }
 }
 
@@ -73,15 +67,6 @@ body {
     box-shadow: 0 25px 60px rgba(15, 17, 21, 0.18);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
-  }
-
-  .glass-panel-nav {
-    border-radius: 20px;
-    background: var(--glass-nav-bg);
-    border: 1px solid var(--glass-nav-border);
-    box-shadow: 0 16px 45px rgba(15, 17, 21, 0.15);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
   }
 
   .surface-card {
