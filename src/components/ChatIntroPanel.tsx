@@ -67,7 +67,7 @@ export default function ChatIntroPanel() {
       <div className="absolute inset-0 pointer-events-none opacity-60" style={{
         background: "radial-gradient(circle at 20% 20%, rgba(232,206,194,0.25), transparent 50%), radial-gradient(circle at 80% 0%, rgba(102,156,70,0.25), transparent 45%)"
       }} />
-      <div className="relative flex h-[360px] flex-col gap-4">
+      <div className="relative flex h-[380px] flex-col">
         <motion.div
           className="flex items-center justify-between"
           initial={{ opacity: 0, y: 10 }}
@@ -84,20 +84,24 @@ export default function ChatIntroPanel() {
             Online
           </div>
         </motion.div>
-        <div ref={scrollRef} className="flex-1 space-y-2 text-sm overflow-y-auto pr-1">
+        <div
+          ref={scrollRef}
+          className="flex-1 space-y-3 text-sm overflow-y-auto pr-1 pb-3"
+        >
           {messages.map((msg, idx) => (
             <div
               key={`${msg.role}-${idx}-${msg.content.slice(0, 8)}`}
-              className={`rounded-2xl px-4 py-2 ${
-                msg.role === "assistant"
-                  ? "bg-[var(--accent)] text-white ml-auto"
-                  : "bubble-muted"
-              }`}
+              className={`flex ${msg.role === "assistant" ? "justify-end" : "justify-start"}`}
             >
-              <p className="text-[0.65rem] uppercase tracking-[0.3em] text-white/70 mb-1">
-                {msg.role === "assistant" ? "KevinBot" : "You"}
-              </p>
-              <p className="whitespace-pre-line">{msg.content}</p>
+              <div
+                className={`max-w-[85%] rounded-2xl px-4 py-2 ${
+                  msg.role === "assistant"
+                    ? "bg-[var(--accent)] text-white"
+                    : "bubble-muted"
+                }`}
+              >
+                <p className="whitespace-pre-line">{msg.content}</p>
+              </div>
             </div>
           ))}
           {error && (
@@ -107,7 +111,7 @@ export default function ChatIntroPanel() {
             </div>
           )}
         </div>
-        <div className="flex flex-col gap-2 pt-3 border-t border-[var(--card-border)]">
+        <div className="mt-auto pt-3 border-t border-[var(--card-border)]">
           <div className="flex gap-2">
             <input
               ref={inputRef}
@@ -133,7 +137,7 @@ export default function ChatIntroPanel() {
               {isLoading ? "Thinking" : "Send"}
             </button>
           </div>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs text-muted-foreground text-center mt-2">
             Chatbot can make mistakes. Check important info.
           </p>
         </div>
