@@ -145,7 +145,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
     setSubmissionState("loading");
     try {
-      const response = await fetch("https://formsubmit.co/ajax/Kevin.Zheng@student.uts.edu.au", {
+      const response = await fetch("https://formsubmit.co/ajax/kevin.zheng@student.uts.edu.au", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

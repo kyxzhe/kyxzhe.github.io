@@ -31,7 +31,7 @@ export const consoleUtil = {
     name: "Yuxiang (Kevin) Zheng",
     github: "https://github.com/kyxzhe",
     website: "https://kyxzhe.github.io",
-    email: "Kevin.Zheng@student.uts.edu.au",
+    email: "kevin.zheng@student.uts.edu.au",
     message: "I’m exploring how information spreads online and how ML can stay robust in messy reality."
   },
   researchHighlights: [
