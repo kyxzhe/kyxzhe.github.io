@@ -14,44 +14,47 @@ import {
 
 const timeline = [
   {
-    title: "PhD — Behavioural Data Science Lab",
+    title: "PhD · Behavioural Data Science Lab",
     org: "University of Technology Sydney",
     period: "2025 – Present",
     detail:
-      "Studying information diffusion, algorithmic interventions, and robust learning with Marian-Andrei Rizoiu.",
+      "Working with Dr. Marian-Andrei Rizoiu on information diffusion, social data science, and robust machine learning.",
+  },
+  {
+    title: "Guest lecturer & tutor · COMP5328/4328",
+    org: "University of Sydney",
+    period: "2024",
+    detail:
+      "Led Advanced Machine Learning tutorials and delivered a guest lecture on data-centric evaluation.",
   },
   {
     title: "B.Adv. Computing (Honours) + B.Sc.",
-    org: "The University of Sydney",
+    org: "University of Sydney",
     period: "2021 – 2024",
     detail:
-      "Honours thesis on noisy-label and generative models, graduating with a University Medal and a love for messy datasets.",
-  },
-  {
-    title: "Exchange & vision research sprints",
-    org: "ETH Zürich · USYD CV labs",
-    period: "2022 – 2023",
-    detail:
-      "Explored video action recognition and temporal representation learning—foundations for multi-modal diffusion work.",
+      "Studied noisy-label learning and generative models, somehow graduated with a University Medal.",
   },
 ];
 
 const researchFocus = [
-  "Information diffusion & narrative evolution",
-  "Robust ML under noisy or biased supervision",
-  "Temporal + graph representations for social data",
+  "Information diffusion & online narrative dynamics",
+  "Robust ML under noisy, biased, or shifting supervision",
+  "Temporal + graph representations for multimodal social data",
   "Evaluation of ranking and moderation interventions",
 ];
 
 const contributions = [
-  "Designing messy-data assignments for DS + ML courses",
-  "Facilitating diffusion + trustworthy ML reading groups",
-  "Mentoring honours students on social data pipelines",
-  "Collaborating with teams on ranking/red-teaming audits",
+  "TA · 2024 S2 COMP5328/4328 Advanced Machine Learning",
+  "TA · 2025 S2 DATA1002/1902 Informatics: Data and Computation",
+  "Guest lecture: COMP5328 on data-centric ML evaluation",
+  "4 internal talks across lab meetings & reading groups",
 ];
 
-const aboutIntro =
-  "I study social platforms as dynamic systems: how information diffuses, how ranking and moderation shape what people see, and how to keep models trustworthy when supervision is noisy or biased. I enjoy slow, iterative research—reading widely, mapping connections between diffusion, causal inference, and robust learning, then narrowing in on questions that feel both principled and practical.";
+const aboutIntro = `I’m a PhD student at the University of Technology Sydney, working with Marian-Andrei Rizoiu in the Behavioural Data Science Lab. My research looks at how information spreads online and how to keep machine learning models a little more robust when faced with the messiness of the real world.
+
+Before the PhD, I studied at the University of Sydney (and somehow graduated with a University Medal). Teaching data science and ML became a favourite way to understand tough ideas—there’s nothing like explaining a concept to realise where the gaps are.
+
+Outside academia I’m usually carrying a film camera, hunting for the next coffee spot, or sweating it out at the gym. I rotate hobbies like archery, and I’m always down to trade recommendations for diving, skydiving, or the best flat white in Sydney. If you want to chat about research, photography, or travel-fuelled ideas, feel free to reach out.`;
 
 export default function AboutPage() {
   return (
@@ -86,10 +89,10 @@ export default function AboutPage() {
                 initial="hidden"
                 animate="visible"
               >
-                Understanding how information spreads and how to keep our models honest while it does.
+                About Kevin
               </motion.h1>
               <motion.p
-                className="text-base md:text-lg text-foreground/80"
+                className="text-base md:text-lg text-foreground/80 whitespace-pre-line"
                 variants={textVariants}
                 initial="hidden"
                 animate="visible"
@@ -156,11 +159,11 @@ export default function AboutPage() {
               animate="visible"
             >
               <div className="card-row flex-col text-center justify-center">
-                <p className="text-3xl font-semibold">15+</p>
-                <p className="text-xs uppercase tracking-[0.3em]">Talks</p>
+                <p className="text-3xl font-semibold">4</p>
+                <p className="text-xs uppercase tracking-[0.3em]">Lab talks</p>
               </div>
               <div className="card-row flex-col text-center justify-center">
-                <p className="text-3xl font-semibold">8</p>
+                <p className="text-3xl font-semibold">2</p>
                 <p className="text-xs uppercase tracking-[0.3em]">Manuscripts</p>
               </div>
             </motion.div>
