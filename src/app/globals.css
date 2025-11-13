@@ -123,6 +123,15 @@ body {
     background: var(--pill-background);
   }
 
+  .chip-relaxed {
+    text-transform: none;
+    letter-spacing: 0.05em;
+    color: var(--foreground);
+    font-size: 0.8rem;
+    line-height: 1.4;
+    text-align: left;
+  }
+
   .card-row {
     border-radius: 16px;
     border: 1px solid var(--card-border);

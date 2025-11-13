@@ -101,7 +101,7 @@ export default function AboutPage() {
               {researchFocus.map((item) => (
                 <li
                   key={item}
-                  className="chip"
+                  className="chip chip-relaxed"
                 >
                   {item}
                 </li>
