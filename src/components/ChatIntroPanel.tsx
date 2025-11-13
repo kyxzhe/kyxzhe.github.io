@@ -2,8 +2,8 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "motion/react";
-import { AlertTriangle, Loader2, Send, Sparkles } from "lucide-react";
-import { cardVariants, textVariants } from "@/lib/animation/variants";
+import { AlertTriangle, Loader2, Plus, Send } from "lucide-react";
+import { cardVariants } from "@/lib/animation/variants";
 import { type ChatMessage, sendChatRequest } from "@/lib/api/chat";
 
 export default function ChatIntroPanel() {
@@ -52,89 +52,80 @@ export default function ChatIntroPanel() {
 
   return (
     <motion.div
-      className="w-full lg:w-[40%] rounded-[20px] p-6 flex flex-col gap-4 glass-panel relative overflow-hidden"
+      className="w-full lg:w-[40%] rounded-[20px] flex flex-col h-[420px] glass-panel overflow-hidden"
       variants={cardVariants}
       initial="hidden"
       animate="visible"
       whileHover="hover"
     >
-      <div className="absolute inset-0 pointer-events-none opacity-60" style={{
-        background: "radial-gradient(circle at 20% 20%, rgba(232,206,194,0.25), transparent 50%), radial-gradient(circle at 80% 0%, rgba(102,156,70,0.25), transparent 45%)"
-      }} />
-      <div className="relative flex flex-col gap-4">
-        <motion.div
-          className="flex items-center justify-between"
-          variants={textVariants}
-          initial="hidden"
-        animate="visible"
-      >
+      <div className="bg-[var(--card)] px-6 py-4 border-b border-[var(--card-border)] flex justify-between items-center">
         <div className="flex items-center gap-2">
-          <span className="chip inline-flex items-center gap-2">
-            <Sparkles size={12} />
-            Chatbot
-          </span>
+          <div className="w-8 h-8 rounded-full bg-[var(--accent-soft)] flex items-center justify-center text-[var(--accent)]">
+            <Plus size={18} />
+          </div>
+          <div>
+            <p className="text-sm uppercase tracking-[0.3em] text-muted-foreground">New chat</p>
+            <p className="text-base font-medium">KevinBot</p>
+          </div>
         </div>
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
           Online
         </div>
-      </motion.div>
-
-      <div className="p-0 flex flex-col gap-3 min-h-[240px] overflow-hidden relative">
-        <div className="space-y-2 text-sm max-h-[200px] overflow-y-auto pr-1">
+      </div>
+      <div className="flex-1 flex flex-col px-6 py-4 gap-4 overflow-hidden">
+        <div className="flex-1 overflow-y-auto space-y-6 pr-2">
           {latestMessages.map((msg, idx) => (
-            <div
-              key={`${msg.role}-${idx}-${msg.content.slice(0, 8)}`}
-              className={`max-w-[90%] rounded-2xl px-4 py-2 ${
-                msg.role === "assistant"
-                  ? "bg-[var(--accent)] text-white ml-auto"
-                  : "bubble-muted"
-              }`}
-            >
-              <p className="text-[0.65rem] uppercase tracking-[0.3em] text-white/70 mb-1">
+            <div key={`${msg.role}-${idx}-${msg.content.slice(0, 6)}`}>
+              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-1">
                 {msg.role === "assistant" ? "KevinBot" : "You"}
               </p>
-              <p className="whitespace-pre-line">{msg.content}</p>
+              <div
+                className={`rounded-2xl px-4 py-3 text-sm ${
+                  msg.role === "assistant"
+                    ? "bg-[var(--card)] border border-[var(--card-border)]"
+                    : "bg-[var(--accent-soft)] text-foreground border border-transparent"
+                }`}
+              >
+                {msg.content}
+              </div>
             </div>
           ))}
+          {error && (
+            <div className="card-row text-xs text-red-500">
+              <AlertTriangle size={14} />
+              {error}
+            </div>
+          )}
         </div>
-        {error && (
-          <div className="card-row text-xs text-red-500">
-            <AlertTriangle size={14} />
-            {error}
-          </div>
-        )}
-      </div>
-
-      <div className="flex gap-2 mt-auto">
-        <input
-          ref={inputRef}
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              e.preventDefault();
-              handleSend();
-            }
-          }}
-          placeholder="Ask KevinBot..."
-          className="flex-1 rounded-2xl border border-border px-3 py-2 bg-transparent focus:outline-none focus:border-foreground text-sm"
-        />
-        <button
-          type="button"
-          onClick={handleSend}
-          disabled={!canSend}
-          className="btn-primary inline-flex items-center gap-2 px-4 py-2 disabled:opacity-50"
-        >
-          {isLoading ? <Loader2 size={14} className="animate-spin" /> : <Send size={14} />}
-          {isLoading ? "Thinking" : "Send"}
-        </button>
-      </div>
-
-      <p className="text-xs text-muted-foreground">
-        Chatbot can make mistakes. Check important info.
-      </p>
+        <div className="border-t border-[var(--card-border)] pt-4 flex gap-3 items-center">
+          <input
+            ref={inputRef}
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                handleSend();
+              }
+            }}
+            placeholder="Send a message..."
+            className="flex-1 rounded-2xl border border-border px-4 py-3 bg-transparent focus:outline-none focus:border-foreground text-sm"
+          />
+          <button
+            type="button"
+            onClick={handleSend}
+            disabled={!canSend}
+            className="btn-primary inline-flex items-center gap-2 px-4 py-3 disabled:opacity-50"
+          >
+            {isLoading ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />}
+            {isLoading ? "Thinking" : "Send"}
+          </button>
+        </div>
+        <p className="text-xs text-muted-foreground text-center">
+          Chatbot can make mistakes. Check important info.
+        </p>
       </div>
     </motion.div>
   );
