@@ -48,7 +48,7 @@ export default function ContactPage() {
               initial="hidden"
               animate="visible"
             >
-              Let&apos;s reason about information diffusion and robust ML together.
+              Let’s chat about social data, diffusion experiments, or teaching ideas.
             </motion.h1>
             <motion.p
               className="text-base md:text-lg text-foreground/80"
@@ -56,7 +56,7 @@ export default function ContactPage() {
               initial="hidden"
               animate="visible"
             >
-              I enjoy conversations about modelling social platforms as dynamic systems, evaluating interventions, and teaching with slightly messy datasets. Email is the fastest way to reach me.
+              I’m always happy to trade notes on modelling platforms as dynamic systems, testing moderation ideas, or designing realistic coursework. Email is the quickest way to get a reply, and I’m glad to follow up with a call if it helps.
             </motion.p>
             <motion.div
               className="grid grid-cols-1 sm:grid-cols-2 gap-3"
