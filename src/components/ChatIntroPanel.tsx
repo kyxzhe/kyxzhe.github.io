@@ -1,8 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "motion/react";
 import { MessageCircle, Sparkles, Send } from "lucide-react";
 import { cardVariants, textVariants } from "@/lib/animation/variants";
+import ChatBotModal from "./ChatBotModal";
 
 const previewMessages = [
   {
@@ -26,6 +28,8 @@ const previewMessages = [
 const interests = ["Trustworthy ML", "Misinformation", "Teaching", "Film Photography", "Coffee chats"];
 
 export default function ChatIntroPanel() {
+  const [isChatOpen, setIsChatOpen] = useState(false);
+
   return (
     <motion.div
       className="w-full lg:w-[40%] rounded-[20px] p-6 flex flex-col gap-4 glass-panel relative overflow-hidden"
@@ -95,10 +99,11 @@ export default function ChatIntroPanel() {
       >
         <button
           type="button"
-          className="btn-primary inline-flex items-center justify-center gap-2 cursor-default"
+          className="btn-primary inline-flex items-center justify-center gap-2"
+          onClick={() => setIsChatOpen(true)}
         >
           <Send size={16} />
-          Say hi or book a chat
+          Chat now
         </button>
         <p className="text-xs text-muted-foreground">
           I’m a PhD student at UTS working with Dr. Marian-Andrei Rizoiu in the Behavioral Data Science Lab.
@@ -106,6 +111,7 @@ export default function ChatIntroPanel() {
         </p>
       </motion.div>
       </div>
+      <ChatBotModal open={isChatOpen} onClose={() => setIsChatOpen(false)} />
     </motion.div>
   );
 }
