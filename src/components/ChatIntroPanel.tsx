@@ -6,8 +6,6 @@ import { AlertTriangle, Loader2, Send, Sparkles } from "lucide-react";
 import { cardVariants, textVariants } from "@/lib/animation/variants";
 import { type ChatMessage, sendChatRequest } from "@/lib/api/chat";
 
-const interests = ["Trustworthy ML", "Misinformation", "Teaching", "Film Photography", "Coffee chats"];
-
 export default function ChatIntroPanel() {
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
@@ -75,7 +73,6 @@ export default function ChatIntroPanel() {
             <Sparkles size={12} />
             Chatbot
           </span>
-          <span className="text-xs text-muted-foreground">coming soon</span>
         </div>
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
@@ -107,45 +104,33 @@ export default function ChatIntroPanel() {
             {error}
           </div>
         )}
-        <div className="flex gap-2 mt-2">
-          <input
-            ref={inputRef}
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault();
-                handleSend();
-              }
-            }}
-            placeholder="Ask KevinBot..."
-            className="flex-1 rounded-2xl border border-border px-3 py-2 bg-transparent focus:outline-none focus:border-foreground text-sm"
-          />
-          <button
-            type="button"
-            onClick={handleSend}
-            disabled={!canSend}
-            className="btn-primary inline-flex items-center gap-2 px-4 py-2 disabled:opacity-50"
-          >
-            {isLoading ? <Loader2 size={14} className="animate-spin" /> : <Send size={14} />}
-            {isLoading ? "Thinking" : "Send"}
-          </button>
-        </div>
       </div>
 
-      <motion.div
-        className="flex flex-wrap gap-2"
-        variants={textVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        {interests.map((tag) => (
-          <span key={tag} className="chip">
-            {tag}
-          </span>
-        ))}
-      </motion.div>
+      <div className="flex gap-2 mt-auto">
+        <input
+          ref={inputRef}
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              handleSend();
+            }
+          }}
+          placeholder="Ask KevinBot..."
+          className="flex-1 rounded-2xl border border-border px-3 py-2 bg-transparent focus:outline-none focus:border-foreground text-sm"
+        />
+        <button
+          type="button"
+          onClick={handleSend}
+          disabled={!canSend}
+          className="btn-primary inline-flex items-center gap-2 px-4 py-2 disabled:opacity-50"
+        >
+          {isLoading ? <Loader2 size={14} className="animate-spin" /> : <Send size={14} />}
+          {isLoading ? "Thinking" : "Send"}
+        </button>
+      </div>
 
       <p className="text-xs text-muted-foreground">
         Chatbot can make mistakes. Check important info.
