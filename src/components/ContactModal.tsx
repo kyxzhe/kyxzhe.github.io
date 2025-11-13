@@ -26,7 +26,7 @@ import {
 import { contactInfo } from "@/lib/constants/contact";
 import { socials } from "@/lib/constants/socials";
 import { generateAvailability } from "@/lib/constants/availability";
-import { GoogleScholarIcon } from "@/components/icons/AcademicIcons";
+import { GoogleScholarIcon, OrcidIcon } from "@/components/icons/AcademicIcons";
 
 interface ContactModalProps {
   isOpen: boolean;
@@ -339,16 +339,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                         {
                           label: "ORCID",
                           href: socials.orcid,
-                          icon: (
-                            <Image
-                              src="/icons/orcid.png"
-                              alt="ORCID logo"
-                              width={24}
-                              height={24}
-                              className="w-6 h-6"
-                              priority={false}
-                            />
-                          ),
+                          icon: <OrcidIcon className="w-6 h-6" />,
                         },
                         {
                           label: "GitHub",
