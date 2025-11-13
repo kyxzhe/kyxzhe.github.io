@@ -75,13 +75,21 @@ export default function AboutPage() {
             whileHover="hover"
           >
             <div>
+              <motion.p
+                className="uppercase tracking-[0.3em] text-xs text-muted-foreground mb-3"
+                variants={textVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                About Kevin
+              </motion.p>
               <motion.h1
                 className="text-3xl md:text-4xl font-semibold mb-4 leading-tight"
                 variants={textVariants}
                 initial="hidden"
                 animate="visible"
               >
-                About Kevin
+                Mapping information diffusion while keeping models grounded in messy reality.
               </motion.h1>
               <motion.p
                 className="text-base md:text-lg text-foreground/80 whitespace-pre-line"
