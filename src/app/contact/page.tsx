@@ -48,7 +48,7 @@ export default function ContactPage() {
               initial="hidden"
               animate="visible"
             >
-              Let’s chat about social data, diffusion experiments, or teaching ideas.
+              Say hi if you want to collaborate, swap ideas, or grab a virtual coffee.
             </motion.h1>
             <motion.p
               className="text-base md:text-lg text-foreground/80"
@@ -56,7 +56,7 @@ export default function ContactPage() {
               initial="hidden"
               animate="visible"
             >
-              I’m always happy to trade notes on modelling platforms as dynamic systems, testing moderation ideas, or designing realistic coursework. Email is the quickest way to get a reply, and I’m glad to follow up with a call if it helps.
+              Email is the quickest way to reach me—I’m happy to follow up with a call once we find a time that works.
             </motion.p>
             <motion.div
               className="grid grid-cols-1 sm:grid-cols-2 gap-3"
