@@ -133,7 +133,7 @@ export default function ContactPage() {
               the modal includes all upcoming availability, so this section stays clutter-free.
             </motion.p>
             <motion.div
-              className="rounded-[16px] border border-border px-4 py-4 flex gap-3 items-center bg-[var(--accent-soft)] text-[var(--accent)]"
+              className="surface-card-dark px-4 py-4 flex gap-3 items-center text-white/90"
               variants={iconVariants}
               initial="hidden"
               animate="visible"
@@ -176,16 +176,16 @@ export default function ContactPage() {
               initial="hidden"
               animate="visible"
             >
-              <li className="rounded-[16px] border border-border px-4 py-3 bg-[var(--accent-soft)] text-[var(--accent)]">
+              <li className="pill border border-border px-4 py-3 bg-[var(--accent-soft)] text-[var(--accent)]">
                 • Data integrity audits & noisy-label pipelines
               </li>
-              <li className="rounded-[16px] border border-border px-4 py-3 bg-[var(--accent-soft)] text-[var(--accent)]">
+              <li className="pill border border-border px-4 py-3 bg-[var(--accent-soft)] text-[var(--accent)]">
                 • Trust & safety assessments for LLM deployments
               </li>
-              <li className="rounded-[16px] border border-border px-4 py-3 bg-[var(--accent-soft)] text-[var(--accent)]">
+              <li className="pill border border-border px-4 py-3 bg-[var(--accent-soft)] text-[var(--accent)]">
                 • Research mentorship & reading groups
               </li>
-              <li className="rounded-[16px] border border-border px-4 py-3 bg-[var(--accent-soft)] text-[var(--accent)]">
+              <li className="pill border border-border px-4 py-3 bg-[var(--accent-soft)] text-[var(--accent)]">
                 • Talks/workshops on data-centric AI
               </li>
             </motion.ul>

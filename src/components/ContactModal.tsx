@@ -446,9 +446,9 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                             key={slot.id}
                             disabled={slot.booked || submissionState === "loading"}
                             onClick={() => setSelectedSlotId(slot.id)}
-                            className={`rounded-[16px] border px-4 py-4 text-left transition-all ${
+                            className={`surface-card px-4 py-4 text-left transition-all ${
                               slot.booked
-                                ? "border-border/30 text-muted-foreground cursor-not-allowed line-through"
+                                ? "border-border/30 text-muted-foreground cursor-not-allowed line-through opacity-60"
                                 : isSelected
                                   ? "border-brand-accent bg-brand-accent/10 shadow-[0_12px_30px_-20px_rgba(255,255,255,0.8)]"
                                   : "border-border hover:bg-[var(--accent-soft)]"

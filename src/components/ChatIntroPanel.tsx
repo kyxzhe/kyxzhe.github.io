@@ -57,7 +57,7 @@ export default function ChatIntroPanel() {
         </div>
       </motion.div>
 
-      <div className="surface-card rounded-[16px] p-4 flex flex-col gap-3 min-h-[240px] overflow-hidden relative">
+      <div className="surface-card p-4 flex flex-col gap-3 min-h-[240px] overflow-hidden relative">
         <div className="space-y-2 text-sm">
           {previewMessages.map((msg, idx) => (
             <div

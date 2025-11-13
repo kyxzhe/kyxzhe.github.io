@@ -8,6 +8,9 @@
   --accent: #8e6cff;
   --accent-soft: rgba(142, 108, 255, 0.12);
   --font-gilroy: 'Gilroy', sans-serif;
+  --radius-card: 20px;
+  --radius-card-tight: 18px;
+  --radius-pill: 999px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -61,7 +64,7 @@ body {
 
 @layer utilities {
   .glass-panel {
-    border-radius: 20px;
+    border-radius: var(--radius-card);
     background: linear-gradient(135deg, rgba(255,255,255,0.4), rgba(255,255,255,0.05));
     border: 1px solid var(--card-border);
     box-shadow: 0 25px 60px rgba(15, 17, 21, 0.18);
@@ -72,15 +75,21 @@ body {
   .surface-card {
     background: var(--card);
     border: 1px solid var(--card-border);
-    border-radius: 20px;
+    border-radius: var(--radius-card);
     box-shadow: 0 20px 45px rgba(15, 17, 21, 0.12);
-    border-radius: 20px;
+  }
+
+  .surface-card-dark {
+    background: #101016;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-card-tight);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
   }
 
   .btn-primary {
     background: linear-gradient(120deg, var(--accent), color-mix(in srgb, var(--accent) 80%, #fff));
     color: #fff;
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     padding: 0.75rem 1.5rem;
     font-weight: 600;
     box-shadow: 0 12px 24px color-mix(in srgb, var(--accent) 40%, transparent);
@@ -89,7 +98,7 @@ body {
   .badge-soft {
     background: var(--accent-soft);
     color: var(--accent);
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     padding: 0.35rem 0.75rem;
     font-size: 0.65rem;
     letter-spacing: 0.2em;
@@ -97,7 +106,7 @@ body {
   }
 
   .chip {
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     border: 1px solid var(--card-border);
     padding: 0.45rem 0.9rem;
     font-size: 0.7rem;
@@ -124,7 +133,7 @@ body {
   }
 
   .card-pill {
-    border-radius: 16px;
+    border-radius: var(--radius-pill);
     border: 1px solid var(--card-border);
     background: color-mix(in srgb, var(--card) 85%, var(--accent-soft));
     padding: 0.75rem 1rem;
@@ -138,3 +147,6 @@ body {
     color: color-mix(in srgb, var(--foreground) 85%, var(--accent));
   }
 }
+  .pill {
+    border-radius: var(--radius-pill);
+  }
