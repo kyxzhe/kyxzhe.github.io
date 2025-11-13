@@ -61,7 +61,7 @@ export default function ChatIntroPanel() {
       <div className="absolute inset-0 pointer-events-none opacity-60" style={{
         background: "radial-gradient(circle at 20% 20%, rgba(232,206,194,0.25), transparent 50%), radial-gradient(circle at 80% 0%, rgba(102,156,70,0.25), transparent 45%)"
       }} />
-      <div className="relative flex flex-col gap-4 min-h-[300px]">
+      <div className="relative flex flex-col gap-4 min-h-[320px]">
         <motion.div
           className="flex items-center justify-between"
           initial={{ opacity: 0, y: 10 }}
@@ -101,34 +101,36 @@ export default function ChatIntroPanel() {
             </div>
           )}
         </div>
-        <div className="flex gap-2">
-          <input
-            ref={inputRef}
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault();
-                handleSend();
-              }
-            }}
-            placeholder="Ask KevinBot..."
-            className="flex-1 rounded-2xl border border-border px-3 py-2 bg-transparent focus:outline-none focus:border-foreground text-sm"
-          />
-          <button
-            type="button"
-            onClick={handleSend}
-            disabled={!canSend}
-            className="btn-primary inline-flex items-center gap-2 px-4 py-2 disabled:opacity-50"
-          >
-            {isLoading ? <Loader2 size={14} className="animate-spin" /> : <Send size={14} />}
-            {isLoading ? "Thinking" : "Send"}
-          </button>
+        <div className="mt-auto flex flex-col gap-2 pt-3 border-t border-[var(--card-border)]">
+          <div className="flex gap-2">
+            <input
+              ref={inputRef}
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  handleSend();
+                }
+              }}
+              placeholder="Ask KevinBot..."
+              className="flex-1 rounded-2xl border border-border px-3 py-2 bg-transparent focus:outline-none focus:border-foreground text-sm"
+            />
+            <button
+              type="button"
+              onClick={handleSend}
+              disabled={!canSend}
+              className="btn-primary inline-flex items-center gap-2 px-4 py-2 disabled:opacity-50"
+            >
+              {isLoading ? <Loader2 size={14} className="animate-spin" /> : <Send size={14} />}
+              {isLoading ? "Thinking" : "Send"}
+            </button>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            Chatbot can make mistakes. Check important info.
+          </p>
         </div>
-        <p className="text-xs text-muted-foreground">
-          Chatbot can make mistakes. Check important info.
-        </p>
       </div>
     </motion.div>
   );
