@@ -8,8 +8,11 @@ import MobileNav from './MobileNav';
 export default function Navbar() {
   const { menuOpen, toggleMenu, closeMenu } = useNavigation();
   return (
-    <header className="surface-card mb-4" role="banner">
-      <nav className="flex flex-row justify-between px-4 py-4 lg:px-10 lg:py-6 items-center md:flex-row md:items-center relative" aria-label="Main navigation">
+    <header className="mb-4" role="banner">
+      <nav
+        className="glass-panel flex flex-row justify-between px-4 py-4 lg:px-10 lg:py-6 items-center md:flex-row md:items-center relative"
+        aria-label="Main navigation"
+      >
         <Link
           href="/"
           className="flex flex-row gap-1 items-center"
