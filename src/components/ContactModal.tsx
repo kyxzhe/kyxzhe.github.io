@@ -297,12 +297,12 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                       onClick={() => setMode("schedule")}
                     >
                       <motion.div
-                        className="w-11 h-11 rounded-full border border-green-500/30 bg-green-500/15 flex items-center justify-center"
+                        className="w-11 h-11 rounded-full border border-border flex items-center justify-center text-[var(--accent)] bg-transparent"
                         variants={iconVariants}
                         initial="hidden"
                         animate="visible"
                       >
-                        <CalendarDays size={20} className="text-green-500" />
+                        <CalendarDays size={20} />
                       </motion.div>
                       <div>
                         <h3 className="font-medium text-lg">Availability</h3>
