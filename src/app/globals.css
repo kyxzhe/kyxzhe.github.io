@@ -106,4 +106,35 @@ body {
     color: color-mix(in srgb, var(--foreground) 70%, var(--accent));
     background: color-mix(in srgb, var(--accent) 6%, transparent);
   }
+
+  .card-row {
+    border-radius: 16px;
+    border: 1px solid var(--card-border);
+    background: color-mix(in srgb, var(--card) 90%, transparent);
+    padding: 0.85rem 1rem;
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  .card-row.hoverable:hover {
+    border-color: color-mix(in srgb, var(--accent) 35%, var(--card-border));
+    background: color-mix(in srgb, var(--card) 80%, var(--accent-soft));
+    box-shadow: 0 12px 30px rgba(15, 17, 21, 0.12);
+  }
+
+  .card-pill {
+    border-radius: 16px;
+    border: 1px solid var(--card-border);
+    background: color-mix(in srgb, var(--card) 85%, var(--accent-soft));
+    padding: 0.75rem 1rem;
+    color: color-mix(in srgb, var(--foreground) 85%, var(--accent));
+    font-size: 0.85rem;
+  }
+
+  .bubble-muted {
+    border-radius: 18px;
+    background: color-mix(in srgb, var(--card) 90%, transparent);
+    color: color-mix(in srgb, var(--foreground) 85%, var(--accent));
+  }
 }

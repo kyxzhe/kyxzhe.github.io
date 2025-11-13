@@ -57,18 +57,18 @@ export default function ChatIntroPanel() {
         </div>
       </motion.div>
 
-      <div className="bg-background/20 rounded-[16px] border border-border/40 p-4 flex flex-col gap-3 min-h-[240px] overflow-hidden relative">
+      <div className="surface-card rounded-[16px] p-4 flex flex-col gap-3 min-h-[240px] overflow-hidden relative">
         <div className="space-y-2 text-sm">
           {previewMessages.map((msg, idx) => (
             <div
               key={idx}
-              className={`max-w-[90%] rounded-2xl px-4 py-2 ${msg.role === "kevin" ? "bg-[var(--accent)] text-white ml-auto" : "bg-background/70 text-foreground/80"}`}
+              className={`max-w-[90%] rounded-2xl px-4 py-2 ${msg.role === "kevin" ? "bg-[var(--accent)] text-white ml-auto" : "bubble-muted"}`}
             >
               {msg.text}
             </div>
           ))}
         </div>
-        <div className="flex items-center gap-2 bg-background/40 rounded-full px-4 py-2 text-sm text-muted-foreground">
+        <div className="card-row text-sm text-muted-foreground">
           <MessageCircle size={16} />
           Ask me anything about research, coffee, or film cameras.
         </div>

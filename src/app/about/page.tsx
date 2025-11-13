@@ -153,11 +153,11 @@ export default function AboutPage() {
               initial="hidden"
               animate="visible"
             >
-              <div className="bg-background/10 rounded-[16px] p-4 text-center">
+              <div className="card-row flex-col text-center justify-center">
                 <p className="text-3xl font-semibold">15+</p>
                 <p className="text-xs uppercase tracking-[0.3em]">Talks</p>
               </div>
-              <div className="bg-background/10 rounded-[16px] p-4 text-center">
+              <div className="card-row flex-col text-center justify-center">
                 <p className="text-3xl font-semibold">8</p>
                 <p className="text-xs uppercase tracking-[0.3em]">Papers</p>
               </div>
@@ -223,7 +223,7 @@ export default function AboutPage() {
               {contributions.map((item) => (
                 <li
                   key={item}
-                  className="bg-background/40 border border-background/10 rounded-[16px] px-4 py-3 text-sm"
+                  className="card-row text-sm"
                 >
                   {item}
                 </li>

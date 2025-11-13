@@ -65,7 +65,7 @@ export default function PublicationsPage() {
             {metrics.map((metric) => (
               <motion.div
                 key={metric.label}
-                className="rounded-[16px] border border-background/30 px-4 py-3"
+                className="card-row flex-col items-start"
                 variants={iconVariants}
                 initial="hidden"
                 animate="visible"

@@ -200,7 +200,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
             onClick={(e) => e.stopPropagation()}
           >
             <motion.button
-              className="absolute top-6 right-6 p-2 rounded-full bg-background/10 hover:bg-background/20 transition-colors z-10"
+              className="absolute top-6 right-6 p-2 rounded-full bg-[var(--accent-soft)] text-[var(--accent)] hover:opacity-80 transition-colors z-10"
               onClick={() => {
                 onClose();
                 resetScheduler();
@@ -246,7 +246,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                     animate="visible"
                   >
                     <motion.div
-                      className="flex items-center gap-4 p-4 rounded-lg bg-background/5 hover:bg-background/10 transition-colors cursor-pointer"
+                      className="card-row hoverable flex-col sm:flex-row items-start sm:items-center cursor-pointer"
                       whileHover={{ scale: 1.02 }}
                       onClick={() => window.open(`mailto:${contactInfo.email}`)}
                     >
@@ -259,7 +259,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                       </div>
                     </motion.div>
                     <motion.div
-                      className="flex items-center gap-4 p-4 rounded-lg bg-background/5 hover:bg-background/10 transition-colors cursor-pointer"
+                      className="card-row hoverable flex-col sm:flex-row items-start sm:items-center cursor-pointer"
                       whileHover={{ scale: 1.02 }}
                       onClick={() => window.open(`tel:${contactInfo.phoneRaw}`)}
                     >
@@ -273,7 +273,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                     </motion.div>
 
                     <motion.div
-                      className="flex items-center gap-4 p-4 rounded-lg bg-background/5"
+                      className="card-row flex-col sm:flex-row items-start sm:items-center"
                       variants={textVariants}
                       initial="hidden"
                       animate="visible"
@@ -288,7 +288,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                     </motion.div>
 
                     <motion.div
-                      className="flex items-center gap-4 p-4 rounded-lg bg-background/5 hover:bg-background/10 transition-colors cursor-pointer"
+                      className="card-row hoverable flex-col sm:flex-row items-start sm:items-center cursor-pointer"
                       variants={textVariants}
                       initial="hidden"
                       animate="visible"
@@ -296,7 +296,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                       onClick={() => setMode("schedule")}
                     >
                       <motion.div
-                        className="w-11 h-11 rounded-full border border-green-500/40 bg-green-500/5 flex items-center justify-center"
+                        className="w-11 h-11 rounded-full border border-green-500/30 bg-green-500/15 flex items-center justify-center"
                         variants={iconVariants}
                         initial="hidden"
                         animate="visible"
@@ -313,13 +313,13 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                   </motion.div>
 
                   <motion.div
-                    className="border-t border-border pt-6"
+                    className="border-t border-border/70 pt-6"
                     variants={textVariants}
                     initial="hidden"
                     animate="visible"
                   >
                     <h3 className="text-xl font-medium mb-4 text-center">Connect with me</h3>
-                    <div className="flex flex-wrap justify-center gap-4">
+                    <div className="flex flex-wrap justify-center gap-3">
                       {[
                         {
                           label: "LinkedIn",
@@ -347,13 +347,14 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                           href={href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="p-3 rounded-full bg-background/10 hover:bg-background/20 transition-colors"
+                          className="card-row hoverable justify-center"
                           variants={iconVariants}
                           initial="hidden"
                           animate="visible"
                           whileHover="hover"
                         >
                           {icon}
+                          <span>{label}</span>
                         </motion.a>
                       ))}
                     </div>
@@ -374,14 +375,14 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                     animate="visible"
                   >
                     <div className="flex flex-wrap gap-3 items-center justify-between">
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => setMode("info")}
-                          className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-2 text-sm hover:bg-background/10 transition-colors"
-                        >
-                          <ArrowLeft size={16} />
-                          Back
-                        </button>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setMode("info")}
+                      className="card-row hoverable justify-center text-sm"
+                    >
+                      <ArrowLeft size={16} />
+                      Back
+                    </button>
                       </div>
                       {submissionState === "success" && (
                         <span className="inline-flex items-center gap-1 text-xs uppercase tracking-[0.3em] text-green-500">
@@ -395,7 +396,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                       )}
                     </div>
 
-                    <div className="bg-background/5 rounded-[20px] p-4">
+                    <div className="surface-card p-4">
                       <div className="flex items-center justify-between mb-2">
                         <p className="text-xs uppercase tracking-[0.4em] text-muted-foreground">
                           Choose a date
@@ -404,14 +405,14 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                           <button
                             onClick={() => shiftWindow(-1)}
                             disabled={windowStart === 0}
-                            className="px-2 py-1 rounded-full border border-border text-xs disabled:opacity-40"
+                            className="chip text-[10px] py-2 disabled:opacity-40"
                           >
                             Prev
                           </button>
                           <button
                             onClick={() => shiftWindow(1)}
                             disabled={windowStart >= maxWindowIndex}
-                            className="px-2 py-1 rounded-full border border-border text-xs disabled:opacity-40"
+                            className="chip text-[10px] py-2 disabled:opacity-40"
                           >
                             Next
                           </button>
@@ -425,10 +426,10 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                               setSelectedDate(day.dateISO);
                               setSelectedSlotId(null);
                             }}
-                            className={`px-4 py-2 rounded-full text-sm transition-colors border ${
+                            className={`chip text-sm ${
                               selectedDate === day.dateISO
                                 ? "bg-[var(--accent)] text-white border-[var(--accent)]"
-                                : "border-border hover:bg-background/10"
+                                : "hover:bg-[var(--accent-soft)]"
                             }`}
                           >
                             {day.displayLabel}
@@ -450,7 +451,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                                 ? "border-border/30 text-muted-foreground cursor-not-allowed line-through"
                                 : isSelected
                                   ? "border-brand-accent bg-brand-accent/10 shadow-[0_12px_30px_-20px_rgba(255,255,255,0.8)]"
-                                  : "border-border hover:bg-background/10"
+                                  : "border-border hover:bg-[var(--accent-soft)]"
                             }`}
                           >
                             <div className="flex items-center justify-between">

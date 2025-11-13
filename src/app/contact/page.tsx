@@ -222,7 +222,7 @@ export default function ContactPage() {
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 border border-background/30 rounded-[16px] px-4 py-3 hover:bg-background/10 transition-colors"
+                  className="card-row hoverable justify-between"
                 >
                   {icon}
                   <span>{label}</span>
