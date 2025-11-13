@@ -19,14 +19,14 @@ export const newsItems: NewsItem[] = [
   },
   {
     title: "Awarded: University Medal · University of Sydney",
-    date: "Sep 2024",
+    date: "Sep 2025",
     summary:
       "Honours thesis on noisy-label learning capped off with the University Medal—grateful for every messy dataset that led here.",
     cover: "/projects/work-2.jpg",
   },
   {
     title: "Started PhD at UTS Behavioural Data Science Lab",
-    date: "Sep 2024",
+    date: "Sep 2025",
     summary:
       "Joined Marian-Andrei Rizoiu and the Behavioural Data Science Lab to study information diffusion and robust ML for social platforms.",
     cover: "/projects/work-3.jpg",
