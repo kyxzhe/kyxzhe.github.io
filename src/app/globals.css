@@ -23,7 +23,9 @@
 }
 
 body {
-  background: var(--background);
+  background: radial-gradient(120% 120% at 0% 0%, rgba(102, 156, 70, 0.2), transparent),
+              radial-gradient(80% 120% at 100% 0%, rgba(232, 206, 194, 0.08), transparent),
+              var(--background);
   color: var(--foreground);
   padding: 12px;
   font-family: var(--font-sans);
@@ -40,5 +42,19 @@ body {
   body {
     max-height: 100svh;
     overflow: hidden;
+  }
+}
+
+::selection {
+  background: rgba(102, 156, 70, 0.4);
+  color: var(--background);
+}
+
+@layer utilities {
+  .glass-panel {
+    background: color-mix(in srgb, var(--color-card) 85%, transparent);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(24px);
   }
 }

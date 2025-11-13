@@ -28,12 +28,16 @@ const interests = ["Trustworthy ML", "Misinformation", "Teaching", "Film Photogr
 export default function ChatIntroPanel() {
   return (
     <motion.div
-      className="w-full lg:w-[40%] bg-card rounded-[20px] p-6 flex flex-col gap-4 shadow-lg"
+      className="w-full lg:w-[40%] rounded-[20px] p-6 flex flex-col gap-4 glass-panel relative overflow-hidden"
       variants={cardVariants}
       initial="hidden"
       animate="visible"
       whileHover="hover"
     >
+      <div className="absolute inset-0 pointer-events-none opacity-60" style={{
+        background: "radial-gradient(circle at 20% 20%, rgba(232,206,194,0.25), transparent 50%), radial-gradient(circle at 80% 0%, rgba(102,156,70,0.25), transparent 45%)"
+      }} />
+      <div className="relative flex flex-col gap-4">
       <motion.div
         className="flex items-center justify-between"
         variants={textVariants}
@@ -53,7 +57,7 @@ export default function ChatIntroPanel() {
         </div>
       </motion.div>
 
-      <div className="bg-background/20 rounded-[16px] border border-border/40 p-4 flex flex-col gap-3 min-h-[240px] overflow-hidden">
+      <div className="bg-background/20 rounded-[16px] border border-border/40 p-4 flex flex-col gap-3 min-h-[240px] overflow-hidden relative">
         <div className="space-y-2 text-sm">
           {previewMessages.map((msg, idx) => (
             <div
@@ -77,7 +81,7 @@ export default function ChatIntroPanel() {
         animate="visible"
       >
         {interests.map((tag) => (
-          <span key={tag} className="border border-border rounded-full px-3 py-1">
+          <span key={tag} className="border border-border/60 rounded-full px-3 py-1">
             {tag}
           </span>
         ))}
@@ -101,6 +105,7 @@ export default function ChatIntroPanel() {
           The chatbot will share stories about research, photography, and the best flat whites in Sydney soon.
         </p>
       </motion.div>
+      </div>
     </motion.div>
   );
 }
