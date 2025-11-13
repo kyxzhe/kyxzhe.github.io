@@ -15,6 +15,17 @@ export function GoogleScholarIcon(props: SVGProps<SVGSVGElement>) {
   );
 }
 
+export function GoogleScholarWordmarkIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false" {...props}>
+      <path
+        d="M14.573 2.729c-.729.484-4.292 2.849-7.917 5.255s-6.589 4.396-6.589 4.422c0 .026.182.146.406.266.224.13 3.797 2.109 7.953 4.411l7.542 4.193.193-.099c.109-.052 2.891-1.641 6.188-3.521l5.99-3.427.036 10.599h3.557V12.887l-4.615-3.094c-6.219-4.167-11.188-7.448-11.307-7.474-.063-.01-.703.38-1.438.87ZM7.141 22.177l.016 2.672 8.828 5.292 8.891-5.339v-2.641c0-1.458-.016-2.646-.031-2.646-.021 0-1.76 1.042-3.87 2.323l-4.406 2.661-.578.339-1.755-1.052c-1.464-.875-2.927-1.755-4.385-2.641l-2.672-1.615c-.031-.01-.042 1.177-.036 2.646Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
 export function OrcidIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" {...props}>

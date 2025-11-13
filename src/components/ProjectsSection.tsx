@@ -6,7 +6,7 @@ import { motion } from "motion/react";
 import { cardVariants, projectsVariants, projectItemVariants, socialVariants, textVariants, iconVariants } from "@/lib/animation/variants";
 import { newsItems } from "@/lib/constants/news";
 import { socials } from "@/lib/constants/socials";
-import { GoogleScholarIcon, OrcidIcon } from "@/components/icons/AcademicIcons";
+import { GoogleScholarIcon, GoogleScholarWordmarkIcon, OrcidIcon } from "@/components/icons/AcademicIcons";
 
 export default function ProjectsSection() {
   const [headline, ...others] = newsItems;
@@ -112,14 +112,7 @@ export default function ProjectsSection() {
           animate="visible"
           whileHover="hover"
         >
-          <Image
-            src="/icons/google-scholar-white.svg"
-            alt="Google Scholar"
-            width={20}
-            height={20}
-            className="w-5 h-5"
-            priority={false}
-          />
+          <GoogleScholarWordmarkIcon className="w-5 h-5" />
         </motion.a>
         <motion.a 
           href={socials.orcid} 
