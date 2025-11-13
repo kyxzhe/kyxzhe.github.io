@@ -26,7 +26,7 @@ import {
 import { contactInfo } from "@/lib/constants/contact";
 import { socials } from "@/lib/constants/socials";
 import { generateAvailability } from "@/lib/constants/availability";
-import { GoogleScholarIcon, OrcidIcon } from "@/components/icons/AcademicIcons";
+import { GoogleScholarIcon } from "@/components/icons/AcademicIcons";
 
 interface ContactModalProps {
   isOpen: boolean;
@@ -296,13 +296,8 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                       whileHover={{ scale: 1.02 }}
                       onClick={() => setMode("schedule")}
                     >
-                      <motion.div
-                        className="w-11 h-11 rounded-full border border-border flex items-center justify-center text-[var(--accent)] bg-transparent"
-                        variants={iconVariants}
-                        initial="hidden"
-                        animate="visible"
-                      >
-                        <CalendarDays size={20} />
+                      <motion.div variants={iconVariants} initial="hidden" animate="visible">
+                        <CalendarDays size={24} className="text-brand-accent" />
                       </motion.div>
                       <div>
                         <h3 className="font-medium text-lg">Availability</h3>
@@ -344,7 +339,16 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                         {
                           label: "ORCID",
                           href: socials.orcid,
-                          icon: <OrcidIcon className="w-6 h-6" />,
+                          icon: (
+                            <Image
+                              src="/icons/orcid.png"
+                              alt="ORCID logo"
+                              width={24}
+                              height={24}
+                              className="w-6 h-6"
+                              priority={false}
+                            />
+                          ),
                         },
                         {
                           label: "GitHub",
