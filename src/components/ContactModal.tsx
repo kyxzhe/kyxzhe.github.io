@@ -25,7 +25,7 @@ import {
 import { contactInfo } from "@/lib/constants/contact";
 import { socials } from "@/lib/constants/socials";
 import { generateAvailability } from "@/lib/constants/availability";
-import { GoogleScholarIcon, GoogleScholarIconColor, OrcidIcon } from "@/components/icons/AcademicIcons";
+import { GoogleScholarIcon, OrcidIcon } from "@/components/icons/AcademicIcons";
 
 interface ContactModalProps {
   isOpen: boolean;
@@ -329,7 +329,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                         {
                           label: "Google Scholar",
                           href: socials.googleScholar,
-                          icon: <GoogleScholarIconColor className="w-6 h-6" />,
+                          icon: <GoogleScholarIcon className="w-6 h-6" />,
                         },
                         {
                           label: "ORCID",
