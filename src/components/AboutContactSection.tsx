@@ -37,8 +37,7 @@ export default function AboutContactSection() {
         </motion.p>
       </motion.div>
       <motion.div 
-        className="w-[50%] surface-card p-3 md:p-6 border border-accent/30 flex flex-col h-full justify-between cursor-pointer"
-        style={{ background: "color-mix(in srgb, #ffffff 92%, transparent)" }}
+        className="w-[50%] surface-card p-3 md:p-6 flex flex-col h-full justify-between cursor-pointer"
         variants={contactCardVariants}
         initial="hidden"
         animate="visible"
