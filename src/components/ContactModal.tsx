@@ -182,7 +182,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     <AnimatePresence mode="wait">
       {isOpen && (
         <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[rgba(0,0,0,0.83)] backdrop-blur-sm"
           variants={backdropVariants}
           initial="hidden"
           animate="visible"
