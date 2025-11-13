@@ -1,20 +1,92 @@
 "use client";
 
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { motion } from "motion/react";
 import { ArrowUpRight, BookOpenCheck, Sparkles, ListChecks } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { publications } from "@/lib/constants/publications";
+import { type Publication, publications as fallbackPublications } from "@/lib/constants/publications";
 import { cardVariants, containerVariants, iconVariants, projectsVariants, textVariants } from "@/lib/animation/variants";
 
-const metrics = [
-  { label: "Preprints & manuscripts", value: "1" },
-  { label: "Review assignments (ICLR/ICML/etc.)", value: "10+" },
-  { label: "Citations", value: "2" },
-];
+type PublicationsResponse = {
+  publications?: Publication[];
+  metrics?: {
+    citations?: number | null;
+    source?: string;
+    refreshedAt?: string;
+  };
+};
 
 export default function PublicationsPage() {
+  const [dynamicPublications, setDynamicPublications] = useState<Publication[]>([]);
+  const [citations, setCitations] = useState<number | null>(null);
+  const [syncMeta, setSyncMeta] = useState<{ source?: string; refreshedAt?: string }>({});
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const fetchPublications = async () => {
+      try {
+        const response = await fetch("/api/publications");
+        if (!response.ok) return;
+
+        const data = (await response.json()) as PublicationsResponse;
+        if (cancelled) return;
+
+        if (Array.isArray(data.publications) && data.publications.length > 0) {
+          setDynamicPublications(data.publications);
+        }
+
+        if (typeof data.metrics?.citations === "number") {
+          setCitations(data.metrics.citations);
+        }
+
+        if (data.metrics) {
+          setSyncMeta({
+            source: data.metrics.source,
+            refreshedAt: data.metrics.refreshedAt,
+          });
+        }
+      } catch (error) {
+        console.error("[publications] Failed to load Scholar feed", error);
+      }
+    };
+
+    fetchPublications();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const displayedPublications = dynamicPublications.length > 0 ? dynamicPublications : fallbackPublications;
+
+  const metrics = useMemo(
+    () => [
+      { label: "Preprints & manuscripts", value: "1" },
+      { label: "Review assignments (ICLR/ICML/etc.)", value: "10+" },
+      { label: "Citations", value: citations?.toString() ?? "2" },
+    ],
+    [citations]
+  );
+
+  const syncNote = useMemo(() => {
+    if (!dynamicPublications.length || !syncMeta.source) return null;
+
+    const timestamp = syncMeta.refreshedAt
+      ? new Date(syncMeta.refreshedAt).toLocaleString(undefined, {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+      : null;
+
+    return `Auto-synced from ${syncMeta.source}${timestamp ? ` · ${timestamp}` : ""}`;
+  }, [dynamicPublications.length, syncMeta.refreshedAt, syncMeta.source]);
+
   return (
     <div className="flex flex-col min-h-screen font-sans pt-2 md:pt-0 lg:py-6 xl:py-0 xl:pb-6 overflow-auto lg:overflow-visible">
       <Navbar />
@@ -55,6 +127,17 @@ export default function PublicationsPage() {
             >
               I’m currently focused on one core manuscript exploring how messy annotations can be reinterpreted to build more trustworthy models. Code, data traces, and replication materials are available on request.
             </motion.p>
+            {syncNote && (
+              <motion.p
+                className="text-xs uppercase tracking-[0.3em] text-brand-accent/80 flex items-center gap-2"
+                variants={textVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                <Sparkles size={14} />
+                {syncNote}
+              </motion.p>
+            )}
           </motion.div>
           <motion.div
             className="surface-card p-6 flex flex-col gap-4"
@@ -164,7 +247,7 @@ export default function PublicationsPage() {
         </section>
 
         <section className="grid grid-cols-1 gap-4">
-          {publications.map((pub) => (
+          {displayedPublications.map((pub) => (
             <motion.div
               key={pub.title}
               className="surface-card p-6 flex flex-col gap-4"
@@ -182,7 +265,7 @@ export default function PublicationsPage() {
                   <h3 className="text-2xl font-semibold">{pub.title}</h3>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  {pub.tags.map((tag) => (
+                  {pub.tags?.map((tag) => (
                     <span
                       key={tag}
                       className="text-xs uppercase tracking-[0.25em] px-3 py-1 rounded-full border border-border"
@@ -190,8 +273,23 @@ export default function PublicationsPage() {
                       {tag}
                     </span>
                   ))}
+                  {typeof pub.citationCount === "number" && (
+                    <span className="text-xs uppercase tracking-[0.25em] px-3 py-1 rounded-full border border-border">
+                      {pub.citationCount} citations
+                    </span>
+                  )}
+                  {pub.source && (
+                    <span className="text-xs uppercase tracking-[0.25em] px-3 py-1 rounded-full border border-border">
+                      {pub.source}
+                    </span>
+                  )}
                 </div>
               </div>
+              {pub.authors && (
+                <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground">
+                  {pub.authors}
+                </p>
+              )}
               <p className="text-foreground/80 text-sm md:text-base">{pub.summary}</p>
               <div className="flex items-center gap-4">
                 {pub.link && (

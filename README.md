@@ -25,3 +25,9 @@ Everything else is standard Next.js plumbing (App Router under `src/app`, compon
 - The “Chatbot” card on the homepage opens `ChatBotModal`, which calls a Cloudflare Worker via `POST`.
 - By default it calls `https://kevin-bot.kyx-zhe.workers.dev/chat`. Override via `NEXT_PUBLIC_CHAT_API_URL=...` in `.env.local` if you redeploy the Worker or use a different route.
 - The Worker should accept `{ "messages": [{ "role": "user" | "assistant", "content": string }] }` and respond with `{ "response": "<text>" }`.
+
+## Publications feed
+
+- `src/app/api/publications/route.ts` calls SerpApi’s Google Scholar endpoint with `SERPAPI_KEY` to fetch the latest citations for author `aN71bBIAAAAJ`.
+- Add `SERPAPI_KEY=...` to `.env.local` (and to your deployment environment). Without it, the publications page falls back to the static entries in `src/lib/constants/publications.ts`.
+- The route caches upstream responses for ~1 hour. The client page simply calls `/api/publications`, so this requires hosting on a platform that can run Next.js route handlers (GitHub Pages’ static export will not execute it).

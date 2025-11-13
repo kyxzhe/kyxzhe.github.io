@@ -6,6 +6,9 @@ export type Publication = {
   tags: string[];
   link?: string;
   status?: string;
+  authors?: string;
+  citationCount?: number;
+  source?: string;
 };
 
 export const publications: Publication[] = [
