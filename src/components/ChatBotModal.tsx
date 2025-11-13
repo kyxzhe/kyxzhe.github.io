@@ -37,13 +37,16 @@ export default function ChatBotModal({ open, onClose }: ChatBotModalProps) {
     setInput("");
     setError(null);
 
-    const nextHistory = [...messages, { role: "user", content: nextInput }];
+    const nextHistory: ChatMessage[] = [
+      ...messages,
+      { role: "user" as const, content: nextInput },
+    ];
     setMessages(nextHistory);
     setIsLoading(true);
 
     try {
       const reply = await sendChatRequest(nextHistory);
-      setMessages((prev) => [...prev, { role: "assistant", content: reply }]);
+      setMessages((prev) => [...prev, { role: "assistant" as const, content: reply }]);
     } catch (err) {
       console.error(err);
       setError(err instanceof Error ? err.message : "Something went wrong.");
