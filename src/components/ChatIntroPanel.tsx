@@ -58,7 +58,7 @@ export default function ChatIntroPanel() {
 
   return (
     <motion.div
-      className="w-full lg:w-[40%] rounded-[20px] p-6 flex flex-col gap-4 glass-panel relative overflow-hidden"
+      className="w-full lg:w-[40%] rounded-[20px] p-6 flex flex-col glass-panel relative overflow-hidden h-full"
       variants={cardVariants}
       initial="hidden"
       animate="visible"
@@ -67,7 +67,7 @@ export default function ChatIntroPanel() {
       <div className="absolute inset-0 pointer-events-none opacity-60" style={{
         background: "radial-gradient(circle at 20% 20%, rgba(232,206,194,0.25), transparent 50%), radial-gradient(circle at 80% 0%, rgba(102,156,70,0.25), transparent 45%)"
       }} />
-      <div className="relative flex h-[380px] flex-col">
+      <div className="relative flex flex-1 flex-col gap-4">
         <motion.div
           className="flex items-center justify-between"
           initial={{ opacity: 0, y: 10 }}
@@ -111,7 +111,7 @@ export default function ChatIntroPanel() {
             </div>
           )}
         </div>
-        <div className="mt-auto pt-3 border-t border-[var(--card-border)]">
+        <div className="mt-auto pt-4 border-t border-[var(--card-border)]">
           <div className="flex gap-2">
             <input
               ref={inputRef}
