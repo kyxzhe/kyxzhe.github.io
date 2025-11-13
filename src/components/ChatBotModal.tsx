@@ -105,18 +105,24 @@ export default function ChatBotModal({ open, onClose }: ChatBotModalProps) {
                   <div
                     className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm ${
                       message.role === "assistant"
-                        ? "bg-[var(--accent-soft)] text-foreground"
-                        : "bg-[var(--card)] border border-[var(--card-border)] text-foreground"
+                        ? "bg-[var(--card)] border border-[var(--card-border)] text-foreground"
+                        : "bg-[var(--accent)] text-white"
                     }`}
                   >
                     <p
-                      className={`text-xs uppercase tracking-[0.3em] text-muted-foreground mb-1 ${
-                        message.role === "user" ? "text-right" : ""
+                      className={`text-xs uppercase tracking-[0.3em] mb-1 ${
+                        message.role === "user"
+                          ? "text-right text-white/70"
+                          : "text-muted-foreground"
                       }`}
                     >
                       {message.role === "assistant" ? "KevinBot" : "You"}
                     </p>
-                    <p className={`whitespace-pre-line ${message.role === "user" ? "text-right" : ""}`}>
+                    <p
+                      className={`whitespace-pre-line ${
+                        message.role === "user" ? "text-right text-white" : ""
+                      }`}
+                    >
                       {message.content}
                     </p>
                   </div>
