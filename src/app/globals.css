@@ -5,8 +5,8 @@
   --foreground: #0f1115;
   --card: rgba(255, 255, 255, 0.92);
   --card-border: rgba(15, 17, 21, 0.08);
-  --accent: #2454ff;
-  --accent-soft: rgba(36, 84, 255, 0.12);
+  --accent: #8e6cff;
+  --accent-soft: rgba(142, 108, 255, 0.12);
   --font-gilroy: 'Gilroy', sans-serif;
 }
 
@@ -16,8 +16,8 @@
     --foreground: #f1f1f1;
     --card: rgba(12, 14, 18, 0.92);
     --card-border: rgba(255, 255, 255, 0.08);
-    --accent: #88aaff;
-    --accent-soft: rgba(136, 170, 255, 0.14);
+    --accent: #c7b5ff;
+    --accent-soft: rgba(199, 181, 255, 0.18);
   }
 }
 
