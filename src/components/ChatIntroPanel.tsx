@@ -62,7 +62,7 @@ export default function ChatIntroPanel() {
           {previewMessages.map((msg, idx) => (
             <div
               key={idx}
-              className={`max-w-[90%] rounded-2xl px-4 py-2 ${msg.role === "kevin" ? "bg-foreground text-background ml-auto" : "bg-background/70 text-foreground/80"}`}
+              className={`max-w-[90%] rounded-2xl px-4 py-2 ${msg.role === "kevin" ? "bg-[var(--accent)] text-white ml-auto" : "bg-background/70 text-foreground/80"}`}
             >
               {msg.text}
             </div>
@@ -95,7 +95,7 @@ export default function ChatIntroPanel() {
       >
         <button
           type="button"
-          className="inline-flex items-center justify-center gap-2 rounded-full bg-foreground text-background py-3 text-sm font-semibold cursor-default"
+          className="btn-primary inline-flex items-center justify-center gap-2 cursor-default"
         >
           <Send size={16} />
           Say hi or book a chat

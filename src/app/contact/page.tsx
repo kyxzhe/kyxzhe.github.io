@@ -29,7 +29,7 @@ export default function ContactPage() {
       >
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <motion.div
-            className="bg-card rounded-[20px] p-6 flex flex-col gap-6"
+            className="surface-card p-6 flex flex-col gap-6"
             variants={cardVariants}
             initial="hidden"
             animate="visible"
@@ -109,7 +109,7 @@ export default function ContactPage() {
           </motion.div>
 
           <motion.div
-            className="bg-foreground text-background rounded-[20px] p-6 flex flex-col gap-4"
+            className="glass-panel text-foreground p-6 flex flex-col gap-4"
             variants={cardVariants}
             initial="hidden"
             animate="visible"
@@ -148,7 +148,7 @@ export default function ContactPage() {
 
         <section className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           <motion.div
-            className="bg-card rounded-[20px] p-6 flex flex-col gap-4 lg:col-span-2"
+            className="surface-card p-6 flex flex-col gap-4 lg:col-span-2"
             variants={cardVariants}
             initial="hidden"
             animate="visible"
@@ -176,23 +176,23 @@ export default function ContactPage() {
               initial="hidden"
               animate="visible"
             >
-              <li className="rounded-[16px] border border-border px-4 py-3 bg-background/40">
+              <li className="rounded-[16px] border border-border px-4 py-3 bg-[var(--accent-soft)] text-[var(--accent)]">
                 • Data integrity audits & noisy-label pipelines
               </li>
-              <li className="rounded-[16px] border border-border px-4 py-3 bg-background/40">
+              <li className="rounded-[16px] border border-border px-4 py-3 bg-[var(--accent-soft)] text-[var(--accent)]">
                 • Trust & safety assessments for LLM deployments
               </li>
-              <li className="rounded-[16px] border border-border px-4 py-3 bg-background/40">
+              <li className="rounded-[16px] border border-border px-4 py-3 bg-[var(--accent-soft)] text-[var(--accent)]">
                 • Research mentorship & reading groups
               </li>
-              <li className="rounded-[16px] border border-border px-4 py-3 bg-background/40">
+              <li className="rounded-[16px] border border-border px-4 py-3 bg-[var(--accent-soft)] text-[var(--accent)]">
                 • Talks/workshops on data-centric AI
               </li>
             </motion.ul>
           </motion.div>
 
           <motion.div
-            className="bg-foreground text-background rounded-[20px] p-6 flex flex-col gap-4"
+            className="glass-panel text-foreground p-6 flex flex-col gap-4"
             variants={cardVariants}
             initial="hidden"
             animate="visible"

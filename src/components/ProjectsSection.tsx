@@ -14,7 +14,7 @@ export default function ProjectsSection() {
     <div id="projects" className="flex flex-col w-full lg:w-[30%] gap-4 md:justify-between lg:mb-6 overflow-visible">
       {/* === CARD 3: Projects List === */}
       <motion.div 
-        className="bg-foreground text-background p-4 md:p-6 rounded-[20px] flex-grow md:flex-wrap flex flex-col min-h-[400px] md:min-h-0"
+        className="glass-panel text-foreground p-4 md:p-6 rounded-[20px] flex-grow md:flex-wrap flex flex-col min-h-[420px] md:min-h-0"
         variants={cardVariants}
         initial="hidden"
         animate="visible"
@@ -89,7 +89,7 @@ export default function ProjectsSection() {
         </motion.div>
       </motion.div>
       <motion.div 
-        className="flex-none bg-card p-6 md:p-9 rounded-[20px] flex justify-evenly items-center"
+        className="flex-none surface-card p-6 md:p-9 flex justify-evenly items-center"
         variants={cardVariants}
         initial="hidden"
         animate="visible"

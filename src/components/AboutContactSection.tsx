@@ -21,7 +21,7 @@ export default function AboutContactSection() {
   return (
     <div id="contact" className="flex flex-row gap-1 md:gap-4 md:h-[40%] min-h-[200px] md:min-h-0">
       <motion.div 
-        className="w-[50%] glass-panel rounded-[20px] flex flex-col items-start justify-between p-3 md:p-6"
+        className="w-[50%] glass-panel text-foreground flex flex-col items-start justify-between p-3 md:p-6"
         variants={cardVariants}
         initial="hidden"
         animate="visible"
@@ -37,7 +37,7 @@ export default function AboutContactSection() {
         </motion.p>
       </motion.div>
       <motion.div 
-        className="w-[50%] bg-card rounded-[20px] p-3 md:p-6 border-3 border-accent flex flex-col h-full justify-between cursor-pointer"
+        className="w-[50%] surface-card p-3 md:p-6 border border-accent/30 flex flex-col h-full justify-between cursor-pointer"
         variants={contactCardVariants}
         initial="hidden"
         animate="visible"

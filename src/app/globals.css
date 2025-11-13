@@ -61,9 +61,35 @@ body {
 
 @layer utilities {
   .glass-panel {
-    background: color-mix(in srgb, var(--color-card) 85%, transparent);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: var(--card);
+    border: 1px solid var(--card-border);
     box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
     backdrop-filter: blur(24px);
+  }
+
+  .surface-card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
+    border-radius: 20px;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    border-radius: 999px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    box-shadow: 0 12px 25px rgba(0, 102, 204, 0.25);
+  }
+
+  .badge-soft {
+    background: var(--accent-soft);
+    color: var(--accent);
+    border-radius: 999px;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
   }
 }

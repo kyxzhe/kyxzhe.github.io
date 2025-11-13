@@ -20,7 +20,7 @@ export default function NewsPage() {
       >
         <section className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           <motion.div
-            className="bg-card rounded-[20px] p-6 flex flex-col gap-4 lg:col-span-2"
+            className="surface-card p-6 flex flex-col gap-4 lg:col-span-2"
             variants={cardVariants}
             initial="hidden"
             animate="visible"
@@ -63,7 +63,7 @@ export default function NewsPage() {
           </motion.div>
 
           <motion.div
-            className="bg-foreground text-background rounded-[20px] p-6 flex flex-col gap-4"
+            className="glass-panel text-foreground p-6 flex flex-col gap-4"
             variants={cardVariants}
             initial="hidden"
             animate="visible"
@@ -86,10 +86,7 @@ export default function NewsPage() {
               The chatbot module will index these posts so you can ask “What’s Kevin working on?” or
               “Where’s the latest film diary?” and get a contextual reply.
             </motion.p>
-            <Link
-              href="/contact"
-              className="inline-flex items-center gap-2 rounded-full bg-background text-foreground px-4 py-3 text-sm font-semibold"
-            >
+            <Link href="/contact" className="btn-primary inline-flex items-center gap-2 justify-center">
               Subscribe for updates <ArrowUpRight size={16} />
             </Link>
           </motion.div>
@@ -99,7 +96,7 @@ export default function NewsPage() {
           {newsItems.map((item) => (
             <motion.div
               key={item.title}
-              className="bg-card rounded-[20px] p-6 flex flex-col gap-3"
+              className="surface-card p-6 flex flex-col gap-3"
               variants={projectsVariants}
               initial="hidden"
               animate="visible"

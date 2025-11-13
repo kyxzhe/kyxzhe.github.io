@@ -113,7 +113,7 @@ export default function AboutPage() {
           </motion.div>
 
           <motion.div
-            className="bg-foreground text-background rounded-[20px] p-6 flex flex-col justify-between"
+            className="glass-panel text-foreground p-6 flex flex-col justify-between"
             variants={cardVariants}
             initial="hidden"
             animate="visible"
@@ -167,7 +167,7 @@ export default function AboutPage() {
 
         <section className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           <motion.div
-            className="bg-foreground text-background rounded-[20px] p-6 flex flex-col gap-4"
+            className="glass-panel text-foreground p-6 flex flex-col gap-4"
             variants={cardVariants}
             initial="hidden"
             animate="visible"
@@ -201,7 +201,7 @@ export default function AboutPage() {
           </motion.div>
 
           <motion.div
-            className="bg-card rounded-[20px] p-6 flex flex-col gap-4"
+            className="surface-card p-6 flex flex-col gap-4"
             variants={cardVariants}
             initial="hidden"
             animate="visible"
