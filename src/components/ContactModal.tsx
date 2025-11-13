@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence, type Variants } from "motion/react";
 import {
   X,
@@ -329,7 +330,16 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                         {
                           label: "Google Scholar",
                           href: socials.googleScholar,
-                          icon: <GoogleScholarIcon className="w-6 h-6" />,
+                          icon: (
+                            <Image
+                              src="/icons/google-scholar.png"
+                              alt="Google Scholar logo"
+                              width={24}
+                              height={24}
+                              className="w-6 h-6"
+                              priority={false}
+                            />
+                          ),
                         },
                         {
                           label: "ORCID",
