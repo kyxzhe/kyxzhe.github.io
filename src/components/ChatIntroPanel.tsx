@@ -92,13 +92,13 @@ export default function ChatIntroPanel() {
             {messages.map((msg, idx) => (
               <div
                 key={`${msg.role}-${idx}-${msg.content.slice(0, 8)}`}
-                className={`flex ${msg.role === "assistant" ? "justify-end" : "justify-start"}`}
+                className={`flex ${msg.role === "assistant" ? "justify-start" : "justify-end"}`}
               >
                 <div
                   className={`max-w-[85%] rounded-2xl px-4 py-2 ${
                     msg.role === "assistant"
-                      ? "bg-[var(--accent)] text-white"
-                      : "bubble-muted"
+                      ? "bg-[var(--accent)] text-white text-left"
+                      : "bubble-muted text-right"
                   }`}
                 >
                   <p className="whitespace-pre-line">{msg.content}</p>

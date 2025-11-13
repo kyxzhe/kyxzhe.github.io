@@ -100,16 +100,26 @@ export default function ChatBotModal({ open, onClose }: ChatBotModalProps) {
               {latestMessages.map((message, index) => (
                 <div
                   key={`${message.role}-${index}-${message.content.slice(0, 8)}`}
-                  className={`rounded-2xl px-4 py-3 text-sm ${
-                    message.role === "assistant"
-                      ? "bg-[var(--accent-soft)] text-foreground"
-                      : "bg-[var(--card)] border border-[var(--card-border)] text-foreground"
-                  }`}
+                  className={`flex ${message.role === "assistant" ? "justify-start" : "justify-end"}`}
                 >
-                  <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-1">
-                    {message.role === "assistant" ? "KevinBot" : "You"}
-                  </p>
-                  <p className="whitespace-pre-line">{message.content}</p>
+                  <div
+                    className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm ${
+                      message.role === "assistant"
+                        ? "bg-[var(--accent-soft)] text-foreground"
+                        : "bg-[var(--card)] border border-[var(--card-border)] text-foreground"
+                    }`}
+                  >
+                    <p
+                      className={`text-xs uppercase tracking-[0.3em] text-muted-foreground mb-1 ${
+                        message.role === "user" ? "text-right" : ""
+                      }`}
+                    >
+                      {message.role === "assistant" ? "KevinBot" : "You"}
+                    </p>
+                    <p className={`whitespace-pre-line ${message.role === "user" ? "text-right" : ""}`}>
+                      {message.content}
+                    </p>
+                  </div>
                 </div>
               ))}
             </div>
