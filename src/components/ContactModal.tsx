@@ -193,7 +193,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
           }}
         >
           <motion.div
-            className="surface-card p-6 md:p-8 lg:p-12 w-full max-w-4xl max-h-[90vh] overflow-y-auto relative bg-[rgba(255,255,255,0.88)] dark:bg-[rgba(12,14,18,0.88)]"
+            className="surface-card p-6 md:p-8 lg:p-12 w-full max-w-4xl max-h-[90vh] overflow-y-auto relative bg-[rgba(255,255,255,0.83)] dark:bg-[rgba(12,14,18,0.83)]"
             variants={modalVariants}
             initial="hidden"
             animate="visible"
