@@ -3,6 +3,7 @@ export type NewsItem = {
   date: string;
   summary: string;
   link?: string;
+  linkLabel?: string;
   cover: string;
 };
 
@@ -13,6 +14,7 @@ export const newsItems: NewsItem[] = [
     summary:
       "Passed the AWS ML Specialty exam to benchmark production-ready practices for future platform-scale experiments.",
     link: "https://www.credly.com/badges/b324db7a-0cb4-41b9-b3a7-a3275dde8f6b/public_url",
+    linkLabel: "Show credential",
     cover: "/projects/work-1.jpg",
   },
   {
@@ -28,12 +30,5 @@ export const newsItems: NewsItem[] = [
     summary:
       "Joined Marian-Andrei Rizoiu and the Behavioural Data Science Lab to study information diffusion and robust ML for social platforms.",
     cover: "/projects/work-3.jpg",
-  },
-  {
-    title: "Field notes: film cameras, cafes, and archery resets",
-    date: "Aug 2024",
-    summary:
-      "Documenting how slowing down with photography, coffee walks, and occasional archery practice feeds back into long-horizon research thinking.",
-    cover: "/projects/work-4.jpg",
   },
 ];

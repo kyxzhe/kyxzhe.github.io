@@ -105,7 +105,7 @@ export default function NewsPage() {
                 <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">{item.date}</p>
                 {item.link && (
                   <Link href={item.link} className="inline-flex items-center gap-2 text-sm text-brand-accent hover:underline">
-                    Read post <ArrowUpRight size={14} />
+                    {item.linkLabel ?? "Read more"} <ArrowUpRight size={14} />
                   </Link>
                 )}
               </div>
