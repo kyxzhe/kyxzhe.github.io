@@ -171,6 +171,8 @@ export default function PublicationsPage() {
               variants={projectsVariants}
               initial="hidden"
               animate="visible"
+              whileHover={{ y: -6, boxShadow: "0 22px 48px rgba(0,0,0,0.14)" }}
+              transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
             >
               <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
                 <div>

@@ -100,6 +100,8 @@ export default function NewsPage() {
               variants={projectsVariants}
               initial="hidden"
               animate="visible"
+              whileHover={{ y: -6, boxShadow: "0 20px 45px rgba(0,0,0,0.12)" }}
+              transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
             >
               <div className="flex items-center justify-between flex-wrap gap-2">
                 <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">{item.date}</p>
