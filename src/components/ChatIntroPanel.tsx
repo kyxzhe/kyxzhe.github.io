@@ -125,7 +125,7 @@ export default function ChatIntroPanel() {
                     handleSend();
                   }
                 }}
-                placeholder="Ask KevinBot..."
+                placeholder="Ask anything..."
                 className="flex-1 rounded-2xl border border-border px-3 py-2 bg-transparent focus:outline-none focus:border-foreground text-sm"
               />
               <button
