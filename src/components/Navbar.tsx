@@ -20,6 +20,7 @@ export default function Navbar() {
         >
           <span className="text-xl lg:text-2xl uppercase font-light italic">Kevin</span>
           <span className="text-xl lg:text-2xl uppercase font-medium">Zheng</span>
+          <span className="chip text-[0.55rem] uppercase tracking-[0.3em] px-2 py-1">Beta</span>
         </Link>
         <HamburgerButton open={menuOpen} onClick={toggleMenu} />
         <ul className="hidden md:flex flex-row gap-20 list-none m-0 items-center">
