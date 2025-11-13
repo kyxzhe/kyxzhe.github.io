@@ -4,7 +4,6 @@ import Link from "next/link";
 import { motion } from "motion/react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { aboutDescription } from "@/lib/constants/siteContent";
 import { contactInfo } from "@/lib/constants/contact";
 import {
   cardVariants,
@@ -51,6 +50,9 @@ const contributions = [
   "Collaborating with teams on ranking/red-teaming audits",
 ];
 
+const aboutIntro =
+  "I study social platforms as dynamic systems: how information diffuses, how ranking and moderation shape what people see, and how to keep models trustworthy when supervision is noisy or biased. I enjoy slow, iterative research—reading widely, mapping connections between diffusion, causal inference, and robust learning, then narrowing in on questions that feel both principled and practical.";
+
 export default function AboutPage() {
   return (
     <div className="flex flex-col min-h-screen font-sans pt-2 md:pt-0 lg:py-6 xl:py-0 xl:pb-6 overflow-auto lg:overflow-visible">
@@ -92,7 +94,7 @@ export default function AboutPage() {
                 initial="hidden"
                 animate="visible"
               >
-                {aboutDescription} I approach projects slowly and iteratively—mapping links between diffusion, causal inference, and robust learning before narrowing to questions that feel principled and practical.
+                {aboutIntro}
               </motion.p>
             </div>
             <motion.ul
