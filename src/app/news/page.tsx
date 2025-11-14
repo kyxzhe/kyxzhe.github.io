@@ -117,7 +117,7 @@ const renderListRow = (item: NewsItem) => {
     const columnItems = secondaryItems.slice(0, 3);
     const remainingItems = secondaryItems.slice(3);
     return (
-      <div className="flex flex-col gap-10 w-full max-w-[80vw] lg:max-w-[1200px] mx-auto px-6">
+      <div className="flex flex-col gap-10 w-full max-w-[95vw] xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto px-4 md:px-6">
       <div className="grid gap-6 lg:grid-cols-12 items-start">
         {heroItem && (
           <article className="surface-card flex flex-col gap-4 lg:col-span-8 lg:sticky lg:top-12">
@@ -152,17 +152,26 @@ const renderListRow = (item: NewsItem) => {
                 initial="hidden"
                 animate="visible"
                 whileHover={{ y: -6, boxShadow: "0 18px 35px rgba(0,0,0,0.14)" }}
-                className={"surface-card overflow-hidden" + (item.link ? "" : " opacity-80")}
+                className={
+                  "surface-card relative overflow-hidden aspect-square" +
+                  (item.link ? "" : " opacity-80")
+                }
               >
-                <div className="relative w-full pb-[100%]">
-                  <Image src={item.cover} alt={item.title} fill sizes="(max-width:1024px) 100vw, 320px" className="object-cover" />
-                  <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/75 via-black/30 to-transparent p-4 text-white">
-                    <p className="text-xs uppercase tracking-[0.3em] text-white/75">
-                      {item.category} · {formatDate(item.date)}
-                    </p>
-                    <h3 className="text-lg font-semibold leading-tight">{item.title}</h3>
-                    <p className="text-sm text-white/80 line-clamp-2">{item.summary}</p>
-                  </div>
+                <Image
+                  src={item.cover}
+                  alt={item.title}
+                  fill
+                  sizes="(max-width:1024px) 100vw, 320px"
+                  className="object-cover"
+                />
+                <div className="absolute inset-x-0 bottom-0 bg-background/95 dark:bg-background/90 px-4 pb-4 pt-3 flex flex-col gap-2">
+                  <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
+                    {item.category} · {formatDate(item.date)}
+                  </p>
+                  <h3 className="text-lg font-semibold leading-tight text-foreground">
+                    {item.title}
+                  </h3>
+                  <p className="text-sm text-foreground/80 line-clamp-3">{item.summary}</p>
                 </div>
               </motion.div>
             </Link>
@@ -178,17 +187,23 @@ const renderListRow = (item: NewsItem) => {
               initial="hidden"
               animate="visible"
               whileHover={{ y: -6, boxShadow: "0 20px 45px rgba(0,0,0,0.12)" }}
-              className="surface-card overflow-hidden lg:col-span-4"
+              className="surface-card relative overflow-hidden aspect-square lg:col-span-4"
             >
-              <div className="relative w-full pb-[100%]">
-                <Image src={item.cover} alt={item.title} fill sizes="(max-width:1024px) 100vw, 320px" className="object-cover" />
-                <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/75 via-black/30 to-transparent p-4 text-white">
-                  <p className="text-xs uppercase tracking-[0.3em] text-white/75">
-                    {item.category} · {formatDate(item.date)}
-                  </p>
-                  <h3 className="text-lg font-semibold leading-tight">{item.title}</h3>
-                  <p className="text-sm text-white/80 line-clamp-2">{item.summary}</p>
-                </div>
+              <Image
+                src={item.cover}
+                alt={item.title}
+                fill
+                sizes="(max-width:1024px) 100vw, 320px"
+                className="object-cover"
+              />
+              <div className="absolute inset-x-0 bottom-0 bg-background/95 dark:bg-background/90 px-4 pb-4 pt-3 flex flex-col gap-2">
+                <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
+                  {item.category} · {formatDate(item.date)}
+                </p>
+                <h3 className="text-lg font-semibold leading-tight text-foreground">
+                  {item.title}
+                </h3>
+                <p className="text-sm text-foreground/80 line-clamp-3">{item.summary}</p>
               </div>
             </motion.div>
           ))}
