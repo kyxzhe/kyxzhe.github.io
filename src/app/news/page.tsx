@@ -118,7 +118,7 @@ const renderListRow = (item: NewsItem) => {
     const remainingItems = secondaryItems.slice(3);
     return (
       <div className="flex flex-col gap-10 w-full max-w-6xl mx-auto px-4">
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,0.68fr)_320px] items-start">
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,0.7fr)_320px] items-start">
         {heroItem && (
           <article className="surface-card flex flex-col gap-4 lg:sticky lg:top-16">
             <div className="relative w-full aspect-[16/9] min-h-[240px] rounded-[24px] overflow-hidden">
