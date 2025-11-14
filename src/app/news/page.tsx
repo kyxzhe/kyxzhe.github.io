@@ -1,14 +1,174 @@
 "use client";
 
+import { useMemo, useRef, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
-import { ArrowUpRight, CalendarRange, Newspaper, Sparkles } from "lucide-react";
+import { ArrowUpDown, Filter, LayoutGrid, List } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { cardVariants, containerVariants, textVariants, projectsVariants } from "@/lib/animation/variants";
-import { newsItems } from "@/lib/constants/news";
+import { type NewsItem, newsItems } from "@/lib/constants/news";
+import { cardVariants, containerVariants, projectsVariants } from "@/lib/animation/variants";
+
+type ViewMode = "list" | "grid";
+type SortOption = "newest" | "oldest" | "az" | "za";
+
+const sortOptions: { label: string; value: SortOption }[] = [
+  { label: "Newest → Oldest", value: "newest" },
+  { label: "Oldest → Newest", value: "oldest" },
+  { label: "Alphabetical (A–Z)", value: "az" },
+  { label: "Alphabetical (Z–A)", value: "za" },
+];
+
+const MONTH_ABBREVIATIONS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+function formatDate(isoDate: string) {
+  const [year, month, day] = isoDate.split("-").map(Number);
+  if (!year || !month || !day) return isoDate;
+  return `${day} ${MONTH_ABBREVIATIONS[month - 1]} ${year}`;
+}
+
+const categories = ["All", ...Array.from(new Set(newsItems.map((item) => item.category)))];
+const topics = Array.from(new Set(newsItems.flatMap((item) => item.topics))).sort();
+const years = Array.from(new Set(newsItems.map((item) => new Date(item.date).getFullYear()))).sort((a, b) => b - a);
 
 export default function NewsPage() {
+  const [viewMode, setViewMode] = useState<ViewMode>("list");
+  const [activeCategory, setActiveCategory] = useState<string>("All");
+  const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
+  const [selectedYears, setSelectedYears] = useState<number[]>([]);
+  const [sortMode, setSortMode] = useState<SortOption>("newest");
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [sortOpen, setSortOpen] = useState(false);
+  const filterRef = useRef<HTMLDivElement | null>(null);
+  const sortRef = useRef<HTMLDivElement | null>(null);
+
+  const toggleTopic = (topic: string) => {
+    setSelectedTopics((prev) =>
+      prev.includes(topic) ? prev.filter((t) => t !== topic) : [...prev, topic]
+    );
+  };
+
+  const toggleYear = (year: number) => {
+    setSelectedYears((prev) =>
+      prev.includes(year) ? prev.filter((y) => y !== year) : [...prev, year]
+    );
+  };
+
+  const clearFilters = () => {
+    setSelectedTopics([]);
+    setSelectedYears([]);
+  };
+
+  const filteredItems = useMemo(() => {
+    return newsItems.filter((item) => {
+      const categoryMatch = activeCategory === "All" || item.category === activeCategory;
+      const topicsMatch = selectedTopics.length === 0 || selectedTopics.every((topic) => item.topics.includes(topic));
+      const yearsMatch =
+        selectedYears.length === 0 || selectedYears.includes(new Date(item.date).getFullYear());
+      return categoryMatch && topicsMatch && yearsMatch;
+    });
+  }, [activeCategory, selectedTopics, selectedYears]);
+
+  const sortedItems = useMemo(() => {
+    const sorted = [...filteredItems];
+    sorted.sort((a, b) => {
+      switch (sortMode) {
+        case "newest":
+          return new Date(b.date).getTime() - new Date(a.date).getTime();
+        case "oldest":
+          return new Date(a.date).getTime() - new Date(b.date).getTime();
+        case "az":
+          return a.title.localeCompare(b.title);
+        case "za":
+          return b.title.localeCompare(a.title);
+        default:
+          return 0;
+      }
+    });
+    return sorted;
+  }, [filteredItems, sortMode]);
+
+  const heroItem = sortedItems[0];
+  const secondaryItems = sortedItems.slice(1);
+
+const renderListRow = (item: NewsItem) => {
+    const row = (
+      <div className="flex flex-col gap-2 py-5 border-b border-[rgba(0,0,0,0.08)] transition-colors group-hover:border-foreground">
+        <div className="text-xs uppercase tracking-[0.3em] text-muted-foreground">{item.category}</div>
+        <h3 className="text-xl font-semibold">{item.title}</h3>
+        <p className="text-sm text-muted-foreground">{formatDate(item.date)}</p>
+        <p className="text-sm text-foreground/80 max-w-3xl">{item.summary}</p>
+      </div>
+    );
+    if (item.link) {
+      return (
+        <Link key={item.id} href={item.link} target="_blank" rel="noopener noreferrer" className="group block">
+          {row}
+        </Link>
+      );
+    }
+    return (
+      <div key={item.id} className="pointer-events-none">
+        {row}
+      </div>
+    );
+  };
+
+  const renderGrid = () => (
+    <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
+      {heroItem && (
+        <article className="surface-card overflow-hidden flex flex-col sticky top-6">
+          <div className="relative w-full pb-[60%]">
+            <Image src={heroItem.cover} alt={heroItem.title} fill sizes="(max-width:1024px) 100vw, 60vw" className="object-cover" />
+          </div>
+          <div className="p-6 flex flex-col gap-3">
+            <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
+              {heroItem.category} · {formatDate(heroItem.date)}
+            </p>
+            <h2 className="text-3xl font-semibold">{heroItem.title}</h2>
+            <p className="text-sm text-foreground/80">{heroItem.summary}</p>
+            {heroItem.link && (
+              <Link href={heroItem.link} className="text-sm text-brand-accent" target="_blank" rel="noopener noreferrer">
+                Read update
+              </Link>
+            )}
+          </div>
+        </article>
+      )}
+      <div className="flex flex-col gap-4">
+        {secondaryItems.map((item) => (
+          <Link
+            key={item.id}
+            href={item.link ?? "#"}
+            target={item.link ? "_blank" : undefined}
+            rel={item.link ? "noopener noreferrer" : undefined}
+            className={item.link ? "block" : "pointer-events-none"}
+          >
+            <motion.div
+              variants={projectsVariants}
+              initial="hidden"
+              animate="visible"
+              whileHover={{ y: -8, boxShadow: "0 20px 40px rgba(0,0,0,0.12)" }}
+              className={"surface-card overflow-hidden" + (item.link ? "" : " opacity-80")}
+            >
+              <div className="relative w-full pb-[55%]">
+                <Image src={item.cover} alt={item.title} fill sizes="(max-width:1024px) 100vw, 320px" className="object-cover" />
+              </div>
+              <div className="p-4 flex flex-col gap-2">
+                <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
+                  {item.category} · {formatDate(item.date)}
+                </p>
+                <h3 className="text-lg font-semibold">{item.title}</h3>
+                <p className="text-sm text-foreground/80">{item.summary}</p>
+              </div>
+            </motion.div>
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+
   return (
     <div className="flex flex-col min-h-screen font-sans pt-2 md:pt-0 lg:py-6 xl:py-0 xl:pb-6 overflow-visible">
       <Navbar />
@@ -18,102 +178,146 @@ export default function NewsPage() {
         initial="hidden"
         animate="visible"
       >
-        <section className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-          <motion.div
-            className="surface-card p-6 flex flex-col gap-4 lg:col-span-2"
-            variants={cardVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            <motion.p
-              className="uppercase tracking-[0.3em] text-xs text-muted-foreground"
-              variants={textVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              Lab logbook
-            </motion.p>
-            <motion.h1
-              className="text-3xl md:text-4xl font-semibold leading-tight"
-              variants={textVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              Milestones, credentials, and the side quests that keep research grounded.
-            </motion.h1>
-            <motion.p
-              className="text-base md:text-lg text-foreground/80"
-              variants={textVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              From certifications and honours to field notes and new chapters, this logbook keeps the personal and professional timeline honest.
-            </motion.p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-foreground/80">
-              <div className="surface-card px-4 py-3 flex items-center gap-3">
-                <CalendarRange size={18} />
-                Quarterly refresh
-              </div>
-              <div className="surface-card px-4 py-3 flex items-center gap-3">
-                <Newspaper size={18} />
-                Research + life updates
-              </div>
-            </div>
-          </motion.div>
+        <motion.section className="surface-card p-6 flex flex-col gap-4" variants={cardVariants}>
+          <p className="uppercase tracking-[0.3em] text-xs text-muted-foreground">Newsroom</p>
+          <h1 className="text-3xl md:text-4xl font-semibold">Grounded updates on research, milestones, and lab tools.</h1>
+          <p className="text-base text-foreground/80">
+            The chatbot is now live, citing everything here. Browse updates in list or gallery mode, or filter down to the topics and years you care about.
+          </p>
+        </motion.section>
 
-          <motion.div
-            className="surface-card p-6 flex flex-col gap-4"
-            variants={cardVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            <motion.h2
-              className="text-2xl font-semibold flex items-center gap-2"
-              variants={textVariants}
-              initial="hidden"
-              animate="visible"
+        <div className="flex flex-wrap gap-3 text-sm">
+          {categories.map((category) => (
+            <button
+              key={category}
+              onClick={() => setActiveCategory(category)}
+              className={`px-3 py-1 rounded-full border ${
+                activeCategory === category ? "border-foreground text-foreground" : "border-border text-muted-foreground"
+              }`}
             >
-              <Sparkles size={18} />
-              Coming soon
-            </motion.h2>
-            <motion.p
-              className="text-sm text-foreground/70"
-              variants={textVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              The chatbot module is learning to cite these entries so you can ask “How are the cascades behaving?” and get a grounded reply.
-            </motion.p>
-            <Link href="/contact" className="btn-primary inline-flex items-center gap-2 justify-center">
-              Subscribe for updates <ArrowUpRight size={16} />
-            </Link>
-          </motion.div>
-        </section>
-
-        <section className="grid grid-cols-1 gap-4">
-          {newsItems.map((item) => (
-            <motion.div
-              key={item.title}
-              className="surface-card p-6 flex flex-col gap-3"
-              variants={projectsVariants}
-              initial="hidden"
-              animate="visible"
-              whileHover={{ y: -6, boxShadow: "0 20px 45px rgba(0,0,0,0.12)" }}
-              transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
-            >
-              <div className="flex items-center justify-between flex-wrap gap-2">
-                <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">{item.date}</p>
-                {item.link && (
-                  <Link href={item.link} className="inline-flex items-center gap-2 text-sm text-brand-accent hover:underline">
-                    {item.linkLabel ?? "Read more"} <ArrowUpRight size={14} />
-                  </Link>
-                )}
-              </div>
-              <h3 className="text-2xl font-semibold">{item.title}</h3>
-              <p className="text-foreground/80 text-sm md:text-base">{item.summary}</p>
-            </motion.div>
+              {category}
+            </button>
           ))}
-        </section>
+        </div>
+
+        <div className="flex flex-wrap items-center justify-between gap-3 text-sm font-medium">
+          <p className="text-muted-foreground">Showing {sortedItems.length} updates</p>
+          <div className="relative flex items-center gap-4">
+            <div className="relative flex items-center gap-1" ref={filterRef}>
+              <button
+                className="flex items-center gap-1"
+                onClick={() => {
+                  setFilterOpen((prev) => !prev);
+                  setSortOpen(false);
+                }}
+              >
+                <span className={selectedTopics.length > 0 || selectedYears.length > 0 ? "text-foreground" : "text-muted-foreground"}>
+                  Filter
+                </span>
+                <Filter size={16} className={selectedTopics.length > 0 || selectedYears.length > 0 ? "text-foreground" : "text-muted-foreground"} />
+              </button>
+              {filterOpen && filterRef.current && typeof window !== "undefined" && (
+                <div
+                  className="fixed mt-2 w-[420px] z-40 surface-card p-4 flex flex-col gap-4 shadow-xl rounded-2xl border border-border"
+                  style={{
+                    top: filterRef.current.getBoundingClientRect().bottom + window.scrollY + 8,
+                    left: filterRef.current.getBoundingClientRect().right + window.scrollX - 420,
+                  }}
+                >
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div>
+                      <p className="font-semibold mb-2">Topic</p>
+                      <div className="space-y-2 max-h-60 overflow-y-auto">
+                        {topics.map((topic) => (
+                          <label key={topic} className="flex items-center gap-2">
+                            <input type="checkbox" checked={selectedTopics.includes(topic)} onChange={() => toggleTopic(topic)} />
+                            {topic}
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <p className="font-semibold mb-2">Year</p>
+                      <div className="space-y-2 max-h-60 overflow-y-auto">
+                        {years.map((year) => (
+                          <label key={year} className="flex items-center gap-2">
+                            <input type="checkbox" checked={selectedYears.includes(year)} onChange={() => toggleYear(year)} />
+                            {year}
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex justify-end text-xs text-muted-foreground">
+                    <button onClick={clearFilters}>Clear all</button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="relative flex items-center gap-1" ref={sortRef}>
+              <button
+                className={`flex items-center gap-1 ${sortOpen ? "text-foreground" : "text-muted-foreground"}`}
+                onClick={() => {
+                  setSortOpen((prev) => !prev);
+                  setFilterOpen(false);
+                }}
+              >
+                <span>Sort</span>
+                <ArrowUpDown size={16} />
+              </button>
+              {sortOpen && sortRef.current && typeof window !== "undefined" && (
+                <div
+                  className="fixed mt-2 w-64 z-40 surface-card p-3 flex flex-col gap-2 shadow-xl rounded-2xl border border-border"
+                  style={{
+                    top: sortRef.current.getBoundingClientRect().bottom + window.scrollY + 8,
+                    left: sortRef.current.getBoundingClientRect().right + window.scrollX - 256,
+                  }}
+                >
+                  {sortOptions.map((option) => (
+                    <label key={option.value} className="flex items-center gap-2 text-sm">
+                      <input
+                        type="radio"
+                        name="news-sort"
+                        value={option.value}
+                        checked={sortMode === option.value}
+                        onChange={() => setSortMode(option.value)}
+                      />
+                      {option.label}
+                    </label>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <button
+                className={`p-2 rounded ${viewMode === "list" ? "text-foreground bg-[rgba(0,0,0,0.06)]" : "hover:text-foreground"}`}
+                onClick={() => setViewMode("list")}
+                aria-label="List view"
+              >
+                <List size={16} />
+              </button>
+              <button
+                className={`p-2 rounded ${viewMode === "grid" ? "text-foreground bg-[rgba(0,0,0,0.06)]" : "hover:text-foreground"}`}
+                onClick={() => setViewMode("grid")}
+                aria-label="Grid view"
+              >
+                <LayoutGrid size={16} />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {sortedItems.length === 0 ? (
+          <div className="surface-card p-10 text-center text-muted-foreground">No news yet—try adjusting the filters.</div>
+        ) : viewMode === "list" ? (
+          <section className="surface-card p-4 md:p-6">
+            {sortedItems.map((item) => renderListRow(item))}
+          </section>
+        ) : (
+          renderGrid()
+        )}
       </motion.main>
       <Footer className="mb-4" />
     </div>
