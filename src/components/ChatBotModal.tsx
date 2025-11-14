@@ -2,7 +2,8 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { AlertTriangle, ArrowUp, Loader2, MessagesSquare, Sparkles, X } from "lucide-react";
+import { AlertTriangle, MessagesSquare, Sparkles, X } from "lucide-react";
+import ChatInputBar from "@/components/ChatInputBar";
 import { type ChatMessage, sendChatRequest } from "@/lib/api/chat";
 
 interface ChatBotModalProps {
@@ -135,30 +136,16 @@ export default function ChatBotModal({ open, onClose }: ChatBotModalProps) {
                 {error}
               </div>
             )}
-            <div className="flex gap-2 mt-3">
-              <input
+            <div className="mt-3">
+              <ChatInputBar
                 ref={inputRef}
-                type="text"
-                placeholder="Ask about research, teaching, or side quests..."
                 value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    e.preventDefault();
-                    handleSend();
-                  }
-                }}
-                className="flex-1 rounded-2xl border border-border px-4 py-3 bg-transparent focus:outline-none focus:border-foreground text-sm"
-              />
-              <button
-                type="button"
-                onClick={handleSend}
+                placeholder="Ask anything"
+                onChange={setInput}
+                onSubmit={handleSend}
                 disabled={!canSend}
-                className="h-11 w-11 rounded-full bg-[var(--accent)] text-white flex items-center justify-center disabled:opacity-50 disabled:bg-[var(--accent-soft)] transition-opacity"
-                aria-label="Send message"
-              >
-                {isLoading ? <Loader2 size={16} className="animate-spin" /> : <ArrowUp size={16} />}
-              </button>
+                isLoading={isLoading}
+              />
             </div>
           </motion.div>
         </motion.div>

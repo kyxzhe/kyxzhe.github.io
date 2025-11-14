@@ -26,7 +26,7 @@ import {
 import { contactInfo } from "@/lib/constants/contact";
 import { socials } from "@/lib/constants/socials";
 import { generateAvailability } from "@/lib/constants/availability";
-import { GoogleScholarIcon, OrcidIconColor } from "@/components/icons/AcademicIcons";
+import { OrcidIconColor } from "@/components/icons/AcademicIcons";
 
 interface ContactModalProps {
   isOpen: boolean;

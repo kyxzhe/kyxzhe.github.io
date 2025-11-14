@@ -7,7 +7,7 @@ import { motion } from "motion/react";
 import { cardVariants, projectsVariants, projectItemVariants, socialVariants, textVariants, iconVariants } from "@/lib/animation/variants";
 import { newsItems } from "@/lib/constants/news";
 import { socials } from "@/lib/constants/socials";
-import { GoogleScholarIcon, GoogleScholarWordmarkIcon, OrcidIcon } from "@/components/icons/AcademicIcons";
+import { GoogleScholarWordmarkIcon, OrcidIcon } from "@/components/icons/AcademicIcons";
 
 export default function ProjectsSection() {
   const router = useRouter();
@@ -66,24 +66,36 @@ export default function ProjectsSection() {
             className="w-full h-full object-cover"
           />
         </motion.div>
-        <motion.div 
-          className="overflow-y-auto lg:flex-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
-          variants={projectsVariants}
+        <motion.p 
+          className="text-sm text-muted-foreground mb-4"
+          variants={textVariants}
           initial="hidden"
           animate="visible"
         >
-          <p className="text-sm text-muted-foreground mb-4">{headline.summary}</p>
-          <div className="flex items-center justify-between text-sm mb-4">
-            <a
-              href={headline.link ?? "/news"}
-              className="inline-flex items-center gap-2 text-brand-accent hover:underline"
-              onClick={(event) => event.stopPropagation()}
-            >
-              Read more <ArrowUpRight size={16} />
-            </a>
-            <span className="text-foreground/60 uppercase tracking-[0.2em] text-xs">Latest</span>
-          </div>
-
+          {headline.summary}
+        </motion.p>
+        <motion.div 
+          className="flex items-center justify-between text-sm mb-4"
+          variants={iconVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <a
+            href={headline.link ?? "/news"}
+            className="inline-flex items-center gap-2 text-brand-accent hover:underline"
+            onClick={(event) => event.stopPropagation()}
+          >
+            Read more <ArrowUpRight size={16} />
+          </a>
+          <span className="text-foreground/60 uppercase tracking-[0.2em] text-xs">Latest</span>
+        </motion.div>
+        <motion.div
+          className="flex-1 min-h-0 overflow-y-auto overscroll-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+          variants={projectsVariants}
+          initial="hidden"
+          animate="visible"
+          style={{ WebkitOverflowScrolling: "touch", overscrollBehaviorY: "auto" }}
+        >
           {others.map((item) => (
             <motion.div key={item.title} variants={projectItemVariants} whileHover="hover">
               <hr className="border-0 h-[1px] bg-accent" />

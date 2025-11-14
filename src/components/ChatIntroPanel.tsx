@@ -2,9 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
-import { AlertTriangle, ArrowUp, Loader2, Sparkles } from "lucide-react";
+import { AlertTriangle, Sparkles } from "lucide-react";
 import { cardVariants } from "@/lib/animation/variants";
 import { type ChatMessage, sendChatRequest } from "@/lib/api/chat";
+import ChatInputBar from "@/components/ChatInputBar";
 
 export default function ChatIntroPanel() {
   const [messages, setMessages] = useState<ChatMessage[]>([
@@ -113,31 +114,15 @@ export default function ChatIntroPanel() {
             )}
           </div>
           <div className="pt-4 border-t border-[var(--card-border)]">
-            <div className="flex gap-2">
-              <input
-                ref={inputRef}
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    e.preventDefault();
-                    handleSend();
-                  }
-                }}
-                placeholder="Ask anything..."
-                className="flex-1 rounded-2xl border border-border px-3 py-2 bg-transparent focus:outline-none focus:border-foreground text-sm"
-              />
-              <button
-                type="button"
-                onClick={handleSend}
-                disabled={!canSend}
-                className="h-10 w-10 rounded-full bg-[var(--accent)] text-white flex items-center justify-center disabled:opacity-50 disabled:bg-[var(--accent-soft)] transition-opacity"
-                aria-label="Send message"
-              >
-                {isLoading ? <Loader2 size={14} className="animate-spin" /> : <ArrowUp size={14} />}
-              </button>
-            </div>
+            <ChatInputBar
+              ref={inputRef}
+              value={input}
+              placeholder="Ask anything"
+              onChange={setInput}
+              onSubmit={handleSend}
+              disabled={!canSend}
+              isLoading={isLoading}
+            />
             <p className="text-xs text-muted-foreground text-center mt-2">
               Chatbot can make mistakes. Check important info.
             </p>
