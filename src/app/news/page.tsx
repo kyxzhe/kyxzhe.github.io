@@ -117,14 +117,14 @@ const renderListRow = (item: NewsItem) => {
     const columnItems = secondaryItems.slice(0, 3);
     const remainingItems = secondaryItems.slice(3);
     return (
-      <div className="flex flex-col gap-8 max-w-5xl w-full mx-auto">
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,0.55fr)_280px] items-start">
+      <div className="flex flex-col gap-8 w-full max-w-5xl mx-auto">
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,0.65fr)_300px] items-start">
         {heroItem && (
-          <article className="surface-card overflow-hidden flex flex-col lg:sticky lg:top-12">
-            <div className="relative w-full pb-[32%] min-h-[220px]">
+          <article className="surface-card flex flex-col lg:sticky lg:top-12">
+            <div className="relative w-full pb-[35%] min-h-[260px] rounded-[24px] overflow-hidden">
               <Image src={heroItem.cover} alt={heroItem.title} fill sizes="(max-width:1024px) 100vw, 60vw" className="object-cover" />
             </div>
-            <div className="p-5 flex flex-col gap-3">
+            <div className="px-5 pb-5 flex flex-col gap-3">
               <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
                 {heroItem.category} · {formatDate(heroItem.date)}
               </p>
@@ -138,7 +138,7 @@ const renderListRow = (item: NewsItem) => {
             </div>
           </article>
         )}
-        <div className="flex flex-col gap-4 lg:pr-2">
+        <div className="flex flex-col gap-4">
           {columnItems.map((item) => (
             <Link
               key={item.id}
@@ -180,7 +180,7 @@ const renderListRow = (item: NewsItem) => {
               whileHover={{ y: -6, boxShadow: "0 20px 45px rgba(0,0,0,0.12)" }}
               className="surface-card overflow-hidden"
             >
-              <div className="relative w-full pb-[80%]">
+              <div className="relative w-full pb-[85%]">
                 <Image src={item.cover} alt={item.title} fill sizes="(max-width:1024px) 100vw, 320px" className="object-cover" />
               </div>
               <div className="p-4 flex flex-col gap-2">
