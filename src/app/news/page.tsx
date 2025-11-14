@@ -120,7 +120,11 @@ const renderListRow = (item: NewsItem) => {
       <div className="flex flex-col gap-10 w-full max-w-[95vw] xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto px-4 md:px-6">
       <div className="grid gap-6 lg:grid-cols-12 items-start">
         {heroItem && (
-          <article className="surface-card flex flex-col gap-4 lg:col-span-8 lg:sticky lg:top-12">
+          <motion.article
+            className="surface-card flex flex-col gap-4 lg:col-span-8 lg:sticky lg:top-12"
+            whileHover={{ y: -6, boxShadow: "0 28px 55px rgba(0,0,0,0.18)" }}
+            transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+          >
             <div className="relative w-full aspect-[5/3] min-h-[240px] rounded-[24px] overflow-hidden">
               <Image src={heroItem.cover} alt={heroItem.title} fill sizes="(max-width:1024px) 100vw, 60vw" className="object-cover" />
             </div>
@@ -136,26 +140,19 @@ const renderListRow = (item: NewsItem) => {
                 </Link>
               )}
             </div>
-          </article>
+          </motion.article>
         )}
         <div className="flex flex-col gap-4 lg:col-span-4">
-          {columnItems.map((item) => (
-            <Link
-              key={item.id}
-              href={item.link ?? "#"}
-              target={item.link ? "_blank" : undefined}
-              rel={item.link ? "noopener noreferrer" : undefined}
-              className={item.link ? "block" : "pointer-events-none"}
-            >
+          {columnItems.map((item) => {
+            const card = (
               <motion.div
                 variants={projectsVariants}
                 initial="hidden"
                 animate="visible"
                 whileHover={{ y: -6, boxShadow: "0 18px 35px rgba(0,0,0,0.14)" }}
-                className={
-                  "surface-card relative overflow-hidden aspect-square" +
-                  (item.link ? "" : " opacity-80")
-                }
+                className={`surface-card relative overflow-hidden aspect-square ${
+                  item.link ? "" : "opacity-80"
+                }`}
               >
                 <Image
                   src={item.cover}
@@ -174,39 +171,78 @@ const renderListRow = (item: NewsItem) => {
                   <p className="text-sm text-foreground/80 line-clamp-3">{item.summary}</p>
                 </div>
               </motion.div>
-            </Link>
-          ))}
+            );
+            if (item.link) {
+              return (
+                <Link
+                  key={item.id}
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block"
+                >
+                  {card}
+                </Link>
+              );
+            }
+            return (
+              <div key={item.id} className="block cursor-default">
+                {card}
+              </div>
+            );
+          })}
         </div>
       </div>
       {remainingItems.length > 0 && (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-12 gap-4">
-          {remainingItems.map((item) => (
-            <motion.div
-              key={item.id}
-              variants={projectsVariants}
-              initial="hidden"
-              animate="visible"
-              whileHover={{ y: -6, boxShadow: "0 20px 45px rgba(0,0,0,0.12)" }}
-              className="surface-card relative overflow-hidden aspect-square lg:col-span-4"
-            >
-              <Image
-                src={item.cover}
-                alt={item.title}
-                fill
-                sizes="(max-width:1024px) 100vw, 320px"
-                className="object-cover"
-              />
-              <div className="absolute inset-x-0 bottom-0 bg-background/95 dark:bg-background/90 px-4 pb-4 pt-3 flex flex-col gap-2">
-                <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
-                  {item.category} · {formatDate(item.date)}
-                </p>
-                <h3 className="text-lg font-semibold leading-tight text-foreground">
-                  {item.title}
-                </h3>
-                <p className="text-sm text-foreground/80 line-clamp-3">{item.summary}</p>
+          {remainingItems.map((item) => {
+            const card = (
+              <motion.div
+                variants={projectsVariants}
+                initial="hidden"
+                animate="visible"
+                whileHover={{ y: -6, boxShadow: "0 20px 45px rgba(0,0,0,0.12)" }}
+                className={`surface-card relative overflow-hidden aspect-square ${
+                  item.link ? "" : "opacity-80"
+                }`}
+              >
+                <Image
+                  src={item.cover}
+                  alt={item.title}
+                  fill
+                  sizes="(max-width:1024px) 100vw, 320px"
+                  className="object-cover"
+                />
+                <div className="absolute inset-x-0 bottom-0 bg-background/95 dark:bg-background/90 px-4 pb-4 pt-3 flex flex-col gap-2">
+                  <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
+                    {item.category} · {formatDate(item.date)}
+                  </p>
+                  <h3 className="text-lg font-semibold leading-tight text-foreground">
+                    {item.title}
+                  </h3>
+                  <p className="text-sm text-foreground/80 line-clamp-3">{item.summary}</p>
+                </div>
+              </motion.div>
+            );
+            if (item.link) {
+              return (
+                <Link
+                  key={item.id}
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block lg:col-span-4"
+                >
+                  {card}
+                </Link>
+              );
+            }
+            return (
+              <div key={item.id} className="block cursor-default lg:col-span-4">
+                {card}
               </div>
-            </motion.div>
-          ))}
+            );
+          })}
         </div>
       )}
       </div>
