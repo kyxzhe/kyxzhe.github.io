@@ -118,10 +118,10 @@ const renderListRow = (item: NewsItem) => {
     const remainingItems = secondaryItems.slice(3);
     return (
       <div className="flex flex-col gap-10 w-full max-w-6xl mx-auto px-4">
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,0.7fr)_320px] items-start">
+      <div className="grid gap-6 lg:grid-cols-12 items-start">
         {heroItem && (
-          <article className="surface-card flex flex-col gap-4 lg:sticky lg:top-16">
-            <div className="relative w-full aspect-[16/9] min-h-[240px] rounded-[24px] overflow-hidden">
+          <article className="surface-card flex flex-col gap-4 lg:col-span-8 lg:sticky lg:top-12">
+            <div className="relative w-full aspect-[5/3] min-h-[240px] rounded-[24px] overflow-hidden">
               <Image src={heroItem.cover} alt={heroItem.title} fill sizes="(max-width:1024px) 100vw, 60vw" className="object-cover" />
             </div>
             <div className="px-5 pb-5 flex flex-col gap-3">
@@ -138,7 +138,7 @@ const renderListRow = (item: NewsItem) => {
             </div>
           </article>
         )}
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 lg:col-span-4">
           {columnItems.map((item) => (
             <Link
               key={item.id}
@@ -170,7 +170,7 @@ const renderListRow = (item: NewsItem) => {
         </div>
       </div>
       {remainingItems.length > 0 && (
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-12 gap-4">
           {remainingItems.map((item) => (
             <motion.div
               key={item.id}
@@ -178,7 +178,7 @@ const renderListRow = (item: NewsItem) => {
               initial="hidden"
               animate="visible"
               whileHover={{ y: -6, boxShadow: "0 20px 45px rgba(0,0,0,0.12)" }}
-              className="surface-card overflow-hidden"
+              className="surface-card overflow-hidden lg:col-span-4"
             >
               <div className="relative w-full pb-[100%]">
                 <Image src={item.cover} alt={item.title} fill sizes="(max-width:1024px) 100vw, 320px" className="object-cover" />
