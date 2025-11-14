@@ -93,7 +93,7 @@ export default function PublicationsPage() {
   const renderListRow = (pub: Publication) => (
     <div
       key={pub.id}
-      className="flex flex-col gap-3 py-6 border-b last:border-b-0 border-[rgba(0,0,0,0.08)]"
+      className="flex flex-col gap-3 py-6 border-b last:border-b-0 border-[rgba(0,0,0,0.08)] transition-colors hover:border-foreground/80"
     >
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
         <div>
