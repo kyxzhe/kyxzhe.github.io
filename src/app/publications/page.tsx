@@ -252,16 +252,18 @@ export default function PublicationsPage() {
               you want to browse.
             </motion.p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
             {metrics.map((metric) => (
               <div
                 key={metric.label}
-                className="rounded-[18px] border border-border p-4 flex flex-col gap-2 bg-[var(--pill-background)]"
+                className="flex items-baseline gap-2 border-b border-border pb-1"
               >
-                <span className="text-[0.65rem] uppercase tracking-[0.3em] text-muted-foreground">
+                <span className="text-xs uppercase tracking-[0.3em]">
                   {metric.label}
                 </span>
-                <span className="text-xl font-semibold">{metric.value}</span>
+                <span className="text-lg text-foreground font-semibold">
+                  {metric.value}
+                </span>
               </div>
             ))}
           </div>
