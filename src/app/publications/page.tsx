@@ -304,7 +304,7 @@ export default function PublicationsPage() {
                   />
                 </button>
                 {filterOpen && (
-                  <div className="absolute left-0 mt-2 w-80 z-40 surface-card p-4 flex flex-col gap-4 shadow-xl rounded-2xl border border-border">
+                  <div className="absolute left-1/2 -translate-x-1/2 mt-2 w-80 z-40 surface-card p-4 flex flex-col gap-4 shadow-xl rounded-2xl border border-border">
                     <div className="flex items-center justify-between text-sm">
                       <p className="font-semibold">
                         {selectedTopics.length > 0
@@ -361,7 +361,7 @@ export default function PublicationsPage() {
                   <ArrowUpDown size={16} className="text-muted-foreground" />
                 </button>
                 {sortOpen && (
-                  <div className="absolute left-0 mt-2 w-64 z-40 surface-card p-3 flex flex-col gap-2 shadow-xl rounded-2xl border border-border">
+                  <div className="absolute left-1/2 -translate-x-1/2 mt-2 w-64 z-40 surface-card p-3 flex flex-col gap-2 shadow-xl rounded-2xl border border-border">
                     {sortOptions.map((option) => (
                       <label
                         key={option.value}
