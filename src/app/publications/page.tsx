@@ -162,11 +162,18 @@ export default function PublicationsPage() {
       <motion.div
         key={pub.id}
         variants={projectsVariants}
-      className={`surface-card overflow-hidden flex flex-col transition ${
-        pub.link
-          ? "hover:shadow-[0_20px_45px_rgba(0,0,0,0.12)] hover:-translate-y-1 cursor-pointer"
-          : "cursor-not-allowed opacity-80"
-      }`}
+        whileHover={
+          pub.link
+            ? {
+                y: -10,
+                boxShadow: "0 25px 50px rgba(0,0,0,0.15)",
+              }
+            : undefined
+        }
+        transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+        className={`surface-card overflow-hidden flex flex-col ${
+          pub.link ? "cursor-pointer" : "cursor-not-allowed opacity-80"
+        }`}
       >
         <div className="relative w-full pb-[60%]">
           <Image
