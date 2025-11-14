@@ -19,7 +19,7 @@ import { GoogleScholarIcon, OrcidIcon } from "@/components/icons/AcademicIcons";
 
 export default function ContactPage() {
   return (
-    <div className="flex flex-col min-h-screen font-sans pt-2 md:pt-0 lg:py-6 xl:py-0 xl:pb-6 overflow-auto lg:overflow-visible">
+    <div className="flex flex-col min-h-screen font-sans pt-2 md:pt-0 lg:py-6 xl:py-0 xl:pb-6 overflow-visible">
       <Navbar />
       <motion.main
         className="flex-1 flex flex-col gap-4 px-2 md:px-4 lg:px-6 pb-6"
