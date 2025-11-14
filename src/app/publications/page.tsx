@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
@@ -65,6 +65,8 @@ export default function PublicationsPage() {
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
   const [filterOpen, setFilterOpen] = useState(false);
   const [sortOpen, setSortOpen] = useState(false);
+  const filterRef = useRef<HTMLDivElement | null>(null);
+  const sortRef = useRef<HTMLDivElement | null>(null);
 
   const toggleTopic = (topic: string) => {
     setSelectedTopics((prev) =>
@@ -275,8 +277,8 @@ export default function PublicationsPage() {
               Showing {sortedPublications.length} publication
               {sortedPublications.length === 1 ? "" : "s"}
             </p>
-            <div className="flex items-center gap-4 text-sm">
-              <div className="relative flex items-center gap-1">
+            <div className="relative flex items-center gap-4 text-sm">
+              <div className="relative flex items-center gap-1" ref={filterRef}>
                 <button
                   className="flex items-center gap-1 transition"
                   onClick={() => {
@@ -303,8 +305,19 @@ export default function PublicationsPage() {
                     )}
                   />
                 </button>
-                {filterOpen && (
-                  <div className="absolute left-1/2 -translate-x-1/2 mt-2 w-80 z-40 surface-card p-4 flex flex-col gap-4 shadow-xl rounded-2xl border border-border">
+                {filterOpen && filterRef.current && typeof window !== "undefined" && (
+                  <div
+                    className="fixed mt-2 w-80 z-40 surface-card p-4 flex flex-col gap-4 shadow-xl rounded-2xl border border-border"
+                    style={{
+                      top:
+                        filterRef.current.getBoundingClientRect().bottom +
+                        window.scrollY +
+                        8,
+                      left:
+                        filterRef.current.getBoundingClientRect().left +
+                        window.scrollX,
+                    }}
+                  >
                     <div className="flex items-center justify-between text-sm">
                       <p className="font-semibold">
                         {selectedTopics.length > 0
@@ -347,7 +360,7 @@ export default function PublicationsPage() {
                   </div>
                 )}
               </div>
-              <div className="relative flex items-center gap-1">
+              <div className="relative flex items-center gap-1" ref={sortRef}>
                 <button
                   className={`flex items-center gap-1 transition ${
                     sortOpen ? "text-foreground" : "text-muted-foreground"
@@ -360,8 +373,19 @@ export default function PublicationsPage() {
                   <span className="text-muted-foreground">Sort</span>
                   <ArrowUpDown size={16} className="text-muted-foreground" />
                 </button>
-                {sortOpen && (
-                  <div className="absolute left-1/2 -translate-x-1/2 mt-2 w-64 z-40 surface-card p-3 flex flex-col gap-2 shadow-xl rounded-2xl border border-border">
+                {sortOpen && sortRef.current && typeof window !== "undefined" && (
+                  <div
+                    className="fixed mt-2 w-64 z-40 surface-card p-3 flex flex-col gap-2 shadow-xl rounded-2xl border border-border"
+                    style={{
+                      top:
+                        sortRef.current.getBoundingClientRect().bottom +
+                        window.scrollY +
+                        8,
+                      left:
+                        sortRef.current.getBoundingClientRect().left +
+                        window.scrollX,
+                    }}
+                  >
                     {sortOptions.map((option) => (
                       <label
                         key={option.value}
