@@ -93,27 +93,27 @@ export default function NewsPage() {
   const secondaryItems = sortedItems.slice(1);
 
 const renderListRow = (item: NewsItem) => {
-    const row = (
-      <div className="flex flex-col gap-2 py-5 border-b border-[rgba(0,0,0,0.08)] transition-colors group-hover:border-foreground">
-        <div className="text-xs uppercase tracking-[0.3em] text-muted-foreground">{item.category}</div>
-        <h3 className="text-xl font-semibold">{item.title}</h3>
-        <p className="text-sm text-muted-foreground">{formatDate(item.date)}</p>
-        <p className="text-sm text-foreground/80 max-w-3xl">{item.summary}</p>
-      </div>
-    );
-    if (item.link) {
-      return (
-        <Link key={item.id} href={item.link} target="_blank" rel="noopener noreferrer" className="group block">
-          {row}
-        </Link>
-      );
-    }
+  const row = (
+    <div className="flex flex-col gap-2 py-5 border-b border-border/70 dark:border-white/20 transition-colors group-hover:border-foreground group-hover:bg-[rgba(0,0,0,0.03)]">
+      <div className="text-xs uppercase tracking-[0.3em] text-muted-foreground">{item.category}</div>
+      <h3 className="text-xl font-semibold">{item.title}</h3>
+      <p className="text-sm text-muted-foreground">{formatDate(item.date)}</p>
+      <p className="text-sm text-foreground/80 max-w-3xl">{item.summary}</p>
+    </div>
+  );
+  if (item.link) {
     return (
-      <div key={item.id} className="group block pointer-events-none">
+      <Link key={item.id} href={item.link} target="_blank" rel="noopener noreferrer" className="group block">
         {row}
-      </div>
+      </Link>
     );
-  };
+  }
+  return (
+    <div key={item.id} className="group block pointer-events-none">
+      {row}
+    </div>
+  );
+};
 
   const renderGrid = () => (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">

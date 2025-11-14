@@ -105,15 +105,9 @@ export default function PublicationsPage() {
   const clearFilters = () => setSelectedTopics([]);
 
   const renderListRow = (pub: Publication) => {
-    const interactive = Boolean(pub.link);
     const row = (
       <div
-        className={cn(
-          "flex flex-col gap-3 py-6 border-b border-[rgba(0,0,0,0.08)] transition-colors",
-          interactive
-            ? "group-hover:border-foreground group-hover:bg-[rgba(0,0,0,0.02)] group-focus-visible:border-foreground cursor-pointer"
-            : "opacity-80"
-        )}
+        className="flex flex-col gap-3 py-6 border-b border-border/70 dark:border-white/20 transition-colors group-hover:border-foreground group-hover:bg-[rgba(0,0,0,0.03)]"
       >
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
           <div>
