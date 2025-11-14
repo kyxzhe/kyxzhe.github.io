@@ -42,8 +42,8 @@ const allTopics = Array.from(
 ).sort();
 
 const metrics = [
-  { label: "Preprints & manuscripts", value: "1" },
-  { label: "Review assignments", value: "10+" },
+  { label: "Manuscripts", value: "1" },
+  { label: "Reviews", value: "10+" },
   { label: "Citations", value: "2" },
 ];
 
@@ -215,12 +215,12 @@ export default function PublicationsPage() {
             {metrics.map((metric) => (
               <div
                 key={metric.label}
-                className="rounded-2xl border border-border p-4 flex flex-col gap-1"
+                className="rounded-[18px] border border-border p-4 flex flex-col gap-2 bg-[var(--pill-background)]"
               >
-                <span className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
+                <span className="text-[0.65rem] uppercase tracking-[0.3em] text-muted-foreground">
                   {metric.label}
                 </span>
-                <span className="text-2xl font-semibold">{metric.value}</span>
+                <span className="text-xl font-semibold">{metric.value}</span>
               </div>
             ))}
           </div>
@@ -229,25 +229,25 @@ export default function PublicationsPage() {
               Showing {sortedPublications.length} publication
               {sortedPublications.length === 1 ? "" : "s"}
             </p>
-            <div className="flex items-center gap-2">
-              <div className="relative">
+            <div className="flex items-center gap-4 text-sm font-medium">
+              <div className="relative flex items-center gap-1">
                 <button
-                  className="chip inline-flex items-center gap-2 text-xs tracking-[0.2em]"
+                  className="flex items-center gap-1 transition"
                   onClick={() => {
                     setFilterOpen((prev) => !prev);
                     setSortOpen(false);
                   }}
                 >
-                  <Filter size={14} />
-                  Filter
-                  {selectedTopics.length > 0 && (
-                    <span className="bg-[var(--accent)] text-white rounded-full px-2 py-[2px] text-[0.6rem]">
-                      {selectedTopics.length}
-                    </span>
-                  )}
+                  <Filter
+                    size={16}
+                    className={selectedTopics.length > 0 ? "text-foreground" : "text-muted-foreground"}
+                  />
+                  <span className={selectedTopics.length > 0 ? "text-foreground" : "text-muted-foreground"}>
+                    Filter
+                  </span>
                 </button>
                 {filterOpen && (
-                  <div className="absolute right-0 mt-2 w-72 z-40 surface-card p-4 flex flex-col gap-3">
+                  <div className="absolute right-0 mt-2 w-72 z-40 surface-card p-4 flex flex-col gap-3 shadow-xl rounded-2xl border border-border">
                     <div className="flex items-center justify-between">
                       <p className="text-sm font-semibold">Topics</p>
                       <button
@@ -281,19 +281,19 @@ export default function PublicationsPage() {
                   </div>
                 )}
               </div>
-              <div className="relative">
+              <div className="relative flex items-center gap-1">
                 <button
-                  className="chip inline-flex items-center gap-2 text-xs tracking-[0.2em]"
+                  className="flex items-center gap-1 text-muted-foreground transition"
                   onClick={() => {
                     setSortOpen((prev) => !prev);
                     setFilterOpen(false);
                   }}
                 >
-                  <ArrowUpDown size={14} />
-                  Sort
+                  <span className="text-muted-foreground">Sort</span>
+                  <ArrowUpDown size={16} className="text-muted-foreground" />
                 </button>
                 {sortOpen && (
-                  <div className="absolute right-0 mt-2 w-64 z-40 surface-card p-3 flex flex-col gap-2">
+                  <div className="absolute right-0 mt-2 w-64 z-40 surface-card p-3 flex flex-col gap-2 shadow-xl rounded-2xl border border-border">
                     {sortOptions.map((option) => (
                       <label
                         key={option.value}
@@ -318,11 +318,11 @@ export default function PublicationsPage() {
                   </div>
                 )}
               </div>
-              <div className="flex items-center rounded-full border border-border overflow-hidden">
+              <div className="flex items-center rounded-full border border-border overflow-hidden text-muted-foreground">
                 <button
-                  className={`p-2 text-xs font-semibold inline-flex items-center gap-1 transition ${
+                  className={`p-2 inline-flex items-center justify-center transition ${
                     viewMode === "list"
-                      ? "bg-foreground text-[#f5f5f7]"
+                      ? "text-foreground"
                       : "text-muted-foreground hover:text-foreground"
                   }`}
                   onClick={() => setViewMode("list")}
@@ -331,9 +331,9 @@ export default function PublicationsPage() {
                   <List size={16} />
                 </button>
                 <button
-                  className={`p-2 text-xs font-semibold inline-flex items-center gap-1 transition ${
+                  className={`p-2 inline-flex items-center justify-center transition ${
                     viewMode === "grid"
-                      ? "bg-foreground text-[#f5f5f7]"
+                      ? "text-foreground"
                       : "text-muted-foreground hover:text-foreground"
                   }`}
                   onClick={() => setViewMode("grid")}
