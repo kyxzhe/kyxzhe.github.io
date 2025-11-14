@@ -270,143 +270,144 @@ export default function PublicationsPage() {
               </div>
             ))}
           </div>
-          <div className="flex flex-wrap items-center justify-between gap-3 text-sm font-medium">
-            <p className="text-muted-foreground">
-              Showing {sortedPublications.length} publication
-              {sortedPublications.length === 1 ? "" : "s"}
-            </p>
-            <div className="relative flex items-center gap-4 text-sm">
-              <div className="relative flex items-center gap-1">
-                <button
-                  className="flex items-center gap-1 transition"
-                  onClick={() => {
-                    setFilterOpen((prev) => !prev);
-                    setSortOpen(false);
-                  }}
+        </motion.section>
+
+        <div className="flex flex-wrap items-center justify-between gap-3 text-sm font-medium">
+          <p className="text-muted-foreground">
+            Showing {sortedPublications.length} publication
+            {sortedPublications.length === 1 ? "" : "s"}
+          </p>
+          <div className="relative flex items-center gap-4 text-sm">
+            <div className="relative flex items-center gap-1">
+              <button
+                className="flex items-center gap-1 transition"
+                onClick={() => {
+                  setFilterOpen((prev) => !prev);
+                  setSortOpen(false);
+                }}
+              >
+                <span
+                  className={
+                    selectedTopics.length > 0
+                      ? "text-foreground"
+                      : "text-muted-foreground"
+                  }
                 >
-                  <span
-                    className={
-                      selectedTopics.length > 0
-                        ? "text-foreground"
-                        : "text-muted-foreground"
-                    }
-                  >
-                    {selectedTopics.length > 0 ? "Filter" : "Filter"}
-                  </span>
-                  <Filter
-                    size={18}
-                    className={cn(
-                      "transition",
-                      selectedTopics.length > 0 || filterOpen
-                        ? "text-foreground"
-                        : "text-muted-foreground"
-                    )}
-                  />
-                </button>
-                {filterOpen && (
-                  <div className="absolute top-full mt-2 right-0 w-80 z-40 surface-card p-4 flex flex-col gap-4 shadow-xl rounded-2xl border border-border">
-                    <div className="flex items-center justify-between text-sm">
-                      <p className="font-semibold">
-                        {selectedTopics.length > 0
-                          ? selectedTopics.join(", ")
-                          : "Topics"}
-                      </p>
-                      <span
-                        role="button"
-                        tabIndex={0}
-                        onClick={() => {
-                          setFilterOpen(false);
-                          setSelectedTopics([]);
-                        }}
-                        className="cursor-pointer"
-                      >
-                        ×
-                      </span>
-                    </div>
-                    <div className="max-h-64 overflow-y-auto pr-1 flex flex-col gap-2">
-                      {allTopics.map((topic) => (
-                        <label
-                          key={topic}
-                          className="flex items-center gap-2 text-sm text-foreground/80"
-                        >
-                          <input
-                            type="checkbox"
-                            checked={selectedTopics.includes(topic)}
-                            onChange={() => toggleTopic(topic)}
-                          />
-                          {topic}
-                        </label>
-                      ))}
-                    </div>
-                    <button
-                      className="self-start text-xs text-muted-foreground"
-                      onClick={clearFilters}
+                  Filter
+                </span>
+                <Filter
+                  size={18}
+                  className={cn(
+                    "transition",
+                    selectedTopics.length > 0 || filterOpen
+                      ? "text-foreground"
+                      : "text-muted-foreground"
+                  )}
+                />
+              </button>
+              {filterOpen && (
+                <div className="absolute top-full mt-2 right-0 w-80 z-40 surface-card p-4 flex flex-col gap-4 shadow-xl rounded-2xl border border-border">
+                  <div className="flex items-center justify-between text-sm">
+                    <p className="font-semibold">
+                      {selectedTopics.length > 0
+                        ? selectedTopics.join(", ")
+                        : "Topics"}
+                    </p>
+                    <span
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => {
+                        setFilterOpen(false);
+                        setSelectedTopics([]);
+                      }}
+                      className="cursor-pointer"
                     >
-                      Clear all
-                    </button>
+                      ×
+                    </span>
                   </div>
-                )}
-              </div>
-              <div className="relative flex items-center gap-1">
-                <button
-                  className={`flex items-center gap-1 transition ${
-                    sortOpen ? "text-foreground" : "text-muted-foreground"
-                  }`}
-                  onClick={() => {
-                    setSortOpen((prev) => !prev);
-                    setFilterOpen(false);
-                  }}
-                >
-                  <span className="text-muted-foreground">Sort</span>
-                  <ArrowUpDown size={16} className="text-muted-foreground" />
-                </button>
-                {sortOpen && (
-                  <div className="absolute top-full mt-2 right-0 w-64 z-40 surface-card p-3 flex flex-col gap-2 shadow-xl rounded-2xl border border-border">
-                    {sortOptions.map((option) => (
+                  <div className="max-h-64 overflow-y-auto pr-1 flex flex-col gap-2">
+                    {allTopics.map((topic) => (
                       <label
-                        key={option.value}
+                        key={topic}
                         className="flex items-center gap-2 text-sm text-foreground/80"
                       >
                         <input
-                          type="radio"
-                          name="sort"
-                          value={option.value}
-                          checked={sortMode === option.value}
-                          onChange={() => setSortMode(option.value)}
+                          type="checkbox"
+                          checked={selectedTopics.includes(topic)}
+                          onChange={() => toggleTopic(topic)}
                         />
-                        {option.label}
+                        {topic}
                       </label>
                     ))}
                   </div>
-                )}
-              </div>
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <button
-                  className={`p-2 inline-flex items-center justify-center transition rounded ${
-                    viewMode === "list"
-                      ? "text-foreground bg-[rgba(0,0,0,0.06)]"
-                      : "hover:text-foreground"
-                  }`}
-                  onClick={() => setViewMode("list")}
-                  aria-label="List view"
-                >
-                  <List size={16} />
-                </button>
-                <button
-                  className={`p-2 inline-flex items-center justify-center transition rounded ${
-                    viewMode === "grid"
-                      ? "text-foreground bg-[rgba(0,0,0,0.06)]"
-                      : "hover:text-foreground"
-                  }`}
-                  onClick={() => setViewMode("grid")}
-                  aria-label="Grid view"
-                >
-                  <LayoutGrid size={16} />
-                </button>
-              </div>
+                  <button
+                    className="self-start text-xs text-muted-foreground"
+                    onClick={clearFilters}
+                  >
+                    Clear all
+                  </button>
+                </div>
+              )}
+            </div>
+            <div className="relative flex items-center gap-1">
+              <button
+                className={`flex items-center gap-1 transition ${
+                  sortOpen ? "text-foreground" : "text-muted-foreground"
+                }`}
+                onClick={() => {
+                  setSortOpen((prev) => !prev);
+                  setFilterOpen(false);
+                }}
+              >
+                <span className="text-muted-foreground">Sort</span>
+                <ArrowUpDown size={16} className="text-muted-foreground" />
+              </button>
+              {sortOpen && (
+                <div className="absolute top-full mt-2 right-0 w-64 z-40 surface-card p-3 flex flex-col gap-2 shadow-xl rounded-2xl border border-border">
+                  {sortOptions.map((option) => (
+                    <label
+                      key={option.value}
+                      className="flex items-center gap-2 text-sm text-foreground/80"
+                    >
+                      <input
+                        type="radio"
+                        name="sort"
+                        value={option.value}
+                        checked={sortMode === option.value}
+                        onChange={() => setSortMode(option.value)}
+                      />
+                      {option.label}
+                    </label>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div className="flex items-center rounded-full border border-border overflow-hidden text-muted-foreground">
+              <button
+                className={`p-2 inline-flex items-center justify-center transition ${
+                  viewMode === "list"
+                    ? "text-foreground"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+                onClick={() => setViewMode("list")}
+                aria-label="List view"
+              >
+                <List size={16} />
+              </button>
+              <button
+                className={`p-2 inline-flex items-center justify-center transition ${
+                  viewMode === "grid"
+                    ? "text-foreground"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+                onClick={() => setViewMode("grid")}
+                aria-label="Grid view"
+              >
+                <LayoutGrid size={16} />
+              </button>
             </div>
           </div>
-        </motion.section>
+        </div>
 
         <section className="surface-card p-4 md:p-6">
           {sortedPublications.length === 0 ? (
