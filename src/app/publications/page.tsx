@@ -8,14 +8,12 @@ import { ArrowUpDown, LayoutGrid, List } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { type Publication, publications } from "@/lib/constants/publications";
-import { cn } from "@/lib/utils/util";
 import {
   cardVariants,
   containerVariants,
   projectsVariants,
   textVariants,
 } from "@/lib/animation/variants";
-import { cn } from "@/lib/utils/util";
 
 type ViewMode = "list" | "grid";
 type SortOption = "newest" | "oldest" | "az" | "za";
