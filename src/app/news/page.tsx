@@ -117,7 +117,7 @@ const renderListRow = (item: NewsItem) => {
     const columnItems = secondaryItems.slice(0, 3);
     const remainingItems = secondaryItems.slice(3);
     return (
-      <div className="flex flex-col gap-10 w-full max-w-[min(90vw,1200px)] mx-auto px-6">
+      <div className="flex flex-col gap-10 w-full max-w-[90vw] lg:max-w-[1200px] mx-auto px-6">
       <div className="grid gap-6 lg:grid-cols-12 items-start">
         {heroItem && (
           <article className="surface-card flex flex-col gap-4 lg:col-span-8 lg:sticky lg:top-12">
