@@ -10,7 +10,7 @@ export default function Navbar() {
   return (
     <header className="mb-4" role="banner">
       <nav
-        className="glass-panel flex flex-row justify-between px-4 py-4 lg:px-10 lg:py-6 items-center md:flex-row md:items-center relative"
+        className="glass-panel flex flex-row justify-between px-4 py-4 lg:px-10 lg:py-6 items-center md:flex-row md:items-center relative z-10"
         aria-label="Main navigation"
       >
         <Link
