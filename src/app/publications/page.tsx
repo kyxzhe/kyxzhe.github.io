@@ -25,11 +25,27 @@ const sortOptions: { label: string; value: SortOption }[] = [
   { label: "Alphabetical (Z–A)", value: "za" },
 ];
 
-const dateFormatter = new Intl.DateTimeFormat("en-AU", {
-  month: "short",
-  day: "numeric",
-  year: "numeric",
-});
+const MONTH_ABBREVIATIONS = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
+
+function formatDate(isoDate: string) {
+  const [year, month, day] = isoDate.split("-").map(Number);
+  if (!year || !month || !day) return isoDate;
+  const monthLabel = MONTH_ABBREVIATIONS[month - 1] ?? "";
+  return `${day} ${monthLabel} ${year}`;
+}
 
 const allTopics = Array.from(
   new Set(publications.flatMap((pub) => pub.topics))
@@ -101,7 +117,7 @@ export default function PublicationsPage() {
             <h3 className="text-xl md:text-2xl font-semibold">{pub.title}</h3>
           </div>
           <p className="text-sm text-muted-foreground">
-            {dateFormatter.format(new Date(pub.date))}
+            {formatDate(pub.date)}
           </p>
         </div>
         <p className="text-sm text-foreground/80 max-w-3xl">{pub.summary}</p>
@@ -154,7 +170,7 @@ export default function PublicationsPage() {
         </div>
         <div className="p-4 flex flex-col gap-2 flex-1">
           <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
-            {pub.category} · {dateFormatter.format(new Date(pub.date))}
+            {pub.category} · {formatDate(pub.date)}
           </p>
           <h3 className="text-lg font-semibold">{pub.title}</h3>
           <p className="text-sm text-foreground/80 flex-1">{pub.summary}</p>
