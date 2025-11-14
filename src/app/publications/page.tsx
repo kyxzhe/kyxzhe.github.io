@@ -265,12 +265,12 @@ export default function PublicationsPage() {
               </div>
             ))}
           </div>
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <p className="text-sm text-muted-foreground">
+          <div className="flex flex-wrap items-center justify-between gap-3 text-sm font-medium">
+            <p className="text-muted-foreground">
               Showing {sortedPublications.length} publication
               {sortedPublications.length === 1 ? "" : "s"}
             </p>
-            <div className="flex items-center gap-4 text-sm font-medium">
+            <div className="flex items-center gap-4 text-sm">
               <div className="relative flex items-center gap-1">
                 <button
                   className="flex items-center gap-1 transition"
@@ -279,24 +279,47 @@ export default function PublicationsPage() {
                     setSortOpen(false);
                   }}
                 >
-                  <Filter
-                    size={16}
-                    className={selectedTopics.length > 0 ? "text-foreground" : "text-muted-foreground"}
-                  />
-                  <span className={selectedTopics.length > 0 ? "text-foreground" : "text-muted-foreground"}>
-                    Filter
+                  <span
+                    className={
+                      selectedTopics.length > 0
+                        ? "text-foreground"
+                        : "text-muted-foreground"
+                    }
+                  >
+                    {selectedTopics.length > 0
+                      ? `${selectedTopics.length} topic${
+                          selectedTopics.length > 1 ? "s" : ""
+                        }`
+                      : "All topics"}
                   </span>
+                  <Filter
+                    size={18}
+                    className={
+                      selectedTopics.length > 0
+                        ? "text-foreground"
+                        : "text-muted-foreground"
+                    }
+                  />
                 </button>
                 {filterOpen && (
-                  <div className="absolute right-0 mt-2 w-72 z-40 surface-card p-4 flex flex-col gap-3 shadow-xl rounded-2xl border border-border">
-                    <div className="flex items-center justify-between">
-                      <p className="text-sm font-semibold">Topics</p>
-                      <button
-                        className="text-xs text-muted-foreground"
-                        onClick={clearFilters}
+                  <div className="absolute right-0 mt-2 w-80 z-40 surface-card p-4 flex flex-col gap-4 shadow-xl rounded-2xl border border-border">
+                    <div className="flex items-center justify-between text-sm">
+                      <p className="font-semibold">
+                        {selectedTopics.length > 0
+                          ? selectedTopics.join(", ")
+                          : "Topics"}
+                      </p>
+                      <span
+                        role="button"
+                        tabIndex={0}
+                        onClick={() => {
+                          setFilterOpen(false);
+                          setSelectedTopics([]);
+                        }}
+                        className="cursor-pointer"
                       >
-                        Clear
-                      </button>
+                        ×
+                      </span>
                     </div>
                     <div className="max-h-64 overflow-y-auto pr-1 flex flex-col gap-2">
                       {allTopics.map((topic) => (
@@ -314,17 +337,19 @@ export default function PublicationsPage() {
                       ))}
                     </div>
                     <button
-                      className="btn-primary text-sm justify-center"
-                      onClick={() => setFilterOpen(false)}
+                      className="self-start text-xs text-muted-foreground"
+                      onClick={clearFilters}
                     >
-                      Done
+                      Clear all
                     </button>
                   </div>
                 )}
               </div>
               <div className="relative flex items-center gap-1">
                 <button
-                  className="flex items-center gap-1 text-muted-foreground transition"
+                  className={`flex items-center gap-1 transition ${
+                    sortOpen ? "text-foreground" : "text-muted-foreground"
+                  }`}
                   onClick={() => {
                     setSortOpen((prev) => !prev);
                     setFilterOpen(false);
@@ -350,21 +375,15 @@ export default function PublicationsPage() {
                         {option.label}
                       </label>
                     ))}
-                    <button
-                      className="chip text-xs tracking-[0.2em] justify-center mt-1"
-                      onClick={() => setSortOpen(false)}
-                    >
-                      Close
-                    </button>
                   </div>
                 )}
               </div>
-              <div className="flex items-center rounded-full border border-border overflow-hidden text-muted-foreground">
+              <div className="flex items-center gap-2 text-muted-foreground">
                 <button
-                  className={`p-2 inline-flex items-center justify-center transition ${
+                  className={`p-2 inline-flex items-center justify-center transition rounded ${
                     viewMode === "list"
-                      ? "text-foreground"
-                      : "text-muted-foreground hover:text-foreground"
+                      ? "text-foreground bg-[rgba(0,0,0,0.06)]"
+                      : "hover:text-foreground"
                   }`}
                   onClick={() => setViewMode("list")}
                   aria-label="List view"
@@ -372,10 +391,10 @@ export default function PublicationsPage() {
                   <List size={16} />
                 </button>
                 <button
-                  className={`p-2 inline-flex items-center justify-center transition ${
+                  className={`p-2 inline-flex items-center justify-center transition rounded ${
                     viewMode === "grid"
-                      ? "text-foreground"
-                      : "text-muted-foreground hover:text-foreground"
+                      ? "text-foreground bg-[rgba(0,0,0,0.06)]"
+                      : "hover:text-foreground"
                   }`}
                   onClick={() => setViewMode("grid")}
                   aria-label="Grid view"
