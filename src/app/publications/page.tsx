@@ -4,10 +4,11 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
-import { ArrowUpDown, Filter, LayoutGrid, List } from "lucide-react";
+import { ArrowUpDown, LayoutGrid, List } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { type Publication, publications } from "@/lib/constants/publications";
+import { cn } from "@/lib/utils/util";
 import {
   cardVariants,
   containerVariants,
@@ -57,6 +58,22 @@ const metrics = [
   { label: "Reviews", value: "10+" },
   { label: "Citations", value: "2" },
 ];
+
+const FilterIcon = ({ className }: { className?: string }) => (
+  <svg
+    className={className}
+    viewBox="0 0 16 16"
+    width={16}
+    height={16}
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M9.66667 3.33333C8.93029 3.33333 3.93029 3.33333 5.40305 3.93029C6.87812 4.52934 9.66667 6 10.403 6 11 5.40305 11 4.66667C11 3.93029 10.403 3.33333 9.66667 3.33333ZM7.08401 4C7.38004 4.29848 8.42411 2 9.66667 2 10.9092 2 11.9533 4H13.3333C14 4.29848 14 6.66667 13.7015 7.33333C13.3333 8.42411 12.2493 4 14 4.29848 14.6 7.33333 8.42411 7.33333 7.38004 6.48349 7.08401 6.33333 10.6667 3.33333H2.29848C2 4.29848 2 6.66667 2.66667 7.33333C3.33333 8.42411 4.66667 7.38004 5.40305 7.33333C6 7.33333 2.29848 13.3333 2.29848 13.3333C2.29848 13.7015 2.66667 14 3.33333 14.2985C4.66667 14.2985 5.33333 13.7015 5.33333 13.3333V12.3333C6 13.7015 7.33333 14 8 14C8.66667 14 10 13.3333 10.6667 12.6667C11 12.2985 11 10.6667 10.2985 10.3333L7.08401 9.51652C5.09077 8.66667 6.33333 8.66667 6.33333 10.6667 10.6667 12.6667 7.33333 13.6667 6.33333 13.3333 4.66667 13 4.0467 13 2 12 11.7015 12 13.7015 12 13.3333 12 13.3333 12 2 11.7015 2 11.7015 2"
+      fill="currentColor"
+    />
+  </svg>
+);
 
 export default function PublicationsPage() {
   const [viewMode, setViewMode] = useState<ViewMode>("list");
@@ -294,13 +311,13 @@ export default function PublicationsPage() {
                         }`
                       : "All topics"}
                   </span>
-                  <Filter
-                    size={18}
-                    className={
-                      selectedTopics.length > 0
+                  <FilterIcon
+                    className={cn(
+                      "transition",
+                      selectedTopics.length > 0 || filterOpen
                         ? "text-foreground"
                         : "text-muted-foreground"
-                    }
+                    )}
                   />
                 </button>
                 {filterOpen && (
