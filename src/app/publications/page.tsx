@@ -8,6 +8,7 @@ import { ArrowUpDown, LayoutGrid, List } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { type Publication, publications } from "@/lib/constants/publications";
+import { cn } from "@/lib/utils/util";
 import {
   cardVariants,
   containerVariants,
