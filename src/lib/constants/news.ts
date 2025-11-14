@@ -51,25 +51,13 @@ export const newsItems: NewsItem[] = [
     linkLabel: "Show credential",
   },
   {
-    id: "chatbot-launch",
-    title: "Lab chatbot beta graduates to full release",
-    category: "Product",
-    date: "2025-03-18",
-    summary:
-      "Production-ready chatbot now answers lab FAQs with citations to the news log, making collaboration queries faster.",
-    topics: ["Product", "Chatbot"],
-    cover: "/projects/work-4.jpg",
-    link: "https://kevin-bot.kyx-zhe.workers.dev",
-    linkLabel: "Try KevinBot",
-  },
-  {
-    id: "diffusion-brief",
-    title: "Diffusion Horizons: Mapping cascade interventions",
+    id: "placeholder-diffusion",
+    title: "[Placeholder] Diffusion Horizons update",
     category: "Research",
     date: "2024-11-20",
     summary:
-      "Shared early diffusion simulations with product partners, highlighting how ranking tweaks reshape outbreak narratives.",
-    topics: ["Diffusion", "Simulation"],
+      "Placeholder entry for layout testing—swap with the next real diffusion brief when ready.",
+    topics: ["Diffusion"],
     cover: "/projects/work-2.jpg",
   },
 ];

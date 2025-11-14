@@ -109,7 +109,7 @@ const renderListRow = (item: NewsItem) => {
       );
     }
     return (
-      <div key={item.id} className="pointer-events-none">
+      <div key={item.id} className="group block pointer-events-none">
         {row}
       </div>
     );

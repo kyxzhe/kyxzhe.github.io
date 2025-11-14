@@ -151,7 +151,7 @@ export default function PublicationsPage() {
       );
     }
     return (
-      <div key={pub.id} className="pointer-events-none">
+      <div key={pub.id} className="group block pointer-events-none">
         {row}
       </div>
     );
