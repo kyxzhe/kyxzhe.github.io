@@ -314,8 +314,8 @@ export default function PublicationsPage() {
                         window.scrollY +
                         8,
                       left:
-                        filterRef.current.getBoundingClientRect().left +
-                        window.scrollX - 200,
+                        filterRef.current.getBoundingClientRect().right +
+                        window.scrollX - 320,
                     }}
                   >
                     <div className="flex items-center justify-between text-sm">
@@ -382,8 +382,8 @@ export default function PublicationsPage() {
                         window.scrollY +
                         8,
                       left:
-                        sortRef.current.getBoundingClientRect().left +
-                        window.scrollX - 120,
+                        sortRef.current.getBoundingClientRect().right +
+                        window.scrollX - 256,
                     }}
                   >
                     {sortOptions.map((option) => (
