@@ -113,42 +113,72 @@ const renderListRow = (item: NewsItem) => {
   );
 };
 
-  const renderGrid = () => (
-    <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
-      {heroItem && (
-        <article className="surface-card overflow-hidden flex flex-col sticky top-6">
-          <div className="relative w-full pb-[60%]">
-            <Image src={heroItem.cover} alt={heroItem.title} fill sizes="(max-width:1024px) 100vw, 60vw" className="object-cover" />
-          </div>
-          <div className="p-6 flex flex-col gap-3">
-            <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
-              {heroItem.category} · {formatDate(heroItem.date)}
-            </p>
-            <h2 className="text-3xl font-semibold">{heroItem.title}</h2>
-            <p className="text-sm text-foreground/80">{heroItem.summary}</p>
-            {heroItem.link && (
-              <Link href={heroItem.link} className="text-sm text-brand-accent" target="_blank" rel="noopener noreferrer">
-                Read update
-              </Link>
-            )}
-          </div>
-        </article>
-      )}
-      <div className="flex flex-col gap-4">
-        {secondaryItems.map((item) => (
-          <Link
-            key={item.id}
-            href={item.link ?? "#"}
-            target={item.link ? "_blank" : undefined}
-            rel={item.link ? "noopener noreferrer" : undefined}
-            className={item.link ? "block" : "pointer-events-none"}
-          >
+  const renderGrid = () => {
+    const columnItems = secondaryItems.slice(0, 4);
+    const remainingItems = secondaryItems.slice(4);
+    return (
+      <div className="space-y-6">
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
+        {heroItem && (
+          <article className="surface-card overflow-hidden flex flex-col lg:sticky lg:top-6 min-h-[60vh]">
+            <div className="relative w-full pb-[60%]">
+              <Image src={heroItem.cover} alt={heroItem.title} fill sizes="(max-width:1024px) 100vw, 60vw" className="object-cover" />
+            </div>
+            <div className="p-6 flex flex-col gap-3">
+              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
+                {heroItem.category} · {formatDate(heroItem.date)}
+              </p>
+              <h2 className="text-3xl font-semibold">{heroItem.title}</h2>
+              <p className="text-sm text-foreground/80">{heroItem.summary}</p>
+              {heroItem.link && (
+                <Link href={heroItem.link} className="text-sm text-brand-accent" target="_blank" rel="noopener noreferrer">
+                  Read update
+                </Link>
+              )}
+            </div>
+          </article>
+        )}
+        <div className="flex flex-col gap-4 lg:max-h-[calc(100vh-120px)] lg:overflow-y-auto pr-1">
+          {columnItems.map((item) => (
+            <Link
+              key={item.id}
+              href={item.link ?? "#"}
+              target={item.link ? "_blank" : undefined}
+              rel={item.link ? "noopener noreferrer" : undefined}
+              className={item.link ? "block" : "pointer-events-none"}
+            >
+              <motion.div
+                variants={projectsVariants}
+                initial="hidden"
+                animate="visible"
+                whileHover={{ y: -8, boxShadow: "0 20px 40px rgba(0,0,0,0.12)" }}
+                className={"surface-card overflow-hidden" + (item.link ? "" : " opacity-80")}
+              >
+                <div className="relative w-full pb-[55%]">
+                  <Image src={item.cover} alt={item.title} fill sizes="(max-width:1024px) 100vw, 320px" className="object-cover" />
+                </div>
+                <div className="p-4 flex flex-col gap-2">
+                  <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
+                    {item.category} · {formatDate(item.date)}
+                  </p>
+                  <h3 className="text-lg font-semibold">{item.title}</h3>
+                  <p className="text-sm text-foreground/80">{item.summary}</p>
+                </div>
+              </motion.div>
+            </Link>
+          ))}
+        </div>
+      </div>
+      {remainingItems.length > 0 && (
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+          {remainingItems.map((item) => (
             <motion.div
+              key={item.id}
               variants={projectsVariants}
               initial="hidden"
               animate="visible"
-              whileHover={{ y: -8, boxShadow: "0 20px 40px rgba(0,0,0,0.12)" }}
-              className={"surface-card overflow-hidden" + (item.link ? "" : " opacity-80")}
+              whileHover={{ y: -6, boxShadow: "0 20px 45px rgba(0,0,0,0.12)" }}
+              className="surface-card overflow-hidden"
             >
               <div className="relative w-full pb-[55%]">
                 <Image src={item.cover} alt={item.title} fill sizes="(max-width:1024px) 100vw, 320px" className="object-cover" />
@@ -161,11 +191,12 @@ const renderListRow = (item: NewsItem) => {
                 <p className="text-sm text-foreground/80">{item.summary}</p>
               </div>
             </motion.div>
-          </Link>
-        ))}
+          ))}
+        </div>
+      )}
       </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <div className="flex flex-col min-h-screen font-sans pt-2 md:pt-0 lg:py-6 xl:py-0 xl:pb-6 overflow-visible">

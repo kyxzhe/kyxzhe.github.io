@@ -60,4 +60,22 @@ export const newsItems: NewsItem[] = [
     topics: ["Diffusion"],
     cover: "/projects/work-2.jpg",
   },
+  {
+    id: "placeholder-lab-demo",
+    title: "[Placeholder] Lab demo tour",
+    category: "Milestone",
+    date: "2024-08-05",
+    summary: "Placeholder slot for future demo recaps.",
+    topics: ["Demo"],
+    cover: "/projects/work-3.jpg",
+  },
+  {
+    id: "placeholder-interview",
+    title: "[Placeholder] Interview on noisy supervision",
+    category: "Interview",
+    date: "2024-06-12",
+    summary: "Reserved for upcoming interview summary.",
+    topics: ["Interview"],
+    cover: "/projects/work-4.jpg",
+  },
 ];
