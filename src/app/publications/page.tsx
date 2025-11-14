@@ -4,13 +4,7 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
-import {
-  ArrowUpRight,
-  ArrowUpDown,
-  Filter,
-  LayoutGrid,
-  List,
-} from "lucide-react";
+import { ArrowUpDown, Filter, LayoutGrid, List } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { type Publication, publications } from "@/lib/constants/publications";
@@ -90,80 +84,107 @@ export default function PublicationsPage() {
 
   const clearFilters = () => setSelectedTopics([]);
 
-  const renderListRow = (pub: Publication) => (
-    <div
-      key={pub.id}
-      className="flex flex-col gap-3 py-6 border-b last:border-b-0 border-[rgba(0,0,0,0.08)] transition-colors hover:border-foreground/80"
-    >
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-        <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
-            {pub.category}
+  const renderListRow = (pub: Publication) => {
+    const row = (
+      <div
+        className={`flex flex-col gap-3 py-6 border-b border-[rgba(0,0,0,0.08)] transition-colors ${
+          pub.link
+            ? "hover:border-foreground hover:bg-[rgba(0,0,0,0.02)] cursor-pointer"
+            : ""
+        }`}
+      >
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+          <div>
+            <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
+              {pub.category}
+            </p>
+            <h3 className="text-xl md:text-2xl font-semibold">{pub.title}</h3>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            {dateFormatter.format(new Date(pub.date))}
           </p>
-          <h3 className="text-xl md:text-2xl font-semibold">{pub.title}</h3>
         </div>
-        <p className="text-sm text-muted-foreground">
-          {dateFormatter.format(new Date(pub.date))}
-        </p>
-      </div>
-      <p className="text-sm text-foreground/80 max-w-3xl">{pub.summary}</p>
-      <div className="flex flex-wrap items-center gap-3 text-xs uppercase tracking-[0.3em] text-muted-foreground">
-        <span>{pub.venue}</span>
-        {pub.tags.map((tag) => (
-          <span key={tag} className="chip chip-relaxed text-[0.65rem]">
-            {tag}
-          </span>
-        ))}
-        {pub.link && (
-          <Link
-            href={pub.link}
-            className="inline-flex items-center gap-1 text-brand-accent tracking-normal uppercase text-[0.6rem]"
-          >
-            Read more <ArrowUpRight size={14} />
-          </Link>
-        )}
-      </div>
-    </div>
-  );
-
-  const renderGridCard = (pub: Publication) => (
-    <motion.div
-      key={pub.id}
-      variants={projectsVariants}
-      className="surface-card overflow-hidden flex flex-col"
-    >
-      <div className="relative w-full pb-[60%]">
-        <Image
-          src={pub.cover}
-          alt={pub.title}
-          fill
-          sizes="(max-width: 768px) 100vw, 33vw"
-          className="object-cover"
-        />
-      </div>
-      <div className="p-4 flex flex-col gap-2 flex-1">
-        <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
-          {pub.category} · {dateFormatter.format(new Date(pub.date))}
-        </p>
-        <h3 className="text-lg font-semibold">{pub.title}</h3>
-        <p className="text-sm text-foreground/80 flex-1">{pub.summary}</p>
-        <div className="flex flex-wrap gap-2 text-xs uppercase tracking-[0.2em] text-muted-foreground">
+        <p className="text-sm text-foreground/80 max-w-3xl">{pub.summary}</p>
+        <div className="flex flex-wrap items-center gap-3 text-xs uppercase tracking-[0.3em] text-muted-foreground">
           <span>{pub.venue}</span>
-          {pub.tags.slice(0, 2).map((tag) => (
-            <span key={tag}>{tag}</span>
+          {pub.tags.map((tag) => (
+            <span key={tag} className="chip chip-relaxed text-[0.65rem]">
+              {tag}
+            </span>
           ))}
         </div>
-        {pub.link && (
-          <Link
-            href={pub.link}
-            className="inline-flex items-center gap-2 text-sm text-brand-accent font-medium"
-          >
-            View artefact <ArrowUpRight size={16} />
-          </Link>
-        )}
       </div>
-    </motion.div>
-  );
+    );
+    if (pub.link) {
+      return (
+        <Link
+          key={pub.id}
+          href={pub.link}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {row}
+        </Link>
+      );
+    }
+    return (
+      <div key={pub.id} className="pointer-events-none">
+        {row}
+      </div>
+    );
+  };
+
+  const renderGridCard = (pub: Publication) => {
+    const card = (
+      <motion.div
+        key={pub.id}
+        variants={projectsVariants}
+        className={`surface-card overflow-hidden flex flex-col transition ${
+          pub.link ? "hover:shadow-xl cursor-pointer" : "cursor-not-allowed opacity-80"
+        }`}
+      >
+        <div className="relative w-full pb-[60%]">
+          <Image
+            src={pub.cover}
+            alt={pub.title}
+            fill
+            sizes="(max-width: 768px) 100vw, 33vw"
+            className="object-cover"
+          />
+        </div>
+        <div className="p-4 flex flex-col gap-2 flex-1">
+          <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
+            {pub.category} · {dateFormatter.format(new Date(pub.date))}
+          </p>
+          <h3 className="text-lg font-semibold">{pub.title}</h3>
+          <p className="text-sm text-foreground/80 flex-1">{pub.summary}</p>
+          <div className="flex flex-wrap gap-2 text-xs uppercase tracking-[0.2em] text-muted-foreground">
+            <span>{pub.venue}</span>
+            {pub.tags.slice(0, 2).map((tag) => (
+              <span key={tag}>{tag}</span>
+            ))}
+          </div>
+        </div>
+      </motion.div>
+    );
+    if (pub.link) {
+      return (
+        <Link
+          key={pub.id}
+          href={pub.link}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {card}
+        </Link>
+      );
+    }
+    return (
+      <div key={pub.id} className="pointer-events-none">
+        {card}
+      </div>
+    );
+  };
 
   return (
     <div className="flex flex-col min-h-screen font-sans pt-2 md:pt-0 lg:py-6 xl:py-0 xl:pb-6 overflow-visible">
