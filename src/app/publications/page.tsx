@@ -8,7 +8,6 @@ import { ArrowUpDown, Filter, LayoutGrid, List } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { type Publication, publications } from "@/lib/constants/publications";
-import { cn } from "@/lib/utils/util";
 import {
   cardVariants,
   containerVariants,
@@ -274,13 +273,12 @@ export default function PublicationsPage() {
 
         <div className="flex flex-wrap items-center justify-between gap-3 text-sm font-medium">
           <p className="text-muted-foreground">
-            Showing {sortedPublications.length} publication
-            {sortedPublications.length === 1 ? "" : "s"}
+            Showing {sortedPublications.length} publications
           </p>
-          <div className="relative flex items-center gap-4 text-sm">
+          <div className="relative flex items-center gap-4">
             <div className="relative flex items-center gap-1">
               <button
-                className="flex items-center gap-1 transition"
+                className="flex items-center gap-1"
                 onClick={() => {
                   setFilterOpen((prev) => !prev);
                   setSortOpen(false);
@@ -288,7 +286,7 @@ export default function PublicationsPage() {
               >
                 <span
                   className={
-                    selectedTopics.length > 0
+                    selectedTopics.length > 0 || filterOpen
                       ? "text-foreground"
                       : "text-muted-foreground"
                   }
@@ -296,13 +294,12 @@ export default function PublicationsPage() {
                   Filter
                 </span>
                 <Filter
-                  size={18}
-                  className={cn(
-                    "transition",
+                  size={16}
+                  className={
                     selectedTopics.length > 0 || filterOpen
                       ? "text-foreground"
                       : "text-muted-foreground"
-                  )}
+                  }
                 />
               </button>
               {filterOpen && (
@@ -351,7 +348,7 @@ export default function PublicationsPage() {
             </div>
             <div className="relative flex items-center gap-1">
               <button
-                className={`flex items-center gap-1 transition ${
+                className={`flex items-center gap-1 ${
                   sortOpen ? "text-foreground" : "text-muted-foreground"
                 }`}
                 onClick={() => {
@@ -359,8 +356,8 @@ export default function PublicationsPage() {
                   setFilterOpen(false);
                 }}
               >
-                <span className="text-muted-foreground">Sort</span>
-                <ArrowUpDown size={16} className="text-muted-foreground" />
+                <span>Sort</span>
+                <ArrowUpDown size={16} />
               </button>
               {sortOpen && (
                 <div className="absolute top-full mt-2 right-0 w-64 z-40 surface-card p-3 flex flex-col gap-2 shadow-xl rounded-2xl border border-border">
@@ -382,12 +379,12 @@ export default function PublicationsPage() {
                 </div>
               )}
             </div>
-            <div className="flex items-center rounded-full border border-border overflow-hidden text-muted-foreground">
+            <div className="flex items-center gap-2 text-muted-foreground">
               <button
-                className={`p-2 inline-flex items-center justify-center transition ${
+                className={`p-2 rounded ${
                   viewMode === "list"
-                    ? "text-foreground"
-                    : "text-muted-foreground hover:text-foreground"
+                    ? "text-foreground bg-[rgba(0,0,0,0.06)]"
+                    : "hover:text-foreground"
                 }`}
                 onClick={() => setViewMode("list")}
                 aria-label="List view"
@@ -395,10 +392,10 @@ export default function PublicationsPage() {
                 <List size={16} />
               </button>
               <button
-                className={`p-2 inline-flex items-center justify-center transition ${
+                className={`p-2 rounded ${
                   viewMode === "grid"
-                    ? "text-foreground"
-                    : "text-muted-foreground hover:text-foreground"
+                    ? "text-foreground bg-[rgba(0,0,0,0.06)]"
+                    : "hover:text-foreground"
                 }`}
                 onClick={() => setViewMode("grid")}
                 aria-label="Grid view"
