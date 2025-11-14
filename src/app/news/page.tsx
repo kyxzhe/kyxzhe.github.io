@@ -120,8 +120,8 @@ const renderListRow = (item: NewsItem) => {
       <div className="space-y-8">
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px] items-start">
         {heroItem && (
-          <article className="surface-card overflow-hidden flex flex-col lg:sticky lg:top-8 max-h-[620px]">
-            <div className="relative w-full pb-[45%] min-h-[280px]">
+          <article className="surface-card overflow-hidden flex flex-col lg:sticky lg:top-10 max-h-[540px]">
+            <div className="relative w-full pb-[40%] min-h-[240px]">
               <Image src={heroItem.cover} alt={heroItem.title} fill sizes="(max-width:1024px) 100vw, 60vw" className="object-cover" />
             </div>
             <div className="p-6 flex flex-col gap-3">
