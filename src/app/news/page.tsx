@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
@@ -40,8 +40,6 @@ export default function NewsPage() {
   const [sortMode, setSortMode] = useState<SortOption>("newest");
   const [filterOpen, setFilterOpen] = useState(false);
   const [sortOpen, setSortOpen] = useState(false);
-  const filterRef = useRef<HTMLDivElement | null>(null);
-  const sortRef = useRef<HTMLDivElement | null>(null);
 
   const toggleTopic = (topic: string) => {
     setSelectedTopics((prev) =>
@@ -202,8 +200,8 @@ const renderListRow = (item: NewsItem) => {
 
         <div className="flex flex-wrap items-center justify-between gap-3 text-sm font-medium">
           <p className="text-muted-foreground">Showing {sortedItems.length} updates</p>
-          <div className="relative flex items-center gap-4">
-            <div className="relative flex items-center gap-1" ref={filterRef}>
+            <div className="relative flex items-center gap-4">
+            <div className="relative flex items-center gap-1">
               <button
                 className="flex items-center gap-1"
                 onClick={() => {
@@ -216,14 +214,8 @@ const renderListRow = (item: NewsItem) => {
                 </span>
                 <Filter size={16} className={selectedTopics.length > 0 || selectedYears.length > 0 ? "text-foreground" : "text-muted-foreground"} />
               </button>
-              {filterOpen && filterRef.current && typeof window !== "undefined" && (
-                <div
-                  className="fixed mt-2 w-[420px] z-40 surface-card p-4 flex flex-col gap-4 shadow-xl rounded-2xl border border-border"
-                  style={{
-                    top: filterRef.current.getBoundingClientRect().bottom + window.scrollY + 8,
-                    left: filterRef.current.getBoundingClientRect().right + window.scrollX - 420,
-                  }}
-                >
+              {filterOpen && (
+                <div className="absolute top-full mt-2 right-0 w-[420px] z-40 surface-card p-4 flex flex-col gap-4 shadow-xl rounded-2xl border border-border">
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
                       <p className="font-semibold mb-2">Topic</p>
@@ -255,7 +247,7 @@ const renderListRow = (item: NewsItem) => {
               )}
             </div>
 
-            <div className="relative flex items-center gap-1" ref={sortRef}>
+            <div className="relative flex items-center gap-1">
               <button
                 className={`flex items-center gap-1 ${sortOpen ? "text-foreground" : "text-muted-foreground"}`}
                 onClick={() => {
@@ -266,14 +258,8 @@ const renderListRow = (item: NewsItem) => {
                 <span>Sort</span>
                 <ArrowUpDown size={16} />
               </button>
-              {sortOpen && sortRef.current && typeof window !== "undefined" && (
-                <div
-                  className="fixed mt-2 w-64 z-40 surface-card p-3 flex flex-col gap-2 shadow-xl rounded-2xl border border-border"
-                  style={{
-                    top: sortRef.current.getBoundingClientRect().bottom + window.scrollY + 8,
-                    left: sortRef.current.getBoundingClientRect().right + window.scrollX - 256,
-                  }}
-                >
+              {sortOpen && (
+                <div className="absolute top-full mt-2 right-0 w-64 z-40 surface-card p-3 flex flex-col gap-2 shadow-xl rounded-2xl border border-border">
                   {sortOptions.map((option) => (
                     <label key={option.value} className="flex items-center gap-2 text-sm">
                       <input

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
@@ -58,15 +58,12 @@ const metrics = [
   { label: "Citations", value: "2" },
 ];
 
-
 export default function PublicationsPage() {
   const [viewMode, setViewMode] = useState<ViewMode>("list");
   const [sortMode, setSortMode] = useState<SortOption>("newest");
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
   const [filterOpen, setFilterOpen] = useState(false);
   const [sortOpen, setSortOpen] = useState(false);
-  const filterRef = useRef<HTMLDivElement | null>(null);
-  const sortRef = useRef<HTMLDivElement | null>(null);
 
   const toggleTopic = (topic: string) => {
     setSelectedTopics((prev) =>
@@ -279,7 +276,7 @@ export default function PublicationsPage() {
               {sortedPublications.length === 1 ? "" : "s"}
             </p>
             <div className="relative flex items-center gap-4 text-sm">
-              <div className="relative flex items-center gap-1" ref={filterRef}>
+              <div className="relative flex items-center gap-1">
                 <button
                   className="flex items-center gap-1 transition"
                   onClick={() => {
@@ -306,19 +303,8 @@ export default function PublicationsPage() {
                     )}
                   />
                 </button>
-                {filterOpen && filterRef.current && typeof window !== "undefined" && (
-                  <div
-                    className="fixed mt-2 w-80 z-40 surface-card p-4 flex flex-col gap-4 shadow-xl rounded-2xl border border-border"
-                    style={{
-                      top:
-                        filterRef.current.getBoundingClientRect().bottom +
-                        window.scrollY +
-                        8,
-                      left:
-                        filterRef.current.getBoundingClientRect().right +
-                        window.scrollX - 320,
-                    }}
-                  >
+                {filterOpen && (
+                  <div className="absolute top-full mt-2 right-0 w-80 z-40 surface-card p-4 flex flex-col gap-4 shadow-xl rounded-2xl border border-border">
                     <div className="flex items-center justify-between text-sm">
                       <p className="font-semibold">
                         {selectedTopics.length > 0
@@ -361,7 +347,7 @@ export default function PublicationsPage() {
                   </div>
                 )}
               </div>
-              <div className="relative flex items-center gap-1" ref={sortRef}>
+              <div className="relative flex items-center gap-1">
                 <button
                   className={`flex items-center gap-1 transition ${
                     sortOpen ? "text-foreground" : "text-muted-foreground"
@@ -374,19 +360,8 @@ export default function PublicationsPage() {
                   <span className="text-muted-foreground">Sort</span>
                   <ArrowUpDown size={16} className="text-muted-foreground" />
                 </button>
-                {sortOpen && sortRef.current && typeof window !== "undefined" && (
-                  <div
-                    className="fixed mt-2 w-64 z-40 surface-card p-3 flex flex-col gap-2 shadow-xl rounded-2xl border border-border"
-                    style={{
-                      top:
-                        sortRef.current.getBoundingClientRect().bottom +
-                        window.scrollY +
-                        8,
-                      left:
-                        sortRef.current.getBoundingClientRect().right +
-                        window.scrollX - 256,
-                    }}
-                  >
+                {sortOpen && (
+                  <div className="absolute top-full mt-2 right-0 w-64 z-40 surface-card p-3 flex flex-col gap-2 shadow-xl rounded-2xl border border-border">
                     {sortOptions.map((option) => (
                       <label
                         key={option.value}
