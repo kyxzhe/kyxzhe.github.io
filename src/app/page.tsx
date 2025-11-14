@@ -11,16 +11,16 @@ import { containerVariants } from "@/lib/animation/variants";
 
 export default function Home() {
   return (
-    <div className="flex flex-col h-screen min-h-screen font-sans pt-2 md:pt-0 lg:py-6 xl:py-0 xl:pb-6 overflow-auto lg:overflow-visible">
+    <div className="flex flex-col min-h-screen font-sans pt-2 md:pt-0 lg:py-6 xl:py-0 xl:pb-6">
       <Navbar />
       <motion.div 
-        className="flex flex-col lg:flex-row flex-1 gap-4 pb-4 md:pb-0 lg:h-[calc(100vh-130px)]"
+        className="flex flex-col lg:flex-row flex-1 gap-4 pb-6"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
         <div className="flex flex-col w-full lg:w-[70%] gap-4 lg:mb-6">
-          <div className="flex flex-col-reverse lg:flex-row gap-4 md:h-[60%]">
+          <div className="flex flex-col-reverse lg:flex-row gap-4">
             <HeroSection />
             <ChatIntroPanel />
           </div>
