@@ -118,10 +118,10 @@ const renderListRow = (item: NewsItem) => {
     const remainingItems = secondaryItems.slice(3);
     return (
       <div className="space-y-8">
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,0.6fr)_320px] items-start">
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,0.55fr)_360px] items-start">
         {heroItem && (
-          <article className="surface-card overflow-hidden flex flex-col lg:sticky lg:top-14">
-            <div className="relative w-full pb-[36%] min-h-[220px]">
+          <article className="surface-card overflow-hidden flex flex-col lg:sticky lg:top-10">
+            <div className="relative w-full pb-[42%] min-h-[260px]">
               <Image src={heroItem.cover} alt={heroItem.title} fill sizes="(max-width:1024px) 100vw, 60vw" className="object-cover" />
             </div>
             <div className="p-5 flex flex-col gap-3">
@@ -170,7 +170,7 @@ const renderListRow = (item: NewsItem) => {
         </div>
       </div>
       {remainingItems.length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
           {remainingItems.map((item) => (
             <motion.div
               key={item.id}
@@ -180,7 +180,7 @@ const renderListRow = (item: NewsItem) => {
               whileHover={{ y: -6, boxShadow: "0 20px 45px rgba(0,0,0,0.12)" }}
               className="surface-card overflow-hidden"
             >
-              <div className="relative w-full pb-[100%]">
+              <div className="relative w-full pb-[75%]">
                 <Image src={item.cover} alt={item.title} fill sizes="(max-width:1024px) 100vw, 320px" className="object-cover" />
               </div>
               <div className="p-4 flex flex-col gap-2">
