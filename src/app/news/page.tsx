@@ -117,8 +117,8 @@ const renderListRow = (item: NewsItem) => {
     const columnItems = secondaryItems.slice(0, 3);
     const remainingItems = secondaryItems.slice(3);
     return (
-      <div className="flex flex-col gap-10 w-full max-w-6xl mx-auto">
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,0.7fr)_300px] items-start">
+      <div className="flex flex-col gap-10 w-full max-w-6xl mx-auto px-4">
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,0.68fr)_320px] items-start">
         {heroItem && (
           <article className="surface-card flex flex-col gap-4 lg:sticky lg:top-16">
             <div className="relative w-full aspect-[16/9] min-h-[240px] rounded-[24px] overflow-hidden">
@@ -180,7 +180,7 @@ const renderListRow = (item: NewsItem) => {
               whileHover={{ y: -6, boxShadow: "0 20px 45px rgba(0,0,0,0.12)" }}
               className="surface-card overflow-hidden"
             >
-              <div className="relative w-full aspect-[4/5]">
+              <div className="relative w-full pb-[100%]">
                 <Image src={item.cover} alt={item.title} fill sizes="(max-width:1024px) 100vw, 320px" className="object-cover" />
               </div>
               <div className="p-4 flex flex-col gap-2">
