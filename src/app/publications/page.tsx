@@ -14,6 +14,7 @@ import {
   projectsVariants,
   textVariants,
 } from "@/lib/animation/variants";
+import { cn } from "@/lib/utils/util";
 
 type ViewMode = "list" | "grid";
 type SortOption = "newest" | "oldest" | "az" | "za";
@@ -101,13 +102,15 @@ export default function PublicationsPage() {
   const clearFilters = () => setSelectedTopics([]);
 
   const renderListRow = (pub: Publication) => {
+    const interactive = Boolean(pub.link);
     const row = (
       <div
-        className={`flex flex-col gap-3 py-6 border-b border-[rgba(0,0,0,0.08)] transition-colors ${
-          pub.link
-            ? "hover:border-foreground hover:bg-[rgba(0,0,0,0.02)] cursor-pointer"
-            : ""
-        }`}
+        className={cn(
+          "flex flex-col gap-3 py-6 border-b border-[rgba(0,0,0,0.08)] transition-colors",
+          interactive
+            ? "group-hover:border-foreground group-hover:bg-[rgba(0,0,0,0.02)] group-focus-visible:border-foreground cursor-pointer"
+            : "opacity-80"
+        )}
       >
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
           <div>
@@ -138,6 +141,7 @@ export default function PublicationsPage() {
           href={pub.link}
           target="_blank"
           rel="noopener noreferrer"
+          className="group block focus:outline-none"
         >
           {row}
         </Link>
