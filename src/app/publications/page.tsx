@@ -13,11 +13,7 @@ import {
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import {
-  type Publication,
-  type PublicationCategory,
-  publications,
-} from "@/lib/constants/publications";
+import { type Publication, publications } from "@/lib/constants/publications";
 import {
   cardVariants,
   containerVariants,
@@ -41,18 +37,17 @@ const dateFormatter = new Intl.DateTimeFormat("en-AU", {
   year: "numeric",
 });
 
-const allCategories: (PublicationCategory | "All")[] = [
-  "All",
-  ...Array.from(new Set(publications.map((pub) => pub.category))),
-];
-
 const allTopics = Array.from(
   new Set(publications.flatMap((pub) => pub.topics))
 ).sort();
 
+const metrics = [
+  { label: "Preprints & manuscripts", value: "1" },
+  { label: "Review assignments", value: "10+" },
+  { label: "Citations", value: "2" },
+];
+
 export default function PublicationsPage() {
-  const [activeCategory, setActiveCategory] =
-    useState<PublicationCategory | "All">("All");
   const [viewMode, setViewMode] = useState<ViewMode>("list");
   const [sortMode, setSortMode] = useState<SortOption>("newest");
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
@@ -67,14 +62,12 @@ export default function PublicationsPage() {
 
   const filteredPublications = useMemo(() => {
     return publications.filter((pub) => {
-      const categoryMatch =
-        activeCategory === "All" || pub.category === activeCategory;
       const topicMatch =
         selectedTopics.length === 0 ||
         selectedTopics.every((topic) => pub.topics.includes(topic));
-      return categoryMatch && topicMatch;
+      return topicMatch;
     });
-  }, [activeCategory, selectedTopics]);
+  }, [selectedTopics]);
 
   const sortedPublications = useMemo(() => {
     const sorted = [...filteredPublications];
@@ -218,19 +211,17 @@ export default function PublicationsPage() {
               you want to browse.
             </motion.p>
           </div>
-          <div className="flex flex-wrap items-center gap-3">
-            {allCategories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setActiveCategory(category)}
-                className={`px-3 py-1 rounded-full border text-sm transition ${
-                  activeCategory === category
-                    ? "border-foreground text-foreground"
-                    : "border-border text-muted-foreground hover:text-foreground"
-                }`}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {metrics.map((metric) => (
+              <div
+                key={metric.label}
+                className="rounded-2xl border border-border p-4 flex flex-col gap-1"
               >
-                {category}
-              </button>
+                <span className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
+                  {metric.label}
+                </span>
+                <span className="text-2xl font-semibold">{metric.value}</span>
+              </div>
             ))}
           </div>
           <div className="flex flex-wrap items-center justify-between gap-3">
@@ -329,14 +320,22 @@ export default function PublicationsPage() {
               </div>
               <div className="flex items-center rounded-full border border-border overflow-hidden">
                 <button
-                  className={`p-2 ${viewMode === "list" ? "bg-[var(--pill-background)]" : ""}`}
+                  className={`p-2 text-xs font-semibold inline-flex items-center gap-1 transition ${
+                    viewMode === "list"
+                      ? "bg-foreground text-[#f5f5f7]"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
                   onClick={() => setViewMode("list")}
                   aria-label="List view"
                 >
                   <List size={16} />
                 </button>
                 <button
-                  className={`p-2 ${viewMode === "grid" ? "bg-[var(--pill-background)]" : ""}`}
+                  className={`p-2 text-xs font-semibold inline-flex items-center gap-1 transition ${
+                    viewMode === "grid"
+                      ? "bg-foreground text-[#f5f5f7]"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
                   onClick={() => setViewMode("grid")}
                   aria-label="Grid view"
                 >
