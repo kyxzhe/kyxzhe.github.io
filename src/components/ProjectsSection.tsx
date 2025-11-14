@@ -66,40 +66,43 @@ export default function ProjectsSection() {
             className="w-full h-full object-cover"
           />
         </motion.div>
-        <motion.div 
-          className="overflow-y-auto lg:flex-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
-          variants={projectsVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          <p className="text-sm text-muted-foreground mb-4">{headline.summary}</p>
-          <div className="flex items-center justify-between text-sm mb-4">
-            <a
-              href={headline.link ?? "/news"}
-              className="inline-flex items-center gap-2 text-brand-accent hover:underline"
-              onClick={(event) => event.stopPropagation()}
-            >
-              Read more <ArrowUpRight size={16} />
-            </a>
-            <span className="text-foreground/60 uppercase tracking-[0.2em] text-xs">Latest</span>
+        <div className="flex-1 flex flex-col">
+          <div>
+            <p className="text-sm text-muted-foreground mb-4">{headline.summary}</p>
+            <div className="flex items-center justify-between text-sm mb-4">
+              <a
+                href={headline.link ?? "/news"}
+                className="inline-flex items-center gap-2 text-brand-accent hover:underline"
+                onClick={(event) => event.stopPropagation()}
+              >
+                Read more <ArrowUpRight size={16} />
+              </a>
+              <span className="text-foreground/60 uppercase tracking-[0.2em] text-xs">Latest</span>
+            </div>
           </div>
-
-          {others.map((item) => (
-            <motion.div key={item.title} variants={projectItemVariants} whileHover="hover">
-              <hr className="border-0 h-[1px] bg-accent" />
-              <div className="flex justify-between items-start group cursor-pointer p-3 md:p-4">
-                <div className="flex flex-col">
-                  <span className="text-xs uppercase tracking-[0.3em] text-foreground/40">{item.date}</span>
-                  <span className="text-lg md:text-xl">{item.title}</span>
-                  <p className="text-sm text-foreground/60 max-w-[220px]">{item.summary}</p>
+          <motion.div
+            className="overflow-y-auto lg:flex-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+            variants={projectsVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            {others.map((item) => (
+              <motion.div key={item.title} variants={projectItemVariants} whileHover="hover">
+                <hr className="border-0 h-[1px] bg-accent" />
+                <div className="flex justify-between items-start group cursor-pointer p-3 md:p-4">
+                  <div className="flex flex-col">
+                    <span className="text-xs uppercase tracking-[0.3em] text-foreground/40">{item.date}</span>
+                    <span className="text-lg md:text-xl">{item.title}</span>
+                    <p className="text-sm text-foreground/60 max-w-[220px]">{item.summary}</p>
+                  </div>
+                  <div className="flex items-center">
+                    <Image src={item.cover} alt={item.title} width={60} height={36} loading="lazy" quality={80} className="md:w-[100px] md:h-[68px] lg:w-[80px] lg:h-[48px] rounded-lg object-cover" />
+                  </div>
                 </div>
-                <div className="flex items-center">
-                  <Image src={item.cover} alt={item.title} width={60} height={36} loading="lazy" quality={80} className="md:w-[100px] md:h-[68px] lg:w-[80px] lg:h-[48px] rounded-lg object-cover" />
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
       </motion.div>
       <motion.div 
         className="flex-none surface-card p-6 md:p-9 flex justify-evenly items-center"
