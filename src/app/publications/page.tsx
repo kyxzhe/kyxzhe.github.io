@@ -160,9 +160,11 @@ export default function PublicationsPage() {
       <motion.div
         key={pub.id}
         variants={projectsVariants}
-        className={`surface-card overflow-hidden flex flex-col transition ${
-          pub.link ? "hover:shadow-xl cursor-pointer" : "cursor-not-allowed opacity-80"
-        }`}
+      className={`surface-card overflow-hidden flex flex-col transition ${
+        pub.link
+          ? "hover:shadow-[0_20px_45px_rgba(0,0,0,0.12)] hover:-translate-y-1 cursor-pointer"
+          : "cursor-not-allowed opacity-80"
+      }`}
       >
         <div className="relative w-full pb-[60%]">
           <Image
