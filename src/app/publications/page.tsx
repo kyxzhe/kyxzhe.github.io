@@ -315,7 +315,7 @@ export default function PublicationsPage() {
                         8,
                       left:
                         filterRef.current.getBoundingClientRect().left +
-                        window.scrollX,
+                        window.scrollX - 200,
                     }}
                   >
                     <div className="flex items-center justify-between text-sm">
@@ -383,7 +383,7 @@ export default function PublicationsPage() {
                         8,
                       left:
                         sortRef.current.getBoundingClientRect().left +
-                        window.scrollX,
+                        window.scrollX - 120,
                     }}
                   >
                     {sortOptions.map((option) => (
