@@ -114,14 +114,14 @@ const renderListRow = (item: NewsItem) => {
 };
 
   const renderGrid = () => {
-    const columnItems = secondaryItems.slice(0, 4);
-    const remainingItems = secondaryItems.slice(4);
+    const columnItems = secondaryItems.slice(0, 3);
+    const remainingItems = secondaryItems.slice(3);
     return (
-      <div className="space-y-6">
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
+      <div className="space-y-8">
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px] items-start">
         {heroItem && (
-          <article className="surface-card overflow-hidden flex flex-col lg:sticky lg:top-6 min-h-[60vh]">
-            <div className="relative w-full pb-[60%]">
+          <article className="surface-card overflow-hidden flex flex-col lg:sticky lg:top-6">
+            <div className="relative w-full pb-[56.25%]">
               <Image src={heroItem.cover} alt={heroItem.title} fill sizes="(max-width:1024px) 100vw, 60vw" className="object-cover" />
             </div>
             <div className="p-6 flex flex-col gap-3">
@@ -138,7 +138,7 @@ const renderListRow = (item: NewsItem) => {
             </div>
           </article>
         )}
-        <div className="flex flex-col gap-4 lg:max-h-[calc(100vh-120px)] lg:overflow-y-auto pr-1">
+        <div className="flex flex-col gap-4">
           {columnItems.map((item) => (
             <Link
               key={item.id}
@@ -151,10 +151,10 @@ const renderListRow = (item: NewsItem) => {
                 variants={projectsVariants}
                 initial="hidden"
                 animate="visible"
-                whileHover={{ y: -8, boxShadow: "0 20px 40px rgba(0,0,0,0.12)" }}
+                whileHover={{ y: -6, boxShadow: "0 18px 35px rgba(0,0,0,0.14)" }}
                 className={"surface-card overflow-hidden" + (item.link ? "" : " opacity-80")}
               >
-                <div className="relative w-full pb-[55%]">
+                <div className="relative w-full pb-[100%]">
                   <Image src={item.cover} alt={item.title} fill sizes="(max-width:1024px) 100vw, 320px" className="object-cover" />
                 </div>
                 <div className="p-4 flex flex-col gap-2">
@@ -180,7 +180,7 @@ const renderListRow = (item: NewsItem) => {
               whileHover={{ y: -6, boxShadow: "0 20px 45px rgba(0,0,0,0.12)" }}
               className="surface-card overflow-hidden"
             >
-              <div className="relative w-full pb-[55%]">
+              <div className="relative w-full pb-[100%]">
                 <Image src={item.cover} alt={item.title} fill sizes="(max-width:1024px) 100vw, 320px" className="object-cover" />
               </div>
               <div className="p-4 flex flex-col gap-2">

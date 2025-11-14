@@ -78,4 +78,22 @@ export const newsItems: NewsItem[] = [
     topics: ["Interview"],
     cover: "/projects/work-4.jpg",
   },
+  {
+    id: "placeholder-panel",
+    title: "[Placeholder] Panel on responsible ML",
+    category: "Milestone",
+    date: "2024-04-22",
+    summary: "Holding space for an upcoming panel recap.",
+    topics: ["Panel"],
+    cover: "/projects/work-1.jpg",
+  },
+  {
+    id: "placeholder-field-note",
+    title: "[Placeholder] Field note on cascade mapping",
+    category: "Research",
+    date: "2024-02-10",
+    summary: "Placeholder entry to exercise the news grid.",
+    topics: ["Field Note"],
+    cover: "/projects/work-2.jpg",
+  },
 ];
