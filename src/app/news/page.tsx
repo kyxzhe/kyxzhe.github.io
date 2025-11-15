@@ -125,7 +125,7 @@ const renderListRow = (item: NewsItem) => {
             whileHover={{ y: -6, boxShadow: "0 28px 55px rgba(0,0,0,0.18)" }}
             transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
           >
-            <div className="relative w-full aspect-[5/3] min-h-[320px] md:min-h-[420px] lg:min-h-[520px]">
+            <div className="relative w-full aspect-[4/3] sm:aspect-[3/2] lg:aspect-[7/5] min-h-[360px] md:min-h-[480px] lg:min-h-[620px]">
               <Image
                 src={heroItem.cover}
                 alt={heroItem.title}
