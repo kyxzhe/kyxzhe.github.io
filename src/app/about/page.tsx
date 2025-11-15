@@ -59,71 +59,82 @@ export default function AboutPage() {
     <div className="flex flex-col min-h-screen font-sans pt-2 md:pt-0 lg:py-6 xl:py-0 xl:pb-6 overflow-visible">
       <Navbar />
       <motion.main
-        className="flex-1 flex flex-col gap-6 px-2 md:px-6 lg:px-10 pb-10"
+        className="flex-1 flex flex-col items-center gap-12 px-4 md:px-10 lg:px-20 py-10"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
         <motion.section
-          className="max-w-4xl w-full mx-auto flex flex-col gap-8 py-6"
+          className="max-w-4xl w-full flex flex-col gap-10"
           variants={cardVariants}
           initial="hidden"
           animate="visible"
         >
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-4">
             <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">About Kevin</p>
-            <h1 className="text-3xl font-semibold">Research first, people centered</h1>
-            <p className="text-base md:text-lg text-foreground/80 whitespace-pre-line">{aboutIntro}</p>
+            <h1 className="text-4xl font-semibold leading-tight">Research first, people centered</h1>
+            <p className="text-base md:text-lg text-foreground/80 whitespace-pre-line leading-relaxed">{aboutIntro}</p>
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 text-sm text-foreground/80">
-            <div className="space-y-2">
+          <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr]">
+            <div className="space-y-6 text-sm text-foreground/75">
               <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Now</p>
-              <ul className="space-y-1">
-                <li>📍 Sydney, usually found on coffee walks</li>
-                <li>🏛 Behavioural Data Science Lab @ UTS</li>
-                <li>🧑‍🏫 Teaching DS + ML at the University of Sydney</li>
-              </ul>
+              <dl className="space-y-4">
+                <div>
+                  <dt className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Base</dt>
+                  <dd>📍 Sydney, rarely far from a coffee walk</dd>
+                </div>
+                <div>
+                  <dt className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Lab</dt>
+                  <dd>🏛 Behavioural Data Science Lab @ UTS</dd>
+                </div>
+                <div>
+                  <dt className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Teaching</dt>
+                  <dd>🧑‍🏫 DS + ML courses at the University of Sydney</dd>
+                </div>
+              </dl>
             </div>
-            <div className="space-y-2">
-              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Focus</p>
-              <ul className="space-y-1">
-                {researchFocus.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </div>
-            <div className="flex gap-6">
-              <div>
-                <p className="text-4xl font-semibold leading-none">4</p>
-                <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mt-2">Lab talks</p>
+            <div className="flex flex-col gap-6">
+              <div className="space-y-3 text-sm text-foreground/75">
+                <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Focus</p>
+                <ul className="space-y-2">
+                  {researchFocus.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
               </div>
-              <div>
-                <p className="text-4xl font-semibold leading-none">2</p>
-                <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mt-2">Manuscripts</p>
+              <div className="flex gap-10">
+                <div>
+                  <p className="text-4xl font-semibold leading-none">4</p>
+                  <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mt-3">Lab talks</p>
+                </div>
+                <div>
+                  <p className="text-4xl font-semibold leading-none">2</p>
+                  <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mt-3">Manuscripts</p>
+                </div>
               </div>
             </div>
           </div>
         </motion.section>
 
-        <section className="max-w-5xl w-full mx-auto grid gap-12 lg:grid-cols-[2fr_1fr]">
-          <div className="space-y-12">
-            <div className="space-y-4 border-t border-border/40 pt-6">
-              <h2 className="text-2xl font-semibold">Timeline</h2>
-              <div className="flex flex-col gap-5">
-                {timeline.map((item) => (
-                  <div key={item.title}>
-                    <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-1">
-                      {item.period}
-                    </p>
-                    <h3 className="text-lg font-medium">{item.title}</h3>
-                    <p className="text-sm text-foreground/70">{item.org}</p>
-                    <p className="text-sm text-foreground/70 mt-1">{item.detail}</p>
-                  </div>
-                ))}
-              </div>
+        <section className="w-full max-w-5xl space-y-16">
+          <div className="space-y-6">
+            <h2 className="text-2xl font-semibold">Timeline</h2>
+            <div className="space-y-8">
+              {timeline.map((item) => (
+                <div key={item.title} className="space-y-1">
+                  <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                    {item.period}
+                  </p>
+                  <h3 className="text-lg font-medium">{item.title}</h3>
+                  <p className="text-sm text-foreground/70">{item.org}</p>
+                  <p className="text-sm text-foreground/70">{item.detail}</p>
+                </div>
+              ))}
             </div>
+          </div>
 
-            <div className="space-y-4 border-t border-border/40 pt-6">
+          <div className="grid gap-12 lg:grid-cols-2">
+            <div className="space-y-4">
               <h2 className="text-2xl font-semibold">Teaching & community</h2>
               <ul className="space-y-2 text-sm text-foreground/80">
                 {contributions.map((item) => (
@@ -131,27 +142,26 @@ export default function AboutPage() {
                 ))}
               </ul>
             </div>
-          </div>
-
-          <div className="space-y-4 border-t border-border/40 pt-6">
-            <h2 className="text-2xl font-semibold">Collaborate</h2>
-            <p className="text-sm text-foreground/70">
-              I partner with researchers and product teams on diffusion modelling,
-              moderation strategy, and responsible experimentation with social data.
-            </p>
-            <div className="flex flex-col gap-2 text-sm">
-              <Link
-                href={`mailto:${contactInfo.email}`}
-                className="btn-primary inline-flex justify-center"
-              >
-                Email Kevin
-              </Link>
-              <Link
-                href="/"
-                className="text-foreground/60 text-center underline underline-offset-4 hover:text-foreground transition-colors"
-              >
-                Back to work overview
-              </Link>
+            <div className="space-y-4">
+              <h2 className="text-2xl font-semibold">Collaborate</h2>
+              <p className="text-sm text-foreground/70 leading-relaxed">
+                I partner with researchers and product teams on diffusion modelling,
+                moderation strategy, and responsible experimentation with social data.
+              </p>
+              <div className="flex flex-col gap-2 text-sm max-w-xs">
+                <Link
+                  href={`mailto:${contactInfo.email}`}
+                  className="btn-primary inline-flex justify-center"
+                >
+                  Email Kevin
+                </Link>
+                <Link
+                  href="/"
+                  className="text-foreground/60 text-center underline underline-offset-4 hover:text-foreground transition-colors"
+                >
+                  Back to work overview
+                </Link>
+              </div>
             </div>
           </div>
         </section>
