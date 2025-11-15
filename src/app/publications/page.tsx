@@ -179,7 +179,7 @@ export default function PublicationsPage() {
         aria-label={pub.link ? `Open ${pub.title}` : undefined}
         onClick={pub.link ? handleCardActivate : undefined}
         onKeyDown={pub.link ? handleCardActivate : undefined}
-        className={`flex flex-col gap-3 py-6 border-b border-[rgba(0,0,0,0.08)] dark:border-white/20 transition-colors hover:border-foreground/60 ${
+        className={`group flex flex-col gap-3 py-6 border-b border-[rgba(0,0,0,0.08)] dark:border-white/20 transition-colors hover:border-foreground/70 hover:bg-[rgba(0,0,0,0.02)] ${
           pub.link ? "cursor-pointer" : "cursor-default"
         }`}
       >
@@ -224,7 +224,7 @@ export default function PublicationsPage() {
         key={pub.id}
         variants={projectsVariants}
         whileHover={{
-          y: pub.link ? -10 : 0,
+          y: -10,
           boxShadow: "0 25px 50px rgba(0,0,0,0.15)",
         }}
         transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
