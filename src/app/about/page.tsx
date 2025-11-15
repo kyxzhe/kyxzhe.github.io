@@ -65,40 +65,39 @@ export default function AboutPage() {
         animate="visible"
       >
         <motion.section
-          className="w-full max-w-5xl flex flex-col gap-12"
+          className="max-w-4xl w-full flex flex-col gap-12"
           variants={cardVariants}
           initial="hidden"
           animate="visible"
         >
           <div className="flex flex-col gap-6">
             <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">About Kevin</p>
-            <div className="space-y-4 max-w-3xl">
+            <div className="space-y-4">
               <h1 className="text-4xl md:text-5xl font-semibold leading-tight">Research first, people centered</h1>
               <p className="text-base md:text-lg text-foreground/80 whitespace-pre-line leading-relaxed">{aboutIntro}</p>
             </div>
-            <p className="text-sm text-foreground/70 leading-relaxed max-w-3xl">
-              I like projects where social data, ranking systems, and human decisions meet. When in doubt, I’ll choose conversations over dashboards.
-            </p>
+            <div className="flex flex-col gap-4 text-sm text-foreground/70">
+              <div className="flex flex-wrap gap-x-8 gap-y-2">
+                <span>📍 Sydney based</span>
+                <span>🏛 Behavioural Data Science Lab @ UTS</span>
+                <span>🧑‍🏫 Teaching ML + Informatics at USYD</span>
+              </div>
+              <p>
+                I like projects where social data, ranking systems, and human decisions meet. When in doubt, I’ll choose conversations over dashboards.
+              </p>
+            </div>
           </div>
 
-          <div className="grid gap-10 lg:grid-cols-3 text-sm text-foreground/80">
-            <div className="space-y-3">
-              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Currently</p>
-              <ul className="space-y-2 leading-relaxed">
-                <li>📍 Sydney based, commuting between lab and coffee walks.</li>
-                <li>🏛 Behavioural Data Science Lab @ UTS with Marian-Andrei Rizoiu.</li>
-                <li>🧑‍🏫 Teaching ML + Informatics courses at the University of Sydney.</li>
-              </ul>
-            </div>
-            <div className="space-y-3">
+          <div className="grid gap-10 lg:grid-cols-2">
+            <div className="space-y-5">
               <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Focus areas</p>
-              <ul className="space-y-2 leading-relaxed">
+              <div className="space-y-4 text-sm text-foreground/80">
                 {researchFocus.map((item) => (
-                  <li key={item}>{item}</li>
+                  <p key={item}>{item}</p>
                 ))}
-              </ul>
+              </div>
             </div>
-            <div className="space-y-4">
+            <div className="space-y-5">
               <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">At a glance</p>
               <div className="flex gap-12">
                 <div>
@@ -110,9 +109,9 @@ export default function AboutPage() {
                   <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mt-3">Manuscripts</p>
                 </div>
               </div>
-              <p className="text-foreground/70 leading-relaxed">
-                Right now I’m polishing manuscripts on diffusion dynamics and evaluation strategy.
-              </p>
+              <div className="text-sm text-foreground/70 leading-relaxed">
+                <p>Currently tinkering with a pair of manuscripts on diffusion dynamics and evaluation strategy.</p>
+              </div>
             </div>
           </div>
         </motion.section>
