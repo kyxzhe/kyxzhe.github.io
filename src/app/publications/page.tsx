@@ -1,6 +1,7 @@
 "use client";
 
 import { Fragment, useMemo, useState } from "react";
+import type { KeyboardEvent, MouseEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
@@ -78,6 +79,8 @@ const ResourceLinks = ({
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1 text-xs uppercase tracking-[0.3em] font-semibold text-foreground hover:underline underline-offset-4"
+            onClick={(event) => event.stopPropagation()}
+            onKeyDown={(event) => event.stopPropagation()}
           >
             {resource.label}
             <ArrowUpRight size={12} className="text-foreground" />
@@ -150,9 +153,38 @@ export default function PublicationsPage() {
 
   const clearFilters = () => setSelectedTopics([]);
 
+  const openPublication = (href?: string) => {
+    if (!href || typeof window === "undefined") return;
+    window.open(href, "_blank", "noopener,noreferrer");
+  };
+
   const renderListRow = (pub: Publication) => {
-    const content = (
-      <article className="flex flex-col gap-3 py-6 border-b border-[rgba(0,0,0,0.08)] dark:border-white/20 transition-colors group-hover:border-foreground/70 group-hover:bg-[rgba(0,0,0,0.02)]">
+    const handleCardActivate = (
+      event: MouseEvent<HTMLElement> | KeyboardEvent<HTMLElement>
+    ) => {
+      if (!pub.link) return;
+      if (event.type === "keydown") {
+        const keyboardEvent = event as KeyboardEvent<HTMLElement>;
+        if (keyboardEvent.key !== "Enter" && keyboardEvent.key !== " ") return;
+        keyboardEvent.preventDefault();
+      }
+      openPublication(pub.link);
+    };
+
+    return (
+      <article
+        key={pub.id}
+        role={pub.link ? "link" : undefined}
+        tabIndex={pub.link ? 0 : -1}
+        aria-label={pub.link ? `Open ${pub.title}` : undefined}
+        onClick={pub.link ? handleCardActivate : undefined}
+        onKeyDown={pub.link ? handleCardActivate : undefined}
+        className={`flex flex-col gap-3 py-6 border-b border-[rgba(0,0,0,0.08)] dark:border-white/20 transition-colors ${
+          pub.link
+            ? "cursor-pointer hover:border-foreground/70 hover:bg-[rgba(0,0,0,0.02)]"
+            : "cursor-default"
+        }`}
+      >
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
           <div className="space-y-1">
             <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
@@ -174,38 +206,38 @@ export default function PublicationsPage() {
         </p>
       </article>
     );
-
-    if (pub.link) {
-      return (
-        <Link
-          key={pub.id}
-          href={pub.link}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group block focus:outline-none focus-visible:ring-2 focus-visible:ring-foreground/40 rounded-xl"
-        >
-          {content}
-        </Link>
-      );
-    }
-
-    return (
-      <div key={pub.id} className="group block cursor-default">
-        {content}
-      </div>
-    );
   };
 
   const renderGridCard = (pub: Publication) => {
-    const card = (
+    const handleCardActivate = (
+      event: MouseEvent<HTMLElement> | KeyboardEvent<HTMLElement>
+    ) => {
+      if (!pub.link) return;
+      if (event.type === "keydown") {
+        const keyboardEvent = event as KeyboardEvent<HTMLElement>;
+        if (keyboardEvent.key !== "Enter" && keyboardEvent.key !== " ") return;
+        keyboardEvent.preventDefault();
+      }
+      openPublication(pub.link);
+    };
+
+    return (
       <motion.article
+        key={pub.id}
         variants={projectsVariants}
         whileHover={{
           y: pub.link ? -10 : 0,
           boxShadow: "0 25px 50px rgba(0,0,0,0.15)",
         }}
         transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
-        className="surface-card overflow-hidden flex flex-col"
+        role={pub.link ? "link" : undefined}
+        tabIndex={pub.link ? 0 : -1}
+        aria-label={pub.link ? `Open ${pub.title}` : undefined}
+        onClick={pub.link ? handleCardActivate : undefined}
+        onKeyDown={pub.link ? handleCardActivate : undefined}
+        className={`surface-card overflow-hidden flex flex-col ${
+          pub.link ? "cursor-pointer" : "opacity-80 cursor-default"
+        }`}
       >
         <div className="relative w-full pb-[60%]">
           <Image
@@ -229,26 +261,6 @@ export default function PublicationsPage() {
           </p>
         </div>
       </motion.article>
-    );
-
-    if (pub.link) {
-      return (
-        <Link
-          key={pub.id}
-          href={pub.link}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-foreground/40 rounded-2xl"
-        >
-          {card}
-        </Link>
-      );
-    }
-
-    return (
-      <div key={pub.id} className="pointer-events-none opacity-80">
-        {card}
-      </div>
     );
   };
 
