@@ -26,6 +26,7 @@ export type Publication = {
   authors: string[];
   resources?: PublicationResource[];
   link?: string;
+  status?: string;
 };
 
 export const publications: Publication[] = [
