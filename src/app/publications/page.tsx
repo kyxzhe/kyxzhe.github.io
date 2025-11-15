@@ -179,10 +179,8 @@ export default function PublicationsPage() {
         aria-label={pub.link ? `Open ${pub.title}` : undefined}
         onClick={pub.link ? handleCardActivate : undefined}
         onKeyDown={pub.link ? handleCardActivate : undefined}
-        className={`flex flex-col gap-3 py-6 border-b border-[rgba(0,0,0,0.08)] dark:border-white/20 transition-colors ${
-          pub.link
-            ? "cursor-pointer hover:border-foreground/70 hover:bg-[rgba(0,0,0,0.02)]"
-            : "cursor-default"
+        className={`flex flex-col gap-3 py-6 border-b border-[rgba(0,0,0,0.08)] dark:border-white/20 ${
+          pub.link ? "cursor-pointer" : "cursor-default"
         }`}
       >
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
