@@ -121,20 +121,20 @@ const renderListRow = (item: NewsItem) => {
       <div className="grid gap-6 lg:grid-cols-12 items-start">
         {heroItem && (
           <motion.article
-            className="surface-card relative overflow-hidden aspect-[5/3] min-h-[240px] rounded-[24px] lg:col-span-8 lg:sticky lg:top-12"
+            className="surface-card relative overflow-hidden rounded-[24px] lg:col-span-8 lg:sticky lg:top-12"
             whileHover={{ y: -6, boxShadow: "0 28px 55px rgba(0,0,0,0.18)" }}
             transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
           >
-            <Image
-              src={heroItem.cover}
-              alt={heroItem.title}
-              fill
-              sizes="(max-width:1024px) 100vw, 60vw"
-              className="object-cover"
-            />
-            <div
-              className="absolute inset-x-0 bottom-0 bg-background/95 dark:bg-background/80 backdrop-blur-sm px-6 pb-6 pt-8 flex flex-col gap-3"
-            >
+            <div className="relative w-full aspect-[4/3] sm:aspect-[5/3] min-h-[320px] md:min-h-[400px] lg:aspect-auto lg:min-h-[520px]">
+              <Image
+                src={heroItem.cover}
+                alt={heroItem.title}
+                fill
+                sizes="(max-width:1024px) 100vw, 60vw"
+                className="object-cover"
+              />
+            </div>
+            <div className="absolute inset-x-0 bottom-0 bg-background/95 dark:bg-background/80 backdrop-blur-[10px] px-6 pb-6 pt-8 flex flex-col gap-3">
               <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
                 {heroItem.category} · {formatDate(heroItem.date)}
               </p>
