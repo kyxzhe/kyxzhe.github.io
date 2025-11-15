@@ -1,5 +1,18 @@
 export type PublicationCategory = "Research" | "Publication" | "Safety" | "Milestone" | "Release";
 
+export type PublicationResourceType =
+  | "preprint"
+  | "code"
+  | "dataset"
+  | "slides"
+  | "artifact";
+
+export type PublicationResource = {
+  type: PublicationResourceType;
+  label: string;
+  url: string;
+};
+
 export type Publication = {
   id: string;
   title: string;
@@ -10,6 +23,8 @@ export type Publication = {
   topics: string[];
   tags: string[];
   cover: string;
+  authors: string[];
+  resources?: PublicationResource[];
   link?: string;
 };
 
@@ -25,6 +40,25 @@ export const publications: Publication[] = [
     topics: ["Robust ML", "Noisy Labels", "Generative Models"],
     tags: ["Preprint", "Code Available"],
     cover: "/projects/work-1.jpg",
+    authors: [
+      "Yuxiang Zheng",
+      "Zhongyi Han",
+      "Yilong Yin",
+      "Xin Gao",
+      "Tongliang Liu",
+    ],
+    resources: [
+      {
+        type: "preprint",
+        label: "arXiv · 2405.12969",
+        url: "https://arxiv.org/abs/2405.12969",
+      },
+      {
+        type: "code",
+        label: "Code",
+        url: "https://github.com/kyxzhe/EchoAlign",
+      },
+    ],
     link: "https://arxiv.org/abs/2405.12969",
   },
   {
@@ -38,6 +72,7 @@ export const publications: Publication[] = [
     topics: ["Information Diffusion"],
     tags: ["Placeholder"],
     cover: "/projects/work-2.jpg",
+    authors: ["Internal Research Team"],
   },
   {
     id: "placeholder-safety",
@@ -50,6 +85,7 @@ export const publications: Publication[] = [
     topics: ["Safety"],
     tags: ["Placeholder"],
     cover: "/projects/work-3.jpg",
+    authors: ["Safety Review Group"],
   },
   {
     id: "placeholder-milestone",
@@ -62,5 +98,6 @@ export const publications: Publication[] = [
     topics: ["Milestone"],
     tags: ["Placeholder"],
     cover: "/projects/work-4.jpg",
+    authors: ["Product Milestones Board"],
   },
 ];

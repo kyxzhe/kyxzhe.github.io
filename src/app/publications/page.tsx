@@ -1,13 +1,13 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
-import { ArrowUpDown, Filter, LayoutGrid, List } from "lucide-react";
+import { ArrowUpDown, ArrowUpRight, Filter, LayoutGrid, List } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { type Publication, publications } from "@/lib/constants/publications";
+import { type Publication, type PublicationResource, publications } from "@/lib/constants/publications";
 import {
   cardVariants,
   containerVariants,
@@ -57,6 +57,56 @@ const metrics = [
   { label: "Citations", value: "2" },
 ];
 
+const PRIMARY_AUTHOR = "Yuxiang Zheng";
+
+const ResourceLinks = ({
+  resources,
+}: {
+  resources?: PublicationResource[];
+}) => {
+  const codeLinks = resources?.filter((resource) => resource.type === "code");
+  if (!codeLinks?.length) return null;
+
+  return (
+    <>
+      {" · "}
+      {codeLinks.map((resource, index) => (
+        <Fragment key={`${resource.type}-${resource.url}`}>
+          {index > 0 && ", "}
+          <Link
+            href={resource.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 text-xs uppercase tracking-[0.3em] font-semibold text-foreground hover:underline underline-offset-4"
+          >
+            {resource.label}
+            <ArrowUpRight size={12} className="text-foreground" />
+          </Link>
+        </Fragment>
+      ))}
+    </>
+  );
+};
+
+const AuthorLine = ({ authors }: { authors: string[] }) => (
+  <p className="text-sm text-muted-foreground">
+    {authors.map((author, index) => (
+      <Fragment key={`${author}-${index}`}>
+        {index > 0 && ", "}
+        <span
+          className={
+            author === PRIMARY_AUTHOR
+              ? "font-semibold text-foreground"
+              : undefined
+          }
+        >
+          {author}
+        </span>
+      </Fragment>
+    ))}
+  </p>
+);
+
 export default function PublicationsPage() {
   const [viewMode, setViewMode] = useState<ViewMode>("list");
   const [sortMode, setSortMode] = useState<SortOption>("newest");
@@ -101,32 +151,30 @@ export default function PublicationsPage() {
   const clearFilters = () => setSelectedTopics([]);
 
   const renderListRow = (pub: Publication) => {
-    const row = (
-      <div
-        className="flex flex-col gap-3 py-6 border-b border-[rgba(0,0,0,0.08)] dark:border-white/20 transition-colors group-hover:border-foreground group-hover:bg-[rgba(0,0,0,0.03)]"
-      >
+    const content = (
+      <article className="flex flex-col gap-3 py-6 border-b border-[rgba(0,0,0,0.08)] dark:border-white/20 transition-colors group-hover:border-foreground/70 group-hover:bg-[rgba(0,0,0,0.02)]">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-          <div>
+          <div className="space-y-1">
             <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
               {pub.category}
             </p>
-            <h3 className="text-xl md:text-2xl font-semibold">{pub.title}</h3>
+            <h3 className="text-xl md:text-2xl font-semibold leading-snug">
+              {pub.title}
+            </h3>
+            <AuthorLine authors={pub.authors} />
           </div>
           <p className="text-sm text-muted-foreground">
             {formatDate(pub.date)}
           </p>
         </div>
         <p className="text-sm text-foreground/80 max-w-3xl">{pub.summary}</p>
-        <div className="flex flex-wrap items-center gap-3 text-xs uppercase tracking-[0.3em] text-muted-foreground">
-          <span>{pub.venue}</span>
-          {pub.tags.map((tag) => (
-            <span key={tag} className="chip chip-relaxed text-[0.65rem]">
-              {tag}
-            </span>
-          ))}
-        </div>
-      </div>
+        <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
+          {pub.venue}
+          <ResourceLinks resources={pub.resources} />
+        </p>
+      </article>
     );
+
     if (pub.link) {
       return (
         <Link
@@ -134,36 +182,30 @@ export default function PublicationsPage() {
           href={pub.link}
           target="_blank"
           rel="noopener noreferrer"
-          className="group block focus:outline-none"
+          className="group block focus:outline-none focus-visible:ring-2 focus-visible:ring-foreground/40 rounded-xl"
         >
-          {row}
+          {content}
         </Link>
       );
     }
+
     return (
       <div key={pub.id} className="group block cursor-default">
-        {row}
+        {content}
       </div>
     );
   };
 
   const renderGridCard = (pub: Publication) => {
     const card = (
-      <motion.div
-        key={pub.id}
+      <motion.article
         variants={projectsVariants}
-        whileHover={
-          pub.link
-            ? {
-                y: -10,
-                boxShadow: "0 25px 50px rgba(0,0,0,0.15)",
-              }
-            : undefined
-        }
+        whileHover={{
+          y: pub.link ? -10 : 0,
+          boxShadow: "0 25px 50px rgba(0,0,0,0.15)",
+        }}
         transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
-        className={`surface-card overflow-hidden flex flex-col ${
-          pub.link ? "cursor-pointer" : "cursor-not-allowed opacity-80"
-        }`}
+        className="surface-card overflow-hidden flex flex-col"
       >
         <div className="relative w-full pb-[60%]">
           <Image
@@ -174,21 +216,21 @@ export default function PublicationsPage() {
             className="object-cover"
           />
         </div>
-        <div className="p-4 flex flex-col gap-2 flex-1">
+        <div className="p-4 flex flex-col gap-3 flex-1">
           <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
             {pub.category} · {formatDate(pub.date)}
           </p>
-          <h3 className="text-lg font-semibold">{pub.title}</h3>
+          <h3 className="text-lg font-semibold leading-snug">{pub.title}</h3>
+          <AuthorLine authors={pub.authors} />
           <p className="text-sm text-foreground/80 flex-1">{pub.summary}</p>
-          <div className="flex flex-wrap gap-2 text-xs uppercase tracking-[0.2em] text-muted-foreground">
-            <span>{pub.venue}</span>
-            {pub.tags.slice(0, 2).map((tag) => (
-              <span key={tag}>{tag}</span>
-            ))}
-          </div>
+          <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
+            {pub.venue}
+            <ResourceLinks resources={pub.resources} />
+          </p>
         </div>
-      </motion.div>
+      </motion.article>
     );
+
     if (pub.link) {
       return (
         <Link
@@ -196,13 +238,15 @@ export default function PublicationsPage() {
           href={pub.link}
           target="_blank"
           rel="noopener noreferrer"
+          className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-foreground/40 rounded-2xl"
         >
           {card}
         </Link>
       );
     }
+
     return (
-      <div key={pub.id} className="pointer-events-none">
+      <div key={pub.id} className="pointer-events-none opacity-80">
         {card}
       </div>
     );
