@@ -92,7 +92,7 @@ export default function NewsPage() {
 
 const renderListRow = (item: NewsItem) => {
   const row = (
-    <div className="flex flex-col gap-2 py-5 border-b border-[rgba(0,0,0,0.08)] dark:border-white/20 transition-colors hover:border-foreground/60">
+    <div className="flex flex-col gap-2 py-5 border-b border-[rgba(0,0,0,0.08)] dark:border-white/20 transition-colors group-hover:border-foreground">
       <div className="text-xs uppercase tracking-[0.3em] text-muted-foreground">{item.category}</div>
       <h3 className="text-xl font-semibold">{item.title}</h3>
       <p className="text-sm text-muted-foreground">{formatDate(item.date)}</p>
@@ -101,13 +101,13 @@ const renderListRow = (item: NewsItem) => {
   );
   if (item.link) {
     return (
-      <Link key={item.id} href={item.link} target="_blank" rel="noopener noreferrer" className="block">
+      <Link key={item.id} href={item.link} target="_blank" rel="noopener noreferrer" className="group block">
         {row}
       </Link>
     );
   }
   return (
-    <div key={item.id} className="block cursor-default">
+    <div key={item.id} className="group block cursor-default">
       {row}
     </div>
   );
