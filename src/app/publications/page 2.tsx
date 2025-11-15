@@ -177,7 +177,7 @@ export default function PublicationsPage() {
               <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
                 <div>
                   <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
-                    {pub.year} · {pub.venue}
+                    {pub.venue}
                   </p>
                   <h3 className="text-2xl font-semibold">{pub.title}</h3>
                 </div>
