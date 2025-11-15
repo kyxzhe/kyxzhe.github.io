@@ -8,8 +8,6 @@ import { contactInfo } from "@/lib/constants/contact";
 import {
   cardVariants,
   containerVariants,
-  iconVariants,
-  textVariants,
 } from "@/lib/animation/variants";
 
 const timeline = [
@@ -66,90 +64,25 @@ export default function AboutPage() {
         initial="hidden"
         animate="visible"
       >
-        <section className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <motion.div
-            className="surface-card p-6 flex flex-col gap-6"
-            variants={cardVariants}
-            initial="hidden"
-            animate="visible"
-            whileHover="hover"
-          >
-            <div>
-              <motion.p
-                className="uppercase tracking-[0.3em] text-xs text-muted-foreground mb-3"
-                variants={textVariants}
-                initial="hidden"
-                animate="visible"
-              >
-                About Kevin
-              </motion.p>
-              <motion.p
-                className="text-base md:text-lg text-foreground/80 whitespace-pre-line"
-                variants={textVariants}
-                initial="hidden"
-                animate="visible"
-              >
-                {aboutIntro}
-              </motion.p>
-            </div>
-            <motion.ul
-              className="grid grid-cols-1 sm:grid-cols-2 gap-2"
-              variants={textVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              {researchFocus.map((item) => (
-                <li
-                  key={item}
-                  className="chip chip-relaxed"
-                >
-                  {item}
-                </li>
-              ))}
-            </motion.ul>
-          </motion.div>
-
-          <motion.div
-            className="surface-card p-6 flex flex-col justify-between"
-            variants={cardVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            <div>
-              <motion.p
-                className="text-xs uppercase tracking-[0.3em] text-foreground/50 mb-2"
-                variants={textVariants}
-                initial="hidden"
-                animate="visible"
-              >
-                Snapshot
-              </motion.p>
-              <motion.h2
-              className="text-2xl font-semibold mb-4"
-              variants={textVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              Researcher · Mentor · Collaborator
-            </motion.h2>
-              <motion.ul
-                className="flex flex-col gap-3 text-sm text-foreground/70"
-                variants={textVariants}
-                initial="hidden"
-                animate="visible"
-              >
-                <li>📍 Based in Sydney, exploring cities via coffee walks</li>
-                <li>🏛 Behavioural Data Science Lab (UTS) with Marian-Andrei Rizoiu</li>
-                <li>🧑‍🏫 Tutor for DS + ML courses at the University of Sydney</li>
-                <li>📰 Researching diffusion, ranking, and robustness</li>
-              </motion.ul>
-            </div>
-            <motion.div
-              className="mt-6 grid grid-cols-2 gap-3"
-              variants={iconVariants}
-              initial="hidden"
-              animate="visible"
-            >
+        <motion.section
+          className="surface-card p-6 lg:p-8 flex flex-col gap-8"
+          variants={cardVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <div className="flex flex-col gap-3">
+            <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">About Kevin</p>
+            <h1 className="text-3xl font-semibold">Research first, people centered</h1>
+            <p className="text-base md:text-lg text-foreground/80 whitespace-pre-line">{aboutIntro}</p>
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <ul className="flex flex-col gap-3 text-sm text-foreground/80">
+              <li className="card-row">📍 Based in Sydney, always mapping coffee routes</li>
+              <li className="card-row">🏛 Behavioural Data Science Lab (UTS) with Marian-Andrei Rizoiu</li>
+              <li className="card-row">🧑‍🏫 Teaching DS + ML at the University of Sydney</li>
+              <li className="card-row">🧪 Studying diffusion, ranking, and robustness</li>
+            </ul>
+            <div className="grid grid-cols-2 gap-3">
               <div className="card-row flex-col text-center justify-center">
                 <p className="text-3xl font-semibold">4</p>
                 <p className="text-xs uppercase tracking-[0.3em]">Lab talks</p>
@@ -158,9 +91,28 @@ export default function AboutPage() {
                 <p className="text-3xl font-semibold">2</p>
                 <p className="text-xs uppercase tracking-[0.3em]">Manuscripts</p>
               </div>
-            </motion.div>
-          </motion.div>
-        </section>
+            </div>
+          </div>
+        </motion.section>
+
+        <motion.section
+          className="surface-card p-6 flex flex-col gap-6"
+          variants={cardVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <h2 className="text-2xl font-semibold">Current focus</h2>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
+            {researchFocus.map((item) => (
+              <li
+                key={item}
+                className="chip chip-relaxed"
+              >
+                {item}
+              </li>
+            ))}
+          </ul>
+        </motion.section>
 
         <section className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           <motion.div
@@ -169,22 +121,12 @@ export default function AboutPage() {
             initial="hidden"
             animate="visible"
           >
-            <motion.h2
-              className="text-2xl font-semibold"
-              variants={textVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              Timeline
-            </motion.h2>
+            <h2 className="text-2xl font-semibold">Timeline</h2>
             <div className="flex flex-col gap-4">
               {timeline.map((item) => (
-                <motion.div
+                <div
                   key={item.title}
                   className="border-b border-background/20 pb-4 last:border-b-0 last:pb-0"
-                  variants={textVariants}
-                  initial="hidden"
-                  animate="visible"
                 >
                   <p className="text-xs uppercase tracking-[0.2em] text-foreground/50 mb-1">
                     {item.period}
@@ -192,7 +134,7 @@ export default function AboutPage() {
                   <h3 className="text-lg font-medium">{item.title}</h3>
                   <p className="text-sm font-light mb-1">{item.org}</p>
                   <p className="text-sm text-foreground/70">{item.detail}</p>
-                </motion.div>
+                </div>
               ))}
             </div>
           </motion.div>
@@ -203,20 +145,8 @@ export default function AboutPage() {
             initial="hidden"
             animate="visible"
           >
-              <motion.h2
-                className="text-2xl font-semibold"
-                variants={textVariants}
-                initial="hidden"
-                animate="visible"
-              >
-                Teaching & community
-              </motion.h2>
-            <motion.ul
-              className="flex flex-col gap-3 text-foreground/80"
-              variants={textVariants}
-              initial="hidden"
-              animate="visible"
-            >
+            <h2 className="text-2xl font-semibold">Teaching & community</h2>
+            <ul className="flex flex-col gap-3 text-foreground/80">
               {contributions.map((item) => (
                 <li
                   key={item}
@@ -225,49 +155,21 @@ export default function AboutPage() {
                   {item}
                 </li>
               ))}
-            </motion.ul>
+            </ul>
           </motion.div>
 
           <motion.div
-            className="surface-card p-6 flex flex-col justify-between"
+            className="surface-card p-6 flex flex-col gap-4"
             variants={cardVariants}
             initial="hidden"
             animate="visible"
-            whileHover="hover"
           >
-            <div>
-              <motion.p
-                className="text-xs uppercase tracking-[0.3em] text-foreground/50 mb-2"
-                variants={textVariants}
-                initial="hidden"
-                animate="visible"
-              >
-                Collaborate
-              </motion.p>
-              <motion.h2
-                className="text-2xl font-semibold mb-3"
-                variants={textVariants}
-                initial="hidden"
-                animate="visible"
-              >
-                Interested in teaming up?
-              </motion.h2>
-              <motion.p
-                className="text-sm text-foreground/70"
-                variants={textVariants}
-                initial="hidden"
-                animate="visible"
-              >
-                I work with researchers and product teams on diffusion modelling,
-                moderation strategy, and responsible experimentation with social data.
-              </motion.p>
-            </div>
-            <motion.div
-              className="flex flex-col gap-2 mt-4"
-              variants={iconVariants}
-              initial="hidden"
-              animate="visible"
-            >
+            <h2 className="text-2xl font-semibold">Collaborate</h2>
+            <p className="text-sm text-foreground/70">
+              I partner with researchers and product teams on diffusion modelling,
+              moderation strategy, and responsible experimentation with social data.
+            </p>
+            <div className="flex flex-col gap-2">
               <Link
                 href={`mailto:${contactInfo.email}`}
                 className="btn-primary inline-flex justify-center"
@@ -280,7 +182,7 @@ export default function AboutPage() {
               >
                 Back to work overview
               </Link>
-            </motion.div>
+            </div>
           </motion.div>
         </section>
       </motion.main>
