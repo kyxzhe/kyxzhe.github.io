@@ -65,44 +65,42 @@ export default function AboutPage() {
         animate="visible"
       >
         <motion.section
-          className="max-w-4xl w-full flex flex-col gap-10"
+          className="max-w-4xl w-full flex flex-col gap-12"
           variants={cardVariants}
           initial="hidden"
           animate="visible"
         >
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-5">
             <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">About Kevin</p>
-            <h1 className="text-4xl font-semibold leading-tight">Research first, people centered</h1>
+            <h1 className="text-4xl md:text-5xl font-semibold leading-tight">Research first, people centered</h1>
             <p className="text-base md:text-lg text-foreground/80 whitespace-pre-line leading-relaxed">{aboutIntro}</p>
           </div>
-          <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr]">
-            <div className="space-y-6 text-sm text-foreground/75">
-              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Now</p>
-              <dl className="space-y-4">
-                <div>
+          <div className="grid gap-12 lg:grid-cols-2 text-sm text-foreground/80">
+            <div className="space-y-6">
+              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Currently</p>
+              <dl className="space-y-5">
+                <div className="space-y-1">
                   <dt className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Base</dt>
-                  <dd>📍 Sydney, rarely far from a coffee walk</dd>
+                  <dd>📍 Sydney — happiest when walking between cafes and lecture halls.</dd>
                 </div>
-                <div>
+                <div className="space-y-1">
                   <dt className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Lab</dt>
-                  <dd>🏛 Behavioural Data Science Lab @ UTS</dd>
+                  <dd>🏛 Behavioural Data Science Lab at UTS with Marian-Andrei Rizoiu.</dd>
                 </div>
-                <div>
+                <div className="space-y-1">
                   <dt className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Teaching</dt>
-                  <dd>🧑‍🏫 DS + ML courses at the University of Sydney</dd>
+                  <dd>🧑‍🏫 Advanced ML, Informatics, and data storytelling sessions.</dd>
                 </div>
               </dl>
             </div>
-            <div className="flex flex-col gap-6">
-              <div className="space-y-3 text-sm text-foreground/75">
-                <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Focus</p>
-                <ul className="space-y-2">
-                  {researchFocus.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
+            <div className="space-y-6">
+              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Focus areas</p>
+              <div className="space-y-4">
+                {researchFocus.map((item) => (
+                  <p key={item}>{item}</p>
+                ))}
               </div>
-              <div className="flex gap-10">
+              <div className="flex gap-12 pt-4">
                 <div>
                   <p className="text-4xl font-semibold leading-none">4</p>
                   <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mt-3">Lab talks</p>
@@ -116,12 +114,15 @@ export default function AboutPage() {
           </div>
         </motion.section>
 
-        <section className="w-full max-w-5xl space-y-16">
-          <div className="space-y-6">
-            <h2 className="text-2xl font-semibold">Timeline</h2>
-            <div className="space-y-8">
+        <section className="w-full max-w-5xl space-y-20">
+          <div className="space-y-8">
+            <div className="space-y-2">
+              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Story so far</p>
+              <h2 className="text-2xl font-semibold">Timeline</h2>
+            </div>
+            <div className="space-y-10">
               {timeline.map((item) => (
-                <div key={item.title} className="space-y-1">
+                <div key={item.title} className="space-y-2">
                   <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
                     {item.period}
                   </p>
@@ -134,18 +135,20 @@ export default function AboutPage() {
           </div>
 
           <div className="grid gap-12 lg:grid-cols-2">
-            <div className="space-y-4">
-              <h2 className="text-2xl font-semibold">Teaching & community</h2>
-              <ul className="space-y-2 text-sm text-foreground/80">
+            <div className="space-y-5">
+              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Community</p>
+              <h2 className="text-2xl font-semibold">Teaching & sharing</h2>
+              <ul className="space-y-3 text-sm text-foreground/80">
                 {contributions.map((item) => (
                   <li key={item}>{item}</li>
                 ))}
               </ul>
             </div>
-            <div className="space-y-4">
-              <h2 className="text-2xl font-semibold">Collaborate</h2>
+            <div className="space-y-5">
+              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Collaborate</p>
+              <h2 className="text-2xl font-semibold">Open to thoughtful work</h2>
               <p className="text-sm text-foreground/70 leading-relaxed">
-                I partner with researchers and product teams on diffusion modelling,
+                I frequently partner with researchers and product teams on diffusion modelling,
                 moderation strategy, and responsible experimentation with social data.
               </p>
               <div className="flex flex-col gap-2 text-sm max-w-xs">

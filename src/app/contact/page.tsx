@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { cardVariants, containerVariants } from "@/lib/animation/variants";
+import { cardVariants, containerVariants, iconVariants, textVariants } from "@/lib/animation/variants";
 import { contactInfo } from "@/lib/constants/contact";
 import { socials } from "@/lib/constants/socials";
 import { GoogleScholarIcon, OrcidIcon } from "@/components/icons/AcademicIcons";
@@ -22,28 +22,48 @@ export default function ContactPage() {
     <div className="flex flex-col min-h-screen font-sans pt-2 md:pt-0 lg:py-6 xl:py-0 xl:pb-6 overflow-visible">
       <Navbar />
       <motion.main
-        className="flex-1 flex flex-col items-center gap-12 px-4 md:px-10 lg:px-20 py-10"
+        className="flex-1 flex flex-col gap-4 px-2 md:px-4 lg:px-6 pb-6"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
-        <motion.section
-          className="max-w-5xl w-full grid gap-10 lg:grid-cols-[1.2fr_0.8fr]"
-          variants={cardVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          <div className="space-y-6">
-            <div className="space-y-4">
-              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Contact Kevin</p>
-              <h1 className="text-4xl font-semibold leading-tight">
-                Let’s connect for research, teaching, or thoughtful products.
-              </h1>
-              <p className="text-base md:text-lg text-foreground/80 leading-relaxed">
-                Email is still the fastest way to reach me. Share a bit of context and I’ll reply within two days—then we can jump onto a call if it helps.
-              </p>
-            </div>
-            <div className="grid gap-6 sm:grid-cols-2">
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <motion.div
+            className="surface-card p-6 flex flex-col gap-6"
+            variants={cardVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <motion.p
+              className="uppercase tracking-[0.3em] text-xs text-muted-foreground"
+              variants={textVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              Contact
+            </motion.p>
+            <motion.h1
+              className="text-3xl md:text-4xl font-semibold leading-tight"
+              variants={textVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              Say hi if you want to collaborate, swap ideas, or grab a virtual coffee.
+            </motion.h1>
+            <motion.p
+              className="text-base md:text-lg text-foreground/80"
+              variants={textVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              Email is the quickest way to reach me—I’m happy to follow up with a call once we find a time that works.
+            </motion.p>
+            <motion.div
+              className="grid grid-cols-1 sm:grid-cols-2 gap-3"
+              variants={textVariants}
+              initial="hidden"
+              animate="visible"
+            >
               {[
                 {
                   icon: Mail,
@@ -68,80 +88,125 @@ export default function ContactPage() {
                   value: contactInfo.availability,
                 },
               ].map(({ icon: Icon, label, value, link }) => (
-                <a
+                <motion.a
                   key={label}
-                  className="rounded-2xl border border-border/60 px-5 py-4 flex flex-col gap-2 transition hover:border-foreground"
+                  className="surface-card px-4 py-4 flex flex-col gap-1"
+                  variants={iconVariants}
+                  initial="hidden"
+                  animate="visible"
+                  whileHover={{ scale: link ? 1.02 : 1 }}
                   href={link}
                 >
-                  <div className="flex items-center gap-2 text-xs uppercase tracking-[0.25em] text-muted-foreground">
+                  <div className="flex items-center gap-2 text-sm uppercase tracking-[0.25em] text-muted-foreground">
                     <Icon size={16} />
                     <span>{label}</span>
                   </div>
                   <p className="text-lg font-medium text-foreground/90">{value}</p>
-                </a>
+                </motion.a>
               ))}
-            </div>
-          </div>
-          <div className="space-y-6 surface-card rounded-3xl p-6 border border-border/50">
-            <div className="space-y-3">
-              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Scheduling</p>
-              <h2 className="text-2xl font-semibold">A lightweight policy</h2>
-              <p className="text-sm text-foreground/70 leading-relaxed">
-                I keep a few open windows between 10:00–17:00 AEDT (lunch reset 12:00–13:30). Send two or three time options with context and I’ll confirm within 48 hours.
-              </p>
-            </div>
-            <div className="rounded-2xl bg-[var(--accent-soft)] text-[var(--accent)] px-4 py-4 flex gap-3 items-center">
-              <MessageCircle size={20} />
-              <p className="text-sm">Urgent? Flag the topic in your email subject and I’ll prioritise it.</p>
-            </div>
-          </div>
-        </motion.section>
-
-        <section className="max-w-5xl w-full grid gap-12 lg:grid-cols-[1.2fr_0.8fr]">
-          <motion.div
-            className="space-y-6"
-            variants={cardVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            <div className="space-y-3">
-              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Project enquiries</p>
-              <h2 className="text-2xl font-semibold">What to include</h2>
-              <p className="text-sm text-foreground/70">
-                A concise brief makes collaboration smoother. I’m especially keen on work that touches social data, ranking, and responsible experimentation.
-              </p>
-            </div>
-            <ul className="space-y-3 text-sm text-foreground/80">
-              <li className="flex gap-2">
-                <span className="text-muted-foreground">•</span>
-                <span>Diffusion modelling, ranking interventions, or moderation pipelines.</span>
-              </li>
-              <li className="flex gap-2">
-                <span className="text-muted-foreground">•</span>
-                <span>Robust learning setups with noisy, biased, or shifting supervision.</span>
-              </li>
-              <li className="flex gap-2">
-                <span className="text-muted-foreground">•</span>
-                <span>Teaching, mentoring, or reading groups around social data systems.</span>
-              </li>
-              <li className="flex gap-2">
-                <span className="text-muted-foreground">•</span>
-                <span>Anything that needs thoughtful evaluation design.</span>
-              </li>
-            </ul>
+            </motion.div>
           </motion.div>
 
           <motion.div
-            className="space-y-5"
+            className="surface-card p-6 flex flex-col gap-4"
             variants={cardVariants}
             initial="hidden"
             animate="visible"
           >
-            <div className="space-y-3">
-              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Elsewhere</p>
-              <h3 className="text-xl font-semibold">Social channels</h3>
-            </div>
-            <div className="flex flex-col gap-3 text-sm">
+            <motion.h2
+              className="text-2xl font-semibold"
+              variants={textVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              Scheduling policy
+            </motion.h2>
+            <motion.p
+              className="text-sm text-foreground/70"
+              variants={textVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              I keep a few slots free each week between 10:00–17:00 AEDT (lunch reset around 12:00–13:30). Tap “Contact me” on the homepage or send context by email and I&apos;ll suggest times.
+            </motion.p>
+            <motion.div
+              className="surface-card px-4 py-4 flex gap-3 items-center text-muted-foreground dark:bg-[#101016] dark:text-white/90"
+              variants={iconVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              <MessageCircle size={20} />
+              <p className="text-sm">
+                Need an urgent chat? Mention the topic in your email subject for a quicker response.
+              </p>
+            </motion.div>
+          </motion.div>
+        </section>
+
+        <section className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <motion.div
+            className="surface-card p-6 flex flex-col gap-4 lg:col-span-2"
+            variants={cardVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <motion.h2
+              className="text-2xl font-semibold"
+              variants={textVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              Project & research enquiries
+            </motion.h2>
+            <motion.p
+              className="text-foreground/80 text-sm"
+              variants={textVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              Provide a short brief covering goals, timeline, collaborators, and the messy realities of the data. I typically respond within 48 hours.
+            </motion.p>
+            <motion.ul
+              className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-foreground/80"
+              variants={textVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              <li className="pill border border-border px-4 py-3 bg-[var(--accent-soft)] text-[var(--accent)]">
+                • Diffusion modelling & intervention strategy
+              </li>
+              <li className="pill border border-border px-4 py-3 bg-[var(--accent-soft)] text-[var(--accent)]">
+                • Robust learning with noisy, biased supervision
+              </li>
+              <li className="pill border border-border px-4 py-3 bg-[var(--accent-soft)] text-[var(--accent)]">
+                • Teaching, mentoring, and reading groups
+              </li>
+              <li className="pill border border-border px-4 py-3 bg-[var(--accent-soft)] text-[var(--accent)]">
+                • Evaluating ranking/moderation pipelines
+              </li>
+            </motion.ul>
+          </motion.div>
+
+          <motion.div
+            className="surface-card p-6 flex flex-col gap-4"
+            variants={cardVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <motion.h3
+              className="text-xl font-semibold"
+              variants={textVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              Social channels
+            </motion.h3>
+            <motion.div
+              className="flex flex-col gap-3"
+              variants={iconVariants}
+              initial="hidden"
+              animate="visible"
+            >
               {[
                 { label: "LinkedIn", href: socials.linkedin, icon: <Linkedin size={18} /> },
                 { label: "Google Scholar", href: socials.googleScholar, icon: <GoogleScholarIcon className="w-5 h-5" /> },
@@ -153,13 +218,13 @@ export default function ContactPage() {
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-between rounded-2xl border border-border/60 px-4 py-3 transition hover:border-foreground"
+                  className="card-row hoverable gap-3"
                 >
-                  <span className="flex items-center gap-2">{icon}{label}</span>
-                  <span className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Visit</span>
+                  {icon}
+                  <span>{label}</span>
                 </a>
               ))}
-            </div>
+            </motion.div>
           </motion.div>
         </section>
       </motion.main>
