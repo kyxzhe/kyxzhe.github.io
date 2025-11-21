@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { motion } from "motion/react";
 import {
   Mail,
@@ -10,6 +11,7 @@ import {
   MessageCircle,
   Github,
   Linkedin,
+  CalendarDays,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -21,6 +23,7 @@ import {
 import { contactInfo } from "@/lib/constants/contact";
 import { socials } from "@/lib/constants/socials";
 import { GoogleScholarIcon, OrcidIcon } from "@/components/icons/AcademicIcons";
+import ContactModal from "@/components/ContactModal";
 
 const contactIntro = `Most collaborations start with a short note that mixes the problem, the people, and the constraints. Email works best so I can digest the context, then we can jump on a call once the questions are clear.`;
 
@@ -88,6 +91,8 @@ const socialLinks = [
 ];
 
 export default function ContactPage() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <div className="flex flex-col min-h-screen font-sans pt-2 md:pt-0 lg:py-6 xl:py-0 xl:pb-6 overflow-visible">
       <Navbar />
@@ -217,6 +222,14 @@ export default function ContactPage() {
               <MessageCircle size={18} className="text-[var(--accent)]" />
               <p>Need a quick sync? Mention the urgency in your subject line and I’ll prioritise the reply.</p>
             </div>
+            <button
+              type="button"
+              onClick={() => setIsModalOpen(true)}
+              className="btn-primary inline-flex items-center gap-2 w-fit"
+            >
+              <CalendarDays size={18} />
+              Browse availability
+            </button>
           </div>
         </motion.section>
 
@@ -266,6 +279,7 @@ export default function ContactPage() {
         </motion.section>
       </motion.main>
       <Footer className="mb-4" />
+      <ContactModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   );
 }
