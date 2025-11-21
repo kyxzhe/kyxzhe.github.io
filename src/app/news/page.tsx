@@ -48,14 +48,14 @@ const sortOptions: { label: string; value: SortMode }[] = [
 
 const ListRow = ({ item }: { item: NewsItem }) => {
   const row = (
-    <div className="group flex flex-col gap-2 py-5 border-b border-[rgba(0,0,0,0.08)] transition-colors group-hover:border-foreground/70">
+    <article className="group flex flex-col gap-3 py-6 border-b border-[rgba(0,0,0,0.08)] transition-colors hover:border-foreground/70">
       <p className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground">{item.category}</p>
       <div className="flex items-start justify-between gap-3">
         <h3 className="text-xl font-semibold leading-snug text-foreground">{item.title}</h3>
         <p className="text-xs text-muted-foreground whitespace-nowrap">{formatDate(item.date)}</p>
       </div>
       <p className="text-sm text-foreground/80 leading-relaxed max-w-3xl">{item.summary}</p>
-    </div>
+    </article>
   );
 
   if (item.link) {
