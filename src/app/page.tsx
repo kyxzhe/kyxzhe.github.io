@@ -202,9 +202,9 @@ export default function Home() {
                       animate={{ y: 0, opacity: 0.6 }}
                       exit={{ y: -6, opacity: 0 }}
                       transition={{ duration: 0.18, ease: "easeOut" }}
-                      className="pointer-events-none absolute left-[2px] top-[2px] text-[18px] md:text-[19px] leading-[1.4] text-muted-foreground"
+                      className="pointer-events-none absolute left-[2px] top-[2px] text-[16px] md:text-[17px] leading-[1.4] text-muted-foreground"
                     >
-                      ›
+                      -&gt;
                     </motion.div>
                   </AnimatePresence>
                 )}
