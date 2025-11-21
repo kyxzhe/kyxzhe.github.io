@@ -70,10 +70,10 @@ export default function Home() {
         </section>
 
         <section className="w-full max-w-[48rem] flex flex-col items-center gap-4 mt-2">
-          <div className="w-full h-[106px] rounded-[26px] bg-white border border-[rgba(0,0,0,0.08)] shadow-[0_18px_36px_rgba(0,0,0,0.08)] px-[22px] md:px-[26px] pt-[16px] pb-[17px] flex items-start relative">
+          <div className="w-full h-[106px] rounded-[26px] bg-white border border-[rgba(0,0,0,0.08)] shadow-[0_18px_36px_rgba(0,0,0,0.08)] px-[18px] pt-[18px] pb-[16px] flex items-start relative">
             <textarea
               placeholder="Ask anything"
-              className="flex-1 h-[72px] resize-none bg-transparent text-[17px] md:text-[17.5px] leading-[1.4] text-foreground placeholder:text-muted-foreground focus:outline-none pr-20"
+              className="flex-1 h-[72px] resize-none bg-transparent text-[17px] md:text-[17.5px] leading-[1.4] text-foreground placeholder:text-muted-foreground focus:outline-none pr-24"
               aria-label="Ask a question"
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
@@ -81,7 +81,7 @@ export default function Home() {
             />
             <button
               type="button"
-              className={`absolute right-5 bottom-5 inline-flex h-9 w-9 items-center justify-center rounded-full transition disabled:opacity-60 disabled:cursor-not-allowed ${prompt.trim() ? "bg-foreground text-white" : "bg-[rgba(0,0,0,0.05)] text-muted-foreground"}`}
+              className={`absolute right-[18px] bottom-[16px] inline-flex h-9 w-9 items-center justify-center rounded-full transition disabled:opacity-60 disabled:cursor-not-allowed ${prompt.trim() ? "bg-foreground text-white" : "bg-[rgba(0,0,0,0.05)] text-muted-foreground"}`}
               aria-label="Submit question"
               onClick={handleSend}
               disabled={!prompt.trim() || isLoading}
