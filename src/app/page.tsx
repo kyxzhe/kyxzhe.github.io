@@ -3,7 +3,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Link from "next/link";
-import { ArrowUpRight, Loader2 } from "lucide-react";
+import { ArrowUp, Loader2 } from "lucide-react";
 import { useState, useCallback, KeyboardEvent } from "react";
 import { sendChatRequest, type ChatMessage } from "@/lib/api/chat";
 
@@ -69,8 +69,8 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="w-full max-w-4xl flex flex-col items-center gap-4 mt-2">
-          <div className="w-full rounded-[26px] bg-white border border-[rgba(0,0,0,0.08)] shadow-[0_18px_36px_rgba(0,0,0,0.08)] px-5 md:px-7 py-4 md:py-5 flex items-center gap-3 md:gap-4">
+        <section className="w-full max-w-[48rem] flex flex-col items-center gap-4 mt-2">
+          <div className="w-full h-[106px] rounded-[26px] bg-white border border-[rgba(0,0,0,0.08)] shadow-[0_18px_36px_rgba(0,0,0,0.08)] px-5 md:px-7 flex items-center gap-3 md:gap-4">
             <input
               type="text"
               placeholder="Ask about research, teaching, or collaborations"
@@ -82,12 +82,19 @@ export default function Home() {
             />
             <button
               type="button"
-              className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[rgba(0,0,0,0.06)] text-foreground transition hover:bg-foreground hover:text-white disabled:opacity-60 disabled:cursor-not-allowed"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[rgba(0,0,0,0.05)] text-[color:var(--muted-foreground)] transition hover:bg-foreground hover:text-white disabled:opacity-60 disabled:cursor-not-allowed"
               aria-label="Submit question"
               onClick={handleSend}
               disabled={!prompt.trim() || isLoading}
             >
-              {isLoading ? <Loader2 size={18} className="animate-spin" /> : <ArrowUpRight size={18} />}
+              {isLoading ? (
+                <Loader2 size={17} className="animate-spin" />
+              ) : (
+                <ArrowUp
+                  size={17}
+                  className={prompt.trim() ? "text-foreground" : "text-muted-foreground"}
+                />
+              )}
             </button>
           </div>
           {answer && (
