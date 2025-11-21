@@ -169,7 +169,7 @@ export default function Home() {
               )}
             </AnimatePresence>
 
-            <div className="flex items-end gap-3 pr-[2px]">
+            <div className="flex items-end gap-3 -mr-[6px]">
               <div className="flex-1 relative">
                 <textarea
                   placeholder=""
