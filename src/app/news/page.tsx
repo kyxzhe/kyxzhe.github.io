@@ -1,400 +1,182 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
-import { motion } from "motion/react";
 import { ArrowUpDown, Filter, LayoutGrid, List } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { type NewsItem, newsItems } from "@/lib/constants/news";
-import { cardVariants, containerVariants, projectsVariants } from "@/lib/animation/variants";
 
 type ViewMode = "list" | "grid";
-type SortOption = "newest" | "oldest" | "az" | "za";
+type SortMode = "newest" | "oldest";
 
-const sortOptions: { label: string; value: SortOption }[] = [
-  { label: "Newest → Oldest", value: "newest" },
-  { label: "Oldest → Newest", value: "oldest" },
-  { label: "Alphabetical (A–Z)", value: "az" },
-  { label: "Alphabetical (Z–A)", value: "za" },
+const MONTH_ABBREVIATIONS = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
 ];
-
-const MONTH_ABBREVIATIONS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 function formatDate(isoDate: string) {
   const [year, month, day] = isoDate.split("-").map(Number);
   if (!year || !month || !day) return isoDate;
-  return `${day} ${MONTH_ABBREVIATIONS[month - 1]} ${year}`;
+  const monthLabel = MONTH_ABBREVIATIONS[month - 1];
+  if (!monthLabel) return isoDate;
+  return `${day} ${monthLabel} ${year}`;
 }
 
 const categories = ["All", ...Array.from(new Set(newsItems.map((item) => item.category)))];
-const topics = Array.from(new Set(newsItems.flatMap((item) => item.topics))).sort();
-const years = Array.from(new Set(newsItems.map((item) => new Date(item.date).getFullYear()))).sort((a, b) => b - a);
 
-export default function NewsPage() {
-  const [viewMode, setViewMode] = useState<ViewMode>("list");
-  const [activeCategory, setActiveCategory] = useState<string>("All");
-  const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
-  const [selectedYears, setSelectedYears] = useState<number[]>([]);
-  const [sortMode, setSortMode] = useState<SortOption>("newest");
-  const [filterOpen, setFilterOpen] = useState(false);
-  const [sortOpen, setSortOpen] = useState(false);
-
-  const toggleTopic = (topic: string) => {
-    setSelectedTopics((prev) =>
-      prev.includes(topic) ? prev.filter((t) => t !== topic) : [...prev, topic]
-    );
-  };
-
-  const toggleYear = (year: number) => {
-    setSelectedYears((prev) =>
-      prev.includes(year) ? prev.filter((y) => y !== year) : [...prev, year]
-    );
-  };
-
-  const clearFilters = () => {
-    setSelectedTopics([]);
-    setSelectedYears([]);
-  };
-
-  const filteredItems = useMemo(() => {
-    return newsItems.filter((item) => {
-      const categoryMatch = activeCategory === "All" || item.category === activeCategory;
-      const topicsMatch = selectedTopics.length === 0 || selectedTopics.every((topic) => item.topics.includes(topic));
-      const yearsMatch =
-        selectedYears.length === 0 || selectedYears.includes(new Date(item.date).getFullYear());
-      return categoryMatch && topicsMatch && yearsMatch;
-    });
-  }, [activeCategory, selectedTopics, selectedYears]);
-
-  const sortedItems = useMemo(() => {
-    const sorted = [...filteredItems];
-    sorted.sort((a, b) => {
-      switch (sortMode) {
-        case "newest":
-          return new Date(b.date).getTime() - new Date(a.date).getTime();
-        case "oldest":
-          return new Date(a.date).getTime() - new Date(b.date).getTime();
-        case "az":
-          return a.title.localeCompare(b.title);
-        case "za":
-          return b.title.localeCompare(a.title);
-        default:
-          return 0;
-      }
-    });
-    return sorted;
-  }, [filteredItems, sortMode]);
-
-  const heroItem = sortedItems[0];
-  const secondaryItems = sortedItems.slice(1);
-
-const renderListRow = (item: NewsItem) => {
+const ListRow = ({ item }: { item: NewsItem }) => {
   const row = (
-    <div className="flex flex-col gap-2 py-5 border-b border-[rgba(0,0,0,0.08)] dark:border-white/20 transition-colors group-hover:border-foreground">
-      <div className="text-xs uppercase tracking-[0.3em] text-muted-foreground">{item.category}</div>
-      <h3 className="text-xl font-semibold">{item.title}</h3>
-      <p className="text-sm text-muted-foreground">{formatDate(item.date)}</p>
-      <p className="text-sm text-foreground/80 max-w-3xl">{item.summary}</p>
+    <div className="group flex flex-col gap-2 px-6 py-5 transition-colors hover:bg-white">
+      <p className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground">{item.category}</p>
+      <div className="flex items-start justify-between gap-3">
+        <h3 className="text-lg font-semibold leading-snug text-foreground">{item.title}</h3>
+        <p className="text-xs text-muted-foreground whitespace-nowrap">{formatDate(item.date)}</p>
+      </div>
+      <p className="text-sm text-foreground/75 leading-relaxed max-w-3xl">{item.summary}</p>
     </div>
   );
+
   if (item.link) {
     return (
-      <Link key={item.id} href={item.link} target="_blank" rel="noopener noreferrer" className="group block">
+      <Link
+        key={item.id}
+        href={item.link}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="block focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground/40"
+      >
         {row}
       </Link>
     );
   }
-  return (
-    <div key={item.id} className="group block cursor-default">
-      {row}
-    </div>
-  );
+
+  return <div key={item.id}>{row}</div>;
 };
 
-  const renderGrid = () => {
-    const columnItems = secondaryItems.slice(0, 3);
-    const remainingItems = secondaryItems.slice(3);
-    return (
-      <div className="flex flex-col gap-10 w-full max-w-[95vw] xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto px-4 md:px-6">
-      <div className="grid gap-6 lg:grid-cols-12 items-start">
-        {heroItem && (
-          <motion.article
-            className="surface-card relative overflow-hidden rounded-[24px] lg:col-span-8 lg:sticky lg:top-12"
-            whileHover={{ y: -6, boxShadow: "0 28px 55px rgba(0,0,0,0.18)" }}
-            transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
-          >
-            <div className="relative w-full aspect-[5/3] sm:aspect-[8/5] lg:aspect-[16/9] min-h-[360px] md:min-h-[480px] lg:min-h-[600px]">
-              <Image
-                src={heroItem.cover}
-                alt={heroItem.title}
-                fill
-                sizes="(max-width:1024px) 100vw, 60vw"
-                className="object-cover"
-              />
-            </div>
-            <div className="absolute inset-x-0 bottom-0 bg-background/95 dark:bg-background/80 backdrop-blur-sm px-6 pb-6 pt-6 flex flex-col gap-3 border-t border-white/10 rounded-t-none">
-              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
-                {heroItem.category} · {formatDate(heroItem.date)}
-              </p>
-              <h2 className="text-[2rem] lg:text-[2.4rem] font-semibold leading-tight text-foreground">
-                {heroItem.title}
-              </h2>
-              <p className="text-sm text-foreground/80 leading-relaxed max-w-2xl">{heroItem.summary}</p>
-              {heroItem.link && (
-                <Link href={heroItem.link} className="text-sm text-brand-accent" target="_blank" rel="noopener noreferrer">
-                  Read update
-                </Link>
-              )}
-            </div>
-          </motion.article>
-        )}
-        <div className="flex flex-col gap-4 lg:col-span-4">
-          {columnItems.map((item) => {
-            const card = (
-              <motion.div
-                variants={projectsVariants}
-                initial="hidden"
-                animate="visible"
-                whileHover={{ y: -6, boxShadow: "0 18px 35px rgba(0,0,0,0.14)" }}
-                className={`surface-card relative overflow-hidden aspect-square ${
-                  item.link ? "" : "opacity-80"
-                }`}
-              >
-                <Image
-                  src={item.cover}
-                  alt={item.title}
-                  fill
-                  sizes="(max-width:1024px) 100vw, 320px"
-                  className="object-cover"
-                />
-                <div className="absolute inset-x-0 bottom-0 bg-background/95 dark:bg-background/90 px-4 pb-4 pt-3 flex flex-col gap-2">
-                  <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
-                    {item.category} · {formatDate(item.date)}
-                  </p>
-                  <h3 className="text-lg font-semibold leading-tight text-foreground">
-                    {item.title}
-                  </h3>
-                  <p className="text-sm text-foreground/80 line-clamp-3">{item.summary}</p>
-                </div>
-              </motion.div>
-            );
-            if (item.link) {
-              return (
-                <Link
-                  key={item.id}
-                  href={item.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block"
-                >
-                  {card}
-                </Link>
-              );
-            }
-            return (
-              <div key={item.id} className="block cursor-default">
-                {card}
-              </div>
-            );
-          })}
-        </div>
-      </div>
-      {remainingItems.length > 0 && (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-12 gap-4">
-          {remainingItems.map((item) => {
-            const card = (
-              <motion.div
-                variants={projectsVariants}
-                initial="hidden"
-                animate="visible"
-                whileHover={{ y: -6, boxShadow: "0 20px 45px rgba(0,0,0,0.12)" }}
-                className={`surface-card relative overflow-hidden aspect-square ${
-                  item.link ? "" : "opacity-80"
-                }`}
-              >
-                <Image
-                  src={item.cover}
-                  alt={item.title}
-                  fill
-                  sizes="(max-width:1024px) 100vw, 320px"
-                  className="object-cover"
-                />
-                <div className="absolute inset-x-0 bottom-0 bg-background/95 dark:bg-background/90 px-4 pb-4 pt-3 flex flex-col gap-2">
-                  <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
-                    {item.category} · {formatDate(item.date)}
-                  </p>
-                  <h3 className="text-lg font-semibold leading-tight text-foreground">
-                    {item.title}
-                  </h3>
-                  <p className="text-sm text-foreground/80 line-clamp-3">{item.summary}</p>
-                </div>
-              </motion.div>
-            );
-            if (item.link) {
-              return (
-                <Link
-                  key={item.id}
-                  href={item.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block lg:col-span-4"
-                >
-                  {card}
-                </Link>
-              );
-            }
-            return (
-              <div key={item.id} className="block cursor-default lg:col-span-4">
-                {card}
-              </div>
-            );
-          })}
-        </div>
-      )}
-      </div>
-    );
-  };
+export default function NewsPage() {
+  const [activeCategory, setActiveCategory] = useState<string>("All");
+  const [viewMode, setViewMode] = useState<ViewMode>("list");
+  const [sortMode, setSortMode] = useState<SortMode>("newest");
+
+  const filteredItems = useMemo(() => {
+    return newsItems.filter((item) => activeCategory === "All" || item.category === activeCategory);
+  }, [activeCategory]);
+
+  const sortedItems = useMemo(() => {
+    const sorted = [...filteredItems];
+    sorted.sort((a, b) => {
+      if (sortMode === "newest") {
+        return new Date(b.date).getTime() - new Date(a.date).getTime();
+      }
+      return new Date(a.date).getTime() - new Date(b.date).getTime();
+    });
+    return sorted;
+  }, [filteredItems, sortMode]);
 
   return (
-    <div className="flex flex-col min-h-screen font-sans pt-2 md:pt-0 lg:py-6 xl:py-0 xl:pb-6 overflow-visible">
+    <div className="min-h-screen bg-[#f7f7f8] text-foreground">
       <Navbar />
-      <motion.main
-        className="flex-1 flex flex-col gap-4 px-2 md:px-4 lg:px-6 pb-6"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        <motion.section className="surface-card p-6 flex flex-col gap-4" variants={cardVariants}>
-          <p className="uppercase tracking-[0.3em] text-xs text-muted-foreground">Newsroom</p>
-          <h1 className="text-3xl md:text-4xl font-semibold">Grounded updates on research, milestones, and lab tools.</h1>
-          <p className="text-base text-foreground/80">
-            The chatbot is now live, citing everything here. Browse updates in list or gallery mode, or filter down to the topics and years you care about.
+      <main className="flex-1 mx-auto w-full max-w-5xl px-2 md:px-4 lg:px-0 py-6 flex flex-col gap-6">
+        <section className="mt-4 space-y-2">
+          <p className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground">Newsroom</p>
+          <h1 className="text-3xl md:text-[2.1rem] font-semibold leading-tight text-foreground">Latest news &amp; updates</h1>
+          <p className="text-sm text-muted-foreground max-w-2xl">
+            Browse research, milestones, and interviews. Default list view; filter when needed.
           </p>
-        </motion.section>
+        </section>
 
-        <div className="flex flex-wrap gap-3 text-sm">
-          {categories.map((category) => (
+        <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-muted-foreground">
+          <div className="flex flex-wrap gap-2">
+            {categories.map((category) => (
+              <button
+                key={category}
+                type="button"
+                onClick={() => setActiveCategory(category)}
+                className={`px-3 py-1.5 rounded-full border transition-colors ${
+                  activeCategory === category
+                    ? "bg-[#e7e7eb] text-foreground border-[#cfcfd4]"
+                    : "bg-white text-muted-foreground border-[#dedee3] hover:border-[#cfcfd4]"
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+
+          <div className="flex items-center gap-2 md:gap-3 text-muted-foreground">
             <button
-              key={category}
-              onClick={() => setActiveCategory(category)}
-              className={`px-3 py-1 rounded-full border ${
-                activeCategory === category ? "border-foreground text-foreground" : "border-border text-muted-foreground"
-              }`}
+              type="button"
+              className="flex items-center gap-1 px-2 py-1 rounded-md hover:text-foreground"
+              title="Filter"
             >
-              {category}
+              <span>Filter</span>
+              <Filter size={14} />
             </button>
-          ))}
-        </div>
-
-        <div className="flex flex-wrap items-center justify-between gap-3 text-sm font-medium">
-          <p className="text-muted-foreground">Showing {sortedItems.length} updates</p>
-            <div className="relative flex items-center gap-4">
-            <div className="relative flex items-center gap-1">
+            <button
+              type="button"
+              className="flex items-center gap-1 px-2 py-1 rounded-md hover:text-foreground"
+              title="Sort"
+              onClick={() => setSortMode((prev) => (prev === "newest" ? "oldest" : "newest"))}
+            >
+              <span>Sort</span>
+              <ArrowUpDown size={14} />
+            </button>
+            <div className="flex items-center gap-[1px] rounded-md border border-[#d8d8dd] bg-white overflow-hidden">
               <button
-                className="flex items-center gap-1"
-                onClick={() => {
-                  setFilterOpen((prev) => !prev);
-                  setSortOpen(false);
-                }}
-              >
-                <span className={selectedTopics.length > 0 || selectedYears.length > 0 ? "text-foreground" : "text-muted-foreground"}>
-                  Filter
-                </span>
-                <Filter size={16} className={selectedTopics.length > 0 || selectedYears.length > 0 ? "text-foreground" : "text-muted-foreground"} />
-              </button>
-              {filterOpen && (
-                <div className="absolute top-full mt-2 right-0 w-[420px] z-40 surface-card p-4 flex flex-col gap-4 shadow-xl rounded-2xl border border-border">
-                  <div className="grid grid-cols-2 gap-4 text-sm">
-                    <div>
-                      <p className="font-semibold mb-2">Topic</p>
-                      <div className="space-y-2 max-h-60 overflow-y-auto">
-                        {topics.map((topic) => (
-                          <label key={topic} className="flex items-center gap-2">
-                            <input type="checkbox" checked={selectedTopics.includes(topic)} onChange={() => toggleTopic(topic)} />
-                            {topic}
-                          </label>
-                        ))}
-                      </div>
-                    </div>
-                    <div>
-                      <p className="font-semibold mb-2">Year</p>
-                      <div className="space-y-2 max-h-60 overflow-y-auto">
-                        {years.map((year) => (
-                          <label key={year} className="flex items-center gap-2">
-                            <input type="checkbox" checked={selectedYears.includes(year)} onChange={() => toggleYear(year)} />
-                            {year}
-                          </label>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex justify-end text-xs text-muted-foreground">
-                    <button onClick={clearFilters}>Clear all</button>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <div className="relative flex items-center gap-1">
-              <button
-                className={`flex items-center gap-1 ${sortOpen ? "text-foreground" : "text-muted-foreground"}`}
-                onClick={() => {
-                  setSortOpen((prev) => !prev);
-                  setFilterOpen(false);
-                }}
-              >
-                <span>Sort</span>
-                <ArrowUpDown size={16} />
-              </button>
-              {sortOpen && (
-                <div className="absolute top-full mt-2 right-0 w-64 z-40 surface-card p-3 flex flex-col gap-2 shadow-xl rounded-2xl border border-border">
-                  {sortOptions.map((option) => (
-                    <label key={option.value} className="flex items-center gap-2 text-sm">
-                      <input
-                        type="radio"
-                        name="news-sort"
-                        value={option.value}
-                        checked={sortMode === option.value}
-                        onChange={() => setSortMode(option.value)}
-                      />
-                      {option.label}
-                    </label>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <button
-                className={`p-2 rounded ${viewMode === "list" ? "text-foreground bg-[rgba(0,0,0,0.06)]" : "hover:text-foreground"}`}
-                onClick={() => setViewMode("list")}
+                type="button"
                 aria-label="List view"
+                className={`px-2 py-1 ${viewMode === "list" ? "text-foreground" : "text-muted-foreground"}`}
+                onClick={() => setViewMode("list")}
               >
-                <List size={16} />
+                <List size={15} />
               </button>
               <button
-                className={`p-2 rounded ${viewMode === "grid" ? "text-foreground bg-[rgba(0,0,0,0.06)]" : "hover:text-foreground"}`}
-                onClick={() => setViewMode("grid")}
+                type="button"
                 aria-label="Grid view"
+                className={`px-2 py-1 ${viewMode === "grid" ? "text-foreground" : "text-muted-foreground"}`}
+                onClick={() => setViewMode("grid")}
               >
-                <LayoutGrid size={16} />
+                <LayoutGrid size={15} />
               </button>
             </div>
           </div>
         </div>
 
-        {sortedItems.length === 0 ? (
-          <div className="surface-card p-10 text-center text-muted-foreground">No news yet—try adjusting the filters.</div>
-        ) : viewMode === "list" ? (
-          <section className="surface-card p-4 md:p-6">
-            {sortedItems.map((item) => renderListRow(item))}
+        {viewMode === "list" ? (
+          <section className="rounded-[18px] border border-[rgba(0,0,0,0.06)] bg-white/70 shadow-[0_16px_40px_rgba(0,0,0,0.04)] overflow-hidden divide-y divide-[rgba(0,0,0,0.06)]">
+            {sortedItems.map((item) => (
+              <ListRow key={item.id} item={item} />
+            ))}
           </section>
         ) : (
-          renderGrid()
+          <section className="grid gap-4 sm:grid-cols-2">
+            {sortedItems.map((item) => (
+              <article
+                key={item.id}
+                className="rounded-2xl border border-[rgba(0,0,0,0.08)] bg-white px-5 py-4 shadow-[0_12px_26px_rgba(0,0,0,0.05)]"
+              >
+                <p className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-2">{item.category}</p>
+                <div className="flex items-start justify-between gap-3">
+                  <h3 className="text-lg font-semibold leading-snug text-foreground">{item.title}</h3>
+                  <p className="text-xs text-muted-foreground whitespace-nowrap">{formatDate(item.date)}</p>
+                </div>
+                <p className="mt-2 text-sm text-foreground/75 leading-relaxed">{item.summary}</p>
+              </article>
+            ))}
+          </section>
         )}
-      </motion.main>
+      </main>
       <Footer className="mb-4" />
     </div>
   );
