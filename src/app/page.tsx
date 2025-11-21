@@ -73,7 +73,7 @@ export default function Home() {
           <div className="w-full h-[106px] rounded-[26px] bg-white border border-[rgba(0,0,0,0.08)] shadow-[0_18px_36px_rgba(0,0,0,0.08)] px-6 md:px-8 pt-6 flex items-start relative">
             <textarea
               placeholder="Ask anything"
-              className="flex-1 h-[72px] resize-none bg-transparent text-[18px] md:text-[18.5px] leading-[1.4] text-foreground placeholder:text-muted-foreground focus:outline-none pr-20"
+              className="flex-1 h-[72px] resize-none bg-transparent text-[17px] md:text-[17.5px] leading-[1.4] text-foreground placeholder:text-muted-foreground focus:outline-none pr-20"
               aria-label="Ask a question"
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
@@ -87,9 +87,9 @@ export default function Home() {
               disabled={!prompt.trim() || isLoading}
             >
               {isLoading ? (
-                <Loader2 size={16} className="animate-spin" />
+                <Loader2 size={17} className="animate-spin" />
               ) : (
-                <ArrowUp size={17} />
+                <ArrowUp size={19} />
               )}
             </button>
           </div>
