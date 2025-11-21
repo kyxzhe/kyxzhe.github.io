@@ -10,7 +10,7 @@ export default function Navbar() {
   return (
     <header className="w-full mb-12 md:mb-14" role="banner">
       <nav
-        className="flex flex-row justify-between items-center md:flex-row md:items-center relative z-10 px-1 md:px-2"
+        className="flex flex-row justify-between items-center md:flex-row md:items-center relative z-10 px-2 md:px-4"
         aria-label="Main navigation"
       >
         <Link
@@ -25,7 +25,7 @@ export default function Navbar() {
           </span>
         </Link>
         <HamburgerButton open={menuOpen} onClick={toggleMenu} />
-        <ul className="hidden md:flex flex-row gap-12 list-none m-0 items-center text-[0.96rem] md:text-[1rem] uppercase tracking-[0.14em] text-muted-foreground">
+        <ul className="hidden md:flex flex-row gap-9 lg:gap-11 list-none m-0 items-center text-[0.96rem] md:text-[1rem] uppercase tracking-[0.13em] text-muted-foreground">
           {navItems.map(({ href, label, title }) => (
             <li key={href}>
               <Link
