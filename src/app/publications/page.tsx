@@ -66,22 +66,44 @@ const AuthorLine = ({ authors }: { authors: string[] }) => (
   <p className="text-sm text-muted-foreground">{authors.join(", ")}</p>
 );
 
-const ResourceBadges = ({ resources }: { resources?: PublicationResource[] }) => {
+const ResourceBadges = ({
+  resources,
+  interactive = true,
+}: {
+  resources?: PublicationResource[];
+  interactive?: boolean;
+}) => {
   if (!resources?.length) return null;
   return (
     <div className="flex flex-wrap gap-2">
-      {resources.map((resource) => (
-        <Link
-          key={`${resource.type}-${resource.url}`}
-          href={resource.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 rounded-full border border-border bg-[var(--pill-background)] px-2 py-1 text-[10px] uppercase tracking-[0.26em] text-foreground hover:border-foreground/50"
-        >
-          {resource.label}
-          <ArrowUpRight size={12} />
-        </Link>
-      ))}
+      {resources.map((resource) => {
+        const content = (
+          <span className="inline-flex items-center gap-1 rounded-full border border-border bg-[var(--pill-background)] px-2 py-1 text-[10px] uppercase tracking-[0.26em] text-foreground">
+            {resource.label}
+            <ArrowUpRight size={12} />
+          </span>
+        );
+
+        if (!interactive) {
+          return (
+            <span key={`${resource.type}-${resource.url}`} className="inline-flex">
+              {content}
+            </span>
+          );
+        }
+
+        return (
+          <Link
+            key={`${resource.type}-${resource.url}`}
+            href={resource.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex"
+          >
+            {content}
+          </Link>
+        );
+      })}
     </div>
   );
 };
@@ -99,7 +121,7 @@ const ListRow = ({ item }: { item: Publication }) => {
           <div className="flex flex-wrap items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-muted-foreground">
             <span>{item.venue}</span>
             {item.resources && item.resources.length > 0 && <span>·</span>}
-            <ResourceBadges resources={item.resources} />
+            <ResourceBadges resources={item.resources} interactive={!item.link} />
           </div>
         </div>
         <p className="text-xs text-muted-foreground whitespace-nowrap">{formatDate(item.date)}</p>
