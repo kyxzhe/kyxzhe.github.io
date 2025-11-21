@@ -101,13 +101,13 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row items-center gap-3 mt-4">
             <Link
               href="/publications"
-              className="px-6 md:px-7 py-3 rounded-full bg-[var(--foreground)] text-[#f7f7f7] text-sm md:text-base font-semibold shadow-[0_14px_28px_rgba(0,0,0,0.16)] transition duration-200 hover:-translate-y-[2px]"
+              className="px-6 md:px-7 py-3 rounded-full text-sm md:text-base font-semibold shadow-[0_14px_28px_rgba(0,0,0,0.16)] transition duration-200 hover:-translate-y-[2px] bg-[#141414] text-white dark:bg-[#f5f5f5] dark:text-[#0b0b0d]"
             >
               View publications
             </Link>
             <Link
               href="/contact"
-              className="px-6 md:px-7 py-3 rounded-full border border-[rgba(0,0,0,0.08)] bg-white text-sm md:text-base font-semibold text-foreground shadow-[0_10px_24px_rgba(0,0,0,0.06)] transition duration-200 hover:-translate-y-[1px]"
+              className="px-6 md:px-7 py-3 rounded-full border text-sm md:text-base font-semibold transition duration-200 hover:-translate-y-[1px] border-[rgba(0,0,0,0.12)] bg-white text-foreground shadow-[0_10px_24px_rgba(0,0,0,0.06)] dark:border-[#666] dark:bg-[#1a1a1d] dark:text-white dark:shadow-[0_10px_24px_rgba(0,0,0,0.3)]"
             >
               Contact
             </Link>
@@ -187,7 +187,7 @@ export default function Home() {
                       animate={{ y: 0, opacity: 1 }}
                       exit={{ y: -10, opacity: 0 }}
                       transition={{ duration: 0.32, ease: "easeOut" }}
-                      className="pointer-events-none absolute left-0 top-0 right-0 text-[17px] md:text-[17.5px] leading-[1.4] text-muted-foreground"
+                      className="pointer-events-none absolute left-0 top-0 right-0 text-[17px] md:text-[17.5px] leading-[1.4] text-muted-foreground dark:text-white/60"
                     >
                       {rotatingPlaceholders[placeholderIndex]}
                     </motion.div>
@@ -201,7 +201,7 @@ export default function Home() {
                       animate={{ y: 0, opacity: 0.8 }}
                       exit={{ y: -6, opacity: 0 }}
                       transition={{ duration: 0.18, ease: "easeOut" }}
-                      className="pointer-events-none absolute left-0 top-0 text-[17px] md:text-[17.5px] leading-[1.4] text-muted-foreground"
+                      className="pointer-events-none absolute left-0 top-0 text-[17px] md:text-[17.5px] leading-[1.4] text-muted-foreground dark:text-white/60"
                     >
                       -&gt;
                     </motion.div>
@@ -210,7 +210,7 @@ export default function Home() {
               </div>
               <button
                 type="button"
-                className={`inline-flex h-10 w-10 items-center justify-center rounded-full transition disabled:opacity-60 disabled:cursor-not-allowed ${prompt.trim() ? "bg-foreground text-white" : "bg-[rgba(0,0,0,0.05)] text-muted-foreground"}`}
+                className={`inline-flex h-10 w-10 items-center justify-center rounded-full transition disabled:opacity-60 disabled:cursor-not-allowed ${prompt.trim() ? "bg-foreground text-white dark:bg-white dark:text-[#0b0b0d]" : "bg-[rgba(0,0,0,0.05)] text-muted-foreground dark:bg-white/15 dark:text-white"}`}
                 aria-label="Submit question"
                 onClick={handleSend}
                 disabled={!prompt.trim() || isLoading}
