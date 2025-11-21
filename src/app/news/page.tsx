@@ -437,8 +437,8 @@ export default function NewsPage() {
               <button
                 className={`p-2 rounded transition-colors ${
                   viewMode === "list"
-                    ? "text-foreground bg-[#e7e7eb] dark:bg-[#e7e7eb] dark:text-[#1a1a1a]"
-                    : "hover:text-foreground dark:hover:text-white"
+                    ? "text-foreground bg-[var(--toggle-selected-bg)]"
+                    : "hover:text-foreground"
                 }`}
                 onClick={() => setViewMode("list")}
                 aria-label="List view"
@@ -448,8 +448,8 @@ export default function NewsPage() {
               <button
                 className={`p-2 rounded transition-colors ${
                   viewMode === "grid"
-                    ? "text-foreground bg-[#e7e7eb] dark:bg-[#e7e7eb] dark:text-[#1a1a1a]"
-                    : "hover:text-foreground dark:hover:text-white"
+                    ? "text-foreground bg-[var(--toggle-selected-bg)]"
+                    : "hover:text-foreground"
                 }`}
                 onClick={() => setViewMode("grid")}
                 aria-label="Grid view"
