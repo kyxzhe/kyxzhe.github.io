@@ -260,7 +260,7 @@ export default function PublicationsPage() {
 
       <main className="flex-1 mx-auto w-full max-w-5xl px-2 md:px-4 lg:px-0 py-6 flex flex-col gap-6">
         <section className="mt-4 space-y-2">
-          <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Research notebook</p>
+          <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Publications</p>
           <h1 className="text-[2.4rem] md:text-[2.6rem] font-semibold leading-tight text-foreground">Papers &amp; Preprints</h1>
           <p className="text-[15px] md:text-base text-muted-foreground max-w-2xl leading-relaxed">
             A focused list of my papers—journal, conference, and arXiv updates—ready to scan in list or gallery view.
