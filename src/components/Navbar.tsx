@@ -18,14 +18,14 @@ export default function Navbar() {
           className="flex flex-row gap-2 items-center"
           aria-label="Go to homepage"
         >
-          <span className="text-[0.92rem] md:text-[0.98rem] uppercase font-light italic tracking-[0.12em]">Kevin</span>
-          <span className="text-[0.92rem] md:text-[0.98rem] uppercase font-semibold tracking-[0.12em]">Zheng</span>
-          <span className="chip text-[0.55rem] uppercase tracking-[0.26em] px-2 py-[0.38rem]">
+          <span className="text-[1.05rem] md:text-[1.08rem] uppercase font-light italic tracking-[0.11em]">Kevin</span>
+          <span className="text-[1.05rem] md:text-[1.08rem] uppercase font-semibold tracking-[0.11em]">Zheng</span>
+          <span className="chip text-[0.6rem] uppercase tracking-[0.24em] px-[0.55rem] py-[0.42rem]">
             Beta
           </span>
         </Link>
         <HamburgerButton open={menuOpen} onClick={toggleMenu} />
-        <ul className="hidden md:flex flex-row gap-12 list-none m-0 items-center text-[0.82rem] uppercase tracking-[0.16em] text-muted-foreground">
+        <ul className="hidden md:flex flex-row gap-12 list-none m-0 items-center text-[0.95rem] uppercase tracking-[0.15em] text-muted-foreground">
           {navItems.map(({ href, label, title }) => (
             <li key={href}>
               <Link
