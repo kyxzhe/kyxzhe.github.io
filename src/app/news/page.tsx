@@ -145,11 +145,11 @@ export default function NewsPage() {
             ))}
           </div>
 
-            <div className="relative flex items-center gap-2 md:gap-3 text-muted-foreground">
+          <div className="relative flex items-center gap-3 text-[15px] text-[#5d5d66]">
             <div className="relative">
               <button
                 type="button"
-                className="flex items-center gap-1 px-2 py-1 rounded-md hover:text-foreground"
+                className="flex items-center gap-1 px-2 py-1 rounded-md hover:text-[#2f2f32]"
                 title="Filter"
                 onClick={() => {
                   setFilterOpen((prev) => !prev);
@@ -157,7 +157,7 @@ export default function NewsPage() {
                 }}
               >
                 <span>Filter</span>
-                <Filter size={14} />
+                <Filter size={16} />
               </button>
               {filterOpen && (
                 <div className="absolute right-0 top-full mt-2 w-[420px] rounded-2xl border border-[#dedee3] bg-white shadow-[0_14px_55px_rgba(0,0,0,0.08)] p-4 z-20">
@@ -210,7 +210,7 @@ export default function NewsPage() {
             <div className="relative">
               <button
                 type="button"
-                className="flex items-center gap-1 px-2 py-1 rounded-md hover:text-foreground"
+                className="flex items-center gap-1 px-2 py-1 rounded-md hover:text-[#2f2f32]"
                 title="Sort"
                 onClick={() => {
                   setSortOpen((prev) => !prev);
@@ -218,7 +218,7 @@ export default function NewsPage() {
                 }}
               >
                 <span>Sort</span>
-                <ArrowUpDown size={14} />
+                <ArrowUpDown size={16} />
               </button>
               {sortOpen && (
                 <div className="absolute right-0 top-full mt-2 w-56 rounded-2xl border border-[#dedee3] bg-white shadow-[0_14px_55px_rgba(0,0,0,0.08)] p-3 z-20 text-sm text-foreground space-y-2">
@@ -251,22 +251,22 @@ export default function NewsPage() {
             <button
               type="button"
               aria-label="List view"
-              className={`flex h-[28px] w-[28px] items-center justify-center rounded-[6px] text-muted-foreground hover:text-foreground transition-colors ${
-                viewMode === "list" ? "text-foreground bg-[#e7e7eb]" : ""
+              className={`flex h-9 w-9 items-center justify-center rounded-[8px] text-[#6a6a74] hover:text-[#2f2f32] transition-colors ${
+                viewMode === "list" ? "text-[#2f2f32] bg-[#e6e6eb]" : ""
               }`}
               onClick={() => setViewMode("list")}
             >
-              <List size={15} />
+              <List size={18} />
             </button>
             <button
               type="button"
               aria-label="Grid view"
-              className={`flex h-[28px] w-[28px] items-center justify-center rounded-[6px] text-muted-foreground hover:text-foreground transition-colors ${
-                viewMode === "grid" ? "text-foreground bg-[#e7e7eb]" : ""
+              className={`flex h-9 w-9 items-center justify-center rounded-[8px] text-[#6a6a74] hover:text-[#2f2f32] transition-colors ${
+                viewMode === "grid" ? "text-[#2f2f32] bg-[#e6e6eb]" : ""
               }`}
               onClick={() => setViewMode("grid")}
             >
-              <LayoutGrid size={15} />
+              <LayoutGrid size={18} />
             </button>
           </div>
         </div>
