@@ -245,7 +245,7 @@ export default function PublicationsPage() {
   );
 
   return (
-    <div className="min-h-screen bg-[#f7f7f8] text-[#141414] dark:bg-[#0b0b0d] dark:text-[#f5f5f5]">
+    <div className="min-h-screen bg-white text-[#141414] dark:bg-[#0b0b0d] dark:text-[#f5f5f5]">
       <Navbar />
 
       {(filterOpen || sortOpen) && (
