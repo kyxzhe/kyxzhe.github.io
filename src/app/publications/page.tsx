@@ -110,9 +110,10 @@ const ListRow = ({ item }: { item: Publication }) => {
           <AuthorLine authors={item.authors} />
           <p className="text-sm text-foreground/80 leading-relaxed max-w-3xl">{item.summary}</p>
           <div className="flex flex-wrap items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-muted-foreground">
-            <span>{item.venue}</span>
-            {item.resources && item.resources.length > 0 && <span>·</span>}
-            <ResourceBadges resources={item.resources} interactive={!item.link} />
+            {(!item.resources || item.resources.length === 0) && <span>{item.venue}</span>}
+            {item.resources && item.resources.length > 0 && (
+              <ResourceBadges resources={item.resources} interactive={!item.link} />
+            )}
           </div>
         </div>
         <p className="text-xs text-muted-foreground whitespace-nowrap">{formatDate(item.date)}</p>
@@ -209,9 +210,10 @@ export default function PublicationsPage() {
           <AuthorLine authors={item.authors} />
           <p className="text-sm text-foreground/80 flex-1">{item.summary}</p>
           <div className="flex flex-wrap items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-muted-foreground">
-            <span>{item.venue}</span>
-            {item.resources && item.resources.length > 0 && <span>·</span>}
-            <ResourceBadges resources={item.resources} interactive={!item.link} />
+            {(!item.resources || item.resources.length === 0) && <span>{item.venue}</span>}
+            {item.resources && item.resources.length > 0 && (
+              <ResourceBadges resources={item.resources} interactive={!item.link} />
+            )}
           </div>
         </div>
       </motion.article>
