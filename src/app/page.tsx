@@ -3,9 +3,42 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Loader2 } from "lucide-react";
+import { useState, useCallback, KeyboardEvent } from "react";
+import { sendChatRequest, type ChatMessage } from "@/lib/api/chat";
 
 export default function Home() {
+  const [prompt, setPrompt] = useState("");
+  const [answer, setAnswer] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSend = useCallback(async () => {
+    const nextPrompt = prompt.trim();
+    if (!nextPrompt || isLoading) return;
+    setIsLoading(true);
+    setError(null);
+
+    const messages: ChatMessage[] = [{ role: "user", content: nextPrompt }];
+    try {
+      const reply = await sendChatRequest(messages);
+      setAnswer(reply);
+      setPrompt("");
+    } catch (err) {
+      console.error(err);
+      setError(err instanceof Error ? err.message : "Something went wrong.");
+    } finally {
+      setIsLoading(false);
+    }
+  }, [prompt, isLoading]);
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      handleSend();
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen font-sans">
       <Navbar />
@@ -43,15 +76,30 @@ export default function Home() {
               placeholder="Ask about research, teaching, or collaborations"
               className="flex-1 bg-transparent text-base md:text-lg text-foreground placeholder:text-muted-foreground focus:outline-none"
               aria-label="Ask a question"
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+              onKeyDown={handleKeyDown}
             />
             <button
               type="button"
-              className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[rgba(0,0,0,0.06)] text-foreground transition hover:bg-foreground hover:text-white"
+              className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[rgba(0,0,0,0.06)] text-foreground transition hover:bg-foreground hover:text-white disabled:opacity-60 disabled:cursor-not-allowed"
               aria-label="Submit question"
+              onClick={handleSend}
+              disabled={!prompt.trim() || isLoading}
             >
-              <ArrowUpRight size={18} />
+              {isLoading ? <Loader2 size={18} className="animate-spin" /> : <ArrowUpRight size={18} />}
             </button>
           </div>
+          {answer && (
+            <p className="text-sm md:text-base text-foreground/90 leading-relaxed text-left w-full max-w-4xl">
+              {answer}
+            </p>
+          )}
+          {error && (
+            <p className="text-sm text-red-500 text-left w-full max-w-4xl">
+              {error}
+            </p>
+          )}
         </section>
       </main>
       <Footer className="mb-6" />
