@@ -9,8 +9,8 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen font-sans">
       <Navbar />
-      <main className="flex-1 w-full flex flex-col items-center text-center px-4 md:px-10 lg:px-16">
-        <section className="w-full max-w-4xl flex flex-col items-center gap-4 md:gap-5 mt-2 md:mt-4">
+      <main className="flex-1 w-full flex flex-col items-center justify-center text-center px-4 md:px-10 lg:px-16 gap-10 md:gap-14 pb-12">
+        <section className="w-full max-w-4xl flex flex-col items-center gap-4 md:gap-5">
           <p className="text-[0.62rem] md:text-[0.7rem] tracking-[0.34em] uppercase text-muted-foreground">
             Kevin Zheng • Social Data Science & Robust ML
           </p>
@@ -34,7 +34,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="w-full max-w-4xl flex flex-col items-center gap-4 mt-10 md:mt-12">
+        <section className="w-full max-w-4xl flex flex-col items-center gap-4">
           <h2 className="text-lg md:text-xl font-semibold text-foreground">What can I help with?</h2>
           <div className="w-full rounded-full bg-white border border-[rgba(0,0,0,0.08)] shadow-[0_22px_42px_rgba(0,0,0,0.08)] px-4 py-3 flex items-center gap-3 md:gap-4">
             <input
@@ -76,7 +76,7 @@ export default function Home() {
           </p>
         </section>
 
-        <section className="w-full max-w-5xl mt-12 md:mt-16 border-t border-[rgba(0,0,0,0.06)] pt-8 md:pt-12 grid md:grid-cols-[1.05fr_1fr] gap-10 md:gap-14 text-left">
+        <section className="w-full max-w-5xl border-t border-[rgba(0,0,0,0.06)] pt-8 md:pt-12 grid md:grid-cols-[1.05fr_1fr] gap-10 md:gap-14 text-left">
           <div className="flex flex-col gap-3">
             <p className="text-[0.68rem] tracking-[0.22em] uppercase text-muted-foreground">Contact</p>
             <p className="text-sm md:text-base text-foreground">Email-first; scheduling for deeper dives.</p>
