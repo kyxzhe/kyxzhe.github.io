@@ -14,7 +14,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
-  const inputHint = "在这里输入消息…";
+  const replyPlaceholder = "继续输入你的回复…";
 
   const handleSend = useCallback(async () => {
     const nextPrompt = prompt.trim();
@@ -60,7 +60,7 @@ export default function Home() {
     historyEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [messages.length, isLoading]);
 
-  const showPlaceholderOverlay = !prompt.trim();
+  const showPlaceholderOverlay = !prompt.trim() && messages.length > 0;
 
   return (
     <div className="flex flex-col min-h-screen font-sans">
@@ -161,14 +161,14 @@ export default function Home() {
                 {showPlaceholderOverlay && (
                   <AnimatePresence>
                     <motion.div
-                      key="input-hint"
+                      key="reply-placeholder"
                       initial={{ y: 10, opacity: 0 }}
                       animate={{ y: 0, opacity: 0.7 }}
                       exit={{ y: -8, opacity: 0 }}
                       transition={{ duration: 0.22, ease: "easeOut" }}
                       className="pointer-events-none absolute left-0 top-0 right-0 text-[17px] md:text-[17.5px] leading-[1.4] text-muted-foreground"
                     >
-                      {inputHint}
+                      {replyPlaceholder}
                     </motion.div>
                   </AnimatePresence>
                 )}
