@@ -20,6 +20,11 @@ export default function Home() {
     "Pregunte lo que quiera",
     "Posez n'importe quelle question",
     "Was möchtest du wissen?",
+    "Chiedi qualsiasi cosa",
+    "Спросите что угодно",
+    "¿Qué quieres saber?",
+    "Que souhaitez-vous savoir ?",
+    "어떤 것이든 물어보세요",
   ];
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
 
