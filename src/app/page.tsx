@@ -125,7 +125,7 @@ export default function Home() {
                 : "0 18px 36px rgba(0,0,0,0.08)",
             }}
             transition={{ type: "spring", stiffness: 240, damping: 30 }}
-            className="relative w-full rounded-[26px] bg-white border border-[rgba(0,0,0,0.08)] px-[18px] pt-[18px] pb-[16px] flex flex-col gap-3 overflow-hidden dark:bg-[#1b1b1f] dark:border-[#2f2f35] dark:shadow-[0_18px_38px_rgba(0,0,0,0.55)]"
+            className="relative w-full rounded-[26px] bg-white border border-[rgba(0,0,0,0.08)] px-[18px] pt-[18px] pb-[20px] flex flex-col gap-3 overflow-hidden dark:bg-[#1b1b1f] dark:border-[#2f2f35] dark:shadow-[0_18px_38px_rgba(0,0,0,0.55)]"
           >
             <AnimatePresence initial={false}>
               {isExpanded && (
@@ -170,10 +170,10 @@ export default function Home() {
             </AnimatePresence>
 
             <div className="w-full">
-              <div className="relative pr-16 md:pr-20">
+              <div className="relative">
                 <textarea
                   placeholder=""
-                  className="w-full min-h-[72px] resize-none bg-transparent text-[17px] md:text-[17.5px] leading-[1.4] text-foreground focus:outline-none dark:text-white"
+                  className="w-full min-h-[72px] resize-none bg-transparent text-[17px] md:text-[17.5px] leading-[1.4] text-foreground focus:outline-none pr-[86px] md:pr-[96px] dark:text-white"
                   aria-label="Ask a question"
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
@@ -208,20 +208,20 @@ export default function Home() {
                   </AnimatePresence>
                 )}
               </div>
-              <button
-                type="button"
-                className={`absolute right-[18px] bottom-[16px] inline-flex h-10 w-10 items-center justify-center rounded-full transition disabled:opacity-60 disabled:cursor-not-allowed ${prompt.trim() ? "bg-foreground text-white dark:bg-white dark:text-[#0b0b0d]" : "bg-[rgba(0,0,0,0.05)] text-muted-foreground dark:bg-white/15 dark:text-white"}`}
-                aria-label="Submit question"
-                onClick={handleSend}
-                disabled={!prompt.trim() || isLoading}
-              >
-                {isLoading ? (
-                  <Loader2 size={17} className="animate-spin" />
-                ) : (
-                  <ArrowUp size={20} />
-                )}
-              </button>
             </div>
+            <button
+              type="button"
+              className={`absolute right-[18px] bottom-[18px] inline-flex h-11 w-11 items-center justify-center rounded-full transition disabled:opacity-60 disabled:cursor-not-allowed ${prompt.trim() ? "bg-foreground text-white dark:bg-white dark:text-[#0b0b0d]" : "bg-[rgba(0,0,0,0.07)] text-muted-foreground dark:bg-white/12 dark:text-white"}`}
+              aria-label="Submit question"
+              onClick={handleSend}
+              disabled={!prompt.trim() || isLoading}
+            >
+              {isLoading ? (
+                <Loader2 size={17} className="animate-spin" />
+              ) : (
+                <ArrowUp size={20} />
+              )}
+            </button>
           </motion.div>
           <p className="text-xs text-muted-foreground text-center w-full max-w-4xl">
             ChatBot can make mistakes. Check important info.
