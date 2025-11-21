@@ -70,11 +70,11 @@ export default function Home() {
         </section>
 
         <section className="w-full max-w-[48rem] flex flex-col items-center gap-4 mt-2">
-          <div className="w-full h-[106px] rounded-[26px] bg-white border border-[rgba(0,0,0,0.08)] shadow-[0_18px_36px_rgba(0,0,0,0.08)] px-5 md:px-7 flex items-center gap-3 md:gap-4">
+          <div className="w-full h-[106px] rounded-[26px] bg-white border border-[rgba(0,0,0,0.08)] shadow-[0_18px_36px_rgba(0,0,0,0.08)] px-5 md:px-7 flex items-center relative">
             <input
               type="text"
               placeholder="Ask about research, teaching, or collaborations"
-              className="flex-1 bg-transparent text-base md:text-lg text-foreground placeholder:text-muted-foreground focus:outline-none"
+              className="flex-1 bg-transparent text-base md:text-lg text-foreground placeholder:text-muted-foreground focus:outline-none pr-16"
               aria-label="Ask a question"
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
@@ -82,18 +82,15 @@ export default function Home() {
             />
             <button
               type="button"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[rgba(0,0,0,0.05)] text-[color:var(--muted-foreground)] transition hover:bg-foreground hover:text-white disabled:opacity-60 disabled:cursor-not-allowed"
+              className={`absolute right-4 bottom-4 inline-flex h-9 w-9 items-center justify-center rounded-full transition disabled:opacity-60 disabled:cursor-not-allowed ${prompt.trim() ? "bg-foreground text-white" : "bg-[rgba(0,0,0,0.05)] text-muted-foreground"}`}
               aria-label="Submit question"
               onClick={handleSend}
               disabled={!prompt.trim() || isLoading}
             >
               {isLoading ? (
-                <Loader2 size={17} className="animate-spin" />
+                <Loader2 size={14} className="animate-spin" />
               ) : (
-                <ArrowUp
-                  size={17}
-                  className={prompt.trim() ? "text-foreground" : "text-muted-foreground"}
-                />
+                <ArrowUp size={14} />
               )}
             </button>
           </div>
