@@ -70,7 +70,7 @@ export default function Home() {
         </section>
 
         <section className="w-full max-w-[48rem] flex flex-col items-center gap-4 mt-2">
-          <div className="w-full h-[106px] rounded-[26px] bg-white border border-[rgba(0,0,0,0.08)] shadow-[0_18px_36px_rgba(0,0,0,0.08)] px-6 md:px-8 pt-6 flex items-start relative">
+          <div className="w-full h-[106px] rounded-[26px] bg-white border border-[rgba(0,0,0,0.08)] shadow-[0_18px_36px_rgba(0,0,0,0.08)] px-[22px] md:px-[26px] pt-[16px] pb-[17px] flex items-start relative">
             <textarea
               placeholder="Ask anything"
               className="flex-1 h-[72px] resize-none bg-transparent text-[17px] md:text-[17.5px] leading-[1.4] text-foreground placeholder:text-muted-foreground focus:outline-none pr-20"
