@@ -196,7 +196,7 @@ export default function Home() {
               </div>
               <button
                 type="button"
-                className={`absolute right-4 bottom-4 inline-flex h-10 w-10 items-center justify-center rounded-full transition disabled:opacity-60 disabled:cursor-not-allowed ${prompt.trim() ? "bg-foreground text-white dark:bg-white dark:text-[#0b0b0d]" : "bg-[rgba(0,0,0,0.05)] text-muted-foreground dark:bg-white/15 dark:text-white"}`}
+                className={`absolute right-4 bottom-4 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full shadow-[0_10px_24px_rgba(0,0,0,0.18)] dark:shadow-[0_12px_28px_rgba(0,0,0,0.5)] transition disabled:opacity-60 disabled:cursor-not-allowed ${prompt.trim() ? "bg-foreground text-white dark:bg-white dark:text-[#0b0b0d]" : "bg-[rgba(0,0,0,0.08)] text-muted-foreground dark:bg-white/18 dark:text-white"}`}
                 aria-label="Submit question"
                 onClick={handleSend}
                 disabled={!prompt.trim() || isLoading}
