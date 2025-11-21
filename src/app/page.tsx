@@ -74,7 +74,7 @@ export default function Home() {
             <input
               type="text"
               placeholder="Ask about research, teaching, or collaborations"
-              className="flex-1 bg-transparent text-base md:text-lg text-foreground placeholder:text-muted-foreground focus:outline-none pr-16"
+              className="flex-1 bg-transparent text-[17px] md:text-[18px] leading-relaxed text-foreground placeholder:text-muted-foreground focus:outline-none pr-20"
               aria-label="Ask a question"
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
@@ -82,7 +82,7 @@ export default function Home() {
             />
             <button
               type="button"
-              className={`absolute right-4 bottom-4 inline-flex h-9 w-9 items-center justify-center rounded-full transition disabled:opacity-60 disabled:cursor-not-allowed ${prompt.trim() ? "bg-foreground text-white" : "bg-[rgba(0,0,0,0.05)] text-muted-foreground"}`}
+              className={`absolute right-5 bottom-5 inline-flex h-9 w-9 items-center justify-center rounded-full transition disabled:opacity-60 disabled:cursor-not-allowed ${prompt.trim() ? "bg-foreground text-white" : "bg-[rgba(0,0,0,0.05)] text-muted-foreground"}`}
               aria-label="Submit question"
               onClick={handleSend}
               disabled={!prompt.trim() || isLoading}
