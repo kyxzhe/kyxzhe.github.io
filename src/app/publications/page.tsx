@@ -42,25 +42,18 @@ const years = Array.from(
   new Set(publications.map((item) => new Date(item.date).getFullYear()))
 ).sort((a, b) => b - a);
 
+const metrics = [
+  { label: "Manuscripts", value: "1" },
+  { label: "Reviews", value: "10+" },
+  { label: "Citations", value: "2" },
+];
+
 const sortOptions: { label: string; value: SortMode }[] = [
   { label: "Newest → Oldest", value: "newest" },
   { label: "Oldest → Newest", value: "oldest" },
   { label: "Alphabetical (A–Z)", value: "az" },
   { label: "Alphabetical (Z–A)", value: "za" },
 ];
-
-const TagChips = ({ tags }: { tags?: string[] }) => {
-  if (!tags?.length) return null;
-  return (
-    <div className="flex flex-wrap gap-2 text-[11px] text-muted-foreground">
-      {tags.map((tag) => (
-        <span key={tag} className="chip px-2 py-[2px] leading-none">
-          {tag}
-        </span>
-      ))}
-    </div>
-  );
-};
 
 const AuthorLine = ({ authors }: { authors: string[] }) => (
   <p className="text-sm text-muted-foreground">{authors.join(", ")}</p>
@@ -117,7 +110,6 @@ const ListRow = ({ item }: { item: Publication }) => {
           <h3 className="text-xl font-semibold leading-snug text-foreground">{item.title}</h3>
           <AuthorLine authors={item.authors} />
           <p className="text-sm text-foreground/80 leading-relaxed max-w-3xl">{item.summary}</p>
-          <TagChips tags={item.tags} />
           <div className="flex flex-wrap items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-muted-foreground">
             <span>{item.venue}</span>
             {item.resources && item.resources.length > 0 && <span>·</span>}
@@ -192,161 +184,69 @@ export default function PublicationsPage() {
     return sorted;
   }, [filteredItems, sortMode]);
 
-  const heroItem = sortedItems[0];
-  const secondaryItems = sortedItems.slice(1);
-
-  const renderGrid = () => {
-    const columnItems = secondaryItems.slice(0, 3);
-    const remainingItems = secondaryItems.slice(3);
-
-    return (
-      <div className="flex flex-col gap-10 w-full max-w-[95vw] xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto px-1 md:px-2">
-        <div className="grid gap-6 lg:grid-cols-12 items-start">
-          {heroItem && (
-            <motion.article
-              className="surface-card relative overflow-hidden rounded-[24px] lg:col-span-8 lg:sticky lg:top-12"
-              whileHover={{ y: -6, boxShadow: "0 28px 55px rgba(0,0,0,0.18)" }}
-              transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
-            >
-              <div className="relative w-full aspect-[5/3] sm:aspect-[8/5] lg:aspect-[16/9] min-h-[360px] md:min-h-[480px] lg:min-h-[600px]">
-                <Image
-                  src={heroItem.cover}
-                  alt={heroItem.title}
-                  fill
-                  sizes="(max-width:1024px) 100vw, 60vw"
-                  className="object-cover"
-                />
-              </div>
-              <div className="absolute inset-x-0 bottom-0 bg-background/95 dark:bg-background/80 backdrop-blur-sm px-6 pb-6 pt-6 flex flex-col gap-3 border-t border-white/10 rounded-t-none">
-                <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
-                  {heroItem.category} · {formatDate(heroItem.date)}
-                </p>
-                <h2 className="text-[2rem] lg:text-[2.4rem] font-semibold leading-tight text-foreground">
-                  {heroItem.title}
-                </h2>
-                <AuthorLine authors={heroItem.authors} />
-                <p className="text-sm text-foreground/80 leading-relaxed max-w-2xl">{heroItem.summary}</p>
-                <TagChips tags={heroItem.tags} />
-                <div className="flex flex-wrap items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-muted-foreground">
-                  <span>{heroItem.venue}</span>
-                  {heroItem.resources && heroItem.resources.length > 0 && <span>·</span>}
-                  <ResourceBadges resources={heroItem.resources} />
-                </div>
-                {heroItem.link && (
-                  <Link
-                    href={heroItem.link}
-                    className="text-sm text-brand-accent"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    View publication
-                  </Link>
-                )}
-              </div>
-            </motion.article>
-          )}
-
-          <div className="flex flex-col gap-4 lg:col-span-4">
-            {columnItems.map((item) => {
-              const card = (
-                <motion.div
-                  variants={projectsVariants}
-                  initial="hidden"
-                  animate="visible"
-                  whileHover={{ y: -6, boxShadow: "0 18px 35px rgba(0,0,0,0.14)" }}
-                  className={`surface-card relative overflow-hidden aspect-square ${item.link ? "" : "opacity-80"}`}
-                >
-                  <Image
-                    src={item.cover}
-                    alt={item.title}
-                    fill
-                    sizes="(max-width:1024px) 100vw, 320px"
-                    className="object-cover"
-                  />
-                  <div className="absolute inset-x-0 bottom-0 bg-background/95 dark:bg-background/90 px-4 pb-4 pt-3 flex flex-col gap-2">
-                    <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
-                      {item.category} · {formatDate(item.date)}
-                    </p>
-                    <h3 className="text-lg font-semibold leading-tight text-foreground">{item.title}</h3>
-                    <AuthorLine authors={item.authors} />
-                    <p className="text-sm text-foreground/80 line-clamp-3">{item.summary}</p>
-                  </div>
-                </motion.div>
-              );
-              if (item.link) {
-                return (
-                  <Link
-                    key={item.id}
-                    href={item.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block"
-                  >
-                    {card}
-                  </Link>
-                );
-              }
-              return (
-                <div key={item.id} className="block cursor-default">
-                  {card}
-                </div>
-              );
-            })}
+  const renderGridCard = (item: Publication) => {
+    const card = (
+      <motion.article
+        key={item.id}
+        variants={projectsVariants}
+        whileHover={{ y: -10, boxShadow: "0 25px 50px rgba(0,0,0,0.15)" }}
+        transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+        className={`surface-card overflow-hidden flex flex-col ${
+          item.link ? "cursor-pointer" : "opacity-80 cursor-default"
+        }`}
+      >
+        <div className="relative w-full pb-[60%]">
+          <Image
+            src={item.cover}
+            alt={item.title}
+            fill
+            sizes="(max-width: 768px) 100vw, 33vw"
+            className="object-cover"
+          />
+        </div>
+        <div className="p-4 flex flex-col gap-3 flex-1">
+          <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
+            {item.category} · {formatDate(item.date)}
+          </p>
+          <h3 className="text-lg font-semibold leading-snug">{item.title}</h3>
+          <AuthorLine authors={item.authors} />
+          <p className="text-sm text-foreground/80 flex-1">{item.summary}</p>
+          <div className="flex flex-wrap items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-muted-foreground">
+            <span>{item.venue}</span>
+            {item.resources && item.resources.length > 0 && <span>·</span>}
+            <ResourceBadges resources={item.resources} interactive={!item.link} />
           </div>
         </div>
-
-        {remainingItems.length > 0 && (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-12 gap-4">
-            {remainingItems.map((item) => {
-              const card = (
-                <motion.div
-                  variants={projectsVariants}
-                  initial="hidden"
-                  animate="visible"
-                  whileHover={{ y: -6, boxShadow: "0 20px 45px rgba(0,0,0,0.12)" }}
-                  className={`surface-card relative overflow-hidden aspect-square ${item.link ? "" : "opacity-80"}`}
-                >
-                  <Image
-                    src={item.cover}
-                    alt={item.title}
-                    fill
-                    sizes="(max-width:1024px) 100vw, 320px"
-                    className="object-cover"
-                  />
-                  <div className="absolute inset-x-0 bottom-0 bg-background/95 dark:bg-background/90 px-4 pb-4 pt-3 flex flex-col gap-2">
-                    <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
-                      {item.category} · {formatDate(item.date)}
-                    </p>
-                    <h3 className="text-lg font-semibold leading-tight text-foreground">{item.title}</h3>
-                    <AuthorLine authors={item.authors} />
-                    <p className="text-sm text-foreground/80 line-clamp-3">{item.summary}</p>
-                  </div>
-                </motion.div>
-              );
-              if (item.link) {
-                return (
-                  <Link
-                    key={item.id}
-                    href={item.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block lg:col-span-4"
-                  >
-                    {card}
-                  </Link>
-                );
-              }
-              return (
-                <div key={item.id} className="block cursor-default lg:col-span-4">
-                  {card}
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </div>
+      </motion.article>
     );
+
+    if (item.link) {
+        return (
+          <Link
+            key={item.id}
+            href={item.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block"
+          >
+            {card}
+          </Link>
+        );
+    }
+
+    return <div key={item.id}>{card}</div>;
   };
+
+  const renderGrid = () => (
+    <motion.div
+      className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4"
+      variants={projectsVariants}
+      initial="hidden"
+      animate="visible"
+    >
+      {sortedItems.map(renderGridCard)}
+    </motion.div>
+  );
 
   return (
     <div className="min-h-screen bg-[#f7f7f8] text-[#141414] dark:bg-[#0b0b0d] dark:text-[#f5f5f5]">
@@ -367,8 +267,19 @@ export default function PublicationsPage() {
           <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Research notebook</p>
           <h1 className="text-[2.4rem] md:text-[2.6rem] font-semibold leading-tight text-foreground">Papers, briefs &amp; releases</h1>
           <p className="text-[15px] md:text-base text-muted-foreground max-w-2xl leading-relaxed">
-            整合所有论文、技术报告与关键里程碑，支持按主题和年份快速筛选。默认列表阅读，随时切换到图集模式。
+            Explore manuscripts, safety briefs, and milestones with quick filters. Start in list view; jump to the gallery whenever you want.
           </p>
+          <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground pt-1">
+            {metrics.map((metric) => (
+              <div
+                key={metric.label}
+                className="flex items-baseline gap-2 border-b border-border pb-1"
+              >
+                <span className="text-xs uppercase tracking-[0.3em]">{metric.label}</span>
+                <span className="text-lg text-foreground font-semibold">{metric.value}</span>
+              </div>
+            ))}
+          </div>
         </section>
 
         <div className="flex flex-wrap gap-2 text-sm text-muted-foreground">
