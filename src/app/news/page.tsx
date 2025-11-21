@@ -8,7 +8,7 @@ import Footer from "@/components/Footer";
 import { type NewsItem, newsItems } from "@/lib/constants/news";
 
 type ViewMode = "list" | "grid";
-type SortMode = "newest" | "oldest";
+type SortMode = "newest" | "oldest" | "az" | "za";
 
 const MONTH_ABBREVIATIONS = [
   "Jan",
@@ -34,6 +34,8 @@ function formatDate(isoDate: string) {
 }
 
 const categories = ["All", ...Array.from(new Set(newsItems.map((item) => item.category)))];
+const topics = Array.from(new Set(newsItems.flatMap((item) => item.topics))).sort();
+const years = Array.from(new Set(newsItems.map((item) => new Date(item.date).getFullYear()))).sort((a, b) => b - a);
 
 const ListRow = ({ item }: { item: NewsItem }) => {
   const row = (
@@ -68,18 +70,47 @@ export default function NewsPage() {
   const [activeCategory, setActiveCategory] = useState<string>("All");
   const [viewMode, setViewMode] = useState<ViewMode>("list");
   const [sortMode, setSortMode] = useState<SortMode>("newest");
+  const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
+  const [selectedYears, setSelectedYears] = useState<number[]>([]);
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [sortOpen, setSortOpen] = useState(false);
+
+  const toggleTopic = (topic: string) => {
+    setSelectedTopics((prev) =>
+      prev.includes(topic) ? prev.filter((t) => t !== topic) : [...prev, topic]
+    );
+  };
+
+  const toggleYear = (year: number) => {
+    setSelectedYears((prev) =>
+      prev.includes(year) ? prev.filter((y) => y !== year) : [...prev, year]
+    );
+  };
 
   const filteredItems = useMemo(() => {
-    return newsItems.filter((item) => activeCategory === "All" || item.category === activeCategory);
-  }, [activeCategory]);
+    return newsItems.filter((item) => {
+      const categoryMatch = activeCategory === "All" || item.category === activeCategory;
+      const topicsMatch = selectedTopics.length === 0 || selectedTopics.every((topic) => item.topics.includes(topic));
+      const yearsMatch = selectedYears.length === 0 || selectedYears.includes(new Date(item.date).getFullYear());
+      return categoryMatch && topicsMatch && yearsMatch;
+    });
+  }, [activeCategory, selectedTopics, selectedYears]);
 
   const sortedItems = useMemo(() => {
     const sorted = [...filteredItems];
     sorted.sort((a, b) => {
-      if (sortMode === "newest") {
-        return new Date(b.date).getTime() - new Date(a.date).getTime();
+      switch (sortMode) {
+        case "newest":
+          return new Date(b.date).getTime() - new Date(a.date).getTime();
+        case "oldest":
+          return new Date(a.date).getTime() - new Date(b.date).getTime();
+        case "az":
+          return a.title.localeCompare(b.title);
+        case "za":
+          return b.title.localeCompare(a.title);
+        default:
+          return 0;
       }
-      return new Date(a.date).getTime() - new Date(b.date).getTime();
     });
     return sorted;
   }, [filteredItems, sortMode]);
@@ -114,42 +145,117 @@ export default function NewsPage() {
             ))}
           </div>
 
-          <div className="flex items-center gap-2 md:gap-3 text-muted-foreground">
-            <button
-              type="button"
-              className="flex items-center gap-1 px-2 py-1 rounded-md hover:text-foreground"
-              title="Filter"
-            >
-              <span>Filter</span>
-              <Filter size={14} />
-            </button>
-            <button
-              type="button"
-              className="flex items-center gap-1 px-2 py-1 rounded-md hover:text-foreground"
-              title="Sort"
-              onClick={() => setSortMode((prev) => (prev === "newest" ? "oldest" : "newest"))}
-            >
-              <span>Sort</span>
-              <ArrowUpDown size={14} />
-            </button>
-            <div className="flex items-center gap-[1px] rounded-md border border-[#d8d8dd] bg-white overflow-hidden">
+          <div className="relative flex items-center gap-2 md:gap-3 text-muted-foreground">
+            <div className="relative">
               <button
                 type="button"
-                aria-label="List view"
-                className={`px-2 py-1 ${viewMode === "list" ? "text-foreground" : "text-muted-foreground"}`}
-                onClick={() => setViewMode("list")}
+                className="flex items-center gap-1 px-2 py-1 rounded-md hover:text-foreground"
+                title="Filter"
+                onClick={() => {
+                  setFilterOpen((prev) => !prev);
+                  setSortOpen(false);
+                }}
               >
-                <List size={15} />
+                <span>Filter</span>
+                <Filter size={14} />
               </button>
-              <button
-                type="button"
-                aria-label="Grid view"
-                className={`px-2 py-1 ${viewMode === "grid" ? "text-foreground" : "text-muted-foreground"}`}
-                onClick={() => setViewMode("grid")}
-              >
-                <LayoutGrid size={15} />
-              </button>
+              {filterOpen && (
+                <div className="absolute right-0 top-full mt-2 w-[420px] rounded-2xl border border-[#dedee3] bg-white shadow-[0_14px_55px_rgba(0,0,0,0.08)] p-4 z-20">
+                  <div className="grid grid-cols-2 gap-4 text-sm text-foreground">
+                    <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
+                      <p className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground">Topic</p>
+                      {topics.map((topic) => (
+                        <label key={topic} className="flex items-center gap-2 text-[13px] text-foreground">
+                          <input
+                            type="checkbox"
+                            checked={selectedTopics.includes(topic)}
+                            onChange={() => toggleTopic(topic)}
+                            className="accent-black"
+                          />
+                          {topic}
+                        </label>
+                      ))}
+                    </div>
+                    <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
+                      <p className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground">Year</p>
+                      {years.map((year) => (
+                        <label key={year} className="flex items-center gap-2 text-[13px] text-foreground">
+                          <input
+                            type="checkbox"
+                            checked={selectedYears.includes(year)}
+                            onChange={() => toggleYear(year)}
+                            className="accent-black"
+                          />
+                          {year}
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="flex justify-end pt-2 text-xs text-muted-foreground">
+                    <button
+                      type="button"
+                      className="underline-offset-2 hover:text-foreground"
+                      onClick={() => {
+                        setSelectedTopics([]);
+                        setSelectedYears([]);
+                      }}
+                    >
+                      Clear all
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
+
+            <div className="relative">
+              <button
+                type="button"
+                className="flex items-center gap-1 px-2 py-1 rounded-md hover:text-foreground"
+                title="Sort"
+                onClick={() => {
+                  setSortOpen((prev) => !prev);
+                  setFilterOpen(false);
+                }}
+              >
+                <span>Sort</span>
+                <ArrowUpDown size={14} />
+              </button>
+              {sortOpen && (
+                <div className="absolute right-0 top-full mt-2 w-56 rounded-2xl border border-[#dedee3] bg-white shadow-[0_14px_55px_rgba(0,0,0,0.08)] p-3 z-20 text-sm text-foreground space-y-2">
+                  {["newest", "oldest", "az", "za"].map((option) => {
+                    const labelMap: Record<SortMode, string> = {
+                      newest: "Newest → Oldest",
+                      oldest: "Oldest → Newest",
+                      az: "Alphabetical (A–Z)",
+                      za: "Alphabetical (Z–A)",
+                    };
+                    const value = option as SortMode;
+                    return (
+                      <label key={option} className="flex items-center gap-2">
+                        <input
+                          type="radio"
+                          name="news-sort"
+                          value={value}
+                          checked={sortMode === value}
+                          onChange={() => setSortMode(value)}
+                          className="accent-black"
+                        />
+                        {labelMap[value]}
+                      </label>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
+            <button
+              type="button"
+              aria-label={viewMode === "list" ? "Grid view" : "List view"}
+              className="flex h-[30px] w-[30px] items-center justify-center rounded-md border border-[#d8d8dd] bg-white text-muted-foreground hover:text-foreground"
+              onClick={() => setViewMode((prev) => (prev === "list" ? "grid" : "list"))}
+            >
+              {viewMode === "list" ? <LayoutGrid size={15} /> : <List size={15} />}
+            </button>
           </div>
         </div>
 
