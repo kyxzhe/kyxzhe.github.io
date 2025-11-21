@@ -27,7 +27,7 @@ export default function Home() {
     const rotate = () => {
       setPlaceholderIndex((prev) => (prev + 1) % rotatingPlaceholders.length);
     };
-    const id = setInterval(rotate, 4500);
+    const id = setInterval(rotate, 6000);
     return () => clearInterval(id);
   }, [rotatingPlaceholders.length]);
 
@@ -106,7 +106,7 @@ export default function Home() {
                   initial={{ y: 10, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   exit={{ y: -10, opacity: 0 }}
-                  transition={{ duration: 0.28, ease: "easeOut" }}
+                  transition={{ duration: 0.32, ease: "easeOut" }}
                   className="pointer-events-none absolute left-[18px] top-[18px] right-24 text-[17px] md:text-[17.5px] leading-[1.4] text-muted-foreground"
                 >
                   {rotatingPlaceholders[placeholderIndex]}
