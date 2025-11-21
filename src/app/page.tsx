@@ -4,7 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import { ArrowUp, Loader2 } from "lucide-react";
-import { useState, useCallback, KeyboardEvent } from "react";
+import { useState, useCallback, useEffect, KeyboardEvent } from "react";
 import { sendChatRequest, type ChatMessage } from "@/lib/api/chat";
 
 export default function Home() {
@@ -12,6 +12,23 @@ export default function Home() {
   const [answer, setAnswer] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const rotatingPlaceholders = [
+    "Ask anything",
+    "提问任何问题",
+    "質問は何でもどうぞ",
+    "Pregunte lo que quiera",
+    "Posez n'importe quelle question",
+    "Was möchtest du wissen?",
+  ];
+  const [placeholderIndex, setPlaceholderIndex] = useState(0);
+
+  useEffect(() => {
+    const rotate = () => {
+      setPlaceholderIndex((prev) => (prev + 1) % rotatingPlaceholders.length);
+    };
+    const id = setInterval(rotate, 3000);
+    return () => clearInterval(id);
+  }, [rotatingPlaceholders.length]);
 
   const handleSend = useCallback(async () => {
     const nextPrompt = prompt.trim();
@@ -72,7 +89,7 @@ export default function Home() {
         <section className="w-full max-w-[48rem] flex flex-col items-center gap-4 mt-2">
           <div className="w-full h-[106px] rounded-[26px] bg-white border border-[rgba(0,0,0,0.08)] shadow-[0_18px_36px_rgba(0,0,0,0.08)] px-[18px] pt-[18px] pb-[16px] flex items-start relative">
             <textarea
-              placeholder="Ask anything"
+              placeholder={rotatingPlaceholders[placeholderIndex]}
               className="flex-1 h-[72px] resize-none bg-transparent text-[17px] md:text-[17.5px] leading-[1.4] text-foreground placeholder:text-muted-foreground focus:outline-none pr-24"
               aria-label="Ask a question"
               value={prompt}
