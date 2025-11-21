@@ -294,23 +294,25 @@ export default function NewsPage() {
           </p>
         </section>
 
-        <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-muted-foreground">
-          <div className="flex flex-wrap gap-2">
-            {categories.map((category) => (
-              <button
-                key={category}
-                type="button"
-                onClick={() => setActiveCategory(category)}
-                className={`px-3 py-1.5 rounded-full border transition-colors ${
-                  activeCategory === category
-                    ? "bg-[#e7e7eb] text-foreground border-[#cfcfd4]"
-                    : "bg-white text-muted-foreground border-[#dedee3] hover:border-[#cfcfd4]"
-                }`}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
+        <div className="flex flex-wrap gap-2 text-sm text-muted-foreground">
+          {categories.map((category) => (
+            <button
+              key={category}
+              type="button"
+              onClick={() => setActiveCategory(category)}
+              className={`px-3 py-1.5 rounded-full border transition-colors ${
+                activeCategory === category
+                  ? "bg-[#e7e7eb] text-foreground border-[#cfcfd4]"
+                  : "bg-white text-muted-foreground border-[#dedee3] hover:border-[#cfcfd4]"
+              }`}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+
+        <div className="flex flex-wrap items-center justify-between gap-3 text-sm font-medium">
+          <p className="text-muted-foreground">Showing {sortedItems.length} updates</p>
 
           <div className="relative flex items-center gap-4 text-sm font-medium">
             <div className="relative flex items-center gap-1">
