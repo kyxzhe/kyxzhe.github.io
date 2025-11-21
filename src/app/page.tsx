@@ -70,11 +70,11 @@ export default function Home() {
         </section>
 
         <section className="w-full max-w-[48rem] flex flex-col items-center gap-4 mt-2">
-          <div className="w-full h-[106px] rounded-[26px] bg-white border border-[rgba(0,0,0,0.08)] shadow-[0_18px_36px_rgba(0,0,0,0.08)] px-5 md:px-7 flex items-center relative">
+          <div className="w-full h-[106px] rounded-[26px] bg-white border border-[rgba(0,0,0,0.08)] shadow-[0_18px_36px_rgba(0,0,0,0.08)] px-6 md:px-8 flex items-center relative">
             <input
               type="text"
-              placeholder="Ask about research, teaching, or collaborations"
-              className="flex-1 bg-transparent text-[17px] md:text-[18px] leading-relaxed text-foreground placeholder:text-muted-foreground focus:outline-none pr-20"
+              placeholder="Ask anything"
+              className="flex-1 bg-transparent text-[18px] md:text-[18.5px] leading-[1.4] text-foreground placeholder:text-muted-foreground focus:outline-none pr-20"
               aria-label="Ask a question"
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
