@@ -435,10 +435,10 @@ export default function NewsPage() {
 
             <div className="flex items-center gap-2 text-muted-foreground">
               <button
-                className={`p-2 rounded ${
+                className={`p-2 rounded transition-colors ${
                   viewMode === "list"
-                    ? "text-foreground bg-[rgba(0,0,0,0.06)]"
-                    : "hover:text-foreground"
+                    ? "text-foreground bg-[rgba(0,0,0,0.06)] dark:bg-white/15 dark:text-white"
+                    : "hover:text-foreground dark:hover:text-white"
                 }`}
                 onClick={() => setViewMode("list")}
                 aria-label="List view"
@@ -446,10 +446,10 @@ export default function NewsPage() {
                 <List size={16} />
               </button>
               <button
-                className={`p-2 rounded ${
+                className={`p-2 rounded transition-colors ${
                   viewMode === "grid"
-                    ? "text-foreground bg-[rgba(0,0,0,0.06)]"
-                    : "hover:text-foreground"
+                    ? "text-foreground bg-[rgba(0,0,0,0.06)] dark:bg-white/15 dark:text-white"
+                    : "hover:text-foreground dark:hover:text-white"
                 }`}
                 onClick={() => setViewMode("grid")}
                 aria-label="Grid view"
