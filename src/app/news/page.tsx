@@ -145,7 +145,7 @@ export default function NewsPage() {
             ))}
           </div>
 
-          <div className="relative flex items-center gap-2 md:gap-3 text-muted-foreground">
+            <div className="relative flex items-center gap-2 md:gap-3 text-muted-foreground">
             <div className="relative">
               <button
                 type="button"
@@ -251,7 +251,9 @@ export default function NewsPage() {
             <button
               type="button"
               aria-label="List view"
-              className={`p-1 text-muted-foreground hover:text-foreground ${viewMode === "list" ? "text-foreground" : ""}`}
+              className={`flex h-[28px] w-[28px] items-center justify-center rounded-[6px] text-muted-foreground hover:text-foreground transition-colors ${
+                viewMode === "list" ? "text-foreground bg-[#e7e7eb]" : ""
+              }`}
               onClick={() => setViewMode("list")}
             >
               <List size={15} />
@@ -259,7 +261,9 @@ export default function NewsPage() {
             <button
               type="button"
               aria-label="Grid view"
-              className={`p-1 text-muted-foreground hover:text-foreground ${viewMode === "grid" ? "text-foreground" : ""}`}
+              className={`flex h-[28px] w-[28px] items-center justify-center rounded-[6px] text-muted-foreground hover:text-foreground transition-colors ${
+                viewMode === "grid" ? "text-foreground bg-[#e7e7eb]" : ""
+              }`}
               onClick={() => setViewMode("grid")}
             >
               <LayoutGrid size={15} />
