@@ -36,7 +36,6 @@ function formatDate(isoDate: string) {
   return `${day} ${monthLabel} ${year}`;
 }
 
-const categories = ["All", ...Array.from(new Set(publications.map((item) => item.category)))];
 const topics = Array.from(new Set(publications.flatMap((item) => item.topics))).sort();
 const years = Array.from(
   new Set(publications.map((item) => new Date(item.date).getFullYear()))
@@ -136,7 +135,6 @@ const ListRow = ({ item }: { item: Publication }) => {
 };
 
 export default function PublicationsPage() {
-  const [activeCategory, setActiveCategory] = useState<string>("All");
   const [viewMode, setViewMode] = useState<ViewMode>("list");
   const [sortMode, setSortMode] = useState<SortMode>("newest");
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
@@ -158,12 +156,11 @@ export default function PublicationsPage() {
 
   const filteredItems = useMemo(() => {
     return publications.filter((item) => {
-      const categoryMatch = activeCategory === "All" || item.category === activeCategory;
       const topicsMatch = selectedTopics.length === 0 || selectedTopics.every((topic) => item.topics.includes(topic));
       const yearsMatch = selectedYears.length === 0 || selectedYears.includes(new Date(item.date).getFullYear());
-      return categoryMatch && topicsMatch && yearsMatch;
+      return topicsMatch && yearsMatch;
     });
-  }, [activeCategory, selectedTopics, selectedYears]);
+  }, [selectedTopics, selectedYears]);
 
   const sortedItems = useMemo(() => {
     const sorted = [...filteredItems];
@@ -281,23 +278,6 @@ export default function PublicationsPage() {
             ))}
           </div>
         </section>
-
-        <div className="flex flex-wrap gap-2 text-sm text-muted-foreground">
-          {categories.map((category) => (
-            <button
-              key={category}
-              type="button"
-              onClick={() => setActiveCategory(category)}
-              className={`px-3 py-1.5 rounded-full border transition-colors ${
-                activeCategory === category
-                  ? "bg-[var(--accent-soft)] text-foreground border-[var(--card-border)]"
-                  : "bg-[var(--pill-background)] text-muted-foreground border-[var(--card-border)] hover:border-foreground/40"
-              }`}
-            >
-              {category}
-            </button>
-          ))}
-        </div>
 
         <div className="flex flex-wrap items-center justify-between gap-3 text-sm font-medium">
           <p className="text-muted-foreground">Showing {sortedItems.length} publications</p>
