@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 import { ArrowUp, Loader2 } from "lucide-react";
 import { useState, useCallback, useEffect, KeyboardEvent } from "react";
+import { AnimatePresence, motion } from "motion/react";
 import { sendChatRequest, type ChatMessage } from "@/lib/api/chat";
 
 export default function Home() {
@@ -49,12 +50,14 @@ export default function Home() {
     }
   }, [prompt, isLoading]);
 
-  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
       handleSend();
     }
   };
+
+  const showPlaceholderOverlay = !prompt.trim();
 
   return (
     <div className="flex flex-col min-h-screen font-sans">
@@ -87,15 +90,29 @@ export default function Home() {
         </section>
 
         <section className="w-full max-w-[48rem] flex flex-col items-center gap-4 mt-2">
-          <div className="w-full h-[106px] rounded-[26px] bg-white border border-[rgba(0,0,0,0.08)] shadow-[0_18px_36px_rgba(0,0,0,0.08)] px-[18px] pt-[18px] pb-[16px] flex items-start relative">
+          <div className="w-full h-[106px] rounded-[26px] bg-white border border-[rgba(0,0,0,0.08)] shadow-[0_18px_36px_rgba(0,0,0,0.08)] px-[18px] pt-[18px] pb-[16px] flex items-start relative overflow-hidden">
             <textarea
-              placeholder={rotatingPlaceholders[placeholderIndex]}
-              className="flex-1 h-[72px] resize-none bg-transparent text-[17px] md:text-[17.5px] leading-[1.4] text-foreground placeholder:text-muted-foreground focus:outline-none pr-24"
+              placeholder=""
+              className="flex-1 h-[72px] resize-none bg-transparent text-[17px] md:text-[17.5px] leading-[1.4] text-foreground focus:outline-none pr-24"
               aria-label="Ask a question"
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               onKeyDown={handleKeyDown}
             />
+            {showPlaceholderOverlay && (
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={placeholderIndex}
+                  initial={{ y: 10, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: -10, opacity: 0 }}
+                  transition={{ duration: 0.22, ease: "easeOut" }}
+                  className="pointer-events-none absolute left-[18px] top-[18px] right-24 text-[17px] md:text-[17.5px] leading-[1.4] text-muted-foreground"
+                >
+                  {rotatingPlaceholders[placeholderIndex]}
+                </motion.div>
+              </AnimatePresence>
+            )}
             <button
               type="button"
               className={`absolute right-[18px] bottom-[16px] inline-flex h-9 w-9 items-center justify-center rounded-full transition disabled:opacity-60 disabled:cursor-not-allowed ${prompt.trim() ? "bg-foreground text-white" : "bg-[rgba(0,0,0,0.05)] text-muted-foreground"}`}
