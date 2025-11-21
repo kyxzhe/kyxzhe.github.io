@@ -4,15 +4,16 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import { ArrowUp, Loader2 } from "lucide-react";
-import { useState, useCallback, useEffect, KeyboardEvent } from "react";
+import { useState, useCallback, useEffect, useRef, KeyboardEvent } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { sendChatRequest, type ChatMessage } from "@/lib/api/chat";
 
 export default function Home() {
   const [prompt, setPrompt] = useState("");
-  const [answer, setAnswer] = useState("");
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isExpanded, setIsExpanded] = useState(false);
   const rotatingPlaceholders = [
     "Ask anything",
     "提问任何问题",
@@ -42,10 +43,15 @@ export default function Home() {
     setIsLoading(true);
     setError(null);
 
-    const messages: ChatMessage[] = [{ role: "user", content: nextPrompt }];
+    const requestMessages: ChatMessage[] = [
+      ...messages,
+      { role: "user", content: nextPrompt },
+    ];
     try {
-      const reply = await sendChatRequest(messages);
-      setAnswer(reply);
+      setMessages(requestMessages);
+      setIsExpanded(true);
+      const reply = await sendChatRequest(requestMessages);
+      setMessages((prev) => [...prev, { role: "assistant", content: reply }]);
       setPrompt("");
     } catch (err) {
       console.error(err);
@@ -53,7 +59,7 @@ export default function Home() {
     } finally {
       setIsLoading(false);
     }
-  }, [prompt, isLoading]);
+  }, [prompt, isLoading, messages]);
 
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === "Enter" && !event.shiftKey) {
@@ -61,6 +67,18 @@ export default function Home() {
       handleSend();
     }
   };
+
+  useEffect(() => {
+    if ((messages.length > 0 || isLoading) && !isExpanded) {
+      setIsExpanded(true);
+    }
+  }, [messages.length, isLoading, isExpanded]);
+
+  const historyEndRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    historyEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+  }, [messages.length, isLoading]);
 
   const showPlaceholderOverlay = !prompt.trim();
 
@@ -95,48 +113,101 @@ export default function Home() {
         </section>
 
         <section className="w-full max-w-[48rem] flex flex-col items-center gap-4 mt-2">
-          <div className="w-full h-[106px] rounded-[26px] bg-white border border-[rgba(0,0,0,0.08)] shadow-[0_18px_36px_rgba(0,0,0,0.08)] px-[18px] pt-[18px] pb-[16px] flex items-start relative overflow-hidden">
-            <textarea
-              placeholder=""
-              className="flex-1 h-[72px] resize-none bg-transparent text-[17px] md:text-[17.5px] leading-[1.4] text-foreground focus:outline-none pr-24"
-              aria-label="Ask a question"
-              value={prompt}
-              onChange={(e) => setPrompt(e.target.value)}
-              onKeyDown={handleKeyDown}
-            />
-            {showPlaceholderOverlay && (
-              <AnimatePresence mode="wait">
+          <motion.div
+            layout
+            initial={false}
+            animate={{
+              height: isExpanded ? "auto" : 106,
+              boxShadow: isExpanded
+                ? "0 22px 40px rgba(0,0,0,0.12)"
+                : "0 18px 36px rgba(0,0,0,0.08)",
+            }}
+            transition={{ type: "spring", stiffness: 240, damping: 30 }}
+            className="w-full rounded-[26px] bg-white border border-[rgba(0,0,0,0.08)] px-[18px] pt-[18px] pb-[16px] flex flex-col gap-3 overflow-hidden"
+          >
+            <div className="flex items-end gap-3">
+              <div className="flex-1 relative">
+                <textarea
+                  placeholder=""
+                  className="w-full min-h-[72px] resize-none bg-transparent text-[17px] md:text-[17.5px] leading-[1.4] text-foreground focus:outline-none"
+                  aria-label="Ask a question"
+                  value={prompt}
+                  onChange={(e) => setPrompt(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                />
+                {showPlaceholderOverlay && (
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={placeholderIndex}
+                      initial={{ y: 10, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      exit={{ y: -10, opacity: 0 }}
+                      transition={{ duration: 0.32, ease: "easeOut" }}
+                      className="pointer-events-none absolute left-0 top-0 right-0 text-[17px] md:text-[17.5px] leading-[1.4] text-muted-foreground"
+                    >
+                      {rotatingPlaceholders[placeholderIndex]}
+                    </motion.div>
+                  </AnimatePresence>
+                )}
+              </div>
+              <button
+                type="button"
+                className={`inline-flex h-10 w-10 items-center justify-center rounded-full transition disabled:opacity-60 disabled:cursor-not-allowed ${prompt.trim() ? "bg-foreground text-white" : "bg-[rgba(0,0,0,0.05)] text-muted-foreground"}`}
+                aria-label="Submit question"
+                onClick={handleSend}
+                disabled={!prompt.trim() || isLoading}
+              >
+                {isLoading ? (
+                  <Loader2 size={17} className="animate-spin" />
+                ) : (
+                  <ArrowUp size={20} />
+                )}
+              </button>
+            </div>
+
+            <AnimatePresence initial={false}>
+              {isExpanded && (
                 <motion.div
-                  key={placeholderIndex}
-                  initial={{ y: 10, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  exit={{ y: -10, opacity: 0 }}
-                  transition={{ duration: 0.32, ease: "easeOut" }}
-                  className="pointer-events-none absolute left-[18px] top-[18px] right-24 text-[17px] md:text-[17.5px] leading-[1.4] text-muted-foreground"
+                  key="history"
+                  initial={{ height: 0, opacity: 0, y: -6 }}
+                  animate={{ height: "auto", opacity: 1, y: 0 }}
+                  exit={{ height: 0, opacity: 0, y: -6 }}
+                  transition={{ duration: 0.32, ease: "easeInOut" }}
+                  className="w-full"
                 >
-                  {rotatingPlaceholders[placeholderIndex]}
+                  <div className="rounded-[18px] bg-[rgba(0,0,0,0.02)] border border-[rgba(0,0,0,0.04)] px-4 py-3 max-h-[320px] md:max-h-[360px] overflow-y-auto space-y-3 pr-[6px]">
+                    {messages.length === 0 && !isLoading ? (
+                      <p className="text-sm text-muted-foreground">发送后这里会展开显示完整对话。</p>
+                    ) : (
+                      messages.map((message, index) => (
+                        <div
+                          key={`${message.role}-${index}`}
+                          className={`flex gap-2 ${message.role === "user" ? "justify-end" : "justify-start"}`}
+                        >
+                          <div
+                            className={`max-w-[85%] text-sm md:text-[15px] leading-relaxed rounded-2xl px-3 py-[10px] shadow-[0_8px_18px_rgba(0,0,0,0.05)] ${
+                              message.role === "user"
+                                ? "bg-[var(--foreground)] text-white"
+                                : "bg-white border border-[rgba(0,0,0,0.04)] text-foreground"
+                            }`}
+                          >
+                            {message.content}
+                          </div>
+                        </div>
+                      ))
+                    )}
+                    {isLoading && (
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <Loader2 size={16} className="animate-spin" />
+                        <span>正在生成回复…</span>
+                      </div>
+                    )}
+                    <div ref={historyEndRef} />
+                  </div>
                 </motion.div>
-              </AnimatePresence>
-            )}
-            <button
-              type="button"
-              className={`absolute right-[18px] bottom-[16px] inline-flex h-9 w-9 items-center justify-center rounded-full transition disabled:opacity-60 disabled:cursor-not-allowed ${prompt.trim() ? "bg-foreground text-white" : "bg-[rgba(0,0,0,0.05)] text-muted-foreground"}`}
-              aria-label="Submit question"
-              onClick={handleSend}
-              disabled={!prompt.trim() || isLoading}
-            >
-              {isLoading ? (
-                <Loader2 size={17} className="animate-spin" />
-              ) : (
-                <ArrowUp size={20} />
               )}
-            </button>
-          </div>
-          {answer && (
-            <p className="text-sm md:text-base text-foreground/90 leading-relaxed text-left w-full max-w-4xl">
-              {answer}
-            </p>
-          )}
+            </AnimatePresence>
+          </motion.div>
           {error && (
             <p className="text-sm text-red-500 text-left w-full max-w-4xl">
               {error}
