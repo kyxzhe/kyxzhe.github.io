@@ -169,7 +169,7 @@ export default function Home() {
               )}
             </AnimatePresence>
 
-            <div className="flex items-end gap-3">
+            <div className="flex items-end gap-3 pr-[2px]">
               <div className="flex-1 relative">
                 <textarea
                   placeholder=""
@@ -223,6 +223,9 @@ export default function Home() {
               </button>
             </div>
           </motion.div>
+          <p className="text-xs text-muted-foreground text-center w-full max-w-4xl">
+            ChatBot can make mistakes. Check important info.
+          </p>
           {error && (
             <p className="text-sm text-red-500 text-left w-full max-w-4xl">
               {error}
