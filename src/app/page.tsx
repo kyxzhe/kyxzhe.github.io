@@ -145,10 +145,10 @@ export default function Home() {
                           className={`flex gap-2 ${message.role === "user" ? "justify-end" : "justify-start"}`}
                         >
                           <div
-                            className={`max-w-[85%] text-sm md:text-[15px] leading-relaxed rounded-2xl px-3 py-[10px] shadow-[0_8px_18px_rgba(0,0,0,0.05)] ${
+                            className={`max-w-[85%] text-sm md:text-[15px] leading-relaxed ${
                               message.role === "user"
-                                ? "bg-[var(--foreground)] text-white"
-                                : "bg-white border border-[rgba(0,0,0,0.04)] text-foreground"
+                                ? "bg-[#f2f2f4] text-foreground border border-[rgba(0,0,0,0.06)] rounded-2xl px-3 py-[10px] shadow-[0_6px_14px_rgba(0,0,0,0.05)]"
+                                : "text-foreground"
                             }`}
                           >
                             {message.content}
