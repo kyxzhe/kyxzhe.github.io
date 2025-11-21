@@ -88,9 +88,9 @@ export default function Home() {
               disabled={!prompt.trim() || isLoading}
             >
               {isLoading ? (
-                <Loader2 size={14} className="animate-spin" />
+                <Loader2 size={16} className="animate-spin" />
               ) : (
-                <ArrowUp size={14} />
+                <ArrowUp size={17} />
               )}
             </button>
           </div>
