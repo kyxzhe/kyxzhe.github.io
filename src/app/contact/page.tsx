@@ -53,7 +53,7 @@ const contactChannels = [
   {
     label: "Focus",
     value: contactInfo.availability,
-    description: "Preview the goals + data realities and I&rsquo;ll tailor the response.",
+    description: "Preview the goals + data realities and I’ll tailor the response.",
     icon: Clock,
   },
 ];
@@ -114,7 +114,7 @@ export default function ContactPage() {
               className="text-4xl md:text-5xl font-semibold leading-tight"
               variants={textVariants}
             >
-              Let&rsquo;s make research conversational
+              Let’s make research conversational
             </motion.h1>
             <motion.p
               className="text-base md:text-lg text-foreground/80 whitespace-pre-line leading-relaxed"
@@ -168,7 +168,7 @@ export default function ContactPage() {
             <div className="space-y-2">
               <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Reach out</p>
               <h2 className="text-2xl font-semibold">Preferred channels</h2>
-              <p className="text-sm text-foreground/70">Pick the lane that fits your project; I&rsquo;ll steer us to the right medium if we need deeper dives.</p>
+              <p className="text-sm text-foreground/70">Pick the lane that fits your project; I’ll steer us to the right medium if we need deeper dives.</p>
             </div>
             <div className="space-y-4">
               {contactChannels.map(({ label, value, description, link, icon: Icon }) => {
@@ -215,7 +215,7 @@ export default function ContactPage() {
             </div>
             <div className="rounded-2xl border border-dashed border-[var(--accent)]/50 px-4 py-4 flex gap-3 items-start text-sm text-foreground/80">
               <MessageCircle size={18} className="text-[var(--accent)]" />
-              <p>Need a quick sync? Mention the urgency in your subject line and I&rsquo;ll prioritise the reply.</p>
+              <p>Need a quick sync? Mention the urgency in your subject line and I’ll prioritise the reply.</p>
             </div>
           </div>
         </motion.section>
@@ -260,7 +260,7 @@ export default function ContactPage() {
               ))}
             </div>
             <p className="text-sm text-foreground/70 leading-relaxed">
-              I share drafts, slides, and reading group notes across these channels. Add a quick line about how you&rsquo;d like to collaborate.
+              I share drafts, slides, and reading group notes across these channels. Add a quick line about how you’d like to collaborate.
             </p>
           </div>
         </motion.section>
