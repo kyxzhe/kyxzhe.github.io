@@ -250,11 +250,19 @@ export default function NewsPage() {
 
             <button
               type="button"
-              aria-label={viewMode === "list" ? "Grid view" : "List view"}
-              className="flex h-[30px] w-[30px] items-center justify-center rounded-md border border-[#d8d8dd] bg-white text-muted-foreground hover:text-foreground"
-              onClick={() => setViewMode((prev) => (prev === "list" ? "grid" : "list"))}
+              aria-label="List view"
+              className={`p-1 text-muted-foreground hover:text-foreground ${viewMode === "list" ? "text-foreground" : ""}`}
+              onClick={() => setViewMode("list")}
             >
-              {viewMode === "list" ? <LayoutGrid size={15} /> : <List size={15} />}
+              <List size={15} />
+            </button>
+            <button
+              type="button"
+              aria-label="Grid view"
+              className={`p-1 text-muted-foreground hover:text-foreground ${viewMode === "grid" ? "text-foreground" : ""}`}
+              onClick={() => setViewMode("grid")}
+            >
+              <LayoutGrid size={15} />
             </button>
           </div>
         </div>
