@@ -118,6 +118,15 @@ export default function NewsPage() {
   return (
     <div className="min-h-screen bg-[#f7f7f8] text-foreground">
       <Navbar />
+      {(filterOpen || sortOpen) && (
+        <div
+          className="fixed inset-0 z-30"
+          onClick={() => {
+            setFilterOpen(false);
+            setSortOpen(false);
+          }}
+        />
+      )}
       <main className="flex-1 mx-auto w-full max-w-5xl px-2 md:px-4 lg:px-0 py-6 flex flex-col gap-6">
         <section className="mt-4 space-y-2">
           <p className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground">Newsroom</p>
@@ -174,6 +183,18 @@ export default function NewsPage() {
               </button>
               {filterOpen && (
                 <div className="absolute top-full mt-2 right-0 w-[420px] z-40 surface-card p-4 flex flex-col gap-4 shadow-xl rounded-2xl border border-border">
+                  <div className="flex items-center justify-between text-sm text-foreground">
+                    <p className="font-semibold">Filters</p>
+                    <button
+                      type="button"
+                      className="text-muted-foreground"
+                      onClick={() => {
+                        setFilterOpen(false);
+                      }}
+                    >
+                      ×
+                    </button>
+                  </div>
                   <div className="grid grid-cols-2 gap-4 text-sm text-foreground">
                     <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
                       <p className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground">Topic</p>
