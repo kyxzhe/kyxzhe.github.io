@@ -42,6 +42,7 @@ export default function Home() {
     if (!nextPrompt || isLoading) return;
     setIsLoading(true);
     setError(null);
+    setPrompt("");
 
     const requestMessages: ChatMessage[] = [
       ...messages,
