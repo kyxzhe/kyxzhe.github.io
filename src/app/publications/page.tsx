@@ -200,7 +200,7 @@ export default function PublicationsPage() {
         variants={projectsVariants}
         whileHover={{ y: -10, boxShadow: "0 25px 50px rgba(0,0,0,0.15)" }}
         transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
-        className={`surface-card overflow-hidden flex flex-col ${
+        className={`surface-card overflow-hidden flex flex-col h-full ${
           item.link ? "cursor-pointer" : "opacity-80 cursor-default"
         }`}
         role={item.link ? "link" : undefined}
@@ -224,18 +224,18 @@ export default function PublicationsPage() {
           </p>
           <h3 className="text-lg font-semibold leading-snug">{item.title}</h3>
           <AuthorLine authors={item.authors} />
-          <p className="text-sm text-foreground/80 flex-1">{item.summary}</p>
+          <p className="text-sm text-foreground/80 flex-1 line-clamp-3">{item.summary}</p>
           <ResourceRow venue={item.venue} resources={item.resources} />
         </div>
       </motion.article>
     );
 
-    return <div key={item.id}>{card}</div>;
+    return <div key={item.id} className="h-full">{card}</div>;
   };
 
   const renderGrid = () => (
     <motion.div
-      className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4"
+      className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 auto-rows-[1fr]"
       variants={projectsVariants}
       initial="hidden"
       animate="visible"
