@@ -283,7 +283,7 @@ export default function NewsPage() {
       <motion.main
         className="flex-1 mx-auto w-full max-w-5xl px-2 md:px-4 lg:px-0 py-6 flex flex-col gap-6"
         variants={containerVariants}
-        initial="hidden"
+        initial="visible"
         animate="visible"
       >
         <section className="mt-4 space-y-2">
