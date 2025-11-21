@@ -80,7 +80,7 @@ export default function Home() {
     historyEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [messages.length, isLoading]);
 
-  const showPlaceholderOverlay = !prompt.trim();
+  const showPlaceholderOverlay = !prompt.trim() && messages.length === 0;
 
   return (
     <div className="flex flex-col min-h-screen font-sans">
