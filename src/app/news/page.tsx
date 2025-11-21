@@ -1,11 +1,14 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
+import { motion } from "motion/react";
 import { ArrowUpDown, Filter, LayoutGrid, List } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { type NewsItem, newsItems } from "@/lib/constants/news";
+import { containerVariants, projectsVariants } from "@/lib/animation/variants";
 
 type ViewMode = "list" | "grid";
 type SortMode = "newest" | "oldest" | "az" | "za";
@@ -43,37 +46,30 @@ const sortOptions: { label: string; value: SortMode }[] = [
   { label: "Alphabetical (Z–A)", value: "za" },
 ];
 
-const ListRow = ({ item, isLast }: { item: NewsItem; isLast: boolean }) => {
-  const content = (
-    <div
-      className={`group flex flex-col gap-2 py-5 transition-colors hover:bg-white ${
-        isLast ? "" : "border-b border-[rgba(0,0,0,0.06)]"
-      }`}
-    >
-      <p className="px-0.5 text-[11px] uppercase tracking-[0.28em] text-muted-foreground">{item.category}</p>
-      <div className="px-0.5 flex items-start justify-between gap-3">
-        <h3 className="text-lg font-semibold leading-snug text-foreground">{item.title}</h3>
+const ListRow = ({ item }: { item: NewsItem }) => {
+  const row = (
+    <div className="group flex flex-col gap-2 py-5 border-b border-[rgba(0,0,0,0.08)] transition-colors group-hover:border-foreground/70">
+      <p className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground">{item.category}</p>
+      <div className="flex items-start justify-between gap-3">
+        <h3 className="text-xl font-semibold leading-snug text-foreground">{item.title}</h3>
         <p className="text-xs text-muted-foreground whitespace-nowrap">{formatDate(item.date)}</p>
       </div>
-      <p className="px-0.5 text-sm text-foreground/75 leading-relaxed max-w-3xl">{item.summary}</p>
+      <p className="text-sm text-foreground/80 leading-relaxed max-w-3xl">{item.summary}</p>
     </div>
   );
 
   if (item.link) {
     return (
-      <Link
-        key={item.id}
-        href={item.link}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="block focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground/40"
-      >
-        {content}
+      <Link key={item.id} href={item.link} target="_blank" rel="noopener noreferrer" className="group block">
+        {row}
       </Link>
     );
   }
-
-  return <div key={item.id}>{content}</div>;
+  return (
+    <div key={item.id} className="group block cursor-default">
+      {row}
+    </div>
+  );
 };
 
 export default function NewsPage() {
@@ -125,6 +121,153 @@ export default function NewsPage() {
     return sorted;
   }, [filteredItems, sortMode]);
 
+  const heroItem = sortedItems[0];
+  const secondaryItems = sortedItems.slice(1);
+
+  const renderGrid = () => {
+    const columnItems = secondaryItems.slice(0, 3);
+    const remainingItems = secondaryItems.slice(3);
+    return (
+      <div className="flex flex-col gap-10 w-full max-w-[95vw] xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto px-1 md:px-2">
+        <div className="grid gap-6 lg:grid-cols-12 items-start">
+          {heroItem && (
+            <motion.article
+              className="surface-card relative overflow-hidden rounded-[24px] lg:col-span-8 lg:sticky lg:top-12"
+              whileHover={{ y: -6, boxShadow: "0 28px 55px rgba(0,0,0,0.18)" }}
+              transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+            >
+              <div className="relative w-full aspect-[5/3] sm:aspect-[8/5] lg:aspect-[16/9] min-h-[360px] md:min-h-[480px] lg:min-h-[600px]">
+                <Image
+                  src={heroItem.cover}
+                  alt={heroItem.title}
+                  fill
+                  sizes="(max-width:1024px) 100vw, 60vw"
+                  className="object-cover"
+                />
+              </div>
+              <div className="absolute inset-x-0 bottom-0 bg-background/95 dark:bg-background/80 backdrop-blur-sm px-6 pb-6 pt-6 flex flex-col gap-3 border-t border-white/10 rounded-t-none">
+                <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
+                  {heroItem.category} · {formatDate(heroItem.date)}
+                </p>
+                <h2 className="text-[2rem] lg:text-[2.4rem] font-semibold leading-tight text-foreground">
+                  {heroItem.title}
+                </h2>
+                <p className="text-sm text-foreground/80 leading-relaxed max-w-2xl">{heroItem.summary}</p>
+                {heroItem.link && (
+                  <Link href={heroItem.link} className="text-sm text-brand-accent" target="_blank" rel="noopener noreferrer">
+                    Read update
+                  </Link>
+                )}
+              </div>
+            </motion.article>
+          )}
+          <div className="flex flex-col gap-4 lg:col-span-4">
+            {columnItems.map((item) => {
+              const card = (
+                <motion.div
+                  variants={projectsVariants}
+                  initial="hidden"
+                  animate="visible"
+                  whileHover={{ y: -6, boxShadow: "0 18px 35px rgba(0,0,0,0.14)" }}
+                  className={`surface-card relative overflow-hidden aspect-square ${
+                    item.link ? "" : "opacity-80"
+                  }`}
+                >
+                  <Image
+                    src={item.cover}
+                    alt={item.title}
+                    fill
+                    sizes="(max-width:1024px) 100vw, 320px"
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-x-0 bottom-0 bg-background/95 dark:bg-background/90 px-4 pb-4 pt-3 flex flex-col gap-2">
+                    <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
+                      {item.category} · {formatDate(item.date)}
+                    </p>
+                    <h3 className="text-lg font-semibold leading-tight text-foreground">
+                      {item.title}
+                    </h3>
+                    <p className="text-sm text-foreground/80 line-clamp-3">{item.summary}</p>
+                  </div>
+                </motion.div>
+              );
+              if (item.link) {
+                return (
+                  <Link
+                    key={item.id}
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block"
+                  >
+                    {card}
+                  </Link>
+                );
+              }
+              return (
+                <div key={item.id} className="block cursor-default">
+                  {card}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        {remainingItems.length > 0 && (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-12 gap-4">
+            {remainingItems.map((item) => {
+              const card = (
+                <motion.div
+                  variants={projectsVariants}
+                  initial="hidden"
+                  animate="visible"
+                  whileHover={{ y: -6, boxShadow: "0 20px 45px rgba(0,0,0,0.12)" }}
+                  className={`surface-card relative overflow-hidden aspect-square ${
+                    item.link ? "" : "opacity-80"
+                  }`}
+                >
+                  <Image
+                    src={item.cover}
+                    alt={item.title}
+                    fill
+                    sizes="(max-width:1024px) 100vw, 320px"
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-x-0 bottom-0 bg-background/95 dark:bg-background/90 px-4 pb-4 pt-3 flex flex-col gap-2">
+                    <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
+                      {item.category} · {formatDate(item.date)}
+                    </p>
+                    <h3 className="text-lg font-semibold leading-tight text-foreground">
+                      {item.title}
+                    </h3>
+                    <p className="text-sm text-foreground/80 line-clamp-3">{item.summary}</p>
+                  </div>
+                </motion.div>
+              );
+              if (item.link) {
+                return (
+                  <Link
+                    key={item.id}
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block lg:col-span-4"
+                  >
+                    {card}
+                  </Link>
+                );
+              }
+              return (
+                <div key={item.id} className="block cursor-default lg:col-span-4">
+                  {card}
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    );
+  };
+
   return (
     <div className="min-h-screen bg-[#f7f7f8] text-foreground">
       <Navbar />
@@ -137,7 +280,12 @@ export default function NewsPage() {
           }}
         />
       )}
-      <main className="flex-1 mx-auto w-full max-w-5xl px-2 md:px-4 lg:px-0 py-6 flex flex-col gap-6">
+      <motion.main
+        className="flex-1 mx-auto w-full max-w-5xl px-2 md:px-4 lg:px-0 py-6 flex flex-col gap-6"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
         <section className="mt-4 space-y-2">
           <p className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground">Newsroom</p>
           <h1 className="text-3xl md:text-[2.1rem] font-semibold leading-tight text-foreground">Latest news &amp; updates</h1>
@@ -312,28 +460,14 @@ export default function NewsPage() {
 
         {viewMode === "list" ? (
           <section className="bg-transparent">
-            {sortedItems.map((item, idx) => (
-              <ListRow key={item.id} item={item} isLast={idx === sortedItems.length - 1} />
+            {sortedItems.map((item) => (
+              <ListRow key={item.id} item={item} />
             ))}
           </section>
         ) : (
-          <section className="grid gap-6 sm:grid-cols-2">
-            {sortedItems.map((item) => (
-              <article
-                key={item.id}
-                className="flex flex-col gap-3 py-4 px-1 transition-transform hover:-translate-y-1"
-              >
-                <p className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground">{item.category}</p>
-                <div className="flex items-start justify-between gap-3">
-                  <h3 className="text-lg font-semibold leading-snug text-foreground">{item.title}</h3>
-                  <p className="text-xs text-muted-foreground whitespace-nowrap">{formatDate(item.date)}</p>
-                </div>
-                <p className="text-sm text-foreground/75 leading-relaxed">{item.summary}</p>
-              </article>
-            ))}
-          </section>
+          renderGrid()
         )}
-      </main>
+      </motion.main>
       <Footer className="mb-4" />
     </div>
   );
