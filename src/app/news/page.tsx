@@ -302,8 +302,8 @@ export default function NewsPage() {
               onClick={() => setActiveCategory(category)}
               className={`px-3 py-1.5 rounded-full border transition-colors ${
                 activeCategory === category
-                  ? "bg-[#e7e7eb] text-foreground border-[#cfcfd4]"
-                  : "bg-white text-muted-foreground border-[#dedee3] hover:border-[#cfcfd4]"
+                  ? "bg-[#e7e7eb] text-foreground border-[#cfcfd4] dark:bg-[#3c3c42] dark:text-white dark:border-transparent"
+                  : "bg-white text-muted-foreground border-[#dedee3] hover:border-[#cfcfd4] dark:bg-[#2a2a2f] dark:text-white/80 dark:border-[#44444a] dark:hover:border-[#5a5a63]"
               }`}
             >
               {category}
