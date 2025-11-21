@@ -142,7 +142,7 @@ export default function Home() {
                       messages.map((message, index) => (
                         <div
                           key={`${message.role}-${index}`}
-                          className={`flex gap-2 ${message.role === "user" ? "justify-end" : "justify-start"}`}
+                          className="flex gap-2 justify-start"
                         >
                           <div
                             className={`max-w-[85%] text-sm md:text-[15px] leading-relaxed ${
