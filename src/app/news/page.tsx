@@ -48,7 +48,7 @@ const sortOptions: { label: string; value: SortMode }[] = [
 
 const ListRow = ({ item }: { item: NewsItem }) => {
   const row = (
-    <article className="group flex flex-col gap-3 py-6 border-b border-[rgba(0,0,0,0.08)] transition-colors hover:border-foreground/70">
+    <article className="group flex flex-col gap-3 py-6 border-b border-[rgba(0,0,0,0.08)] dark:border-white/15 transition-colors hover:border-foreground/70 dark:hover:border-white/70">
       <p className="text-[10.2px] uppercase tracking-[0.28em] text-muted-foreground">{item.category}</p>
       <div className="flex items-start justify-between gap-3">
         <h3 className="text-xl font-semibold leading-snug text-foreground">{item.title}</h3>
@@ -302,8 +302,8 @@ export default function NewsPage() {
               onClick={() => setActiveCategory(category)}
               className={`px-3 py-1.5 rounded-full border transition-colors ${
                 activeCategory === category
-                  ? "bg-[#e7e7eb] text-foreground border-[#cfcfd4] dark:bg-[#3c3c42] dark:text-white dark:border-transparent"
-                  : "bg-white text-muted-foreground border-[#dedee3] hover:border-[#cfcfd4] dark:bg-[#2a2a2f] dark:text-white/80 dark:border-[#44444a] dark:hover:border-[#5a5a63]"
+                  ? "bg-[var(--accent-soft)] text-foreground border-[var(--card-border)]"
+                  : "bg-[var(--pill-background)] text-muted-foreground border-[var(--card-border)] hover:border-foreground/40"
               }`}
             >
               {category}
