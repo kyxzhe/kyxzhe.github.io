@@ -52,7 +52,7 @@ const ListRow = ({ item }: { item: NewsItem }) => {
       <p className="text-[10.2px] uppercase tracking-[0.28em] text-muted-foreground">{item.category}</p>
       <div className="flex items-start justify-between gap-3">
         <h3 className="text-xl font-semibold leading-snug text-foreground">{item.title}</h3>
-        <p className="text-xs text-muted-foreground whitespace-nowrap">{formatDate(item.date)}</p>
+        <p className="text-sm text-muted-foreground whitespace-nowrap">{formatDate(item.date)}</p>
       </div>
       <p className="text-sm text-foreground/80 leading-relaxed max-w-3xl">{item.summary}</p>
     </article>
@@ -146,7 +146,7 @@ export default function NewsPage() {
                 />
               </div>
               <div className="absolute inset-x-0 bottom-0 bg-background/95 dark:bg-background/80 backdrop-blur-sm px-6 pb-6 pt-6 flex flex-col gap-3 border-t border-white/10 rounded-t-none">
-                <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
+                <p className="text-sm uppercase tracking-[0.28em] text-muted-foreground">
                   {heroItem.category} · {formatDate(heroItem.date)}
                 </p>
                 <h2 className="text-[2rem] lg:text-[2.4rem] font-semibold leading-tight text-foreground">
@@ -181,7 +181,7 @@ export default function NewsPage() {
                     className="object-cover"
                   />
                   <div className="absolute inset-x-0 bottom-0 bg-background/95 dark:bg-background/90 px-4 pb-4 pt-3 flex flex-col gap-2">
-                    <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
+                    <p className="text-sm uppercase tracking-[0.28em] text-muted-foreground">
                       {item.category} · {formatDate(item.date)}
                     </p>
                     <h3 className="text-lg font-semibold leading-tight text-foreground">
@@ -233,7 +233,7 @@ export default function NewsPage() {
                     className="object-cover"
                   />
                   <div className="absolute inset-x-0 bottom-0 bg-background/95 dark:bg-background/90 px-4 pb-4 pt-3 flex flex-col gap-2">
-                    <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
+                    <p className="text-sm uppercase tracking-[0.28em] text-muted-foreground">
                       {item.category} · {formatDate(item.date)}
                     </p>
                     <h3 className="text-lg font-semibold leading-tight text-foreground">

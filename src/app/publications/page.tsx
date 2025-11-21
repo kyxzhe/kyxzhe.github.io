@@ -122,7 +122,7 @@ const ListRow = ({ item }: { item: Publication }) => {
           <p className="text-sm text-foreground/80 leading-relaxed max-w-3xl">{item.summary}</p>
           <ResourceRow venue={item.venue} resources={item.resources} />
         </div>
-        <p className="text-xs text-muted-foreground whitespace-nowrap">{formatDate(item.date)}</p>
+        <p className="text-sm text-muted-foreground whitespace-nowrap">{formatDate(item.date)}</p>
       </div>
     </article>
   );
@@ -219,7 +219,7 @@ export default function PublicationsPage() {
           />
         </div>
         <div className="p-4 flex flex-col gap-3 flex-1">
-          <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
+          <p className="text-sm uppercase tracking-[0.28em] text-muted-foreground">
             {item.category} · {formatDate(item.date)}
           </p>
           <h3 className="text-lg font-semibold leading-snug">{item.title}</h3>
