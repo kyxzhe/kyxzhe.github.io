@@ -8,7 +8,7 @@ import { ArrowUpDown, Filter, LayoutGrid, List } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { type NewsItem, newsItems } from "@/lib/constants/news";
-import { containerVariants, projectsVariants } from "@/lib/animation/variants";
+import { projectsVariants } from "@/lib/animation/variants";
 
 type ViewMode = "list" | "grid";
 type SortMode = "newest" | "oldest" | "az" | "za";
@@ -280,12 +280,7 @@ export default function NewsPage() {
           }}
         />
       )}
-      <motion.main
-        className="flex-1 mx-auto w-full max-w-5xl px-2 md:px-4 lg:px-0 py-6 flex flex-col gap-6"
-        variants={containerVariants}
-        initial="visible"
-        animate="visible"
-      >
+      <main className="flex-1 mx-auto w-full max-w-5xl px-2 md:px-4 lg:px-0 py-6 flex flex-col gap-6">
         <section className="mt-4 space-y-2">
           <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Newsroom</p>
           <h1 className="text-[2.4rem] md:text-[2.6rem] font-semibold leading-tight text-foreground">Latest news &amp; updates</h1>
@@ -469,7 +464,7 @@ export default function NewsPage() {
         ) : (
           renderGrid()
         )}
-      </motion.main>
+      </main>
       <Footer className="mb-4" />
     </div>
   );
