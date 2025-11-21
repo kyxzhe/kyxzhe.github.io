@@ -135,7 +135,7 @@ export default function Home() {
                   transition={{ duration: 0.32, ease: "easeInOut" }}
                   className="w-full flex-1"
                 >
-                  <div className="rounded-[18px] bg-[rgba(0,0,0,0.02)] border border-[rgba(0,0,0,0.04)] px-4 py-3 max-h-[320px] md:max-h-[360px] overflow-y-auto space-y-3 pr-[6px]">
+                  <div className="max-h-[320px] md:max-h-[360px] overflow-y-auto space-y-3 pr-[6px] pt-1">
                     {messages.length === 0 && !isLoading ? (
                       <p className="text-sm text-muted-foreground">发送后这里会展开显示完整对话。</p>
                     ) : (
