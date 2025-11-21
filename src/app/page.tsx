@@ -159,9 +159,8 @@ export default function Home() {
                       ))
                     )}
                     {isLoading && (
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <div className="flex items-center text-muted-foreground">
                         <Loader2 size={16} className="animate-spin" />
-                        <span>Generating reply…</span>
                       </div>
                     )}
                     <div ref={historyEndRef} />
