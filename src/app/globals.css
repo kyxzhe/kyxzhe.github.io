@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f3f3f4;
-  --foreground: #121212;
-  --muted-foreground: #6a6a6f;
-  --card: #f8f8f8;
-  --card-border: #dedee2;
-  --pill-background: #ededee;
-  --accent: #111111;
-  --accent-link: #111111;
-  --accent-soft: rgba(17, 17, 17, 0.12);
+  --background: #ffffff;
+  --foreground: #141414;
+  --muted-foreground: #6c6c71;
+  --card: #f7f7f8;
+  --card-border: #e5e5e8;
+  --pill-background: #f1f1f3;
+  --accent: #0f0f11;
+  --accent-link: #0f0f11;
+  --accent-soft: rgba(15, 15, 17, 0.12);
   --font-gilroy: 'Gilroy', sans-serif;
   --radius-card: 20px;
   --radius-card-tight: 18px;
@@ -42,7 +42,7 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  padding: 18px 22px;
+  padding: 18px 24px;
   font-family: var(--font-sans);
   min-height: 100vh;
   max-width: 100vw;
@@ -51,7 +51,7 @@ body {
 
 @media (min-width: 768px) {
   body {
-    padding: 26px 32px;
+    padding: 24px 42px;
   }
 }
 

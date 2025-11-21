@@ -9,25 +9,25 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen font-sans">
       <Navbar />
-      <main className="flex-1 w-full flex flex-col items-center text-center px-2 md:px-4">
-        <section className="w-full max-w-5xl flex flex-col items-center gap-4">
-          <p className="text-[0.65rem] md:text-xs tracking-[0.32em] uppercase text-muted-foreground">
+      <main className="flex-1 w-full flex flex-col items-center text-center px-4 md:px-10 lg:px-16">
+        <section className="w-full max-w-4xl flex flex-col items-center gap-4 md:gap-5 mt-2 md:mt-4">
+          <p className="text-[0.62rem] md:text-[0.7rem] tracking-[0.34em] uppercase text-muted-foreground">
             Kevin Zheng • Social Data Science & Robust ML
           </p>
-          <h1 className="text-3xl md:text-5xl font-bold text-foreground">Trustworthy AI Researcher</h1>
+          <h1 className="text-[2.1rem] md:text-[3.1rem] font-bold text-foreground">Trustworthy AI Researcher</h1>
           <p className="text-base md:text-lg text-muted-foreground max-w-2xl leading-relaxed">
             Designing diffusion experiments, robust learning pipelines, and humane safeguards for social platforms.
           </p>
-          <div className="flex items-center gap-3 mt-2">
+          <div className="flex items-center gap-3 mt-3">
             <Link
               href="/publications"
-              className="px-6 md:px-7 py-3 rounded-full bg-[var(--foreground)] text-[#f7f7f7] text-sm md:text-base font-semibold shadow-[0_16px_32px_rgba(0,0,0,0.14)] transition duration-200 hover:-translate-y-[2px]"
+              className="px-6 md:px-7 py-3 rounded-full bg-[var(--foreground)] text-[#f7f7f7] text-sm md:text-base font-semibold shadow-[0_14px_28px_rgba(0,0,0,0.16)] transition duration-200 hover:-translate-y-[2px]"
             >
               View research
             </Link>
             <Link
               href="/contact"
-              className="px-6 md:px-7 py-3 rounded-full border border-[rgba(0,0,0,0.12)] bg-white/70 text-sm md:text-base font-semibold text-foreground shadow-[0_12px_28px_rgba(0,0,0,0.05)] transition duration-200 hover:-translate-y-[1px]"
+              className="px-6 md:px-7 py-3 rounded-full border border-[rgba(0,0,0,0.08)] bg-white text-sm md:text-base font-semibold text-foreground shadow-[0_10px_24px_rgba(0,0,0,0.06)] transition duration-200 hover:-translate-y-[1px]"
             >
               Contact
             </Link>
@@ -36,7 +36,7 @@ export default function Home() {
 
         <section className="w-full max-w-4xl flex flex-col items-center gap-4 mt-10 md:mt-12">
           <h2 className="text-lg md:text-xl font-semibold text-foreground">What can I help with?</h2>
-          <div className="w-full rounded-full bg-white border border-[rgba(0,0,0,0.08)] shadow-[0_20px_40px_rgba(0,0,0,0.08)] px-4 py-3 flex items-center gap-3">
+          <div className="w-full rounded-full bg-white border border-[rgba(0,0,0,0.08)] shadow-[0_22px_42px_rgba(0,0,0,0.08)] px-4 py-3 flex items-center gap-3 md:gap-4">
             <input
               type="text"
               placeholder="Ask a question about research, teaching, or credentials"
@@ -51,7 +51,7 @@ export default function Home() {
               <ArrowUpRight size={16} />
             </button>
           </div>
-          <div className="flex flex-wrap items-center justify-center gap-3 text-sm text-muted-foreground">
+          <div className="flex flex-wrap items-center justify-center gap-3 text-sm text-muted-foreground mt-1">
             <span className="inline-flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-emerald-500" aria-hidden="true" />
               Online
@@ -76,9 +76,9 @@ export default function Home() {
           </p>
         </section>
 
-        <section className="w-full max-w-5xl mt-12 md:mt-16 border-t border-[rgba(0,0,0,0.08)] pt-8 md:pt-12 grid md:grid-cols-[1.1fr_1fr] gap-8 md:gap-12 text-left">
+        <section className="w-full max-w-5xl mt-12 md:mt-16 border-t border-[rgba(0,0,0,0.06)] pt-8 md:pt-12 grid md:grid-cols-[1.05fr_1fr] gap-10 md:gap-14 text-left">
           <div className="flex flex-col gap-3">
-            <p className="text-[0.68rem] tracking-[0.2em] uppercase text-muted-foreground">Contact</p>
+            <p className="text-[0.68rem] tracking-[0.22em] uppercase text-muted-foreground">Contact</p>
             <p className="text-sm md:text-base text-foreground">Email-first; scheduling for deeper dives.</p>
             <p className="text-sm md:text-base text-foreground">Email · kevin.zheng@student.uts.edu.au</p>
             <p className="text-sm md:text-base text-foreground">Location · Sydney, Australia</p>
