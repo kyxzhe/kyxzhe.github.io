@@ -36,6 +36,12 @@ function formatDate(isoDate: string) {
 const categories = ["All", ...Array.from(new Set(newsItems.map((item) => item.category)))];
 const topics = Array.from(new Set(newsItems.flatMap((item) => item.topics))).sort();
 const years = Array.from(new Set(newsItems.map((item) => new Date(item.date).getFullYear()))).sort((a, b) => b - a);
+const sortOptions: { label: string; value: SortMode }[] = [
+  { label: "Newest → Oldest", value: "newest" },
+  { label: "Oldest → Newest", value: "oldest" },
+  { label: "Alphabetical (A–Z)", value: "az" },
+  { label: "Alphabetical (Z–A)", value: "za" },
+];
 
 const ListRow = ({ item }: { item: NewsItem }) => {
   const row = (
@@ -253,28 +259,22 @@ export default function NewsPage() {
                 <ArrowUpDown size={16} />
               </button>
               {sortOpen && (
-                <div className="absolute top-full mt-2 right-0 w-56 z-40 surface-card p-3 flex flex-col gap-2 shadow-xl rounded-2xl border border-border text-sm text-foreground">
-                  {["newest", "oldest", "az", "za"].map((option) => {
-                    const labelMap: Record<SortMode, string> = {
-                      newest: "Newest → Oldest",
-                      oldest: "Oldest → Newest",
-                      az: "Alphabetical (A–Z)",
-                      za: "Alphabetical (Z–A)",
-                    };
-                    const value = option as SortMode;
-                    return (
-                      <label key={option} className="flex items-center gap-2 text-foreground/80">
-                        <input
-                          type="radio"
-                          name="news-sort"
-                          value={value}
-                          checked={sortMode === value}
-                          onChange={() => setSortMode(value)}
-                        />
-                        {labelMap[value]}
-                      </label>
-                    );
-                  })}
+                <div className="absolute top-full mt-2 right-0 w-64 z-40 surface-card p-3 flex flex-col gap-2 shadow-xl rounded-2xl border border-border text-sm text-foreground">
+                  {sortOptions.map((option) => (
+                    <label
+                      key={option.value}
+                      className="flex items-center gap-2 text-foreground/80"
+                    >
+                      <input
+                        type="radio"
+                        name="news-sort"
+                        value={option.value}
+                        checked={sortMode === option.value}
+                        onChange={() => setSortMode(option.value)}
+                      />
+                      {option.label}
+                    </label>
+                  ))}
                 </div>
               )}
             </div>
