@@ -290,7 +290,7 @@ export default function NewsPage() {
           <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Newsroom</p>
           <h1 className="text-[2.4rem] md:text-[2.6rem] font-semibold leading-tight text-foreground">Latest news &amp; updates</h1>
           <p className="text-[15px] md:text-base text-muted-foreground max-w-2xl leading-relaxed">
-            Browse research, milestones, and interviews. Default list view; filter when needed.
+            All my latest posts—research notes, milestones, shout-outs, or anything new. It opens in list view, with filters ready when you need them.
           </p>
         </section>
 
