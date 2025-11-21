@@ -199,10 +199,10 @@ export default function Home() {
                     <motion.div
                       key="caret-hint"
                       initial={{ y: 6, opacity: 0 }}
-                      animate={{ y: 0, opacity: 0.65 }}
+                      animate={{ y: 0, opacity: 0.8 }}
                       exit={{ y: -6, opacity: 0 }}
                       transition={{ duration: 0.18, ease: "easeOut" }}
-                      className="pointer-events-none absolute left-[4px] top-[10px] text-[15px] md:text-[15.5px] leading-[1.4] text-muted-foreground"
+                      className="pointer-events-none absolute left-0 top-0 text-[17px] md:text-[17.5px] leading-[1.4] text-muted-foreground"
                     >
                       -&gt;
                     </motion.div>
