@@ -288,8 +288,8 @@ export default function NewsPage() {
       >
         <section className="mt-4 space-y-2">
           <p className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground">Newsroom</p>
-          <h1 className="text-3xl md:text-[2.1rem] font-semibold leading-tight text-foreground">Latest news &amp; updates</h1>
-          <p className="text-sm text-muted-foreground max-w-2xl">
+          <h1 className="text-[2.2rem] md:text-[2.45rem] font-semibold leading-tight text-foreground">Latest news &amp; updates</h1>
+          <p className="text-[15px] md:text-base text-muted-foreground max-w-2xl leading-relaxed">
             Browse research, milestones, and interviews. Default list view; filter when needed.
           </p>
         </section>
