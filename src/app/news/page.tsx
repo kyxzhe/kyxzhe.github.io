@@ -437,7 +437,7 @@ export default function NewsPage() {
               <button
                 className={`p-2 rounded transition-colors ${
                   viewMode === "list"
-                    ? "text-foreground bg-[rgba(0,0,0,0.06)] dark:bg-white/15 dark:text-white"
+                    ? "text-foreground bg-[rgba(0,0,0,0.06)] dark:bg-white/25 dark:text-white"
                     : "hover:text-foreground dark:hover:text-white"
                 }`}
                 onClick={() => setViewMode("list")}
@@ -448,7 +448,7 @@ export default function NewsPage() {
               <button
                 className={`p-2 rounded transition-colors ${
                   viewMode === "grid"
-                    ? "text-foreground bg-[rgba(0,0,0,0.06)] dark:bg-white/15 dark:text-white"
+                    ? "text-foreground bg-[rgba(0,0,0,0.06)] dark:bg-white/25 dark:text-white"
                     : "hover:text-foreground dark:hover:text-white"
                 }`}
                 onClick={() => setViewMode("grid")}
