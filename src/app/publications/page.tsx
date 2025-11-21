@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import type { MouseEvent, KeyboardEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
@@ -61,11 +62,9 @@ const AuthorLine = ({ authors }: { authors: string[] }) => (
 const ResourceRow = ({
   venue,
   resources,
-  interactive = true,
 }: {
   venue: string;
   resources?: PublicationResource[];
-  interactive?: boolean;
 }) => {
   const code = resources?.find((res) => res.type === "code");
   const showDot = Boolean(code);
@@ -75,52 +74,61 @@ const ResourceRow = ({
       <span>{venue}</span>
       {showDot && <span>·</span>}
       {code && (
-        interactive ? (
-          <Link
-            href={code.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 text-foreground font-semibold"
-          >
-            {code.label}
-            <ArrowUpRight size={12} />
-          </Link>
-        ) : (
-          <span className="inline-flex items-center gap-1 text-foreground font-semibold">
-            {code.label}
-            <ArrowUpRight size={12} />
-          </span>
-        )
+        <Link
+          href={code.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1 text-foreground font-semibold"
+          onClick={(event) => event.stopPropagation()}
+          onKeyDown={(event) => event.stopPropagation()}
+        >
+          {code.label}
+          <ArrowUpRight size={12} />
+        </Link>
       )}
     </div>
   );
 };
 
 const ListRow = ({ item }: { item: Publication }) => {
+  const handleActivate = (
+    event: MouseEvent<HTMLElement> | KeyboardEvent<HTMLElement>
+  ) => {
+    if (!item.link) return;
+    if (event.type === "keydown") {
+      const keyboardEvent = event as KeyboardEvent<HTMLElement>;
+      if (keyboardEvent.key !== "Enter" && keyboardEvent.key !== " ") return;
+      keyboardEvent.preventDefault();
+    }
+    window.open(item.link, "_blank", "noopener,noreferrer");
+  };
+
   const row = (
-    <article className="group flex flex-col gap-3 py-6 border-b border-[rgba(0,0,0,0.08)] dark:border-white/20 transition-colors hover:border-foreground/70">
+    <article
+      className={`group flex flex-col gap-3 py-6 border-b border-[rgba(0,0,0,0.08)] dark:border-white/20 transition-colors hover:border-foreground/70 ${
+        item.link ? "cursor-pointer" : "cursor-default"
+      }`}
+      role={item.link ? "link" : undefined}
+      tabIndex={item.link ? 0 : -1}
+      aria-label={item.link ? `Open ${item.title}` : undefined}
+      onClick={item.link ? handleActivate : undefined}
+      onKeyDown={item.link ? handleActivate : undefined}
+    >
       <p className="text-[10.2px] uppercase tracking-[0.28em] text-muted-foreground">{item.category}</p>
       <div className="flex items-start justify-between gap-3">
         <div className="space-y-2">
           <h3 className="text-xl font-semibold leading-snug text-foreground">{item.title}</h3>
           <AuthorLine authors={item.authors} />
           <p className="text-sm text-foreground/80 leading-relaxed max-w-3xl">{item.summary}</p>
-          <ResourceRow venue={item.venue} resources={item.resources} interactive={!item.link} />
+          <ResourceRow venue={item.venue} resources={item.resources} />
         </div>
         <p className="text-xs text-muted-foreground whitespace-nowrap">{formatDate(item.date)}</p>
       </div>
     </article>
   );
 
-  if (item.link) {
-    return (
-      <Link key={item.id} href={item.link} target="_blank" rel="noopener noreferrer" className="group block">
-        {row}
-      </Link>
-    );
-  }
   return (
-    <div key={item.id} className="group block cursor-default">
+    <div key={item.id} className="group block">
       {row}
     </div>
   );
@@ -174,6 +182,18 @@ export default function PublicationsPage() {
   }, [filteredItems, sortMode]);
 
   const renderGridCard = (item: Publication) => {
+    const handleActivate = (
+      event: MouseEvent<HTMLElement> | KeyboardEvent<HTMLElement>
+    ) => {
+      if (!item.link) return;
+      if (event.type === "keydown") {
+        const keyboardEvent = event as KeyboardEvent<HTMLElement>;
+        if (keyboardEvent.key !== "Enter" && keyboardEvent.key !== " ") return;
+        keyboardEvent.preventDefault();
+      }
+      window.open(item.link, "_blank", "noopener,noreferrer");
+    };
+
     const card = (
       <motion.article
         key={item.id}
@@ -183,6 +203,11 @@ export default function PublicationsPage() {
         className={`surface-card overflow-hidden flex flex-col ${
           item.link ? "cursor-pointer" : "opacity-80 cursor-default"
         }`}
+        role={item.link ? "link" : undefined}
+        tabIndex={item.link ? 0 : -1}
+        aria-label={item.link ? `Open ${item.title}` : undefined}
+        onClick={item.link ? handleActivate : undefined}
+        onKeyDown={item.link ? handleActivate : undefined}
       >
         <div className="relative w-full pb-[60%]">
           <Image
@@ -200,24 +225,10 @@ export default function PublicationsPage() {
           <h3 className="text-lg font-semibold leading-snug">{item.title}</h3>
           <AuthorLine authors={item.authors} />
           <p className="text-sm text-foreground/80 flex-1">{item.summary}</p>
-          <ResourceRow venue={item.venue} resources={item.resources} interactive={!item.link} />
+          <ResourceRow venue={item.venue} resources={item.resources} />
         </div>
       </motion.article>
     );
-
-    if (item.link) {
-        return (
-          <Link
-            key={item.id}
-            href={item.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block"
-          >
-            {card}
-          </Link>
-        );
-    }
 
     return <div key={item.id}>{card}</div>;
   };
