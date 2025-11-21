@@ -145,22 +145,35 @@ export default function NewsPage() {
             ))}
           </div>
 
-          <div className="relative flex items-center gap-3 text-[15px] text-[#5d5d66]">
-            <div className="relative">
+          <div className="relative flex items-center gap-4 text-sm font-medium">
+            <div className="relative flex items-center gap-1">
               <button
-                type="button"
-                className="flex items-center gap-1 px-2 py-1 rounded-md hover:text-[#2f2f32]"
-                title="Filter"
+                className="flex items-center gap-1"
                 onClick={() => {
                   setFilterOpen((prev) => !prev);
                   setSortOpen(false);
                 }}
               >
-                <span>Filter</span>
-                <Filter size={16} />
+                <span
+                  className={
+                    selectedTopics.length > 0 || selectedYears.length > 0 || filterOpen
+                      ? "text-foreground"
+                      : "text-muted-foreground"
+                  }
+                >
+                  Filter
+                </span>
+                <Filter
+                  size={16}
+                  className={
+                    selectedTopics.length > 0 || selectedYears.length > 0 || filterOpen
+                      ? "text-foreground"
+                      : "text-muted-foreground"
+                  }
+                />
               </button>
               {filterOpen && (
-                <div className="absolute right-0 top-full mt-2 w-[420px] rounded-2xl border border-[#dedee3] bg-white shadow-[0_14px_55px_rgba(0,0,0,0.08)] p-4 z-20">
+                <div className="absolute top-full mt-2 right-0 w-[420px] z-40 surface-card p-4 flex flex-col gap-4 shadow-xl rounded-2xl border border-border">
                   <div className="grid grid-cols-2 gap-4 text-sm text-foreground">
                     <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
                       <p className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground">Topic</p>
@@ -170,7 +183,6 @@ export default function NewsPage() {
                             type="checkbox"
                             checked={selectedTopics.includes(topic)}
                             onChange={() => toggleTopic(topic)}
-                            className="accent-black"
                           />
                           {topic}
                         </label>
@@ -184,7 +196,6 @@ export default function NewsPage() {
                             type="checkbox"
                             checked={selectedYears.includes(year)}
                             onChange={() => toggleYear(year)}
-                            className="accent-black"
                           />
                           {year}
                         </label>
@@ -207,11 +218,11 @@ export default function NewsPage() {
               )}
             </div>
 
-            <div className="relative">
+            <div className="relative flex items-center gap-1">
               <button
-                type="button"
-                className="flex items-center gap-1 px-2 py-1 rounded-md hover:text-[#2f2f32]"
-                title="Sort"
+                className={`flex items-center gap-1 ${
+                  sortOpen ? "text-foreground" : "text-muted-foreground"
+                }`}
                 onClick={() => {
                   setSortOpen((prev) => !prev);
                   setFilterOpen(false);
@@ -221,7 +232,7 @@ export default function NewsPage() {
                 <ArrowUpDown size={16} />
               </button>
               {sortOpen && (
-                <div className="absolute right-0 top-full mt-2 w-56 rounded-2xl border border-[#dedee3] bg-white shadow-[0_14px_55px_rgba(0,0,0,0.08)] p-3 z-20 text-sm text-foreground space-y-2">
+                <div className="absolute top-full mt-2 right-0 w-56 z-40 surface-card p-3 flex flex-col gap-2 shadow-xl rounded-2xl border border-border text-sm text-foreground">
                   {["newest", "oldest", "az", "za"].map((option) => {
                     const labelMap: Record<SortMode, string> = {
                       newest: "Newest → Oldest",
@@ -231,14 +242,13 @@ export default function NewsPage() {
                     };
                     const value = option as SortMode;
                     return (
-                      <label key={option} className="flex items-center gap-2">
+                      <label key={option} className="flex items-center gap-2 text-foreground/80">
                         <input
                           type="radio"
                           name="news-sort"
                           value={value}
                           checked={sortMode === value}
                           onChange={() => setSortMode(value)}
-                          className="accent-black"
                         />
                         {labelMap[value]}
                       </label>
@@ -248,26 +258,30 @@ export default function NewsPage() {
               )}
             </div>
 
-            <button
-              type="button"
-              aria-label="List view"
-              className={`flex h-9 w-9 items-center justify-center rounded-[8px] text-[#6a6a74] hover:text-[#2f2f32] transition-colors ${
-                viewMode === "list" ? "text-[#2f2f32] bg-[#e6e6eb]" : ""
-              }`}
-              onClick={() => setViewMode("list")}
-            >
-              <List size={18} />
-            </button>
-            <button
-              type="button"
-              aria-label="Grid view"
-              className={`flex h-9 w-9 items-center justify-center rounded-[8px] text-[#6a6a74] hover:text-[#2f2f32] transition-colors ${
-                viewMode === "grid" ? "text-[#2f2f32] bg-[#e6e6eb]" : ""
-              }`}
-              onClick={() => setViewMode("grid")}
-            >
-              <LayoutGrid size={18} />
-            </button>
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <button
+                className={`p-2 rounded ${
+                  viewMode === "list"
+                    ? "text-foreground bg-[rgba(0,0,0,0.06)]"
+                    : "hover:text-foreground"
+                }`}
+                onClick={() => setViewMode("list")}
+                aria-label="List view"
+              >
+                <List size={16} />
+              </button>
+              <button
+                className={`p-2 rounded ${
+                  viewMode === "grid"
+                    ? "text-foreground bg-[rgba(0,0,0,0.06)]"
+                    : "hover:text-foreground"
+                }`}
+                onClick={() => setViewMode("grid")}
+                aria-label="Grid view"
+              >
+                <LayoutGrid size={16} />
+              </button>
+            </div>
           </div>
         </div>
 
