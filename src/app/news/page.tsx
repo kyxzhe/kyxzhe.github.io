@@ -269,7 +269,7 @@ export default function NewsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f7f7f8] text-foreground">
+    <div className="min-h-screen bg-background text-foreground">
       <Navbar />
       {(filterOpen || sortOpen) && (
         <div
