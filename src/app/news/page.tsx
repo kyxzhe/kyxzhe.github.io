@@ -43,15 +43,19 @@ const sortOptions: { label: string; value: SortMode }[] = [
   { label: "Alphabetical (Z–A)", value: "za" },
 ];
 
-const ListRow = ({ item }: { item: NewsItem }) => {
-  const row = (
-    <div className="group flex flex-col gap-2 px-6 py-5 transition-colors hover:bg-white">
-      <p className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground">{item.category}</p>
-      <div className="flex items-start justify-between gap-3">
+const ListRow = ({ item, isLast }: { item: NewsItem; isLast: boolean }) => {
+  const content = (
+    <div
+      className={`group flex flex-col gap-2 py-5 transition-colors hover:bg-white ${
+        isLast ? "" : "border-b border-[rgba(0,0,0,0.06)]"
+      }`}
+    >
+      <p className="px-0.5 text-[11px] uppercase tracking-[0.28em] text-muted-foreground">{item.category}</p>
+      <div className="px-0.5 flex items-start justify-between gap-3">
         <h3 className="text-lg font-semibold leading-snug text-foreground">{item.title}</h3>
         <p className="text-xs text-muted-foreground whitespace-nowrap">{formatDate(item.date)}</p>
       </div>
-      <p className="text-sm text-foreground/75 leading-relaxed max-w-3xl">{item.summary}</p>
+      <p className="px-0.5 text-sm text-foreground/75 leading-relaxed max-w-3xl">{item.summary}</p>
     </div>
   );
 
@@ -64,12 +68,12 @@ const ListRow = ({ item }: { item: NewsItem }) => {
         rel="noopener noreferrer"
         className="block focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground/40"
       >
-        {row}
+        {content}
       </Link>
     );
   }
 
-  return <div key={item.id}>{row}</div>;
+  return <div key={item.id}>{content}</div>;
 };
 
 export default function NewsPage() {
@@ -307,24 +311,24 @@ export default function NewsPage() {
         </div>
 
         {viewMode === "list" ? (
-          <section className="rounded-[18px] border border-[rgba(0,0,0,0.06)] bg-white/70 shadow-[0_16px_40px_rgba(0,0,0,0.04)] overflow-hidden divide-y divide-[rgba(0,0,0,0.06)]">
-            {sortedItems.map((item) => (
-              <ListRow key={item.id} item={item} />
+          <section className="bg-transparent">
+            {sortedItems.map((item, idx) => (
+              <ListRow key={item.id} item={item} isLast={idx === sortedItems.length - 1} />
             ))}
           </section>
         ) : (
-          <section className="grid gap-4 sm:grid-cols-2">
+          <section className="grid gap-6 sm:grid-cols-2">
             {sortedItems.map((item) => (
               <article
                 key={item.id}
-                className="rounded-2xl border border-[rgba(0,0,0,0.08)] bg-white px-5 py-4 shadow-[0_12px_26px_rgba(0,0,0,0.05)]"
+                className="flex flex-col gap-3 py-4 px-1 transition-transform hover:-translate-y-1"
               >
-                <p className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground mb-2">{item.category}</p>
+                <p className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground">{item.category}</p>
                 <div className="flex items-start justify-between gap-3">
                   <h3 className="text-lg font-semibold leading-snug text-foreground">{item.title}</h3>
                   <p className="text-xs text-muted-foreground whitespace-nowrap">{formatDate(item.date)}</p>
                 </div>
-                <p className="mt-2 text-sm text-foreground/75 leading-relaxed">{item.summary}</p>
+                <p className="text-sm text-foreground/75 leading-relaxed">{item.summary}</p>
               </article>
             ))}
           </section>
