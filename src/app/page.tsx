@@ -50,22 +50,6 @@ export default function Home() {
               <ArrowUpRight size={16} />
             </button>
           </div>
-          <div className="flex flex-wrap items-center justify-center gap-3 text-sm text-muted-foreground">
-            <Link
-              href="/publications"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[rgba(0,0,0,0.1)] bg-white text-foreground transition hover:border-foreground"
-            >
-              Publications
-              <ArrowUpRight size={14} />
-            </Link>
-            <Link
-              href="/contact"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[rgba(0,0,0,0.1)] bg-white text-foreground transition hover:border-foreground"
-            >
-              Collaborate
-              <ArrowUpRight size={14} />
-            </Link>
-          </div>
         </section>
       </main>
       <Footer className="mb-6" />
