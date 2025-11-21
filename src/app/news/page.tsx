@@ -48,7 +48,7 @@ const sortOptions: { label: string; value: SortMode }[] = [
 
 const ListRow = ({ item }: { item: NewsItem }) => {
   const row = (
-    <article className="group flex flex-col gap-3 py-6 border-b border-[rgba(0,0,0,0.08)] dark:border-white/15 transition-colors hover:border-foreground/70 dark:hover:border-white/70">
+    <article className="group flex flex-col gap-3 py-6 border-b border-[rgba(0,0,0,0.08)] dark:border-white/20 transition-colors hover:border-foreground/70">
       <p className="text-[10.2px] uppercase tracking-[0.28em] text-muted-foreground">{item.category}</p>
       <div className="flex items-start justify-between gap-3">
         <h3 className="text-xl font-semibold leading-snug text-foreground">{item.title}</h3>
