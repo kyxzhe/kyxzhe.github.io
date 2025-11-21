@@ -159,8 +159,18 @@ export default function Home() {
                       ))
                     )}
                     {isLoading && (
-                      <div className="flex items-center text-muted-foreground">
+                      <div className="flex items-center gap-2 text-muted-foreground">
                         <Loader2 size={16} className="animate-spin" />
+                        <div className="flex gap-[3px] pl-[2px]">
+                          {[0, 1, 2].map((dot) => (
+                            <motion.span
+                              key={dot}
+                              animate={{ y: [0, -4, 0], opacity: [0.4, 1, 0.4] }}
+                              transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut", delay: dot * 0.12 }}
+                              className="h-[6px] w-[6px] rounded-full bg-current"
+                            />
+                          ))}
+                        </div>
                       </div>
                     )}
                     <div ref={historyEndRef} />
