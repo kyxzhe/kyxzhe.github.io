@@ -70,7 +70,7 @@ const ResourceBadges = ({
     <div className="flex flex-wrap gap-2">
       {resources.map((resource) => {
         const content = (
-          <span className="inline-flex items-center gap-1 rounded-full border border-border bg-[var(--pill-background)] px-2 py-1 text-[10px] uppercase tracking-[0.26em] text-foreground">
+          <span className="inline-flex items-center gap-1 text-[11px] uppercase tracking-[0.28em] font-semibold text-foreground">
             {resource.label}
             <ArrowUpRight size={12} />
           </span>
