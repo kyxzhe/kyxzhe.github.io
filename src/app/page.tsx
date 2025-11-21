@@ -125,7 +125,7 @@ export default function Home() {
                 : "0 18px 36px rgba(0,0,0,0.08)",
             }}
             transition={{ type: "spring", stiffness: 240, damping: 30 }}
-            className="w-full rounded-[26px] bg-white border border-[rgba(0,0,0,0.08)] px-[18px] pt-[18px] pb-[16px] flex flex-col gap-3 overflow-hidden"
+            className="w-full rounded-[26px] bg-white border border-[rgba(0,0,0,0.08)] px-[18px] pt-[18px] pb-[16px] flex flex-col gap-3 overflow-hidden dark:bg-[#1b1b1f] dark:border-[#2f2f35] dark:shadow-[0_18px_38px_rgba(0,0,0,0.55)]"
           >
             <AnimatePresence initial={false}>
               {isExpanded && (
@@ -147,10 +147,10 @@ export default function Home() {
                           className={`flex gap-2 ${message.role === "user" ? "justify-end" : "justify-start"}`}
                         >
                           <div
-                            className={`max-w-[85%] text-sm md:text-[15px] leading-relaxed text-left ${
+                          className={`max-w-[85%] text-sm md:text-[15px] leading-relaxed text-left ${
                               message.role === "user"
-                                ? "bg-[#f2f2f4] text-foreground border border-[rgba(0,0,0,0.06)] rounded-2xl px-3 py-[10px] shadow-[0_6px_14px_rgba(0,0,0,0.05)]"
-                                : "text-foreground"
+                                ? "bg-[#f2f2f4] text-foreground border border-[rgba(0,0,0,0.06)] rounded-2xl px-3 py-[10px] shadow-[0_6px_14px_rgba(0,0,0,0.05)] dark:bg-[#2a2a30] dark:text-white dark:border-[#3a3a42] dark:shadow-[0_8px_18px_rgba(0,0,0,0.45)]"
+                                : "text-foreground dark:text-white"
                             }`}
                           >
                             {message.content}
@@ -173,7 +173,7 @@ export default function Home() {
               <div className="flex-1 relative">
                 <textarea
                   placeholder=""
-                  className="w-full min-h-[72px] resize-none bg-transparent text-[17px] md:text-[17.5px] leading-[1.4] text-foreground focus:outline-none"
+                  className="w-full min-h-[72px] resize-none bg-transparent text-[17px] md:text-[17.5px] leading-[1.4] text-foreground focus:outline-none dark:text-white"
                   aria-label="Ask a question"
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
