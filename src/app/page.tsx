@@ -125,6 +125,49 @@ export default function Home() {
             transition={{ type: "spring", stiffness: 240, damping: 30 }}
             className="w-full rounded-[26px] bg-white border border-[rgba(0,0,0,0.08)] px-[18px] pt-[18px] pb-[16px] flex flex-col gap-3 overflow-hidden"
           >
+            <AnimatePresence initial={false}>
+              {isExpanded && (
+                <motion.div
+                  key="history"
+                  initial={{ height: 0, opacity: 0, y: -6 }}
+                  animate={{ height: "auto", opacity: 1, y: 0 }}
+                  exit={{ height: 0, opacity: 0, y: -6 }}
+                  transition={{ duration: 0.32, ease: "easeInOut" }}
+                  className="w-full flex-1"
+                >
+                  <div className="rounded-[18px] bg-[rgba(0,0,0,0.02)] border border-[rgba(0,0,0,0.04)] px-4 py-3 max-h-[320px] md:max-h-[360px] overflow-y-auto space-y-3 pr-[6px]">
+                    {messages.length === 0 && !isLoading ? (
+                      <p className="text-sm text-muted-foreground">发送后这里会展开显示完整对话。</p>
+                    ) : (
+                      messages.map((message, index) => (
+                        <div
+                          key={`${message.role}-${index}`}
+                          className={`flex gap-2 ${message.role === "user" ? "justify-end" : "justify-start"}`}
+                        >
+                          <div
+                            className={`max-w-[85%] text-sm md:text-[15px] leading-relaxed rounded-2xl px-3 py-[10px] shadow-[0_8px_18px_rgba(0,0,0,0.05)] ${
+                              message.role === "user"
+                                ? "bg-[var(--foreground)] text-white"
+                                : "bg-white border border-[rgba(0,0,0,0.04)] text-foreground"
+                            }`}
+                          >
+                            {message.content}
+                          </div>
+                        </div>
+                      ))
+                    )}
+                    {isLoading && (
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <Loader2 size={16} className="animate-spin" />
+                        <span>正在生成回复…</span>
+                      </div>
+                    )}
+                    <div ref={historyEndRef} />
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
             <div className="flex items-end gap-3">
               <div className="flex-1 relative">
                 <textarea
@@ -164,49 +207,6 @@ export default function Home() {
                 )}
               </button>
             </div>
-
-            <AnimatePresence initial={false}>
-              {isExpanded && (
-                <motion.div
-                  key="history"
-                  initial={{ height: 0, opacity: 0, y: -6 }}
-                  animate={{ height: "auto", opacity: 1, y: 0 }}
-                  exit={{ height: 0, opacity: 0, y: -6 }}
-                  transition={{ duration: 0.32, ease: "easeInOut" }}
-                  className="w-full"
-                >
-                  <div className="rounded-[18px] bg-[rgba(0,0,0,0.02)] border border-[rgba(0,0,0,0.04)] px-4 py-3 max-h-[320px] md:max-h-[360px] overflow-y-auto space-y-3 pr-[6px]">
-                    {messages.length === 0 && !isLoading ? (
-                      <p className="text-sm text-muted-foreground">发送后这里会展开显示完整对话。</p>
-                    ) : (
-                      messages.map((message, index) => (
-                        <div
-                          key={`${message.role}-${index}`}
-                          className={`flex gap-2 ${message.role === "user" ? "justify-end" : "justify-start"}`}
-                        >
-                          <div
-                            className={`max-w-[85%] text-sm md:text-[15px] leading-relaxed rounded-2xl px-3 py-[10px] shadow-[0_8px_18px_rgba(0,0,0,0.05)] ${
-                              message.role === "user"
-                                ? "bg-[var(--foreground)] text-white"
-                                : "bg-white border border-[rgba(0,0,0,0.04)] text-foreground"
-                            }`}
-                          >
-                            {message.content}
-                          </div>
-                        </div>
-                      ))
-                    )}
-                    {isLoading && (
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <Loader2 size={16} className="animate-spin" />
-                        <span>正在生成回复…</span>
-                      </div>
-                    )}
-                    <div ref={historyEndRef} />
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
           </motion.div>
           {error && (
             <p className="text-sm text-red-500 text-left w-full max-w-4xl">
