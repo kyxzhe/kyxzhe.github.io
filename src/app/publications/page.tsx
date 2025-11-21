@@ -78,7 +78,7 @@ const ResourceRow = ({
           href={code.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 text-foreground font-semibold"
+          className="inline-flex items-center gap-1 text-foreground font-semibold hover:underline underline-offset-4"
           onClick={(event) => event.stopPropagation()}
           onKeyDown={(event) => event.stopPropagation()}
         >
