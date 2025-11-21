@@ -187,7 +187,7 @@ export default function ContactPage() {
                   <Link
                     key={label}
                     href={link}
-                    className="rounded-2xl border border-border/70 px-5 py-4 hover:border-foreground/50 transition-colors"
+                    className="block rounded-2xl border border-border/70 px-5 py-4 hover:border-foreground/50 transition-colors"
                   >
                     {content}
                   </Link>
