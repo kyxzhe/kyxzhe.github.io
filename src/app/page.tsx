@@ -89,7 +89,7 @@ export default function Home() {
               {isLoading ? (
                 <Loader2 size={17} className="animate-spin" />
               ) : (
-                <ArrowUp size={19} />
+                <ArrowUp size={20} />
               )}
             </button>
           </div>
