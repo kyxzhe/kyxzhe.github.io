@@ -1,285 +1,161 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { motion } from "motion/react";
-import {
-  Mail,
-  Phone,
-  MapPin,
-  Clock,
-  MessageCircle,
-  Github,
-  Linkedin,
-  CalendarDays,
-} from "lucide-react";
+import { Mail, Phone, MapPin, ArrowUpRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import {
-  cardVariants,
-  containerVariants,
-  textVariants,
-} from "@/lib/animation/variants";
 import { contactInfo } from "@/lib/constants/contact";
 import { socials } from "@/lib/constants/socials";
 import { GoogleScholarIcon, OrcidIcon } from "@/components/icons/AcademicIcons";
-import ContactModal from "@/components/ContactModal";
 
-const contactIntro = `Most collaborations start with a short note that mixes the problem, the people, and the constraints. Email works best so I can digest the context, then we can jump on a call once the questions are clear.`;
-
-const quickFacts = [
-  { value: "< 48h", label: "Average reply" },
-  { value: "10:00–17:00 AEDT", label: "Office hours" },
-];
-
-const contactChannels = [
+const directLines = [
   {
     label: "Email",
     value: contactInfo.email,
-    description: "Fastest route for collaborations and speaking invites.",
-    link: `mailto:${contactInfo.email}`,
+    hint: "Fastest for research and speaking invites.",
+    href: `mailto:${contactInfo.email}`,
     icon: Mail,
   },
   {
     label: "Phone / Signal",
     value: contactInfo.phone,
-    description: "Send a quick text before calling so I can step out of labs.",
-    link: `tel:${contactInfo.phoneRaw}`,
+    hint: "Text first if possible; I reply within Sydney daytime.",
+    href: `tel:${contactInfo.phoneRaw}`,
     icon: Phone,
   },
   {
     label: "Location",
     value: contactInfo.location,
-    description: "Sydney based, remote friendly across APAC & EU time zones.",
+    hint: "Sydney based; async friendly across APAC & EU.",
     icon: MapPin,
   },
-  {
-    label: "Focus",
-    value: contactInfo.availability,
-    description: "Preview the goals + data realities and I’ll tailor the response.",
-    icon: Clock,
-  },
 ];
 
-const schedulingNotes = [
-  {
-    title: "Context first",
-    detail: "Share problem framing, stakeholders, and success signals so I can prep useful questions.",
-  },
-  {
-    title: "Async friendly",
-    detail: "I recap key points via email/Notion after calls for visibility across teams.",
-  },
-  {
-    title: "Urgent signals",
-    detail: "Flag deadlines in the subject line; I triage inboxes daily at 09:00 AEDT.",
-  },
+const replyNotes = [
+  "Include the decision maker and timeline so I can tailor the first response.",
+  "I check email at 09:00 and 16:00 AEDT—flag urgent items in the subject.",
+  "Short Loom or doc links are welcome if they summarise context quickly.",
 ];
 
-const collaborationFocus = [
-  "Diffusion modelling & intervention strategy",
+const collaborationAreas = [
+  "Diffusion experiments and intervention design",
   "Robust learning under noisy or biased supervision",
-  "Designing reading groups, guest lectures, or mentoring",
-  "Evaluating ranking + moderation pipelines",
+  "Ranking, recommendation, and moderation evaluations",
+  "Guest lectures, reading groups, or mentoring slots",
 ];
 
 const socialLinks = [
-  { label: "LinkedIn", href: socials.linkedin, icon: <Linkedin size={18} /> },
-  { label: "Google Scholar", href: socials.googleScholar, icon: <GoogleScholarIcon className="w-5 h-5" /> },
-  { label: "ORCID", href: socials.orcid, icon: <OrcidIcon className="w-5 h-5" /> },
-  { label: "GitHub", href: socials.github, icon: <Github size={18} /> },
+  { label: "LinkedIn", href: socials.linkedin, icon: <ArrowUpRight size={14} /> },
+  { label: "Google Scholar", href: socials.googleScholar, icon: <ArrowUpRight size={14} /> },
+  { label: "ORCID", href: socials.orcid, icon: <ArrowUpRight size={14} /> },
+  { label: "GitHub", href: socials.github, icon: <ArrowUpRight size={14} /> },
 ];
 
 export default function ContactPage() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
   return (
-    <div className="flex flex-col min-h-screen font-sans pt-2 md:pt-0 lg:py-6 xl:py-0 xl:pb-6 overflow-visible">
+    <div className="min-h-screen bg-white text-[#141414] dark:bg-[#0b0b0d] dark:text-[#f5f5f5]">
       <Navbar />
-      <motion.main
-        className="flex-1 flex flex-col items-center gap-16 px-4 md:px-16 lg:px-24 py-12"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        <motion.section
-          className="max-w-4xl w-full flex flex-col gap-8"
-          variants={cardVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          <motion.p
-            className="text-xs uppercase tracking-[0.3em] text-muted-foreground"
-            variants={textVariants}
-          >
-            Contact Kevin
-          </motion.p>
-          <div className="space-y-4">
-            <motion.h1
-              className="text-4xl md:text-5xl font-semibold leading-tight"
-              variants={textVariants}
+      <main className="flex-1 mx-auto w-full max-w-5xl px-2 md:px-4 lg:px-0 py-6 flex flex-col gap-12">
+        <section className="mt-4 space-y-3">
+          <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Contact</p>
+          <h1 className="text-[2.4rem] md:text-[2.6rem] font-semibold leading-tight text-foreground">
+            Let&apos;s talk about social data and robust ML
+          </h1>
+          <p className="text-[15px] md:text-base text-muted-foreground max-w-2xl leading-relaxed">
+            A quick note with the problem, constraints, and people involved helps me respond with next steps. Email is the clearest channel; we can schedule a call after the context is set.
+          </p>
+          <div className="flex flex-wrap gap-3 pt-1">
+            <Link
+              href={`mailto:${contactInfo.email}`}
+              className="px-6 md:px-7 py-3 rounded-full text-sm md:text-base font-semibold shadow-[0_14px_28px_rgba(0,0,0,0.12)] transition duration-200 hover:-translate-y-[2px] bg-[#141414] text-white dark:bg-[#f5f5f5] dark:text-[#0b0b0d]"
             >
-              Let’s make research conversational
-            </motion.h1>
-            <motion.p
-              className="text-base md:text-lg text-foreground/80 whitespace-pre-line leading-relaxed"
-              variants={textVariants}
-            >
-              {contactIntro}
-            </motion.p>
-          </div>
-          <motion.div
-            className="flex flex-wrap gap-x-8 gap-y-2 text-sm text-foreground/70"
-            variants={textVariants}
-          >
-            <span>📍 {contactInfo.location}</span>
-            <span>🕘 AEDT · async updates welcome</span>
-            <span>🧠 Social data, ranking systems, people ops</span>
-          </motion.div>
-          <motion.div
-            className="grid grid-cols-2 sm:max-w-sm gap-6"
-            variants={textVariants}
-          >
-            {quickFacts.map((fact) => (
-              <div key={fact.label}>
-                <p className="text-4xl font-semibold leading-none">{fact.value}</p>
-                <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mt-3">{fact.label}</p>
-              </div>
-            ))}
-          </motion.div>
-          <motion.div
-            className="flex flex-col sm:flex-row gap-4"
-            variants={textVariants}
-          >
-            <Link href={`mailto:${contactInfo.email}`} className="btn-primary inline-flex justify-center">
               Email Kevin
             </Link>
             <Link
-              href="/"
-              className="text-foreground/60 text-center underline underline-offset-4 hover:text-foreground transition-colors"
+              href="/publications"
+              className="px-6 md:px-7 py-3 rounded-full border text-sm md:text-base font-semibold transition duration-200 hover:-translate-y-[1px] border-[rgba(0,0,0,0.12)] bg-white text-foreground shadow-[0_10px_24px_rgba(0,0,0,0.06)] dark:border-[#666] dark:bg-[#1a1a1d] dark:text-white dark:shadow-[0_10px_24px_rgba(0,0,0,0.3)]"
             >
-              Back to work overview
+              View work
             </Link>
-          </motion.div>
-        </motion.section>
-
-        <motion.section
-          className="w-full max-w-5xl grid gap-10 lg:grid-cols-2"
-          variants={cardVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          <div className="surface-card p-6 space-y-6">
-            <div className="space-y-2">
-              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Reach out</p>
-              <h2 className="text-2xl font-semibold">Preferred channels</h2>
-              <p className="text-sm text-foreground/70">Pick the lane that fits your project; I’ll steer us to the right medium if we need deeper dives.</p>
-            </div>
-            <div className="space-y-4">
-              {contactChannels.map(({ label, value, description, link, icon: Icon }) => {
-                const content = (
-                  <div className="flex flex-col gap-2">
-                    <div className="flex items-center gap-2 text-sm uppercase tracking-[0.25em] text-muted-foreground">
-                      <Icon size={16} />
-                      <span>{label}</span>
-                    </div>
-                    <p className="text-lg font-medium text-foreground">{value}</p>
-                    <p className="text-sm text-foreground/70 leading-relaxed">{description}</p>
-                  </div>
-                );
-
-                return link ? (
-                  <Link
-                    key={label}
-                    href={link}
-                    className="block rounded-2xl border border-border/70 px-5 py-4 hover:border-foreground/50 transition-colors"
-                  >
-                    {content}
-                  </Link>
-                ) : (
-                  <div key={label} className="rounded-2xl border border-border/70 px-5 py-4">
-                    {content}
-                  </div>
-                );
-              })}
-            </div>
           </div>
+        </section>
 
-          <div className="surface-card p-6 flex flex-col gap-5">
-            <div className="space-y-2">
-              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Scheduling</p>
-              <h3 className="text-xl font-semibold">How I plan calls</h3>
-            </div>
-            <div className="space-y-4 text-sm text-foreground/80">
-              {schedulingNotes.map((note) => (
-                <div key={note.title} className="space-y-1">
-                  <p className="font-medium">{note.title}</p>
-                  <p className="text-foreground/70 leading-relaxed">{note.detail}</p>
+        <section className="space-y-4">
+          <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">Direct lines</p>
+          <div className="border-y border-[rgba(0,0,0,0.08)] dark:border-white/15 divide-y divide-[rgba(0,0,0,0.08)] dark:divide-white/15">
+            {directLines.map(({ label, value, hint, href, icon: Icon }) => {
+              const Row = (
+                <div className="flex flex-col gap-1 py-4">
+                  <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.26em] text-muted-foreground">
+                    {Icon && <Icon size={14} />}
+                    <span>{label}</span>
+                  </div>
+                  <p className="text-lg font-medium text-foreground">{value}</p>
+                  <p className="text-sm text-muted-foreground">{hint}</p>
                 </div>
-              ))}
-            </div>
-            <div className="rounded-2xl border border-dashed border-[var(--accent)]/50 px-4 py-4 flex gap-3 items-start text-sm text-foreground/80">
-              <MessageCircle size={18} className="text-[var(--accent)]" />
-              <p>Need a quick sync? Mention the urgency in your subject line and I’ll prioritise the reply.</p>
-            </div>
-            <button
-              type="button"
-              onClick={() => setIsModalOpen(true)}
-              className="btn-primary inline-flex items-center gap-2 w-fit"
-            >
-              <CalendarDays size={18} />
-              Browse availability
-            </button>
-          </div>
-        </motion.section>
+              );
 
-        <motion.section
-          className="w-full max-w-5xl grid gap-12 lg:grid-cols-2"
-          variants={cardVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          <div className="surface-card p-6 space-y-5">
-            <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Project fit</p>
-            <h2 className="text-2xl font-semibold">Where I add the most value</h2>
-            <p className="text-sm text-foreground/70 leading-relaxed">
-              I collaborate with researchers, civic orgs, and product teams who need rigorous takes on social data problems. Bring messy datasets, moderation decisions, or ranking questions.
-            </p>
-            <ul className="space-y-3 text-sm text-foreground/80">
-              {collaborationFocus.map((focus) => (
-                <li key={focus} className="flex items-start gap-2">
+              return href ? (
+                <Link key={label} href={href} className="block hover:text-foreground transition-colors">
+                  {Row}
+                </Link>
+              ) : (
+                <div key={label}>{Row}</div>
+              );
+            })}
+          </div>
+        </section>
+
+        <section className="grid gap-10 lg:grid-cols-2">
+          <div className="space-y-3">
+            <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">How to get a reply</p>
+            <h2 className="text-xl font-semibold text-foreground">Keep it lightweight</h2>
+            <ul className="space-y-3 text-sm text-foreground/80 leading-relaxed">
+              {replyNotes.map((note) => (
+                <li key={note} className="flex gap-2">
                   <span className="text-[var(--accent)]">•</span>
-                  <span className="leading-relaxed">{focus}</span>
+                  <span>{note}</span>
                 </li>
               ))}
             </ul>
           </div>
 
-          <div className="surface-card p-6 space-y-5">
-            <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Elsewhere</p>
-            <h2 className="text-2xl font-semibold">Connect online</h2>
-            <div className="space-y-3">
-              {socialLinks.map(({ label, href, icon }) => (
-                <Link
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="card-row hoverable gap-3"
-                >
-                  {icon}
-                  <span>{label}</span>
-                </Link>
+          <div className="space-y-3">
+            <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">Collaboration fit</p>
+            <h2 className="text-xl font-semibold text-foreground">Where I add value</h2>
+            <ul className="space-y-3 text-sm text-foreground/80 leading-relaxed">
+              {collaborationAreas.map((area) => (
+                <li key={area} className="flex gap-2">
+                  <span className="text-[var(--accent)]">•</span>
+                  <span>{area}</span>
+                </li>
               ))}
-            </div>
-            <p className="text-sm text-foreground/70 leading-relaxed">
-              I share drafts, slides, and reading group notes across these channels. Add a quick line about how you’d like to collaborate.
-            </p>
+            </ul>
           </div>
-        </motion.section>
-      </motion.main>
+        </section>
+
+        <section className="space-y-3">
+          <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">Profiles</p>
+          <h2 className="text-xl font-semibold text-foreground">Find me elsewhere</h2>
+          <div className="flex flex-wrap gap-3">
+            {socialLinks.map(({ label, href, icon }) => (
+              <Link
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-4 py-2 border border-[rgba(0,0,0,0.12)] dark:border-white/20 rounded-full text-sm font-medium hover:-translate-y-[1px] transition"
+              >
+                <span>{label}</span>
+                {label === "Google Scholar" && <GoogleScholarIcon className="w-4 h-4" />}
+                {label === "ORCID" && <OrcidIcon className="w-4 h-4" />}
+                {icon}
+              </Link>
+            ))}
+          </div>
+        </section>
+      </main>
       <Footer className="mb-4" />
-      <ContactModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   );
 }
