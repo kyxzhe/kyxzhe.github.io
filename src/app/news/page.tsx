@@ -51,10 +51,10 @@ const ListRow = ({ item }: { item: NewsItem }) => {
     <article className="group flex flex-col gap-3 py-6 border-b border-[rgba(0,0,0,0.08)] transition-colors hover:border-foreground/70">
       <p className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground">{item.category}</p>
       <div className="flex items-start justify-between gap-3">
-        <h3 className="text-xl font-semibold leading-snug text-foreground">{item.title}</h3>
-        <p className="text-xs text-muted-foreground whitespace-nowrap">{formatDate(item.date)}</p>
+        <h3 className="text-xl md:text-2xl font-semibold leading-snug text-foreground">{item.title}</h3>
+        <p className="text-sm text-muted-foreground whitespace-nowrap">{formatDate(item.date)}</p>
       </div>
-      <p className="text-sm text-foreground/80 leading-relaxed max-w-3xl">{item.summary}</p>
+      <p className="text-sm md:text-[15px] text-foreground/80 leading-relaxed max-w-3xl">{item.summary}</p>
     </article>
   );
 
