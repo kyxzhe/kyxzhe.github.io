@@ -23,13 +23,13 @@ export default function Home() {
               href="/publications"
               className="px-6 md:px-7 py-3 rounded-full bg-[var(--foreground)] text-[#f7f7f7] text-sm md:text-base font-semibold shadow-[0_14px_28px_rgba(0,0,0,0.16)] transition duration-200 hover:-translate-y-[2px]"
             >
-              View research
+              View publications
             </Link>
             <Link
-              href="/news"
+              href="/contact"
               className="px-6 md:px-7 py-3 rounded-full border border-[rgba(0,0,0,0.08)] bg-white text-sm md:text-base font-semibold text-foreground shadow-[0_10px_24px_rgba(0,0,0,0.06)] transition duration-200 hover:-translate-y-[1px]"
             >
-              Recent updates
+              Get in touch
             </Link>
           </div>
         </section>
@@ -59,10 +59,10 @@ export default function Home() {
               <ArrowUpRight size={14} />
             </Link>
             <Link
-              href="/news"
+              href="/contact"
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[rgba(0,0,0,0.1)] bg-white text-foreground transition hover:border-foreground"
             >
-              News
+              Collaborate
               <ArrowUpRight size={14} />
             </Link>
           </div>
