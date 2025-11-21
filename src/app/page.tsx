@@ -142,10 +142,10 @@ export default function Home() {
                       messages.map((message, index) => (
                         <div
                           key={`${message.role}-${index}`}
-                          className="flex gap-2 justify-start"
+                          className={`flex gap-2 ${message.role === "user" ? "justify-end" : "justify-start"}`}
                         >
                           <div
-                            className={`max-w-[85%] text-sm md:text-[15px] leading-relaxed ${
+                            className={`max-w-[85%] text-sm md:text-[15px] leading-relaxed text-left ${
                               message.role === "user"
                                 ? "bg-[#f2f2f4] text-foreground border border-[rgba(0,0,0,0.06)] rounded-2xl px-3 py-[10px] shadow-[0_6px_14px_rgba(0,0,0,0.05)]"
                                 : "text-foreground"
