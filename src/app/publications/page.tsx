@@ -58,46 +58,40 @@ const AuthorLine = ({ authors }: { authors: string[] }) => (
   <p className="text-sm text-muted-foreground">{authors.join(", ")}</p>
 );
 
-const ResourceBadges = ({
+const ResourceRow = ({
+  venue,
   resources,
   interactive = true,
 }: {
+  venue: string;
   resources?: PublicationResource[];
   interactive?: boolean;
 }) => {
-  if (!resources?.length) return null;
-  // Only show the first resource (usually venue) and the last (often code), matching original inline style
-  const displayResources = resources.length > 1 ? [resources[0], resources[resources.length - 1]] : resources;
+  const code = resources?.find((res) => res.type === "code");
+  const showDot = Boolean(code);
+
   return (
-    <div className="flex flex-wrap gap-2">
-      {displayResources.map((resource, idx) => {
-        const content = (
-          <span className="inline-flex items-center gap-1 text-[11px] uppercase tracking-[0.28em] font-semibold text-foreground">
-            {resource.label}
-            <ArrowUpRight size={12} />
-          </span>
-        );
-
-        if (!interactive) {
-          return (
-            <span key={`${resource.type}-${resource.url}`} className="inline-flex">
-              {content}
-            </span>
-          );
-        }
-
-        return (
+    <div className="flex flex-wrap items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-muted-foreground">
+      <span>{venue}</span>
+      {showDot && <span>·</span>}
+      {code && (
+        interactive ? (
           <Link
-            key={`${resource.type}-${resource.url}`}
-            href={resource.url}
+            href={code.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex"
+            className="inline-flex items-center gap-1 text-foreground font-semibold"
           >
-            {content}
+            {code.label}
+            <ArrowUpRight size={12} />
           </Link>
-        );
-      })}
+        ) : (
+          <span className="inline-flex items-center gap-1 text-foreground font-semibold">
+            {code.label}
+            <ArrowUpRight size={12} />
+          </span>
+        )
+      )}
     </div>
   );
 };
@@ -111,12 +105,7 @@ const ListRow = ({ item }: { item: Publication }) => {
           <h3 className="text-xl font-semibold leading-snug text-foreground">{item.title}</h3>
           <AuthorLine authors={item.authors} />
           <p className="text-sm text-foreground/80 leading-relaxed max-w-3xl">{item.summary}</p>
-          <div className="flex flex-wrap items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-muted-foreground">
-            {(!item.resources || item.resources.length === 0) && <span>{item.venue}</span>}
-            {item.resources && item.resources.length > 0 && (
-              <ResourceBadges resources={item.resources} interactive={!item.link} />
-            )}
-          </div>
+          <ResourceRow venue={item.venue} resources={item.resources} interactive={!item.link} />
         </div>
         <p className="text-xs text-muted-foreground whitespace-nowrap">{formatDate(item.date)}</p>
       </div>
@@ -211,12 +200,7 @@ export default function PublicationsPage() {
           <h3 className="text-lg font-semibold leading-snug">{item.title}</h3>
           <AuthorLine authors={item.authors} />
           <p className="text-sm text-foreground/80 flex-1">{item.summary}</p>
-          <div className="flex flex-wrap items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-muted-foreground">
-            {(!item.resources || item.resources.length === 0) && <span>{item.venue}</span>}
-            {item.resources && item.resources.length > 0 && (
-              <ResourceBadges resources={item.resources} interactive={!item.link} />
-            )}
-          </div>
+          <ResourceRow venue={item.venue} resources={item.resources} interactive={!item.link} />
         </div>
       </motion.article>
     );
