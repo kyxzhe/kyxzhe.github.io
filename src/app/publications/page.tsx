@@ -66,9 +66,11 @@ const ResourceBadges = ({
   interactive?: boolean;
 }) => {
   if (!resources?.length) return null;
+  // Only show the first resource (usually venue) and the last (often code), matching original inline style
+  const displayResources = resources.length > 1 ? [resources[0], resources[resources.length - 1]] : resources;
   return (
     <div className="flex flex-wrap gap-2">
-      {resources.map((resource) => {
+      {displayResources.map((resource, idx) => {
         const content = (
           <span className="inline-flex items-center gap-1 text-[11px] uppercase tracking-[0.28em] font-semibold text-foreground">
             {resource.label}
