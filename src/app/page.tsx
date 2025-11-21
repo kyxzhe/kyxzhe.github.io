@@ -14,7 +14,28 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
-  const replyPlaceholder = "继续输入你的回复…";
+  const rotatingPlaceholders = [
+    "Ask anything",
+    "提问任何问题",
+    "質問は何でもどうぞ",
+    "Pregunte lo que quiera",
+    "Posez n'importe quelle question",
+    "Was möchtest du wissen?",
+    "Chiedi qualsiasi cosa",
+    "Спросите что угодно",
+    "¿Qué quieres saber?",
+    "Que souhaitez-vous savoir ?",
+    "어떤 것이든 물어보세요",
+  ];
+  const [placeholderIndex, setPlaceholderIndex] = useState(0);
+
+  useEffect(() => {
+    const rotate = () => {
+      setPlaceholderIndex((prev) => (prev + 1) % rotatingPlaceholders.length);
+    };
+    const id = setInterval(rotate, 6000);
+    return () => clearInterval(id);
+  }, [rotatingPlaceholders.length]);
 
   const handleSend = useCallback(async () => {
     const nextPrompt = prompt.trim();
@@ -60,7 +81,8 @@ export default function Home() {
     historyEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [messages.length, isLoading]);
 
-  const showPlaceholderOverlay = !prompt.trim() && messages.length > 0;
+  const showPlaceholderOverlay = !prompt.trim() && messages.length === 0;
+  const showCaretHint = !prompt.trim() && messages.length > 0;
 
   return (
     <div className="flex flex-col min-h-screen font-sans">
@@ -159,16 +181,30 @@ export default function Home() {
                   onKeyDown={handleKeyDown}
                 />
                 {showPlaceholderOverlay && (
-                  <AnimatePresence>
+                  <AnimatePresence mode="wait">
                     <motion.div
-                      key="reply-placeholder"
+                      key={placeholderIndex}
                       initial={{ y: 10, opacity: 0 }}
-                      animate={{ y: 0, opacity: 0.7 }}
-                      exit={{ y: -8, opacity: 0 }}
-                      transition={{ duration: 0.22, ease: "easeOut" }}
+                      animate={{ y: 0, opacity: 1 }}
+                      exit={{ y: -10, opacity: 0 }}
+                      transition={{ duration: 0.32, ease: "easeOut" }}
                       className="pointer-events-none absolute left-0 top-0 right-0 text-[17px] md:text-[17.5px] leading-[1.4] text-muted-foreground"
                     >
-                      {replyPlaceholder}
+                      {rotatingPlaceholders[placeholderIndex]}
+                    </motion.div>
+                  </AnimatePresence>
+                )}
+                {showCaretHint && (
+                  <AnimatePresence>
+                    <motion.div
+                      key="caret-hint"
+                      initial={{ y: 6, opacity: 0 }}
+                      animate={{ y: 0, opacity: 0.8 }}
+                      exit={{ y: -6, opacity: 0 }}
+                      transition={{ duration: 0.18, ease: "easeOut" }}
+                      className="pointer-events-none absolute left-0 top-0 text-[17px] md:text-[17.5px] leading-[1.4] text-muted-foreground"
+                    >
+                      ▸
                     </motion.div>
                   </AnimatePresence>
                 )}
