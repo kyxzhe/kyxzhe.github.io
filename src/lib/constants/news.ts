@@ -1,9 +1,4 @@
-export type NewsCategory =
-  | "Research"
-  | "Milestone"
-  | "Certification"
-  | "Product"
-  | "Interview";
+export type NewsCategory = "RESEARCH" | "AWARD" | "MILESTONE" | "TALK";
 
 export type NewsItem = {
   id: string;
@@ -21,7 +16,7 @@ export const newsItems: NewsItem[] = [
   {
     id: "phd-start",
     title: "Started PhD at UTS Behavioural Data Science Lab",
-    category: "Research",
+    category: "RESEARCH",
     date: "2025-09-05",
     summary:
       "Joined Marian-Andrei Rizoiu and the Behavioural Data Science Lab to study information diffusion and robust ML for social platforms.",
@@ -31,7 +26,7 @@ export const newsItems: NewsItem[] = [
   {
     id: "medal",
     title: "Awarded: University Medal · University of Sydney",
-    category: "Milestone",
+    category: "AWARD",
     date: "2025-09-01",
     summary:
       "Honours thesis on noisy-label learning capped off with the University Medal—grateful for every messy dataset that led here.",
@@ -41,7 +36,7 @@ export const newsItems: NewsItem[] = [
   {
     id: "aws-cert",
     title: "Certified: AWS Machine Learning – Specialty",
-    category: "Certification",
+    category: "AWARD",
     date: "2025-01-12",
     summary:
       "Passed the AWS ML Specialty exam to benchmark production-ready practices for future platform-scale experiments.",
@@ -53,7 +48,7 @@ export const newsItems: NewsItem[] = [
   {
     id: "placeholder-diffusion",
     title: "[Placeholder] Diffusion Horizons update",
-    category: "Research",
+    category: "RESEARCH",
     date: "2024-11-20",
     summary:
       "Placeholder entry for layout testing—swap with the next real diffusion brief when ready.",
@@ -63,7 +58,7 @@ export const newsItems: NewsItem[] = [
   {
     id: "placeholder-lab-demo",
     title: "[Placeholder] Lab demo tour",
-    category: "Milestone",
+    category: "MILESTONE",
     date: "2024-08-05",
     summary: "Placeholder slot for future demo recaps.",
     topics: ["Demo"],
@@ -72,7 +67,7 @@ export const newsItems: NewsItem[] = [
   {
     id: "placeholder-interview",
     title: "[Placeholder] Interview on noisy supervision",
-    category: "Interview",
+    category: "TALK",
     date: "2024-06-12",
     summary: "Reserved for upcoming interview summary.",
     topics: ["Interview"],
@@ -81,7 +76,7 @@ export const newsItems: NewsItem[] = [
   {
     id: "placeholder-panel",
     title: "[Placeholder] Panel on responsible ML",
-    category: "Milestone",
+    category: "MILESTONE",
     date: "2024-04-22",
     summary: "Holding space for an upcoming panel recap.",
     topics: ["Panel"],
@@ -90,7 +85,7 @@ export const newsItems: NewsItem[] = [
   {
     id: "placeholder-field-note",
     title: "[Placeholder] Field note on cascade mapping",
-    category: "Research",
+    category: "RESEARCH",
     date: "2024-02-10",
     summary: "Placeholder entry to exercise the news grid.",
     topics: ["Field Note"],
