@@ -133,7 +133,7 @@ export default function AboutPage() {
                   <p className="text-xs uppercase tracking-[0.2em] text-[rgba(0,0,0,0.6)] dark:text-black">
                     {item.period}
                   </p>
-                  <h3 className="text-lg font-medium">{item.title}</h3>
+                  <h3 className="text-[17px] font-medium">{item.title}</h3>
                   <p className="text-sm text-[rgba(0,0,0,0.6)] dark:text-black">{item.org}</p>
                   <p className="text-sm text-[rgba(0,0,0,0.6)] dark:text-black">{item.detail}</p>
                 </div>
