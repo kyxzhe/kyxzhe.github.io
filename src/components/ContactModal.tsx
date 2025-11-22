@@ -234,7 +234,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                   <p className="text-lg md:text-xl text-muted-foreground">
                     {mode === "info"
                       ? "Share what you need, who is involved, and any constraints. I will outline the next steps."
-                      : "Pick a time, add context, and I will confirm by email."}
+                      : "Choose a time and add a short note. I will confirm by email."}
                   </p>
                 </motion.div>
 
