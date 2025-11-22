@@ -125,7 +125,7 @@ export default function ContactPage() {
                       <span>{label}</span>
                     </div>
                     <p className="text-[17px] font-medium text-foreground">{value}</p>
-                    <p className="text-[15px] text-[rgba(0,0,0,0.6)] dark:text-black">{hint}</p>
+                    <p className="text-[14px] text-[rgba(0,0,0,0.6)] dark:text-black">{hint}</p>
                   </div>
                 );
 
