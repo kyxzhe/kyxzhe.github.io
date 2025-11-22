@@ -94,7 +94,7 @@ export default function AboutPage() {
 
           <div className="grid gap-10 lg:grid-cols-2">
             <div className="space-y-5">
-              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Focus areas</p>
+              <p className="text-[14px] uppercase tracking-[0.3em] text-muted-foreground">Focus areas</p>
               <div className="space-y-4 text-sm">
                 {researchFocus.map((item) => (
                   <p key={item} className="text-foreground dark:text-black">
