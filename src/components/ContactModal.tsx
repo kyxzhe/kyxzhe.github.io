@@ -75,9 +75,11 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
       Array.from({ length: 120 }).map((_, i) => {
         const angle = Math.random() * Math.PI * 2;
         const speed = 30 + Math.random() * 80;
+        const xStart = (Math.random() - 0.5) * 360; // spread across panel width
+        const yStart = (Math.random() - 0.5) * 120; // spread across panel height
         return {
-          x: Math.random() * 100,
-          y: Math.random() * 100,
+          xStart,
+          yStart,
           dx: Math.cos(angle) * speed,
           dy: Math.sin(angle) * speed,
           delay: Math.random() * 0.35 + i * 0.0015,
@@ -259,12 +261,12 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                         left: "50%",
                         top: "50%",
                       }}
-                      initial={{ x: 0, y: 0, opacity: 0.85, scale: 1 }}
+                      initial={{ x: p.xStart, y: p.yStart, opacity: 0.9, scale: 1 }}
                       animate={{
-                        x: p.dx * 0.4,
-                        y: p.dy * 0.4,
-                        opacity: 0.9,
-                        scale: 1,
+                        x: p.xStart * 0.12,
+                        y: p.yStart * 0.12,
+                        opacity: 0.95,
+                        scale: 0.9,
                       }}
                       transition={{
                         duration: 2,
@@ -283,7 +285,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                         left: "50%",
                         top: "50%",
                       }}
-                      initial={{ x: p.dx * 0.4, y: p.dy * 0.4, opacity: 0.9, scale: 1 }}
+                      initial={{ x: p.xStart * 0.12, y: p.yStart * 0.12, opacity: 0.95, scale: 0.9 }}
                       animate={{
                         x: p.dx,
                         y: p.dy,
