@@ -52,7 +52,9 @@ const aboutIntro = `I’m a PhD student at the University of Technology Sydney, 
 
 Before the PhD, I studied at the University of Sydney (and somehow graduated with a University Medal). Teaching data science and ML became a favourite way to understand tough ideas—there’s nothing like explaining a concept to realise where the gaps are.
 
-Outside academia I’m usually carrying a film camera, hunting for the next coffee spot, or sweating it out at the gym. I rotate hobbies like archery, and I’m always down to trade recommendations for diving, skydiving, or the best flat white in Sydney. If you want to chat about research, photography, or travel-fuelled ideas, feel free to reach out.`;
+Outside academia I’m usually carrying a film camera, hunting for the next coffee spot, or sweating it out at the gym. I rotate hobbies like archery, and I’m always down to trade recommendations for diving, skydiving, or the best flat white in Sydney. If you want to chat about research, photography, or travel-fuelled ideas, feel free to reach out.
+
+If you’d like to talk about research, photography, or the eternal debate over the best flat white in Sydney, feel free to reach out!`;
 
 export default function AboutPage() {
   return (
@@ -166,11 +168,6 @@ export default function AboutPage() {
               </div>
             </div>
           </div>
-        </section>
-        <section className="w-full max-w-4xl mx-auto text-sm text-foreground/70 leading-relaxed">
-          <p>
-            If you’d like to talk about research, photography, or the eternal debate over the best flat white in Sydney, feel free to reach out!
-          </p>
         </section>
       </motion.main>
       <Footer className="mb-4" />
