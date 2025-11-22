@@ -10,7 +10,6 @@ import {
   MapPin,
   Github,
   Linkedin,
-  ArrowLeft,
   SendHorizonal,
   CalendarDays,
   Check,
@@ -507,27 +506,18 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                     initial="hidden"
                     animate="visible"
                   >
-                    <div className="flex flex-wrap gap-3 items-center justify-between">
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => setMode("info")}
-                      className="card-row hoverable justify-center text-sm"
-                    >
-                      <ArrowLeft size={16} />
-                      Back
-                    </button>
-                      </div>
-                      {submissionState === "success" && (
-                        <span className="inline-flex items-center gap-1 text-xs uppercase tracking-[0.3em] text-green-500">
-                          <Check size={14} /> Confirmed
-                        </span>
-                      )}
-                      {submissionState === "error" && (
-                        <span className="inline-flex items-center gap-1 text-xs uppercase tracking-[0.3em] text-red-500">
-                          <AlertCircle size={14} /> Failed
-                        </span>
-                      )}
-                    </div>
+                        <div className="flex flex-wrap gap-3 items-center justify-end">
+                          {submissionState === "success" && (
+                            <span className="inline-flex items-center gap-1 text-xs uppercase tracking-[0.3em] text-green-500">
+                              <Check size={14} /> Confirmed
+                            </span>
+                          )}
+                          {submissionState === "error" && (
+                            <span className="inline-flex items-center gap-1 text-xs uppercase tracking-[0.3em] text-red-500">
+                              <AlertCircle size={14} /> Failed
+                            </span>
+                          )}
+                        </div>
 
                     <div className="surface-card p-4">
                       <div className="flex items-center justify-between mb-2">
