@@ -84,7 +84,7 @@ export default function Home() {
   const showCaretHint = !prompt.trim() && messages.length > 0;
 
   return (
-    <div className="flex flex-col min-h-screen font-sans">
+    <div className="flex flex-col min-h-screen font-sans font-medium">
       <Navbar />
       <main className="flex-1 w-full flex flex-col items-center justify-center text-center px-6 md:px-12 lg:px-16 pb-16 gap-10 md:gap-14">
         <section className="w-full max-w-3xl flex flex-col items-center gap-5 md:gap-6">
@@ -100,13 +100,13 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row items-center gap-3 mt-4">
             <Link
               href="/publications"
-              className="px-6 md:px-7 py-3 rounded-full text-sm md:text-base font-semibold shadow-[0_14px_28px_rgba(0,0,0,0.16)] transition duration-200 hover:-translate-y-[2px] bg-[#141414] text-white dark:bg-[#f5f5f5] dark:text-[#0b0b0d]"
+              className="px-6 md:px-7 py-3 rounded-full text-sm md:text-base font-medium shadow-[0_14px_28px_rgba(0,0,0,0.16)] transition duration-200 hover:-translate-y-[2px] bg-[#141414] text-white dark:bg-[#f5f5f5] dark:text-[#0b0b0d]"
             >
               View publications
             </Link>
             <Link
               href="/contact"
-              className="px-6 md:px-7 py-3 rounded-full border text-sm md:text-base font-semibold transition duration-200 hover:-translate-y-[1px] border-[rgba(0,0,0,0.12)] bg-white text-foreground shadow-[0_10px_24px_rgba(0,0,0,0.06)] dark:border-[#666] dark:bg-[#1a1a1d] dark:text-white dark:shadow-[0_10px_24px_rgba(0,0,0,0.3)]"
+              className="px-6 md:px-7 py-3 rounded-full border text-sm md:text-base font-medium transition duration-200 hover:-translate-y-[1px] border-[rgba(0,0,0,0.12)] bg-white text-foreground shadow-[0_10px_24px_rgba(0,0,0,0.06)] dark:border-[#666] dark:bg-[#1a1a1d] dark:text-white dark:shadow-[0_10px_24px_rgba(0,0,0,0.3)]"
             >
               Contact
             </Link>
