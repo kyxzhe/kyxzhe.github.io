@@ -56,7 +56,20 @@ const sortOptions: { label: string; value: SortMode }[] = [
 ];
 
 const AuthorLine = ({ authors }: { authors: string[] }) => (
-  <p className="text-sm text-muted-foreground">{authors.join(", ")}</p>
+  <p className="text-sm text-muted-foreground">
+    {authors.map((author, index) => {
+      const highlight = author.toLowerCase().includes("yuxiang zheng");
+      return (
+        <span
+          key={`${author}-${index}`}
+          className={highlight ? "font-semibold text-foreground" : ""}
+        >
+          {author}
+          {index < authors.length - 1 && ", "}
+        </span>
+      );
+    })}
+  </p>
 );
 
 const ResourceRow = ({
