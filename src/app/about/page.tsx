@@ -150,7 +150,7 @@ export default function AboutPage() {
                 I partner with researchers and product teams on diffusion modelling,
                 moderation strategy, and responsible experimentation with social data.
               </p>
-              <div className="flex flex-col gap-2 text-sm max-w-xs">
+              <div className="flex flex-col gap-2 text-sm max-w-xs mx-auto items-center">
                 <Link
                   href={`mailto:${contactInfo.email}`}
                   className="btn-primary inline-flex justify-center"
