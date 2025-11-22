@@ -220,19 +220,23 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
           }}
         >
         <motion.div
-          className={`surface-card p-6 md:p-8 lg:p-12 w-full max-w-4xl max-h-[90vh] overflow-y-auto relative ${celebrate ? "shadow-none border-transparent bg-transparent" : ""}`}
+          className={
+            celebrate
+              ? "relative w-full max-w-4xl max-h-[90vh] overflow-visible"
+              : "surface-card p-6 md:p-8 lg:p-12 w-full max-w-4xl max-h-[90vh] overflow-y-auto relative"
+          }
           variants={modalVariants}
           initial="hidden"
-            animate={
-              celebrate
-                ? { scale: [1, 0.78, 1.08, 0.55], opacity: [1, 0.9, 1, 0.4] }
-                : { scale: 1, opacity: 1 }
-            }
-            transition={
-              celebrate
-                ? { duration: 2.4, ease: [0.16, 1, 0.3, 1], times: [0, 0.2, 0.6, 1] }
-                : undefined
-            }
+          animate={
+            celebrate
+              ? { scale: [1, 0.78, 1.05, 0.45], opacity: [1, 0.6, 0.4, 0] }
+              : { scale: 1, opacity: 1 }
+          }
+          transition={
+            celebrate
+              ? { duration: 2.4, ease: [0.16, 1, 0.3, 1], times: [0, 0.2, 0.6, 1] }
+              : undefined
+          }
           exit="exit"
           onClick={(e) => e.stopPropagation()}
         >
