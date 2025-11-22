@@ -83,7 +83,7 @@ export default function AboutPage() {
               <h1 className="text-4xl md:text-5xl font-semibold leading-tight">Research first, people in mind</h1>
               <p className="text-base md:text-lg text-foreground whitespace-pre-line leading-relaxed">{aboutIntro}</p>
             </div>
-            <div className="flex flex-col gap-4 text-sm text-foreground/70">
+            <div className="flex flex-col gap-4 text-sm text-[rgba(0,0,0,0.6)] dark:text-black">
               <div className="flex flex-wrap gap-x-8 gap-y-2">
                 <span>📍 Sydney based</span>
                 <span>🏛 Behavioural Data Science Lab @ UTS</span>
