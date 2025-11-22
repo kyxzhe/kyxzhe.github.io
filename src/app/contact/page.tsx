@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Mail, Phone, MapPin, CalendarDays } from "lucide-react";
+import { Mail, Phone, MapPin, CalendarDays, X } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { contactInfo } from "@/lib/constants/contact";
@@ -19,13 +19,10 @@ const directLines = [
     icon: Mail,
   },
   {
-    label: "Request a call",
-    value: "Leave your number in the booking note",
-    hint: "I will text first if needed.",
-    onClick: () =>
-      window.alert(
-        "Share your number in the booking note. I will text first and call if it helps."
-      ),
+    label: "Phone",
+    value: "Request a call",
+    hint: "I rarely answer calls. I can call after you request.",
+    onClick: () => setShowCallInfo(true),
     icon: Phone,
   },
   {
@@ -87,6 +84,7 @@ function GitHubMonoIcon({ className }: { className?: string }) {
 
 export default function ContactPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showCallInfo, setShowCallInfo] = useState(false);
 
   return (
     <div className="min-h-screen bg-white text-[#141414] dark:bg-[#0b0b0d] dark:text-[#f5f5f5]">
@@ -223,6 +221,43 @@ export default function ContactPage() {
 
       </main>
       <Footer className="mb-4" />
+      {showCallInfo && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4"
+          onClick={() => setShowCallInfo(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Call request info"
+        >
+          <div
+            className="surface-card max-w-md w-full p-6 rounded-2xl shadow-lg"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold">Request a call</h3>
+              <button
+                type="button"
+                className="p-2 rounded-full hover:bg-[var(--accent-soft)]"
+                onClick={() => setShowCallInfo(false)}
+              >
+                <X size={18} />
+              </button>
+            </div>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Share your number and preferred time in the booking note. I will text first and call if it helps.
+            </p>
+            <div className="mt-5 flex justify-end">
+              <button
+                type="button"
+                className="chip text-sm"
+                onClick={() => setShowCallInfo(false)}
+              >
+                Got it
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <ContactModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
