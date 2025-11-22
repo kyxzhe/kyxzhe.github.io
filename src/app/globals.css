@@ -98,9 +98,11 @@ body {
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
   }
 
-  .dark .btn-primary {
-    background: var(--foreground);
-    color: var(--background);
+  @media (prefers-color-scheme: dark) {
+    .btn-primary {
+      background: var(--foreground);
+      color: var(--background);
+    }
   }
 
   .badge-soft {
