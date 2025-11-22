@@ -110,10 +110,14 @@ export default function ContactPage() {
         <section className="grid gap-14 lg:grid-cols-2">
           <div className="space-y-5">
             <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">Direct lines</p>
-            <div className="border-y border-[rgba(0,0,0,0.08)] dark:border-white/15 divide-y divide-[rgba(0,0,0,0.08)] dark:divide-white/15">
-              {directLines.map(({ label, value, hint, href, icon: Icon }) => {
+            <div className="border-y border-[rgba(0,0,0,0.08)] dark:border-white/15">
+              {directLines.map(({ label, value, hint, href, icon: Icon }, idx) => {
                 const Row = (
-                  <div className="flex flex-col gap-1 py-5">
+                  <div
+                    className={`flex flex-col gap-1 py-5 border-b border-[rgba(0,0,0,0.08)] dark:border-white/20 transition-colors hover:border-foreground/70 ${
+                      idx === directLines.length - 1 ? "border-b-0" : ""
+                    }`}
+                  >
                     <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.26em] text-muted-foreground">
                       {Icon && <Icon size={14} />}
                       <span>{label}</span>
