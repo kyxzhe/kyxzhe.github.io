@@ -21,7 +21,7 @@ const directLines = [
   {
     label: "Phone",
     value: contactInfo.phone,
-    hint: "I rarely answer calls. Please text first. I reply in Sydney daytime.",
+    hint: "I rarely answer calls. Please text first.",
     href: `tel:${contactInfo.phoneRaw}`,
     icon: Phone,
   },
