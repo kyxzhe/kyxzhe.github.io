@@ -177,7 +177,6 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
       }));
       setTimeout(() => {
         resetScheduler();
-        setMode("info");
       }, 1800);
     } catch (error) {
       console.error(error);
