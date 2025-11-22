@@ -176,7 +176,7 @@ export default function ContactPage() {
               <button
                 type="button"
                 onClick={() => setIsModalOpen(true)}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-full border text-sm md:text-base font-medium border-[rgba(0,0,0,0.12)] bg-white text-foreground dark:border-[#666] dark:bg-[#1a1a1d] dark:text-white py-3 transition-colors duration-150 hover:border-foreground/50"
+                className="w-full inline-flex items-center justify-center gap-2 rounded-full border text-[15px] font-medium border-[rgba(0,0,0,0.12)] bg-white text-foreground dark:border-[#666] dark:bg-[#1a1a1d] dark:text-white py-3 transition-colors duration-150 hover:border-foreground/50"
               >
                 <CalendarDays size={16} />
                 Book a time
