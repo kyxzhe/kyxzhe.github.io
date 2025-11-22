@@ -10,29 +10,6 @@ import { socials } from "@/lib/constants/socials";
 import { GoogleScholarIcon, OrcidIcon } from "@/components/icons/AcademicIcons";
 import ContactModal from "@/components/ContactModal";
 
-const directLines = [
-  {
-    label: "Email",
-    value: contactInfo.email,
-    hint: "Fastest for inquiries and invites.",
-    href: `mailto:${contactInfo.email}`,
-    icon: Mail,
-  },
-  {
-    label: "Phone",
-    value: "Request a call",
-    hint: "I rarely answer calls. Please request and I will text first.",
-    onClick: () => setShowCallInfo(true),
-    icon: Phone,
-  },
-  {
-    label: "Location",
-    value: contactInfo.location,
-    hint: "Based in Sydney. Async friendly with APAC and EU.",
-    icon: MapPin,
-  },
-];
-
 const replyNotes = [
   "Who decides and by when?",
   "If it is urgent say so in the subject.",
@@ -85,6 +62,28 @@ function GitHubMonoIcon({ className }: { className?: string }) {
 export default function ContactPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showCallInfo, setShowCallInfo] = useState(false);
+  const directLines = [
+    {
+      label: "Email",
+      value: contactInfo.email,
+      hint: "Fastest for inquiries and invites.",
+      href: `mailto:${contactInfo.email}`,
+      icon: Mail,
+    },
+    {
+      label: "Phone",
+      value: "Request a call",
+      hint: "I rarely answer calls. Please request and I will text first.",
+      onClick: () => setShowCallInfo(true),
+      icon: Phone,
+    },
+    {
+      label: "Location",
+      value: contactInfo.location,
+      hint: "Based in Sydney. Async friendly with APAC and EU.",
+      icon: MapPin,
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-white text-[#141414] dark:bg-[#0b0b0d] dark:text-[#f5f5f5]">
