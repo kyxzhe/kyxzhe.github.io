@@ -237,7 +237,7 @@ export default function PublicationsPage() {
           </p>
           <h3 className="text-lg font-semibold leading-snug">{item.title}</h3>
           <AuthorLine authors={item.authors} />
-          <p className="text-sm text-foreground/80 flex-1 line-clamp-3">{item.summary}</p>
+          <p className="text-sm text-black dark:text-black flex-1 line-clamp-3">{item.summary}</p>
           <ResourceRow venue={item.venue} resources={item.resources} />
         </div>
       </motion.article>
