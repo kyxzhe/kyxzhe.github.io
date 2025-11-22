@@ -92,7 +92,7 @@ export default function ContactPage() {
       <main className="flex-1 mx-auto w-full max-w-5xl px-2 md:px-4 lg:px-0 py-10 flex flex-col gap-16">
         <section className="mt-2 space-y-5">
           <p className="text-xs uppercase tracking-[0.3em] text-[rgba(0,0,0,0.6)] dark:text-black">Contact</p>
-          <h1 className="text-[2.4rem] md:text-[2.6rem] font-semibold leading-tight text-foreground">
+          <h1 className="text-[2.4rem] md:text-[2.6rem] font-medium leading-tight text-foreground">
             Get in touch
           </h1>
           <p className="text-[15px] md:text-base text-[rgba(0,0,0,0.6)] dark:text-black max-w-2xl leading-relaxed">
