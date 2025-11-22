@@ -120,7 +120,7 @@ export default function ContactPage() {
                       idx === directLines.length - 1 ? "border-b-0" : ""
                     } ${clickable ? "cursor-pointer" : ""}`}
                   >
-                    <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.26em] text-[rgba(0,0,0,0.6)] dark:text-black">
+                    <div className="flex items-center gap-2 text-[12px] uppercase tracking-[0.26em] text-[rgba(0,0,0,0.6)] dark:text-black">
                       {Icon && <Icon size={14} />}
                       <span>{label}</span>
                     </div>
