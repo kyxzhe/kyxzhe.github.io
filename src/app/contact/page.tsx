@@ -62,6 +62,20 @@ function GitHubMonoIcon({ className }: { className?: string }) {
 export default function ContactPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showCallInfo, setShowCallInfo] = useState(false);
+  const [tzAbbr, setTzAbbr] = useState("AEDT");
+
+  useEffect(() => {
+    try {
+      const formatter = new Intl.DateTimeFormat("en-US", {
+        timeZoneName: "short"
+      });
+      const parts = formatter.formatToParts(new Date());
+      const abbr = parts.find((p) => p.type === "timeZoneName")?.value;
+      if (abbr) setTzAbbr(abbr);
+    } catch {
+      setTzAbbr("AEDT");
+    }
+  }, []);
   const directLines = [
     {
       label: "Email",
@@ -161,7 +175,7 @@ export default function ContactPage() {
                   <p className="text-sm text-muted-foreground">Clear context gets a faster response.</p>
                 </div>
                 <span className="px-3 py-1 rounded-full text-[11px] uppercase tracking-[0.22em] bg-[var(--pill-background)] text-muted-foreground">
-                  <span className="text-foreground">AEDT</span>
+                  <span className="text-foreground">{tzAbbr}</span>
                 </span>
               </div>
               <ul className="space-y-3 text-sm text-foreground/80 leading-relaxed">
