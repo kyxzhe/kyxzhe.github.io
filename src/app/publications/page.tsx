@@ -56,7 +56,7 @@ const sortOptions: { label: string; value: SortMode }[] = [
 ];
 
 const AuthorLine = ({ authors }: { authors: string[] }) => (
-  <p className="text-sm text-[rgba(0,0,0,0.6)] dark:text-black">
+  <p className="text-sm text-[rgba(0,0,0,0.6)] dark:text-foreground/70">
     {authors.map((author, index) => {
       const highlight = author.toLowerCase().includes("yuxiang zheng");
       return (
@@ -83,7 +83,7 @@ const ResourceRow = ({
   const showDot = Boolean(code);
 
   return (
-    <div className="flex flex-wrap items-center gap-2 text-[12px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-black">
+    <div className="flex flex-wrap items-center gap-2 text-[12px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-foreground/70">
       <span>{venue}</span>
       {showDot && <span>·</span>}
       {code && (
@@ -127,7 +127,7 @@ const ListRow = ({ item }: { item: Publication }) => {
       onClick={item.link ? handleActivate : undefined}
       onKeyDown={item.link ? handleActivate : undefined}
     >
-      <p className="text-[12px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-black">{item.category}</p>
+          <p className="text-[12px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-foreground/70">{item.category}</p>
       <div className="flex items-start justify-between gap-3">
         <div className="space-y-2">
           <h3 className="text-[17px] leading-snug text-foreground">{item.title}</h3>
@@ -135,7 +135,7 @@ const ListRow = ({ item }: { item: Publication }) => {
           <p className="text-[14px] text-foreground/80 leading-relaxed max-w-3xl">{item.summary}</p>
           <ResourceRow venue={item.venue} resources={item.resources} />
         </div>
-        <p className="text-[14px] text-[rgba(0,0,0,0.6)] dark:text-black whitespace-nowrap">{formatDate(item.date)}</p>
+        <p className="text-[14px] text-[rgba(0,0,0,0.6)] dark:text-foreground/70 whitespace-nowrap">{formatDate(item.date)}</p>
       </div>
     </article>
   );
@@ -232,12 +232,12 @@ export default function PublicationsPage() {
           />
         </div>
         <div className="p-4 flex flex-col gap-3 flex-1">
-          <p className="text-[12px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-black">
+          <p className="text-[12px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-foreground/70">
             {item.category} · {formatDate(item.date)}
           </p>
           <h3 className="text-[17px] leading-snug">{item.title}</h3>
           <AuthorLine authors={item.authors} />
-          <p className="text-[14px] text-black dark:text-black flex-1 line-clamp-3">{item.summary}</p>
+          <p className="text-[14px] text-black dark:text-foreground/90 flex-1 line-clamp-3">{item.summary}</p>
           <ResourceRow venue={item.venue} resources={item.resources} />
         </div>
       </motion.article>
@@ -273,12 +273,12 @@ export default function PublicationsPage() {
 
       <main className="flex-1 mx-auto w-full max-w-5xl px-2 md:px-4 lg:px-0 py-6 flex flex-col gap-6">
         <section className="mt-4 space-y-2">
-          <p className="text-xs uppercase tracking-[0.3em] text-[rgba(0,0,0,0.6)] dark:text-black">Publications</p>
+          <p className="text-xs uppercase tracking-[0.3em] text-[rgba(0,0,0,0.6)] dark:text-foreground/70">Publications</p>
           <h1 className="text-[48px] leading-tight text-foreground">Papers &amp; Preprints</h1>
-          <p className="text-[15px] md:text-base text-[rgba(0,0,0,0.6)] dark:text-black max-w-2xl leading-relaxed">
+          <p className="text-[15px] md:text-base text-[rgba(0,0,0,0.6)] dark:text-foreground/70 max-w-2xl leading-relaxed">
             A curated list of my published and upcoming work, with links to code and materials.
           </p>
-          <div className="flex flex-wrap items-center gap-4 text-sm text-[rgba(0,0,0,0.6)] dark:text-black pt-1">
+          <div className="flex flex-wrap items-center gap-4 text-sm text-[rgba(0,0,0,0.6)] dark:text-foreground/70 pt-1">
             {metrics.map((metric) => (
               <div
                 key={metric.label}
@@ -292,7 +292,7 @@ export default function PublicationsPage() {
         </section>
 
         <div className="flex flex-wrap items-center justify-between gap-3 text-sm">
-          <p className="text-[rgba(0,0,0,0.6)] dark:text-black">Showing {sortedItems.length} publications</p>
+          <p className="text-[rgba(0,0,0,0.6)] dark:text-foreground/70">Showing {sortedItems.length} publications</p>
 
           <div className="relative flex items-center gap-4 text-sm">
             <div className="relative flex items-center gap-1">
@@ -307,7 +307,7 @@ export default function PublicationsPage() {
                   className={
                     selectedTopics.length > 0 || selectedYears.length > 0 || filterOpen
                       ? "text-foreground"
-                      : "text-[rgba(0,0,0,0.6)] dark:text-black"
+                    : "text-[rgba(0,0,0,0.6)] dark:text-foreground/70"
                   }
                 >
                   Filter
@@ -317,7 +317,7 @@ export default function PublicationsPage() {
                   className={
                     selectedTopics.length > 0 || selectedYears.length > 0 || filterOpen
                       ? "text-foreground"
-                      : "text-[rgba(0,0,0,0.6)] dark:text-black"
+                    : "text-[rgba(0,0,0,0.6)] dark:text-foreground/70"
                   }
                 />
               </button>
@@ -327,7 +327,7 @@ export default function PublicationsPage() {
                     <p>Filters</p>
                     <button
                       type="button"
-                      className="text-[rgba(0,0,0,0.6)] dark:text-black"
+                      className="text-[rgba(0,0,0,0.6)] dark:text-foreground/70"
                       onClick={() => {
                         setFilterOpen(false);
                       }}
@@ -337,7 +337,7 @@ export default function PublicationsPage() {
                   </div>
                   <div className="grid grid-cols-2 gap-4 text-sm text-foreground">
                     <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
-                      <p className="text-[11px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-black">Topic</p>
+                      <p className="text-[11px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-foreground/70">Topic</p>
                       {topics.map((topic) => (
                         <label key={topic} className="flex items-center gap-2 text-[13px] text-foreground">
                           <input
@@ -350,7 +350,7 @@ export default function PublicationsPage() {
                       ))}
                     </div>
                     <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
-                      <p className="text-[11px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-black">Year</p>
+                      <p className="text-[11px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-foreground/70">Year</p>
                       {years.map((year) => (
                         <label key={year} className="flex items-center gap-2 text-[13px] text-foreground">
                           <input
@@ -363,7 +363,7 @@ export default function PublicationsPage() {
                       ))}
                     </div>
                   </div>
-                  <div className="flex justify-end pt-2 text-xs text-[rgba(0,0,0,0.6)] dark:text-black">
+                  <div className="flex justify-end pt-2 text-xs text-[rgba(0,0,0,0.6)] dark:text-foreground/70">
                     <button
                       type="button"
                       className="underline-offset-2 hover:text-foreground"
@@ -381,9 +381,9 @@ export default function PublicationsPage() {
 
             <div className="relative flex items-center gap-1">
               <button
-                className={`flex items-center gap-1 ${
-                  sortOpen ? "text-foreground" : "text-[rgba(0,0,0,0.6)] dark:text-black"
-                }`}
+                  className={`flex items-center gap-1 ${
+                    sortOpen ? "text-foreground" : "text-[rgba(0,0,0,0.6)] dark:text-foreground/70"
+                  }`}
                 onClick={() => {
                   setSortOpen((prev) => !prev);
                   setFilterOpen(false);
@@ -413,7 +413,7 @@ export default function PublicationsPage() {
               )}
             </div>
 
-            <div className="flex items-center gap-2 text-[rgba(0,0,0,0.6)] dark:text-black">
+            <div className="flex items-center gap-2 text-[rgba(0,0,0,0.6)] dark:text-foreground/70">
               <button
                 className={`p-2 rounded transition-colors ${
                   viewMode === "list"
