@@ -107,11 +107,11 @@ export default function AboutPage() {
               <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">At a glance</p>
               <div className="flex gap-12">
                 <div>
-                  <p className="text-4xl font-semibold leading-none">4</p>
+                  <p className="text-4xl font-medium leading-none">4</p>
                   <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mt-3">Lab talks</p>
                 </div>
                 <div>
-                  <p className="text-4xl font-semibold leading-none">2</p>
+                  <p className="text-4xl font-medium leading-none">2</p>
                   <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mt-3">Manuscripts</p>
                 </div>
               </div>
