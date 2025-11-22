@@ -12,7 +12,7 @@ import ContactModal from "@/components/ContactModal";
 
 const replyNotes = [
   "What is the topic and who is involved?",
-  "Are there any deadlines or time zones I should know about?",
+  "Clear context helps me reply quickly.",
   "If it is urgent, please say so in the subject line.",
 ];
 
