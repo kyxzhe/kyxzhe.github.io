@@ -32,7 +32,7 @@ export type Publication = {
 export const publications: Publication[] = [
   {
     id: "echoalign",
-    title: "EchoAlign: Can We Treat Noisy Labels as Accurate?",
+    title: "Can We Treat Noisy Labels as Accurate?",
     category: "Research",
     date: "2024-05-20",
     venue: "arXiv",
