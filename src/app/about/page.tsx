@@ -153,8 +153,8 @@ export default function AboutPage() {
               <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Collaborate</p>
               <h2 className="text-2xl font-semibold">Open to thoughtful work</h2>
               <p className="text-sm text-foreground/70 leading-relaxed">
-                I partner with researchers and product teams on diffusion modelling,
-                moderation strategy, and responsible experimentation with social data.
+                Open to research collaborations, talks, and teaching ideas.
+                If you think I could be a good fit, feel free to get in touch.
               </p>
               <div className="flex flex-col gap-2 text-sm max-w-xs mx-auto items-center">
                 <Link
