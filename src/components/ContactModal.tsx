@@ -176,8 +176,9 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
         [selectedSlot.id]: true,
       }));
       setTimeout(() => {
+        onClose();
         resetScheduler();
-      }, 1800);
+      }, 1200);
     } catch (error) {
       console.error(error);
       setSubmissionState("error");
