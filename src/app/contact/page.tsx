@@ -35,7 +35,7 @@ const directLines = [
 
 const replyNotes = [
   "Who decides and by when?",
-  "If it is urgent say so in the subject. I triage at 09:00 and 16:00 AEDT.",
+  "If it is urgent say so in the subject.",
 ];
 
 const collaborationAreas = [
@@ -144,7 +144,7 @@ export default function ContactPage() {
               <div className="flex items-start justify-between gap-4">
                 <div className="space-y-1">
                   <p className="text-sm text-foreground">Add stakeholders and a timeline for a quicker reply.</p>
-                  <p className="text-sm text-muted-foreground">I check email at 09:00 and 16:00 AEDT.</p>
+                  <p className="text-sm text-muted-foreground">Clear context gets a faster response.</p>
                 </div>
                 <span className="px-3 py-1 rounded-full text-[11px] uppercase tracking-[0.22em] bg-[var(--pill-background)] text-muted-foreground">
                   <span className="text-foreground">AEDT</span>
