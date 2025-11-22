@@ -83,7 +83,7 @@ const ResourceRow = ({
   const showDot = Boolean(code);
 
   return (
-    <div className="flex flex-wrap items-center gap-2 text-[14px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-black">
+    <div className="flex flex-wrap items-center gap-2 text-[12px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-black">
       <span>{venue}</span>
       {showDot && <span>·</span>}
       {code && (
@@ -127,7 +127,7 @@ const ListRow = ({ item }: { item: Publication }) => {
       onClick={item.link ? handleActivate : undefined}
       onKeyDown={item.link ? handleActivate : undefined}
     >
-      <p className="text-[14px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-black">{item.category}</p>
+      <p className="text-[12px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-black">{item.category}</p>
       <div className="flex items-start justify-between gap-3">
         <div className="space-y-2">
           <h3 className="text-[17px] leading-snug text-foreground">{item.title}</h3>
@@ -232,12 +232,12 @@ export default function PublicationsPage() {
           />
         </div>
         <div className="p-4 flex flex-col gap-3 flex-1">
-          <p className="text-sm uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-black">
+          <p className="text-[12px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-black">
             {item.category} · {formatDate(item.date)}
           </p>
           <h3 className="text-[17px] leading-snug">{item.title}</h3>
           <AuthorLine authors={item.authors} />
-          <p className="text-sm text-black dark:text-black flex-1 line-clamp-3">{item.summary}</p>
+          <p className="text-[14px] text-black dark:text-black flex-1 line-clamp-3">{item.summary}</p>
           <ResourceRow venue={item.venue} resources={item.resources} />
         </div>
       </motion.article>
