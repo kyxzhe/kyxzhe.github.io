@@ -82,9 +82,6 @@ export default function AboutPage() {
                 <span>🏛 Behavioural Data Science Lab @ UTS</span>
                 <span>🧑‍🏫 Teaching ML + Informatics at USYD</span>
               </div>
-              <p>
-                I like projects where social data, ranking systems, and human decisions meet. When in doubt, I’ll choose conversations over dashboards.
-              </p>
             </div>
           </div>
 
