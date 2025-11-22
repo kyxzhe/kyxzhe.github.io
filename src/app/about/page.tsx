@@ -12,25 +12,31 @@ import {
 
 const timeline = [
   {
-    title: "PhD · Behavioural Data Science Lab",
-    org: "University of Technology Sydney",
+    title: "PhD · University of Technology Sydney",
+    org: "Behavioural Data Science Lab",
     period: "2025 – Present",
     detail:
-      "Working with Dr. Marian-Andrei Rizoiu on information diffusion, social data science, and robust machine learning.",
+      "Research in information diffusion and trustworthy machine learning.",
   },
   {
-    title: "Guest lecturer & tutor",
-    org: "University of Sydney",
-    period: "2024 – Present",
+    title: "B.Adv. Computing (Honours) and B.Sc., University of Sydney",
+    org: "Computational Data Science and Mathematics",
+    period: "2021 – 2025",
     detail:
-      "Lead tutorials for Advanced ML and Informatics courses, plus a guest lecture on data-centric evaluation.",
+      "Honours Class I, University Medal in Advanced Computing, Dalyell Scholar.",
   },
   {
-    title: "B.Adv. Computing (Honours) + B.Sc.",
-    org: "University of Sydney",
-    period: "2021 – 2024",
+    title: "Exchange programme, ETH Zürich",
+    org: "Computer science and mathematics",
+    period: "2023 – 2024",
     detail:
-      "Studied noisy-label learning and generative models, somehow graduated with a University Medal.",
+      "One-semester exchange in computer science and mathematics.",
+  },
+  {
+    title: "Foundation studies, University of Melbourne",
+    org: "Psychology and mathematics",
+    period: "2019 – 2021",
+    detail: "Foundation coursework in psychology and mathematics.",
   },
 ];
 
@@ -44,8 +50,7 @@ const researchFocus = [
 const contributions = [
   "TA · 2024 S2 COMP5328/4328 Advanced Machine Learning",
   "TA · 2025 S2 DATA1002/1902 Informatics: Data and Computation",
-  "Guest lecture: COMP5328 on data-centric ML evaluation",
-  "4 internal talks across lab meetings & reading groups",
+  "Guest lecture on ChatGPT, training, and applications",
 ];
 
 const aboutIntro = `I’m a PhD student at the University of Technology Sydney, working with Marian-Andrei Rizoiu in the Behavioural Data Science Lab. My research looks at how information spreads online and how to keep machine learning models a little more robust when faced with the messiness of the real world.
