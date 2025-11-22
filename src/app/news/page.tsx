@@ -306,11 +306,11 @@ export default function NewsPage() {
               key={category}
               type="button"
               onClick={() => setActiveCategory(category)}
-                className={`px-3 py-1.5 rounded-full border transition-colors bg-[rgba(0,0,0,0.04)] ${
-                  activeCategory === category
-                    ? "text-foreground border-[rgba(0,0,0,0.12)]"
-                    : "text-muted-foreground border-[rgb(229,231,235)] hover:border-foreground/40"
-                }`}
+              className={`px-3 py-1.5 rounded-full border transition-colors ${
+                activeCategory === category
+                  ? "bg-[rgba(0,0,0,0.12)] text-foreground border-[rgb(229,231,235)]"
+                  : "bg-[rgba(0,0,0,0.04)] text-muted-foreground border-[rgb(229,231,235)] hover:border-foreground/40"
+              }`}
             >
               {formatCategoryLabel(category)}
             </button>
