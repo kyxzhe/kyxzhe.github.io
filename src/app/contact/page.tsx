@@ -91,7 +91,7 @@ export default function ContactPage() {
       <Navbar />
       <main className="flex-1 mx-auto w-full max-w-5xl px-2 md:px-4 lg:px-0 py-10 flex flex-col gap-16">
         <section className="mt-2 space-y-5">
-          <p className="text-xs uppercase tracking-[0.3em] text-[rgba(0,0,0,0.6)] dark:text-black">Contact</p>
+          <p className="text-[14px] uppercase tracking-[0.3em] text-[rgba(0,0,0,0.6)] dark:text-black">Contact</p>
           <h1 className="text-[2.4rem] md:text-[2.6rem] font-medium leading-tight text-foreground">
             Get in touch
           </h1>
@@ -110,7 +110,7 @@ export default function ContactPage() {
 
         <section className="grid gap-14 lg:grid-cols-2">
           <div className="space-y-5">
-            <p className="text-xs uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-black">Direct lines</p>
+            <p className="text-[14px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-black">Direct lines</p>
             <div className="border-y border-[rgba(0,0,0,0.08)] dark:border-white/15">
               {directLines.map(({ label, value, hint, href, onClick, icon: Icon }, idx) => {
                 const clickable = Boolean(href || onClick);
@@ -125,7 +125,7 @@ export default function ContactPage() {
                       <span>{label}</span>
                     </div>
                     <p className="text-lg font-medium text-foreground">{value}</p>
-                    <p className="text-sm text-[rgba(0,0,0,0.6)] dark:text-black">{hint}</p>
+                    <p className="text-[17px] text-[rgba(0,0,0,0.6)] dark:text-black">{hint}</p>
                   </div>
                 );
 
@@ -154,18 +154,18 @@ export default function ContactPage() {
           </div>
 
           <div className="space-y-5">
-            <p className="text-xs uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-black">Reply & scheduling</p>
+            <p className="text-[14px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-black">Reply & scheduling</p>
             <div className="space-y-5 border border-[rgba(0,0,0,0.08)] dark:border-white/15 rounded-[18px] p-6">
               <div className="flex items-start justify-between gap-4">
                 <div className="space-y-1">
-                  <p className="text-sm text-black dark:text-black">Include who is involved and timelines for a quicker reply.</p>
-                  <p className="text-sm text-[rgba(0,0,0,0.6)] dark:text-black">Clear context helps me reply quickly.</p>
+                  <p className="text-[17px] text-black dark:text-black">Include who is involved and timelines for a quicker reply.</p>
+                  <p className="text-[17px] text-[rgba(0,0,0,0.6)] dark:text-black">Clear context helps me reply quickly.</p>
                 </div>
                 <span className="px-3 py-1 rounded-full text-[11px] uppercase tracking-[0.22em] bg-[rgba(0,0,0,0.04)] text-[rgba(0,0,0,0.6)] dark:text-black">
                   <span className="text-foreground">AEDT</span>
                 </span>
               </div>
-              <ul className="space-y-3 text-sm leading-relaxed">
+              <ul className="space-y-3 text-[17px] leading-relaxed">
                 {replyNotes.map((note) => (
                   <li key={note} className="flex gap-2 text-black dark:text-black">
                     <span className="text-[var(--accent)]">•</span>
@@ -187,9 +187,9 @@ export default function ContactPage() {
 
         <section className="grid gap-14 lg:grid-cols-2">
           <div className="space-y-4">
-            <p className="text-xs uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-black">Collaboration fit</p>
+            <p className="text-[14px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-black">Collaboration fit</p>
             <h2 className="text-xl font-medium text-foreground">Ways I can help</h2>
-            <ul className="space-y-3 text-sm leading-relaxed">
+            <ul className="space-y-3 text-[17px] leading-relaxed">
               {collaborationAreas.map((area) => (
                 <li key={area} className="flex gap-2 text-black dark:text-black">
                   <span className="text-[var(--accent)]">•</span>
@@ -200,7 +200,7 @@ export default function ContactPage() {
           </div>
 
           <div className="space-y-4">
-            <p className="text-xs uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-black">Profiles</p>
+            <p className="text-[14px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-black">Profiles</p>
             <h2 className="text-xl font-medium text-foreground">Find me elsewhere</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {socialLinks.map(({ label, href, icon }) => (
@@ -209,7 +209,7 @@ export default function ContactPage() {
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-between gap-3 px-4 py-2 border border-[rgba(0,0,0,0.12)] dark:border-white/20 rounded-full text-sm font-medium transition-colors duration-150 hover:border-foreground/50"
+                  className="flex items-center justify-between gap-3 px-4 py-2 border border-[rgba(0,0,0,0.12)] dark:border-white/20 rounded-full text-[17px] font-medium transition-colors duration-150 hover:border-foreground/50"
                 >
                   <span>{label}</span>
                   <span className="text-[rgba(0,0,0,0.6)] dark:text-black">{icon}</span>
@@ -243,7 +243,7 @@ export default function ContactPage() {
                 <X size={18} />
               </button>
             </div>
-            <p className="text-sm text-[rgba(0,0,0,0.6)] dark:text-black leading-relaxed">
+            <p className="text-[17px] text-[rgba(0,0,0,0.6)] dark:text-black leading-relaxed">
               Share your number and preferred time in the booking note. I will text first and call if it helps.
             </p>
           </div>
