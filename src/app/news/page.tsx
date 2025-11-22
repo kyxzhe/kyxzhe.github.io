@@ -48,10 +48,10 @@ const sortOptions: { label: string; value: SortMode }[] = [
 
 const ListRow = ({ item }: { item: NewsItem }) => {
   const row = (
-    <article className="group flex flex-col gap-3 py-6 border-b border-[rgba(0,0,0,0.08)] dark:border-white/20 transition-colors hover:border-foreground/70">
+    <article className="group flex flex-col gap-3 py-6 border-b border-[rgba(0,0,0,0.08)] dark:border-white/20 transition-colors hover:border-foreground/70 font-normal">
       <p className="text-[10.2px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-black">{item.category}</p>
       <div className="flex items-start justify-between gap-3">
-        <h3 className="text-xl font-semibold leading-snug text-foreground">{item.title}</h3>
+        <h3 className="text-xl leading-snug text-foreground">{item.title}</h3>
         <p className="text-sm text-[rgba(0,0,0,0.6)] dark:text-black whitespace-nowrap">{formatDate(item.date)}</p>
       </div>
       <p className="text-sm text-black dark:text-black leading-relaxed max-w-3xl">{item.summary}</p>
@@ -143,7 +143,7 @@ export default function NewsPage() {
         <div className="grid gap-6 lg:grid-cols-12 items-start">
           {heroItem && (
             <motion.article
-              className="surface-card relative overflow-hidden rounded-[24px] lg:col-span-8 lg:sticky lg:top-12"
+              className="surface-card relative overflow-hidden rounded-[24px] lg:col-span-8 lg:sticky lg:top-12 font-normal"
               whileHover={{ y: -6, boxShadow: "0 28px 55px rgba(0,0,0,0.18)" }}
               transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
             >
@@ -160,7 +160,7 @@ export default function NewsPage() {
                 <p className="text-sm uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-black">
                   {heroItem.category} · {formatDate(heroItem.date)}
                 </p>
-                <h2 className="text-[2rem] lg:text-[2.4rem] font-semibold leading-tight text-foreground">
+                <h2 className="text-[2rem] lg:text-[2.4rem] leading-tight text-foreground">
                   {heroItem.title}
                 </h2>
                 <p className="text-sm text-foreground/80 leading-relaxed max-w-2xl">{heroItem.summary}</p>
@@ -175,12 +175,12 @@ export default function NewsPage() {
           <div className="flex flex-col gap-4 lg:col-span-4">
             {columnItems.map((item) => {
               const card = (
-                <motion.div
-                  variants={projectsVariants}
-                  initial="hidden"
-                  animate="visible"
-                  whileHover={{ y: -6, boxShadow: "0 18px 35px rgba(0,0,0,0.14)" }}
-                  className={`surface-card relative overflow-hidden aspect-square ${
+              <motion.div
+                variants={projectsVariants}
+                initial="hidden"
+                animate="visible"
+                whileHover={{ y: -6, boxShadow: "0 18px 35px rgba(0,0,0,0.14)" }}
+                className={`surface-card relative overflow-hidden aspect-square font-normal ${
                     item.link ? "" : "opacity-80"
                   }`}
                 >
@@ -195,7 +195,7 @@ export default function NewsPage() {
                     <p className="text-sm uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-black">
                       {item.category} · {formatDate(item.date)}
                     </p>
-                    <h3 className="text-lg font-semibold leading-tight text-foreground">
+                <h3 className="text-lg leading-tight text-foreground">
                       {item.title}
                     </h3>
                     <p className="text-sm text-foreground/80 line-clamp-3">{item.summary}</p>
@@ -227,12 +227,12 @@ export default function NewsPage() {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-12 gap-4">
             {remainingItems.map((item) => {
               const card = (
-                <motion.div
-                  variants={projectsVariants}
-                  initial="hidden"
-                  animate="visible"
-                  whileHover={{ y: -6, boxShadow: "0 20px 45px rgba(0,0,0,0.12)" }}
-                  className={`surface-card relative overflow-hidden aspect-square ${
+              <motion.div
+                variants={projectsVariants}
+                initial="hidden"
+                animate="visible"
+                whileHover={{ y: -6, boxShadow: "0 20px 45px rgba(0,0,0,0.12)" }}
+                className={`surface-card relative overflow-hidden aspect-square font-normal ${
                     item.link ? "" : "opacity-80"
                   }`}
                 >
@@ -247,7 +247,7 @@ export default function NewsPage() {
                     <p className="text-sm uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-black">
                       {item.category} · {formatDate(item.date)}
                     </p>
-                    <h3 className="text-lg font-semibold leading-tight text-foreground">
+                <h3 className="text-lg leading-tight text-foreground">
                       {item.title}
                     </h3>
                     <p className="text-sm text-foreground/80 line-clamp-3">{item.summary}</p>
@@ -280,7 +280,7 @@ export default function NewsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-foreground dark:bg-[#0b0b0d] dark:text-[#f5f5f5]">
+    <div className="min-h-screen bg-white text-foreground dark:bg-[#0b0b0d] dark:text-[#f5f5f5] font-medium">
       <Navbar />
       {(filterOpen || sortOpen) && (
         <div
