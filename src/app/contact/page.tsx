@@ -19,13 +19,6 @@ const directLines = [
     icon: Mail,
   },
   {
-    label: "Phone",
-    value: contactInfo.phone,
-    hint: "I rarely answer calls. Please text first.",
-    href: `tel:${contactInfo.phoneRaw}`,
-    icon: Phone,
-  },
-  {
     label: "Location",
     value: contactInfo.location,
     hint: "Based in Sydney. Async friendly with APAC and EU.",
@@ -43,6 +36,12 @@ const collaborationAreas = [
   "Research talks, workshops, and guest teaching",
   "Advising teams on product or hiring decisions",
 ];
+
+const callRequest = {
+  label: "Request a call",
+  hint: "Leave your number in the booking note. I will text first.",
+  cta: "Request a call",
+};
 
 const socialLinks = [
   { label: "LinkedIn", href: socials.linkedin, icon: <LinkedInMonoIcon className="w-4 h-4" /> },
@@ -135,6 +134,20 @@ export default function ContactPage() {
                   <div key={label}>{Row}</div>
                 );
               })}
+              <button
+                type="button"
+                onClick={() => setIsModalOpen(true)}
+                className="w-full text-left"
+              >
+                <div className="flex flex-col gap-1 py-5 border-b border-[rgba(0,0,0,0.08)] dark:border-white/20 transition-colors hover:border-foreground/70 last:border-b-0">
+                  <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.26em] text-muted-foreground">
+                    <Phone size={14} />
+                    <span>{callRequest.label}</span>
+                  </div>
+                  <p className="text-lg font-medium text-foreground">{callRequest.cta}</p>
+                  <p className="text-sm text-muted-foreground">{callRequest.hint}</p>
+                </div>
+              </button>
             </div>
           </div>
 
