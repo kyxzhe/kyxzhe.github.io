@@ -15,17 +15,15 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
   const rotatingPlaceholders = [
-    "Ask anything",
-    "提问任何问题",
-    "質問は何でもどうぞ",
-    "Pregunte lo que quiera",
-    "Posez n'importe quelle question",
-    "Was möchtest du wissen?",
-    "Chiedi qualsiasi cosa",
-    "Спросите что угодно",
-    "¿Qué quieres saber?",
-    "Que souhaitez-vous savoir ?",
-    "어떤 것이든 물어보세요",
+    "Interested in my research, teaching, or projects? Feel free to ask here.",
+    "对我的科研、教学或项目好奇吗？欢迎在这里随时提问。",
+    "私の研究や教育、プロジェクトについて知りたいことがあれば、ここで気軽に聞いてください。",
+    "Si te interesa mi investigación, mi docencia o mis proyectos, puedes preguntar aquí.",
+    "Si mes recherches, mon enseignement ou mes projets vous intéressent, n’hésitez pas à poser vos questions ici.",
+    "Wenn Sie sich für meine Forschung, meine Lehre oder meine Projekte interessieren, können Sie mir hier gerne Ihre Fragen stellen.",
+    "Se ti interessano le mie ricerche, la mia attività didattica o i miei progetti, puoi farmi delle domande qui.",
+    "Если вам интересны мои исследования, преподавание или проекты, вы можете смело задавать свои вопросы здесь.",
+    "제 연구나 강의, 프로젝트에 대해 궁금한 점이 있으시면 여기에서 편하게 질문해 주세요.",
   ];
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
 
