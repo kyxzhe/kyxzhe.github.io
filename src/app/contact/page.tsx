@@ -162,7 +162,11 @@ export default function ContactPage() {
         </section>
       </main>
       <Footer className="mb-4" />
-      <ContactModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <ContactModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        startInSchedule
+      />
     </div>
   );
 }

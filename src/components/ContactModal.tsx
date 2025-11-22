@@ -31,6 +31,7 @@ import { OrcidIconColor } from "@/components/icons/AcademicIcons";
 interface ContactModalProps {
   isOpen: boolean;
   onClose: () => void;
+  startInSchedule?: boolean;
 }
 
 const innerSwapVariants: Variants = {
@@ -47,8 +48,8 @@ const innerSwapVariants: Variants = {
   },
 };
 
-export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
-  const [mode, setMode] = useState<"info" | "schedule">("info");
+export default function ContactModal({ isOpen, onClose, startInSchedule }: ContactModalProps) {
+  const [mode, setMode] = useState<"info" | "schedule">(startInSchedule ? "schedule" : "info");
   const availability = useMemo(() => generateAvailability(new Date(), 30), []);
   const WINDOW_SIZE = 5;
   const [windowStart, setWindowStart] = useState(0);
@@ -95,13 +96,19 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
   const selectedSlot = slotsForDate.find((slot) => slot.id === selectedSlotId);
 
   const resetScheduler = () => {
-    setMode("info");
+    setMode(startInSchedule ? "schedule" : "info");
     setWindowStart(0);
     setSelectedDate(availability[0]?.dateISO ?? "");
     setSelectedSlotId(null);
     setFormValues({ name: "", email: "", note: "" });
     setSubmissionState("idle");
   };
+
+  useEffect(() => {
+    if (isOpen && startInSchedule) {
+      setMode("schedule");
+    }
+  }, [isOpen, startInSchedule]);
 
   useEffect(() => {
     if (!availability.find((day) => day.dateISO === selectedDate)) {
