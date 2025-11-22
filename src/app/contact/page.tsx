@@ -34,16 +34,14 @@ const directLines = [
 ];
 
 const replyNotes = [
-  "Include the decision maker and timeline so I can tailor the first response.",
-  "I check email at 09:00 and 16:00 AEDT—flag urgent items in the subject.",
-  "Short Loom or doc links are welcome if they summarise context quickly.",
+  "Who is deciding and by when?",
+  "Flag urgency in the subject; I triage at 09:00 & 16:00 AEDT.",
 ];
 
 const collaborationAreas = [
-  "Diffusion experiments and intervention design",
-  "Robust learning under noisy or biased supervision",
-  "Ranking, recommendation, and moderation evaluations",
-  "Guest lectures, reading groups, or mentoring slots",
+  "Diffusion experiments & intervention design",
+  "Robust learning with noisy or biased supervision",
+  "Ranking / moderation evaluation support",
 ];
 
 const socialLinks = [
@@ -59,8 +57,8 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen bg-white text-[#141414] dark:bg-[#0b0b0d] dark:text-[#f5f5f5]">
       <Navbar />
-      <main className="flex-1 mx-auto w-full max-w-5xl px-2 md:px-4 lg:px-0 py-6 flex flex-col gap-12">
-        <section className="mt-4 space-y-3">
+      <main className="flex-1 mx-auto w-full max-w-5xl px-2 md:px-4 lg:px-0 py-8 flex flex-col gap-14">
+        <section className="mt-4 space-y-4">
           <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Contact</p>
           <h1 className="text-[2.4rem] md:text-[2.6rem] font-semibold leading-tight text-foreground">
             Let&apos;s talk about social data and robust ML
@@ -68,7 +66,7 @@ export default function ContactPage() {
           <p className="text-[15px] md:text-base text-muted-foreground max-w-2xl leading-relaxed">
             A quick note with the problem, constraints, and people involved helps me respond with next steps. Email is the clearest channel; we can schedule a call after the context is set.
           </p>
-          <div className="flex flex-wrap gap-3 pt-1">
+          <div className="flex flex-wrap gap-3 pt-2">
             <Link
               href={`mailto:${contactInfo.email}`}
               className="px-6 md:px-7 py-3 rounded-full text-sm md:text-base font-semibold shadow-[0_14px_28px_rgba(0,0,0,0.12)] transition duration-200 hover:-translate-y-[2px] bg-[#141414] text-white dark:bg-[#f5f5f5] dark:text-[#0b0b0d]"
@@ -78,8 +76,8 @@ export default function ContactPage() {
           </div>
         </section>
 
-        <section className="grid gap-10 lg:grid-cols-2">
-          <div className="space-y-4">
+        <section className="grid gap-12 lg:grid-cols-2">
+          <div className="space-y-5">
             <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">Direct lines</p>
             <div className="border-y border-[rgba(0,0,0,0.08)] dark:border-white/15 divide-y divide-[rgba(0,0,0,0.08)] dark:divide-white/15">
               {directLines.map(({ label, value, hint, href, icon: Icon }) => {
@@ -105,13 +103,13 @@ export default function ContactPage() {
             </div>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-5">
             <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">Reply & scheduling</p>
-            <div className="space-y-4 border border-[rgba(0,0,0,0.08)] dark:border-white/15 rounded-[18px] p-5">
-              <div className="flex items-start justify-between gap-3">
+            <div className="space-y-5 border border-[rgba(0,0,0,0.08)] dark:border-white/15 rounded-[18px] p-6">
+              <div className="flex items-start justify-between gap-4">
                 <div className="space-y-1">
-                  <p className="text-sm text-muted-foreground">Best time: 09:00 & 16:00 AEDT inbox checks</p>
                   <p className="text-sm text-foreground">Include stakeholders + timeline for a faster reply.</p>
+                  <p className="text-sm text-muted-foreground">Inbox checks at 09:00 & 16:00 AEDT.</p>
                 </div>
                 <span className="px-3 py-1 rounded-full text-[11px] uppercase tracking-[0.22em] bg-[var(--pill-background)] text-muted-foreground">
                   <span className="text-foreground">AEDT</span>
@@ -137,8 +135,8 @@ export default function ContactPage() {
           </div>
         </section>
 
-        <section className="grid gap-10 lg:grid-cols-2">
-          <div className="space-y-3">
+        <section className="grid gap-12 lg:grid-cols-2">
+          <div className="space-y-4">
             <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">Collaboration fit</p>
             <h2 className="text-xl font-semibold text-foreground">Where I add value</h2>
             <ul className="space-y-3 text-sm text-foreground/80 leading-relaxed">
@@ -151,7 +149,7 @@ export default function ContactPage() {
             </ul>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-4">
             <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">Profiles</p>
             <h2 className="text-xl font-semibold text-foreground">Find me elsewhere</h2>
             <div className="flex flex-wrap gap-3">
