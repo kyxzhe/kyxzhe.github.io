@@ -69,6 +69,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
   const [submissionState, setSubmissionState] = useState<
     "idle" | "loading" | "success" | "error"
   >("idle");
+  const [celebrate, setCelebrate] = useState(false);
   const [bookedSlots, setBookedSlots] = useState<Record<string, boolean>>(() => {
     const initial: Record<string, boolean> = {};
     availability.forEach((day) =>
@@ -102,6 +103,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
     setSelectedSlotId(null);
     setFormValues({ name: "", email: "", note: "" });
     setSubmissionState("idle");
+    setCelebrate(false);
   };
 
   useEffect(() => {
@@ -171,6 +173,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
       if (!response.ok) throw new Error("Failed to send");
 
       setSubmissionState("success");
+      setCelebrate(true);
       setBookedSlots((prev) => ({
         ...prev,
         [selectedSlot.id]: true,
@@ -178,7 +181,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
       setTimeout(() => {
         onClose();
         resetScheduler();
-      }, 1200);
+      }, 1500);
     } catch (error) {
       console.error(error);
       setSubmissionState("error");
@@ -207,6 +210,75 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
             exit="exit"
             onClick={(e) => e.stopPropagation()}
           >
+            <AnimatePresence>
+              {celebrate && (
+                <motion.div
+                  className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <motion.div
+                    className="relative w-40 h-40 flex items-center justify-center"
+                    initial={{ scale: 0.85 }}
+                    animate={{ scale: [0.85, 1.08, 1], transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } }}
+                    exit={{ scale: 0.9, opacity: 0, transition: { duration: 0.25 } }}
+                  >
+                    <motion.div
+                      className="absolute inset-0 rounded-full bg-[rgba(41,151,255,0.12)] border border-[rgba(41,151,255,0.6)]"
+                      initial={{ scale: 0.9, opacity: 0.6 }}
+                      animate={{ scale: 1.1, opacity: 0.2 }}
+                      transition={{ duration: 0.5 }}
+                    />
+                    <motion.svg
+                      viewBox="0 0 48 48"
+                      className="w-20 h-20 text-[var(--accent-link)]"
+                    >
+                      <motion.circle
+                        cx="24"
+                        cy="24"
+                        r="22"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                        initial={{ pathLength: 0 }}
+                        animate={{ pathLength: 1 }}
+                        transition={{ duration: 0.4, ease: "easeOut" }}
+                      />
+                      <motion.path
+                        d="M15 24l7 7 11-14"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        initial={{ pathLength: 0 }}
+                        animate={{ pathLength: 1 }}
+                        transition={{ duration: 0.35, ease: "easeOut", delay: 0.15 }}
+                      />
+                    </motion.svg>
+                    {Array.from({ length: 18 }).map((_, i) => {
+                      const angle = (i / 18) * Math.PI * 2;
+                      const radius = 70 + (i % 3) * 10;
+                      const x = Math.cos(angle) * radius;
+                      const y = Math.sin(angle) * radius;
+                      const size = 6 + (i % 4);
+                      return (
+                        <motion.span
+                          key={i}
+                          className="absolute bg-[var(--accent-link)] rounded-full"
+                          style={{ width: size, height: size, left: "50%", top: "50%" }}
+                          initial={{ x: 0, y: 0, opacity: 0 }}
+                          animate={{ x, y, opacity: [0, 1, 0] }}
+                          transition={{ duration: 0.8, ease: "easeOut", delay: 0.05 * (i % 6) }}
+                        />
+                      );
+                    })}
+                  </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
             <motion.button
               className="absolute top-6 right-6 p-2 rounded-full bg-[var(--accent-soft)] text-[var(--accent)] hover:opacity-80 transition-colors z-10"
               onClick={() => {
