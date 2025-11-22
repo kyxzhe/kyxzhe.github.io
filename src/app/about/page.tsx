@@ -108,10 +108,9 @@ export default function AboutPage() {
                   <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mt-3">Manuscripts</p>
                 </div>
               </div>
-              <div className="text-sm text-foreground/70 leading-relaxed">
-                <p>Currently tinkering with a pair of manuscripts on diffusion dynamics and evaluation strategy.</p>
-              </div>
+            <div className="text-sm text-foreground/70 leading-relaxed">
             </div>
+          </div>
           </div>
         </motion.section>
 
