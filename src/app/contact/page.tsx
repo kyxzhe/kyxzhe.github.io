@@ -211,7 +211,7 @@ export default function ContactPage() {
                   rel="noopener noreferrer"
                   className="flex items-center justify-between gap-3 px-4 py-2 border border-[rgba(0,0,0,0.12)] dark:border-white/20 rounded-full text-[17px] font-medium transition-colors duration-150 hover:border-foreground/50"
                 >
-                  <span>{label}</span>
+                  <span className="text-[15px]">{label}</span>
                   <span className="text-[rgba(0,0,0,0.6)] dark:text-black">{icon}</span>
                 </Link>
               ))}
