@@ -167,6 +167,11 @@ export default function AboutPage() {
             </div>
           </div>
         </section>
+        <section className="w-full max-w-4xl mx-auto text-sm text-foreground/70 leading-relaxed">
+          <p>
+            If you’d like to talk about research, photography, or the eternal debate over the best flat white in Sydney, feel free to reach out!
+          </p>
+        </section>
       </motion.main>
       <Footer className="mb-4" />
     </div>
