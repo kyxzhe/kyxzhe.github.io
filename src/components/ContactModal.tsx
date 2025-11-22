@@ -441,11 +441,11 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                                 setSelectedSlotId(null);
                               }}
                               aria-pressed={isActive}
-                              className={`chip text-sm transition-colors ${
-                                isActive
-                                  ? "bg-[rgba(41,151,255,0.18)] text-[var(--accent-link)] border-[var(--accent-link)] shadow-[0_10px_25px_rgba(41,151,255,0.25)]"
-                                  : "hover:bg-[var(--accent-soft)]"
-                              }`}
+                    className={`chip text-sm transition-colors ${
+                      isActive
+                        ? "bg-[rgba(41,151,255,0.08)] text-[var(--accent-link)] border-[var(--accent-link)]"
+                        : "hover:bg-[var(--accent-soft)]"
+                    }`}
                             >
                               <span className="flex items-center gap-2">
                                 {day.displayLabel}
