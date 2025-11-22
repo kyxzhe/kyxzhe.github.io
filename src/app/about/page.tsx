@@ -145,9 +145,11 @@ export default function AboutPage() {
             <div className="space-y-5">
               <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Community</p>
               <h2 className="text-2xl font-semibold">Teaching & sharing</h2>
-              <ul className="space-y-3 text-sm text-foreground/80">
+              <ul className="space-y-3 text-sm">
                 {contributions.map((item) => (
-                  <li key={item}>{item}</li>
+                  <li key={item} className="text-black dark:text-black">
+                    {item}
+                  </li>
                 ))}
               </ul>
             </div>
