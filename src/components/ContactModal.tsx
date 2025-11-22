@@ -51,6 +51,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
   const [mode, setMode] = useState<"info" | "schedule">(startInSchedule ? "schedule" : "info");
   const availability = useMemo(() => generateAvailability(new Date(), 30), []);
   const WINDOW_SIZE = 5;
+  const CELEBRATION_DURATION = 6500; // keep modal visible only as long as the particle burst
   const [windowStart, setWindowStart] = useState(0);
   const [selectedDate, setSelectedDate] = useState<string>(
     availability[0]?.dateISO ?? ""
@@ -199,7 +200,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
       setTimeout(() => {
         onClose();
         resetScheduler();
-      }, 10000);
+      }, CELEBRATION_DURATION);
     } catch (error) {
       console.error(error);
       setSubmissionState("error");
@@ -221,11 +222,9 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
           }}
         >
         <motion.div
-          className={
-            celebrate
-              ? "relative w-full max-w-4xl max-h-[90vh] overflow-visible"
-              : "surface-card p-6 md:p-8 lg:p-12 w-full max-w-4xl max-h-[90vh] overflow-y-auto relative"
-          }
+          className={`surface-card p-6 md:p-8 lg:p-12 w-full max-w-4xl max-h-[90vh] relative ${
+            celebrate ? "overflow-visible" : "overflow-y-auto"
+          }`}
           variants={modalVariants}
           initial="hidden"
           animate={
@@ -235,7 +234,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
           }
           transition={
             celebrate
-              ? { duration: 2.4, ease: [0.16, 1, 0.3, 1], times: [0, 0.2, 0.6, 1] }
+              ? { duration: 2.6, ease: [0.16, 1, 0.3, 1], times: [0, 0.25, 0.6, 1] }
               : undefined
           }
           exit="exit"
@@ -325,8 +324,16 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                 </motion.div>
               )}
             </AnimatePresence>
-            {!celebrate && (
-              <>
+            <motion.div
+              aria-hidden={celebrate}
+              animate={
+                celebrate
+                  ? { opacity: 0, scale: 0.97, filter: "blur(6px)" }
+                  : { opacity: 1, scale: 1, filter: "blur(0px)" }
+              }
+              transition={{ duration: 0.3, ease: [0.33, 1, 0.68, 1] }}
+              className={celebrate ? "pointer-events-none" : undefined}
+            >
                 <motion.button
                   className="absolute top-6 right-6 p-2 rounded-full bg-[var(--accent-soft)] text-[var(--accent)] hover:opacity-80 transition-colors z-10"
                   onClick={() => {
@@ -667,8 +674,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                 </motion.div>
               )}
             </AnimatePresence>
-            </>
-            )}
+            </motion.div>
           </motion.div>
         </motion.div>
       )}
