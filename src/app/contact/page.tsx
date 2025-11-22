@@ -124,8 +124,8 @@ export default function ContactPage() {
                       {Icon && <Icon size={14} />}
                       <span>{label}</span>
                     </div>
-                    <p className="text-lg font-medium text-foreground">{value}</p>
-                    <p className="text-[17px] text-[rgba(0,0,0,0.6)] dark:text-black">{hint}</p>
+                    <p className="text-[17px] font-medium text-foreground">{value}</p>
+                    <p className="text-[15px] text-[rgba(0,0,0,0.6)] dark:text-black">{hint}</p>
                   </div>
                 );
 
