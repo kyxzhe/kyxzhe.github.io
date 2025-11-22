@@ -100,7 +100,7 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row items-center gap-3 mt-4">
             <Link
               href="/publications"
-            className="px-6 md:px-7 py-3 rounded-full text-sm md:text-base font-semibold shadow-[0_14px_28px_rgba(0,0,0,0.16)] transition duration-200 hover:-translate-y-[2px] bg-[rgba(0,0,0,0.04)] text-foreground dark:bg-[#f5f5f5] dark:text-[#0b0b0d]"
+              className="px-6 md:px-7 py-3 rounded-full text-sm md:text-base font-semibold shadow-[0_14px_28px_rgba(0,0,0,0.16)] transition duration-200 hover:-translate-y-[2px] bg-[#141414] text-white dark:bg-[#f5f5f5] dark:text-[#0b0b0d]"
             >
               View publications
             </Link>
@@ -136,34 +136,34 @@ export default function Home() {
                   transition={{ duration: 0.32, ease: "easeInOut" }}
                   className="w-full flex-1"
                 >
-                  <div className="max-h-[320px] md:max-h-[360px] overflow-y-auto space-y-3 pr-[6px] pt-1">
-                    {messages.length === 0 && !isLoading ? (
-                      <p className="text-sm text-muted-foreground">发送后这里会展开显示完整对话。</p>
-                    ) : (
-                      messages.map((message, index) => (
-                        <div
-                          key={`${message.role}-${index}`}
-                          className={`flex gap-2 ${message.role === "user" ? "justify-end" : "justify-start"}`}
-                        >
+                    <div className="max-h-[320px] md:max-h-[360px] overflow-y-auto space-y-3 pr-[6px] pt-1">
+                      {messages.length === 0 && !isLoading ? (
+                        <p className="text-sm text-[rgba(0,0,0,0.6)] dark:text-white/60">发送后这里会展开显示完整对话。</p>
+                      ) : (
+                        messages.map((message, index) => (
                           <div
-                          className={`max-w-[85%] text-sm md:text-[15px] leading-relaxed text-left ${
-                              message.role === "user"
-                                ? "bg-[#f2f2f4] text-foreground border border-[rgba(0,0,0,0.06)] rounded-2xl px-3 py-[10px] shadow-[0_6px_14px_rgba(0,0,0,0.05)] dark:bg-[#2a2a30] dark:text-white dark:border-[#3a3a42] dark:shadow-[0_8px_18px_rgba(0,0,0,0.45)]"
-                                : "text-foreground dark:text-white"
-                            }`}
+                            key={`${message.role}-${index}`}
+                            className={`flex gap-2 ${message.role === "user" ? "justify-end" : "justify-start"}`}
                           >
-                            {message.content}
+                            <div
+                            className={`max-w-[85%] text-sm md:text-[15px] leading-relaxed text-left ${
+                                message.role === "user"
+                                  ? "bg-[#f2f2f4] text-foreground border border-[rgba(0,0,0,0.06)] rounded-2xl px-3 py-[10px] shadow-[0_6px_14px_rgba(0,0,0,0.05)] dark:bg-[#2a2a30] dark:text-white dark:border-[#3a3a42] dark:shadow-[0_8px_18px_rgba(0,0,0,0.45)]"
+                                  : "text-foreground dark:text-white"
+                              }`}
+                            >
+                              {message.content}
+                            </div>
                           </div>
+                        ))
+                      )}
+                      {isLoading && (
+                        <div className="flex items-center text-[rgba(0,0,0,0.6)] dark:text-white/60">
+                          <Loader2 size={16} className="animate-spin" />
                         </div>
-                      ))
-                    )}
-                    {isLoading && (
-                      <div className="flex items-center text-muted-foreground">
-                        <Loader2 size={16} className="animate-spin" />
-                      </div>
-                    )}
-                    <div ref={historyEndRef} />
-                  </div>
+                      )}
+                      <div ref={historyEndRef} />
+                    </div>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -186,7 +186,7 @@ export default function Home() {
                       animate={{ y: 0, opacity: 0.8 }}
                       exit={{ y: -6, opacity: 0 }}
                       transition={{ duration: 0.18, ease: "easeOut" }}
-                      className="pointer-events-none absolute left-0 top-0 text-[17px] md:text-[17.5px] leading-[1.4] text-muted-foreground dark:text-white/60"
+                      className="pointer-events-none absolute left-0 top-0 text-[17px] md:text-[17.5px] leading-[1.4] text-[rgba(0,0,0,0.6)] dark:text-white/60"
                     >
                       -&gt;
                     </motion.div>
@@ -214,7 +214,7 @@ export default function Home() {
                     animate={{ y: 0, opacity: 1 }}
                     exit={{ y: -10, opacity: 0 }}
                     transition={{ duration: 0.32, ease: "easeOut" }}
-                    className="pointer-events-none absolute left-0 right-0 top-0 text-center px-4 text-[17px] md:text-[17.5px] leading-[1.4] text-muted-foreground dark:text-white/60"
+                      className="pointer-events-none absolute left-0 right-0 top-0 text-center px-4 text-[17px] md:text-[17.5px] leading-[1.4] text-[rgba(0,0,0,0.6)] dark:text-white/60"
                   >
                     {rotatingPlaceholders[placeholderIndex]}
                   </motion.div>
@@ -222,7 +222,7 @@ export default function Home() {
               )}
             </div>
           </motion.div>
-          <p className="text-xs text-muted-foreground text-center w-full max-w-4xl">
+          <p className="text-xs text-[rgba(0,0,0,0.6)] dark:text-white/70 text-center w-full max-w-4xl">
             ChatBot can make mistakes. Check important info.
           </p>
           {error && (
