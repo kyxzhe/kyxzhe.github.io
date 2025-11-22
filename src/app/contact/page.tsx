@@ -57,8 +57,8 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen bg-white text-[#141414] dark:bg-[#0b0b0d] dark:text-[#f5f5f5]">
       <Navbar />
-      <main className="flex-1 mx-auto w-full max-w-5xl px-2 md:px-4 lg:px-0 py-8 flex flex-col gap-14">
-        <section className="mt-4 space-y-4">
+      <main className="flex-1 mx-auto w-full max-w-5xl px-2 md:px-4 lg:px-0 py-10 flex flex-col gap-16">
+        <section className="mt-2 space-y-5">
           <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Contact</p>
           <h1 className="text-[2.4rem] md:text-[2.6rem] font-semibold leading-tight text-foreground">
             Let&apos;s talk about social data and robust ML
@@ -76,13 +76,13 @@ export default function ContactPage() {
           </div>
         </section>
 
-        <section className="grid gap-12 lg:grid-cols-2">
+        <section className="grid gap-14 lg:grid-cols-2">
           <div className="space-y-5">
             <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">Direct lines</p>
             <div className="border-y border-[rgba(0,0,0,0.08)] dark:border-white/15 divide-y divide-[rgba(0,0,0,0.08)] dark:divide-white/15">
               {directLines.map(({ label, value, hint, href, icon: Icon }) => {
                 const Row = (
-                  <div className="flex flex-col gap-1 py-4">
+                  <div className="flex flex-col gap-1 py-5">
                     <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.26em] text-muted-foreground">
                       {Icon && <Icon size={14} />}
                       <span>{label}</span>
@@ -135,7 +135,7 @@ export default function ContactPage() {
           </div>
         </section>
 
-        <section className="grid gap-12 lg:grid-cols-2">
+        <section className="grid gap-14 lg:grid-cols-2">
           <div className="space-y-4">
             <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">Collaboration fit</p>
             <h2 className="text-xl font-semibold text-foreground">Where I add value</h2>
@@ -152,7 +152,7 @@ export default function ContactPage() {
           <div className="space-y-4">
             <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">Profiles</p>
             <h2 className="text-xl font-semibold text-foreground">Find me elsewhere</h2>
-            <div className="flex flex-wrap gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {socialLinks.map(({ label, href, icon }) => (
                 <Link
                   key={label}
