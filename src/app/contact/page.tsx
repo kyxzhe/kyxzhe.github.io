@@ -18,7 +18,7 @@ const replyNotes = [
 const collaborationAreas = [
   "Academic collaborations and joint papers",
   "Research talks, workshops, and guest teaching",
-  "Advising teams on product or hiring decisions",
+  "Sharing materials or datasets related to my work",
 ];
 
 const socialLinks = [
