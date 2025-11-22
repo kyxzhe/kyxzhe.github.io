@@ -82,7 +82,7 @@ export default function AboutPage() {
               <div className="flex flex-wrap gap-x-8 gap-y-2">
                 <span>📍 Sydney based</span>
                 <span>🏛 Behavioural Data Science Lab @ UTS</span>
-                <span>🧑‍🏫 ML + Data Science at USYD</span>
+                <span>🧑‍🏫 ML + Data Science @ USYD</span>
               </div>
             </div>
           </div>
