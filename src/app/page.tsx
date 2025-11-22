@@ -95,7 +95,7 @@ export default function Home() {
             Trustworthy AI for Information Ecosystems
           </h1>
           <p className="text-base md:text-lg text-muted-foreground max-w-2xl leading-relaxed">
-            Designing diffusion experiments and robust ML safeguards for social platforms.
+            PhD researcher in machine learning, working on information diffusion, complex data, and reliable AI systems.
           </p>
           <div className="flex flex-col sm:flex-row items-center gap-3 mt-4">
             <Link
