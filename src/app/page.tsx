@@ -87,11 +87,11 @@ export default function Home() {
     <div className="flex flex-col min-h-screen font-sans">
       <Navbar />
       <main className="flex-1 w-full flex flex-col items-center justify-center text-center px-6 md:px-12 lg:px-16 pb-16 gap-10 md:gap-14">
-        <section className="w-full max-w-3xl flex flex-col items-center gap-5 md:gap-6">
+        <section className="w-full max-w-3xl flex flex-col items-center gap-5 md:gap-6 overflow-x-auto">
           <p className="text-[0.62rem] md:text-[0.72rem] tracking-[0.34em] uppercase text-[rgba(0,0,0,0.6)] dark:text-white/60">
             KEVIN ZHENG · MACHINE LEARNING & DATA
           </p>
-          <h1 className="text-[2.6rem] md:text-[3.4rem] font-bold text-foreground leading-tight">
+          <h1 className="text-[2.6rem] md:text-[3.4rem] font-bold text-foreground leading-tight whitespace-nowrap">
             Trustworthy Machine Learning
           </h1>
           <p className="text-base md:text-lg text-[rgba(0,0,0,0.6)] dark:text-white/70 max-w-2xl leading-relaxed">
