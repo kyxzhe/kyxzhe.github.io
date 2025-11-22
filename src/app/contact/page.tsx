@@ -62,20 +62,7 @@ function GitHubMonoIcon({ className }: { className?: string }) {
 export default function ContactPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showCallInfo, setShowCallInfo] = useState(false);
-  const [tzAbbr, setTzAbbr] = useState("AEDT");
-
-  useEffect(() => {
-    try {
-      const formatter = new Intl.DateTimeFormat("en-US", {
-        timeZoneName: "short"
-      });
-      const parts = formatter.formatToParts(new Date());
-      const abbr = parts.find((p) => p.type === "timeZoneName")?.value;
-      if (abbr) setTzAbbr(abbr);
-    } catch {
-      setTzAbbr("AEDT");
-    }
-  }, []);
+  const tzAbbr = "AEDT";
   const directLines = [
     {
       label: "Email",
