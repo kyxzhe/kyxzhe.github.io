@@ -189,9 +189,9 @@ export default function ContactPage() {
           <div className="space-y-4">
             <p className="text-xs uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-black">Collaboration fit</p>
             <h2 className="text-xl font-semibold text-foreground">Ways I can help</h2>
-            <ul className="space-y-3 text-sm text-foreground/80 leading-relaxed">
+            <ul className="space-y-3 text-sm leading-relaxed">
               {collaborationAreas.map((area) => (
-                <li key={area} className="flex gap-2">
+                <li key={area} className="flex gap-2 text-black dark:text-black">
                   <span className="text-[var(--accent)]">•</span>
                   <span>{area}</span>
                 </li>
