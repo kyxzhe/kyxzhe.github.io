@@ -203,7 +203,7 @@ export default function Home() {
                 {isLoading ? (
                   <Loader2 size={17} className="animate-spin" />
                 ) : (
-                  <ArrowUp size={20} className="text-[rgba(0,0,0,0.44)] dark:text-white" />
+                  <ArrowUp size={20} strokeWidth={2} className="text-[rgba(0,0,0,0.44)] dark:text-white" />
                 )}
               </button>
               {showPlaceholderOverlay && (
