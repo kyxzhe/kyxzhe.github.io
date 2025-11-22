@@ -88,7 +88,7 @@ export default function Home() {
       <Navbar />
       <main className="flex-1 w-full flex flex-col items-center justify-center text-center px-6 md:px-12 lg:px-16 pb-16 gap-10 md:gap-14">
         <section className="w-full max-w-3xl flex flex-col items-center gap-5 md:gap-6">
-          <p className="text-[0.62rem] md:text-[0.72rem] tracking-[0.34em] uppercase text-[rgba(0,0,0,0.6)] dark:text-white/60">
+          <p className="text-[12px] tracking-[0.34em] uppercase text-[rgba(0,0,0,0.6)] dark:text-white/60">
             KEVIN ZHENG · MACHINE LEARNING & DATA
           </p>
           <h1 className="text-[clamp(2rem,5vw,3.4rem)] font-semibold text-foreground leading-tight whitespace-nowrap">
