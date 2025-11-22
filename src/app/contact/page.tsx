@@ -11,8 +11,9 @@ import { GoogleScholarIcon, OrcidIcon } from "@/components/icons/AcademicIcons";
 import ContactModal from "@/components/ContactModal";
 
 const replyNotes = [
-  "Who decides and by when?",
-  "If it is urgent say so in the subject.",
+  "What is the topic and who is involved?",
+  "Are there any deadlines or time zones I should know about?",
+  "If it is urgent, please say so in the subject line.",
 ];
 
 const collaborationAreas = [
