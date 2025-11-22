@@ -95,7 +95,7 @@ export default function Home() {
             Trustworthy Machine Learning
           </h1>
           <p className="text-base md:text-lg text-muted-foreground max-w-2xl leading-relaxed">
-            PhD researcher in machine learning, focusing on information diffusion and trustworthy AI.
+            PhD researcher in machine learning, working on information diffusion and real-world AI systems.
           </p>
           <div className="flex flex-col sm:flex-row items-center gap-3 mt-4">
             <Link
