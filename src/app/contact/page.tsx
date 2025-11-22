@@ -86,36 +86,36 @@ export default function ContactPage() {
           </div>
         </section>
 
-        <section className="space-y-4">
-          <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">Direct lines</p>
-          <div className="border-y border-[rgba(0,0,0,0.08)] dark:border-white/15 divide-y divide-[rgba(0,0,0,0.08)] dark:divide-white/15">
-            {directLines.map(({ label, value, hint, href, icon: Icon }) => {
-              const Row = (
-                <div className="flex flex-col gap-1 py-4">
-                  <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.26em] text-muted-foreground">
-                    {Icon && <Icon size={14} />}
-                    <span>{label}</span>
+        <section className="grid gap-8 lg:grid-cols-2">
+          <div className="space-y-4">
+            <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">Direct lines</p>
+            <div className="border-y border-[rgba(0,0,0,0.08)] dark:border-white/15 divide-y divide-[rgba(0,0,0,0.08)] dark:divide-white/15">
+              {directLines.map(({ label, value, hint, href, icon: Icon }) => {
+                const Row = (
+                  <div className="flex flex-col gap-1 py-4">
+                    <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.26em] text-muted-foreground">
+                      {Icon && <Icon size={14} />}
+                      <span>{label}</span>
+                    </div>
+                    <p className="text-lg font-medium text-foreground">{value}</p>
+                    <p className="text-sm text-muted-foreground">{hint}</p>
                   </div>
-                  <p className="text-lg font-medium text-foreground">{value}</p>
-                  <p className="text-sm text-muted-foreground">{hint}</p>
-                </div>
-              );
+                );
 
-              return href ? (
-                <Link key={label} href={href} className="block hover:text-foreground transition-colors">
-                  {Row}
-                </Link>
-              ) : (
-                <div key={label}>{Row}</div>
-              );
-            })}
+                return href ? (
+                  <Link key={label} href={href} className="block hover:text-foreground transition-colors">
+                    {Row}
+                  </Link>
+                ) : (
+                  <div key={label}>{Row}</div>
+                );
+              })}
+            </div>
           </div>
-        </section>
 
-        <section className="grid gap-10 lg:grid-cols-2">
-          <div className="space-y-3">
-            <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">How to get a reply</p>
-            <h2 className="text-xl font-semibold text-foreground">Keep it lightweight</h2>
+          <div className="space-y-4">
+            <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">Reply cadence</p>
+            <h2 className="text-xl font-semibold text-foreground">What to include</h2>
             <ul className="space-y-3 text-sm text-foreground/80 leading-relaxed">
               {replyNotes.map((note) => (
                 <li key={note} className="flex gap-2">
@@ -125,7 +125,9 @@ export default function ContactPage() {
               ))}
             </ul>
           </div>
+        </section>
 
+        <section className="grid gap-10 lg:grid-cols-2">
           <div className="space-y-3">
             <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">Collaboration fit</p>
             <h2 className="text-xl font-semibold text-foreground">Where I add value</h2>
