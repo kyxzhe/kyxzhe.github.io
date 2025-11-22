@@ -308,8 +308,8 @@ export default function NewsPage() {
               onClick={() => setActiveCategory(category)}
               className={`px-3 py-1.5 rounded-full border transition-colors ${
                 activeCategory === category
-                  ? "bg-[rgba(0,0,0,0.12)] border-[rgba(0,0,0,0.12)] text-foreground"
-                  : "bg-[rgba(0,0,0,0.04)] border-[rgba(0,0,0,0.04)] text-muted-foreground hover:border-[rgba(0,0,0,0.08)]"
+                  ? "bg-[rgba(0,0,0,0.12)] border-transparent text-foreground"
+                  : "bg-[rgba(0,0,0,0.04)] border-transparent text-muted-foreground hover:border-[rgba(0,0,0,0.08)]"
               }`}
             >
               {formatCategoryLabel(category)}
