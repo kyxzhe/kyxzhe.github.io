@@ -39,9 +39,9 @@ const replyNotes = [
 ];
 
 const collaborationAreas = [
-  "Planning experiments and interventions",
-  "Making models sturdy in messy situations",
-  "Evaluation, ranking, and moderation support",
+  "Academic collaborations and joint papers",
+  "Research talks, workshops, and guest teaching",
+  "Advising teams on product or hiring decisions",
 ];
 
 const socialLinks = [
