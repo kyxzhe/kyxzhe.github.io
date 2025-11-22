@@ -48,19 +48,6 @@ const contributions = [
   "4 internal talks across lab meetings & reading groups",
 ];
 
-const snapshotFacts = [
-  { label: "Location", value: "Sydney, Australia" },
-  { label: "Lab", value: "Behavioural Data Science Lab @ UTS" },
-  { label: "Teaching", value: "Advanced ML + Informatics @ USYD" },
-];
-
-const quickStats = [
-  { label: "Lab talks", value: "4" },
-  { label: "Manuscripts", value: "2" },
-  { label: "Courses", value: "2" },
-  { label: "Topics", value: "Diffusion · Robust ML" },
-];
-
 const aboutIntro = `I’m a PhD student at the University of Technology Sydney, working with Marian-Andrei Rizoiu in the Behavioural Data Science Lab. My research looks at how information spreads online and how to keep machine learning models a little more robust when faced with the messiness of the real world.
 
 Before the PhD, I studied at the University of Sydney (and somehow graduated with a University Medal). Teaching data science and ML became a favourite way to understand tough ideas—there’s nothing like explaining a concept to realise where the gaps are.
@@ -69,202 +56,122 @@ Outside academia I’m usually carrying a film camera, hunting for the next coff
 
 export default function AboutPage() {
   return (
-    <div className="flex flex-col min-h-screen font-sans overflow-visible">
+    <div className="flex flex-col min-h-screen font-sans pt-2 md:pt-0 lg:py-6 xl:py-0 xl:pb-6 overflow-visible">
       <Navbar />
       <motion.main
-        className="flex-1 w-full max-w-6xl mx-auto px-4 md:px-8 lg:px-10 xl:px-4 py-12 md:py-16 flex flex-col gap-16"
+        className="flex-1 flex flex-col items-center gap-16 px-4 md:px-16 lg:px-24 py-12"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
         <motion.section
-          className="grid gap-10 lg:grid-cols-[1.15fr_0.95fr] items-start"
+          className="max-w-4xl w-full flex flex-col gap-12"
           variants={cardVariants}
           initial="hidden"
           animate="visible"
         >
           <div className="flex flex-col gap-6">
             <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">About Kevin</p>
-            <div className="space-y-5">
-              <h1 className="text-[2.45rem] md:text-[2.9rem] font-semibold leading-tight">
-                Research first, people centered
-              </h1>
-              <p className="text-base md:text-lg text-foreground/80 whitespace-pre-line leading-relaxed">
-                {aboutIntro}
+            <div className="space-y-4">
+              <h1 className="text-4xl md:text-5xl font-semibold leading-tight">Research first, people centered</h1>
+              <p className="text-base md:text-lg text-foreground/80 whitespace-pre-line leading-relaxed">{aboutIntro}</p>
+            </div>
+            <div className="flex flex-col gap-4 text-sm text-foreground/70">
+              <div className="flex flex-wrap gap-x-8 gap-y-2">
+                <span>📍 Sydney based</span>
+                <span>🏛 Behavioural Data Science Lab @ UTS</span>
+                <span>🧑‍🏫 Teaching ML + Informatics at USYD</span>
+              </div>
+              <p>
+                I like projects where social data, ranking systems, and human decisions meet. When in doubt, I’ll choose conversations over dashboards.
               </p>
             </div>
-            <div className="flex flex-wrap gap-3 pt-1">
-              {["📍 Sydney based", "🏛 Behavioural Data Science Lab @ UTS", "🧑‍🏫 Teaching ML + Informatics @ USYD", "🤝 Social data · ranking · human decisions"].map((item) => (
-                <span key={item} className="chip chip-relaxed bg-[var(--pill-background)] border border-[var(--card-border)]">
-                  {item}
-                </span>
-              ))}
-            </div>
-            <p className="text-sm md:text-base text-foreground/70 max-w-3xl leading-relaxed">
-              I like projects where social data, ranking systems, and human decisions meet. When in doubt, I’ll choose conversations over dashboards.
-            </p>
           </div>
 
-          <div className="space-y-4">
-            <motion.div
-              variants={cardVariants}
-              className="surface-card p-6 md:p-7 space-y-5"
-            >
-              <div className="space-y-2">
-                <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Snapshot</p>
-                <h2 className="text-xl font-semibold text-foreground">Where to find me</h2>
-              </div>
-              <div className="space-y-4">
-                {snapshotFacts.map((fact) => (
-                  <div key={fact.label} className="grid grid-cols-[110px_1fr] items-start gap-3 text-sm">
-                    <p className="text-[11px] uppercase tracking-[0.26em] text-muted-foreground">{fact.label}</p>
-                    <p className="text-foreground/80">{fact.value}</p>
-                  </div>
+          <div className="grid gap-10 lg:grid-cols-2">
+            <div className="space-y-5">
+              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Focus areas</p>
+              <div className="space-y-4 text-sm text-foreground/80">
+                {researchFocus.map((item) => (
+                  <p key={item}>{item}</p>
                 ))}
               </div>
-              <div className="grid grid-cols-2 gap-4 pt-5 border-t border-[rgba(0,0,0,0.08)] dark:border-white/15">
-                {quickStats.map((stat) => (
-                  <div key={stat.label} className="space-y-1">
-                    <p className="text-3xl font-semibold leading-none">{stat.value}</p>
-                    <p className="text-[11px] uppercase tracking-[0.26em] text-muted-foreground">{stat.label}</p>
-                  </div>
-                ))}
+            </div>
+            <div className="space-y-5">
+              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">At a glance</p>
+              <div className="flex gap-12">
+                <div>
+                  <p className="text-4xl font-semibold leading-none">4</p>
+                  <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mt-3">Lab talks</p>
+                </div>
+                <div>
+                  <p className="text-4xl font-semibold leading-none">2</p>
+                  <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mt-3">Manuscripts</p>
+                </div>
               </div>
-            </motion.div>
-
-            <motion.div
-              variants={cardVariants}
-              className="surface-card p-5 md:p-6 space-y-3"
-            >
-              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Currently</p>
-              <p className="text-sm text-foreground/80 leading-relaxed">
-                Tinkering with two manuscripts on diffusion dynamics and evaluation strategy while designing teaching material that makes ML less opaque.
-              </p>
-              <Link
-                href={`mailto:${contactInfo.email}`}
-                className="inline-flex justify-center w-full btn-primary text-sm"
-              >
-                Email Kevin
-              </Link>
-            </motion.div>
+              <div className="text-sm text-foreground/70 leading-relaxed">
+                <p>Currently tinkering with a pair of manuscripts on diffusion dynamics and evaluation strategy.</p>
+              </div>
+            </div>
           </div>
         </motion.section>
 
-        <section className="grid gap-10 lg:grid-cols-12">
-          <motion.div
-            variants={cardVariants}
-            className="surface-card p-6 md:p-7 space-y-4 lg:col-span-5"
-            initial="hidden"
-            animate="visible"
-          >
-            <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Research threads</p>
-            <h2 className="text-xl font-semibold">Focus areas</h2>
-            <div className="flex flex-wrap gap-3 pt-1">
-              {researchFocus.map((item) => (
-                <span
-                  key={item}
-                  className="chip chip-relaxed border border-[var(--card-border)] bg-[var(--pill-background)]"
-                >
-                  {item}
-                </span>
-              ))}
-            </div>
-          </motion.div>
-
-          <motion.div
-            variants={cardVariants}
-            className="surface-card p-6 md:p-7 space-y-5 lg:col-span-7"
-            initial="hidden"
-            animate="visible"
-          >
-            <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Community</p>
-            <h2 className="text-xl font-semibold">Teaching & sharing</h2>
-            <ul className="divide-y divide-[rgba(0,0,0,0.08)] dark:divide-white/12">
-              {contributions.map((item) => (
-                <li key={item} className="py-3 flex items-start gap-3 text-sm text-foreground/80">
-                  <span className="text-[var(--accent)]">•</span>
-                  <span className="leading-relaxed">{item}</span>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-        </section>
-
-        <motion.section
-          variants={cardVariants}
-          className="surface-card p-6 md:p-8 space-y-8"
-          initial="hidden"
-          animate="visible"
-        >
-          <div className="flex items-start justify-between gap-6 flex-wrap">
-            <div>
+        <section className="w-full max-w-4xl mx-auto space-y-20">
+          <div className="space-y-10">
+            <div className="space-y-2">
               <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Story so far</p>
               <h2 className="text-2xl font-semibold">Timeline</h2>
             </div>
-            <Link
-              href="/"
-              className="text-sm text-foreground/70 underline underline-offset-6 hover:text-foreground transition-colors"
-            >
-              Back to work overview
-            </Link>
-          </div>
-          <div className="space-y-6 max-w-3xl mx-auto w-full">
-            {timeline.map((item, index) => (
-              <div key={item.title} className="flex gap-4">
-                <div className="flex flex-col items-center pt-1">
-                  <span className="w-3 h-3 rounded-full bg-foreground" />
-                  {index !== timeline.length - 1 && (
-                    <span className="flex-1 w-px bg-[rgba(0,0,0,0.12)] dark:bg-white/25 mt-2" />
-                  )}
-                </div>
-                <div
-                  className={`flex-1 pb-6 space-y-2 ${
-                    index !== timeline.length - 1 ? "border-b border-[rgba(0,0,0,0.08)] dark:border-white/15" : ""
-                  }`}
-                >
-                  <p className="text-[11px] uppercase tracking-[0.26em] text-muted-foreground">
+            <div className="space-y-8">
+              {timeline.map((item) => (
+                <div key={item.title} className="space-y-2">
+                  <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
                     {item.period}
                   </p>
-                  <h3 className="text-lg font-semibold">{item.title}</h3>
-                  <p className="text-sm text-foreground/75">{item.org}</p>
-                  <p className="text-sm text-foreground/70 leading-relaxed">{item.detail}</p>
+                  <h3 className="text-lg font-medium">{item.title}</h3>
+                  <p className="text-sm text-foreground/70">{item.org}</p>
+                  <p className="text-sm text-foreground/70">{item.detail}</p>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </motion.section>
 
-        <motion.section
-          variants={cardVariants}
-          className="surface-card p-6 md:p-8 grid gap-8 lg:grid-cols-2 items-start"
-          initial="hidden"
-          animate="visible"
-        >
-          <div className="space-y-3">
-            <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Collaborate</p>
-            <h2 className="text-xl font-semibold">Open to thoughtful work</h2>
-            <p className="text-sm text-foreground/75 leading-relaxed">
-              I partner with researchers and product teams on diffusion modelling, moderation strategy, and responsible experimentation with social data.
-              If your project needs careful measurement and collaborative storytelling, let&apos;s talk.
-            </p>
+          <div className="grid gap-12 lg:grid-cols-2">
+            <div className="space-y-5">
+              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Community</p>
+              <h2 className="text-2xl font-semibold">Teaching & sharing</h2>
+              <ul className="space-y-3 text-sm text-foreground/80">
+                {contributions.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+            <div className="space-y-5">
+              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Collaborate</p>
+              <h2 className="text-2xl font-semibold">Open to thoughtful work</h2>
+              <p className="text-sm text-foreground/70 leading-relaxed">
+                I partner with researchers and product teams on diffusion modelling,
+                moderation strategy, and responsible experimentation with social data.
+              </p>
+              <div className="flex flex-col gap-2 text-sm max-w-xs">
+                <Link
+                  href={`mailto:${contactInfo.email}`}
+                  className="btn-primary inline-flex justify-center"
+                >
+                  Email Kevin
+                </Link>
+                <Link
+                  href="/"
+                  className="text-foreground/60 text-center underline underline-offset-4 hover:text-foreground transition-colors"
+                >
+                  Back to work overview
+                </Link>
+              </div>
+            </div>
           </div>
-          <div className="space-y-3">
-            <Link
-              href={`mailto:${contactInfo.email}`}
-              className="btn-primary inline-flex justify-center w-full text-sm"
-            >
-              Email Kevin
-            </Link>
-            <Link
-              href="/news"
-              className="text-sm text-foreground/70 underline underline-offset-6 hover:text-foreground transition-colors text-center block"
-            >
-              See what I am sharing lately
-            </Link>
-          </div>
-        </motion.section>
+        </section>
       </motion.main>
-      <Footer className="mt-4" />
+      <Footer className="mb-4" />
     </div>
   );
 }
