@@ -72,21 +72,21 @@ export default function AboutPage() {
     <div className="flex flex-col min-h-screen font-sans overflow-visible">
       <Navbar />
       <motion.main
-        className="flex-1 w-full max-w-6xl mx-auto px-4 md:px-8 lg:px-6 xl:px-4 py-12 md:py-14 flex flex-col gap-16"
+        className="flex-1 w-full max-w-6xl mx-auto px-4 md:px-8 lg:px-10 xl:px-4 py-12 md:py-16 flex flex-col gap-16"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
         <motion.section
-          className="grid gap-10 lg:grid-cols-12 items-start"
+          className="grid gap-10 lg:grid-cols-[1.15fr_0.95fr] items-start"
           variants={cardVariants}
           initial="hidden"
           animate="visible"
         >
-          <div className="lg:col-span-7 space-y-6">
-            <div className="space-y-3">
-              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">About Kevin</p>
-              <h1 className="text-[2.45rem] md:text-[2.8rem] font-semibold leading-tight">
+          <div className="flex flex-col gap-6">
+            <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">About Kevin</p>
+            <div className="space-y-5">
+              <h1 className="text-[2.45rem] md:text-[2.9rem] font-semibold leading-tight">
                 Research first, people centered
               </h1>
               <p className="text-base md:text-lg text-foreground/80 whitespace-pre-line leading-relaxed">
@@ -94,7 +94,7 @@ export default function AboutPage() {
               </p>
             </div>
             <div className="flex flex-wrap gap-3 pt-1">
-              {["📍 Sydney based", "🏛 Behavioural Data Science Lab @ UTS", "🧑‍🏫 Teaching ML + Informatics at USYD"].map((item) => (
+              {["📍 Sydney based", "🏛 Behavioural Data Science Lab @ UTS", "🧑‍🏫 Teaching ML + Informatics @ USYD", "🤝 Social data · ranking · human decisions"].map((item) => (
                 <span key={item} className="chip chip-relaxed bg-[var(--pill-background)] border border-[var(--card-border)]">
                   {item}
                 </span>
@@ -105,7 +105,7 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="lg:col-span-5 space-y-4">
+          <div className="space-y-4">
             <motion.div
               variants={cardVariants}
               className="surface-card p-6 md:p-7 space-y-5"
