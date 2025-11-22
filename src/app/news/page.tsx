@@ -282,7 +282,7 @@ export default function NewsPage() {
       )}
       <main className="flex-1 mx-auto w-full max-w-5xl px-2 md:px-4 lg:px-0 py-6 flex flex-col gap-6">
         <section className="mt-4 space-y-2">
-          <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Newsroom</p>
+          <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">NEWS</p>
           <h1 className="text-[2.4rem] md:text-[2.6rem] font-semibold leading-tight text-foreground">Latest news &amp; updates</h1>
           <p className="text-[15px] md:text-base text-muted-foreground max-w-2xl leading-relaxed">
             All my latest posts—research notes, milestones, shout-outs, or anything new. It opens in list view, with filters ready when you need them.
