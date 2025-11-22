@@ -78,7 +78,7 @@ export default function AboutPage() {
           animate="visible"
         >
           <div className="flex flex-col gap-6">
-            <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">About Kevin</p>
+            <p className="text-xs uppercase tracking-[0.3em] text-[rgba(0,0,0,0.6)] dark:text-white/60">About Kevin</p>
             <div className="space-y-4">
               <h1 className="text-4xl md:text-5xl font-semibold leading-tight">Research first, people in mind</h1>
               <p className="text-base md:text-lg text-foreground whitespace-pre-line leading-relaxed">{aboutIntro}</p>
