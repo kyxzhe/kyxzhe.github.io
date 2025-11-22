@@ -4,31 +4,61 @@ import "./globals.css";
 import ConsoleProvider from "@/components/Console";
 import { Analytics } from "@vercel/analytics/next"
 
-// Initialize Gilroy font
-const gilroy = localFont({
+// Initialize OpenAI Sans font
+const openAiSans = localFont({
   src: [
     {
-      path: '../../public/fonts/Gilroy-Light.ttf',
+      path: '../../public/fonts/OpenAISans-Light.woff2',
       weight: '300',
       style: 'normal',
     },
     {
-      path: '../../public/fonts/Gilroy-LightItalic.ttf',
+      path: '../../public/fonts/OpenAISans-LightItalic.woff2',
       weight: '300',
       style: 'italic',
     },
     {
-      path: '../../public/fonts/Gilroy-Medium.ttf',    
+      path: '../../public/fonts/OpenAISans-Regular.woff2',
+      weight: '400',
+      style: 'normal',
+    },
+    {
+      path: '../../public/fonts/OpenAISans-RegularItalic.woff2',
+      weight: '400',
+      style: 'italic',
+    },
+    {
+      path: '../../public/fonts/OpenAISans-Medium.woff2',    
       weight: '500',
       style: 'normal',
     },
     {
-      path: '../../public/fonts/Gilroy-Bold.ttf',
+      path: '../../public/fonts/OpenAISans-MediumItalic.woff2',
+      weight: '500',
+      style: 'italic',
+    },
+    {
+      path: '../../public/fonts/OpenAISans-Semibold.woff2',
+      weight: '600',
+      style: 'normal',
+    },
+    {
+      path: '../../public/fonts/OpenAISans-SemiboldItalic.woff2',
+      weight: '600',
+      style: 'italic',
+    },
+    {
+      path: '../../public/fonts/OpenAISans-Bold.woff2',
       weight: '700',
       style: 'normal',
     },
+    {
+      path: '../../public/fonts/OpenAISans-BoldItalic.woff2',
+      weight: '700',
+      style: 'italic',
+    },
   ],
-  variable: '--font-gilroy',
+  variable: '--font-openai-sans',
   display: 'swap',
 });
 export const metadata: Metadata = {
@@ -61,7 +91,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${gilroy.variable} font-gilroy antialiased`}>
+      <body className={`${openAiSans.variable} antialiased`}>
         <ConsoleProvider />
         {children}
         <Analytics />

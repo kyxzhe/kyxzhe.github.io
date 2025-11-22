@@ -10,7 +10,7 @@
   --accent: #0f0f11;
   --accent-link: #0f0f11;
   --accent-soft: rgba(15, 15, 17, 0.12);
-  --font-gilroy: 'Gilroy', sans-serif;
+  --font-openai-sans: 'OpenAI Sans', system-ui, -apple-system, sans-serif;
   --radius-card: 20px;
   --radius-card-tight: 18px;
   --radius-pill: 999px;
@@ -39,8 +39,8 @@
   --color-foreground: var(--foreground);
   --color-accent: var(--accent);
   --color-card: var(--card);
-  --font-sans: var(--font-gilroy);
-  --font-mono: var(--font-gilroy);
+  --font-sans: var(--font-openai-sans);
+  --font-mono: var(--font-openai-sans);
 }
 
 body {
