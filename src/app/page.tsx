@@ -89,7 +89,7 @@ export default function Home() {
       <main className="flex-1 w-full flex flex-col items-center justify-center text-center px-6 md:px-12 lg:px-16 pb-16 gap-10 md:gap-14">
         <section className="w-full max-w-3xl flex flex-col items-center gap-5 md:gap-6">
           <p className="text-[0.62rem] md:text-[0.72rem] tracking-[0.34em] uppercase text-muted-foreground">
-            KEVIN ZHENG · MACHINE LEARNING & TRUSTWORTHY AI
+            KEVIN ZHENG · MACHINE LEARNING
           </p>
           <h1 className="text-[2.6rem] md:text-[3.4rem] font-bold text-foreground leading-tight">
             Trustworthy Machine Learning
