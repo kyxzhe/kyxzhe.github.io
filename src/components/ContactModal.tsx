@@ -51,7 +51,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
   const [mode, setMode] = useState<"info" | "schedule">(startInSchedule ? "schedule" : "info");
   const availability = useMemo(() => generateAvailability(new Date(), 30), []);
   const WINDOW_SIZE = 5;
-  const CELEBRATION_DURATION = 6500; // keep modal visible only as long as the particle burst
+  const SUCCESS_DISMISS_DELAY = 1400; // short pause to show "Confirmed" badge
   const [windowStart, setWindowStart] = useState(0);
   const [selectedDate, setSelectedDate] = useState<string>(
     availability[0]?.dateISO ?? ""
@@ -69,26 +69,6 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
   const [submissionState, setSubmissionState] = useState<
     "idle" | "loading" | "success" | "error"
   >("idle");
-  const [celebrate, setCelebrate] = useState(false);
-  const particles = useMemo(
-    () =>
-      Array.from({ length: 120 }).map((_, i) => {
-        const angle = Math.random() * Math.PI * 2;
-        const speed = 30 + Math.random() * 80;
-        const xStart = (Math.random() - 0.5) * 360; // spread across panel width
-        const yStart = (Math.random() - 0.5) * 120; // spread across panel height
-        return {
-          xStart,
-          yStart,
-          dx: Math.cos(angle) * speed,
-          dy: Math.sin(angle) * speed,
-          delay: Math.random() * 0.35 + i * 0.0015,
-          size: 3.5 + Math.random() * 5,
-          duration: 2 + Math.random() * 1.5,
-        };
-      }),
-    []
-  );
   const [bookedSlots, setBookedSlots] = useState<Record<string, boolean>>(() => {
     const initial: Record<string, boolean> = {};
     availability.forEach((day) =>
@@ -122,7 +102,6 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
     setSelectedSlotId(null);
     setFormValues({ name: "", email: "", note: "" });
     setSubmissionState("idle");
-    setCelebrate(false);
   };
 
   useEffect(() => {
@@ -192,7 +171,6 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
       if (!response.ok) throw new Error("Failed to send");
 
       setSubmissionState("success");
-      setCelebrate(true);
       setBookedSlots((prev) => ({
         ...prev,
         [selectedSlot.id]: true,
@@ -200,7 +178,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
       setTimeout(() => {
         onClose();
         resetScheduler();
-      }, CELEBRATION_DURATION);
+      }, SUCCESS_DISMISS_DELAY);
     } catch (error) {
       console.error(error);
       setSubmissionState("error");
@@ -222,118 +200,14 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
           }}
         >
         <motion.div
-          className={`surface-card p-6 md:p-8 lg:p-12 w-full max-w-4xl max-h-[90vh] relative ${
-            celebrate ? "overflow-visible" : "overflow-y-auto"
-          }`}
+          className="surface-card p-6 md:p-8 lg:p-12 w-full max-w-4xl max-h-[90vh] relative overflow-y-auto"
           variants={modalVariants}
           initial="hidden"
-          animate={
-            celebrate
-              ? { scale: [1, 0.78, 1.05, 0.45], opacity: [1, 0.6, 0.4, 0] }
-              : { scale: 1, opacity: 1 }
-          }
-          transition={
-            celebrate
-              ? { duration: 2.6, ease: [0.16, 1, 0.3, 1], times: [0, 0.25, 0.6, 1] }
-              : undefined
-          }
+          animate={{ scale: 1, opacity: 1 }}
           exit="exit"
           onClick={(e) => e.stopPropagation()}
         >
-            <AnimatePresence>
-              {celebrate && (
-                <motion.div
-                  className="absolute inset-0 z-20 pointer-events-none"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  {particles.map((p, i) => (
-                    <motion.span
-                      key={i}
-                      className="absolute rounded-full bg-[var(--accent-link)]"
-                      style={{
-                        width: p.size,
-                        height: p.size,
-                        left: "50%",
-                        top: "50%",
-                      }}
-                      initial={{ x: p.xStart, y: p.yStart, opacity: 0.9, scale: 1 }}
-                      animate={{
-                        x: p.xStart * 0.12,
-                        y: p.yStart * 0.12,
-                        opacity: 0.95,
-                        scale: 0.9,
-                      }}
-                      transition={{
-                        duration: 2,
-                        delay: p.delay,
-                        ease: "easeOut",
-                      }}
-                    />
-                  ))}
-                  {particles.map((p, i) => (
-                    <motion.span
-                      key={`out-${i}`}
-                      className="absolute rounded-full bg-[var(--accent-link)]"
-                      style={{
-                        width: p.size,
-                        height: p.size,
-                        left: "50%",
-                        top: "50%",
-                      }}
-                      initial={{ x: p.xStart * 0.12, y: p.yStart * 0.12, opacity: 0.95, scale: 0.9 }}
-                      animate={{
-                        x: p.dx,
-                        y: p.dy,
-                        opacity: 0,
-                        scale: 0.4,
-                      }}
-                      transition={{
-                        duration: p.duration,
-                        delay: p.delay + 2,
-                        ease: "easeOut",
-                      }}
-                    />
-                  ))}
-                  <motion.div
-                    className="absolute inset-0 flex items-center justify-center"
-                    initial={{ scale: 0.92, opacity: 0.45 }}
-                    animate={{ scale: [0.92, 1.05, 0.6], opacity: [0.85, 1, 0] }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 2.4, ease: [0.16, 1, 0.3, 1], times: [0, 0.55, 1] }}
-                  >
-                    <motion.svg
-                      viewBox="0 0 48 48"
-                      className="w-16 h-16 text-[var(--accent-link)]"
-                    >
-                      <motion.path
-                        d="M15 24l7 7 11-14"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="3.2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        initial={{ pathLength: 0 }}
-                        animate={{ pathLength: 1 }}
-                        transition={{ duration: 0.45, ease: "easeOut" }}
-                      />
-                    </motion.svg>
-                  </motion.div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-            <motion.div
-              aria-hidden={celebrate}
-              animate={
-                celebrate
-                  ? { opacity: 0, scale: 0.97, filter: "blur(6px)" }
-                  : { opacity: 1, scale: 1, filter: "blur(0px)" }
-              }
-              transition={{ duration: 0.3, ease: [0.33, 1, 0.68, 1] }}
-              className={celebrate ? "pointer-events-none" : undefined}
-            >
+            <motion.div>
                 <motion.button
                   className="absolute top-6 right-6 p-2 rounded-full bg-[var(--accent-soft)] text-[var(--accent)] hover:opacity-80 transition-colors z-10"
                   onClick={() => {
