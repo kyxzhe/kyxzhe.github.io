@@ -66,7 +66,7 @@ export default function ContactPage() {
     {
       label: "Email",
       value: contactInfo.email,
-      hint: "Fastest for inquiries and invites.",
+      hint: "Best for research, teaching, and collaboration enquiries.",
       href: `mailto:${contactInfo.email}`,
       icon: Mail,
     },
