@@ -161,7 +161,7 @@ export default function AboutPage() {
                   href="/"
                   className="text-foreground/60 text-center underline underline-offset-4 hover:text-foreground transition-colors"
                 >
-                  Back to work overview
+                  返回首页
                 </Link>
               </div>
             </div>
