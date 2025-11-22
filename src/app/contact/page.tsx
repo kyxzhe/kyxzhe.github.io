@@ -19,9 +19,9 @@ const directLines = [
     icon: Mail,
   },
   {
-    label: "Phone / Signal",
+    label: "Phone",
     value: contactInfo.phone,
-    hint: "I rarely pick up calls. Please text first. I reply during Sydney daytime.",
+    hint: "I rarely answer calls. Please text first. I reply in Sydney daytime.",
     href: `tel:${contactInfo.phoneRaw}`,
     icon: Phone,
   },
