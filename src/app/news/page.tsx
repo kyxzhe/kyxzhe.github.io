@@ -7,7 +7,7 @@ import { motion } from "motion/react";
 import { ArrowUpDown, Filter, LayoutGrid, List } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { type NewsItem, newsItems } from "@/lib/constants/news";
+import { type NewsCategory, type NewsItem, newsItems } from "@/lib/constants/news";
 import { projectsVariants } from "@/lib/animation/variants";
 
 type ViewMode = "list" | "grid";
