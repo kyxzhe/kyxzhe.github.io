@@ -517,7 +517,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                         onChange={(e) => setFormValues((prev) => ({ ...prev, note: e.target.value }))}
                         rows={3}
                         className="rounded-[12px] border border-border bg-transparent px-4 py-3 focus:outline-none focus:border-foreground placeholder:text-muted-foreground/70"
-                        placeholder="Share context, collaborators, or agenda."
+                        placeholder="Context, collaborators, or agenda."
                       />
                     </div>
 
