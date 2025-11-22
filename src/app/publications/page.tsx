@@ -120,7 +120,7 @@ const ListRow = ({ item }: { item: Publication }) => {
     <article
       className={`group flex flex-col gap-3 py-6 border-b border-[rgba(0,0,0,0.08)] dark:border-white/20 transition-colors hover:border-foreground/70 ${
         item.link ? "cursor-pointer" : "cursor-default"
-      }`}
+      } font-normal`}
       role={item.link ? "link" : undefined}
       tabIndex={item.link ? 0 : -1}
       aria-label={item.link ? `Open ${item.title}` : undefined}
@@ -213,7 +213,7 @@ export default function PublicationsPage() {
         variants={projectsVariants}
         whileHover={{ y: -10, boxShadow: "0 25px 50px rgba(0,0,0,0.15)" }}
         transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
-        className={`surface-card overflow-hidden flex flex-col h-full ${
+        className={`surface-card overflow-hidden flex flex-col h-full font-normal ${
           item.link ? "cursor-pointer" : "opacity-80 cursor-default"
         }`}
         role={item.link ? "link" : undefined}
@@ -258,7 +258,7 @@ export default function PublicationsPage() {
   );
 
   return (
-    <div className="min-h-screen bg-white text-foreground dark:bg-[#0b0b0d] dark:text-[#f5f5f5] font-normal">
+    <div className="min-h-screen bg-white text-foreground dark:bg-[#0b0b0d] dark:text-[#f5f5f5] font-medium">
       <Navbar />
 
       {(filterOpen || sortOpen) && (
@@ -291,10 +291,10 @@ export default function PublicationsPage() {
           </div>
         </section>
 
-        <div className="flex flex-wrap items-center justify-between gap-3 text-sm font-normal">
+        <div className="flex flex-wrap items-center justify-between gap-3 text-sm">
           <p className="text-[rgba(0,0,0,0.6)] dark:text-black">Showing {sortedItems.length} publications</p>
 
-          <div className="relative flex items-center gap-4 text-sm font-normal">
+          <div className="relative flex items-center gap-4 text-sm">
             <div className="relative flex items-center gap-1">
               <button
                 className="flex items-center gap-1"
@@ -324,7 +324,7 @@ export default function PublicationsPage() {
               {filterOpen && (
                 <div className="absolute top-full mt-2 right-0 w-[420px] z-40 surface-card p-4 flex flex-col gap-4 shadow-xl rounded-2xl border border-border">
                   <div className="flex items-center justify-between text-sm text-foreground">
-                    <p className="font-normal">Filters</p>
+                    <p>Filters</p>
                     <button
                       type="button"
                       className="text-[rgba(0,0,0,0.6)] dark:text-black"
