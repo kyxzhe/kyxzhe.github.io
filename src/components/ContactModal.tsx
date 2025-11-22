@@ -70,6 +70,23 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
     "idle" | "loading" | "success" | "error"
   >("idle");
   const [celebrate, setCelebrate] = useState(false);
+  const particles = useMemo(
+    () =>
+      Array.from({ length: 80 }).map((_, i) => {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 40 + Math.random() * 60;
+        return {
+          x: Math.random() * 100,
+          y: Math.random() * 100,
+          dx: Math.cos(angle) * speed,
+          dy: Math.sin(angle) * speed,
+          delay: Math.random() * 0.2 + i * 0.002,
+          size: 4 + Math.random() * 4,
+          duration: 0.9 + Math.random() * 0.35,
+        };
+      }),
+    []
+  );
   const [bookedSlots, setBookedSlots] = useState<Record<string, boolean>>(() => {
     const initial: Record<string, boolean> = {};
     availability.forEach((day) =>
@@ -203,7 +220,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
           }}
         >
           <motion.div
-            className="surface-card p-6 md:p-8 lg:p-12 w-full max-w-4xl max-h-[90vh] overflow-y-auto relative bg-[rgba(255,255,255,0.83)] dark:bg-[rgba(12,14,18,0.83)]"
+            className={`surface-card p-6 md:p-8 lg:p-12 w-full max-w-4xl max-h-[90vh] overflow-y-auto relative bg-[rgba(255,255,255,0.83)] dark:bg-[rgba(12,14,18,0.83)] ${celebrate ? "opacity-60 scale-[0.98]" : "opacity-100"}`}
             variants={modalVariants}
             initial="hidden"
             animate="visible"
@@ -213,68 +230,66 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
             <AnimatePresence>
               {celebrate && (
                 <motion.div
-                  className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none"
+                  className="absolute inset-0 z-20 pointer-events-none"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
                   <motion.div
-                    className="relative w-40 h-40 flex items-center justify-center"
-                    initial={{ scale: 0.85 }}
-                    animate={{ scale: [0.85, 1.08, 1], transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } }}
-                    exit={{ scale: 0.9, opacity: 0, transition: { duration: 0.25 } }}
-                  >
-                    <motion.div
-                      className="absolute inset-0 rounded-full bg-[rgba(41,151,255,0.12)] border border-[rgba(41,151,255,0.6)]"
-                      initial={{ scale: 0.9, opacity: 0.6 }}
-                      animate={{ scale: 1.1, opacity: 0.2 }}
-                      transition={{ duration: 0.5 }}
+                    className="absolute inset-0 bg-[rgba(255,255,255,0.8)] dark:bg-[rgba(12,14,18,0.9)]"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.25 }}
+                  />
+                  {particles.map((p, i) => (
+                    <motion.span
+                      key={i}
+                      className="absolute rounded-full bg-[var(--accent-link)]"
+                      style={{
+                        width: p.size,
+                        height: p.size,
+                        left: `${p.x}%`,
+                        top: `${p.y}%`,
+                      }}
+                      initial={{ x: 0, y: 0, opacity: 1, scale: 1 }}
+                      animate={{
+                        x: p.dx,
+                        y: p.dy,
+                        opacity: 0,
+                        scale: 0.4,
+                      }}
+                      transition={{
+                        duration: p.duration,
+                        delay: p.delay,
+                        ease: "easeOut",
+                      }}
                     />
+                  ))}
+                  <motion.div
+                    className="absolute inset-0 flex items-center justify-center"
+                    initial={{ scale: 0.9, opacity: 0.4 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                  >
                     <motion.svg
                       viewBox="0 0 48 48"
-                      className="w-20 h-20 text-[var(--accent-link)]"
+                      className="w-16 h-16 text-[var(--accent-link)]"
                     >
-                      <motion.circle
-                        cx="24"
-                        cy="24"
-                        r="22"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.5"
-                        initial={{ pathLength: 0 }}
-                        animate={{ pathLength: 1 }}
-                        transition={{ duration: 0.4, ease: "easeOut" }}
-                      />
                       <motion.path
                         d="M15 24l7 7 11-14"
                         fill="none"
                         stroke="currentColor"
-                        strokeWidth="3"
+                        strokeWidth="3.2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         initial={{ pathLength: 0 }}
                         animate={{ pathLength: 1 }}
-                        transition={{ duration: 0.35, ease: "easeOut", delay: 0.15 }}
+                        transition={{ duration: 0.4, ease: "easeOut" }}
                       />
                     </motion.svg>
-                    {Array.from({ length: 18 }).map((_, i) => {
-                      const angle = (i / 18) * Math.PI * 2;
-                      const radius = 70 + (i % 3) * 10;
-                      const x = Math.cos(angle) * radius;
-                      const y = Math.sin(angle) * radius;
-                      const size = 6 + (i % 4);
-                      return (
-                        <motion.span
-                          key={i}
-                          className="absolute bg-[var(--accent-link)] rounded-full"
-                          style={{ width: size, height: size, left: "50%", top: "50%" }}
-                          initial={{ x: 0, y: 0, opacity: 0 }}
-                          animate={{ x, y, opacity: [0, 1, 0] }}
-                          transition={{ duration: 0.8, ease: "easeOut", delay: 0.05 * (i % 6) }}
-                        />
-                      );
-                    })}
                   </motion.div>
                 </motion.div>
               )}
