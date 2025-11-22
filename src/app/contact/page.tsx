@@ -75,18 +75,10 @@ export default function ContactPage() {
             >
               Email Kevin
             </Link>
-            <button
-              type="button"
-              onClick={() => setIsModalOpen(true)}
-              className="px-6 md:px-7 py-3 rounded-full border text-sm md:text-base font-semibold transition duration-200 hover:-translate-y-[1px] border-[rgba(0,0,0,0.12)] bg-white text-foreground shadow-[0_10px_24px_rgba(0,0,0,0.06)] dark:border-[#666] dark:bg-[#1a1a1d] dark:text-white dark:shadow-[0_10px_24px_rgba(0,0,0,0.3)] inline-flex items-center gap-2"
-            >
-              <CalendarDays size={16} />
-              Schedule a slot
-            </button>
           </div>
         </section>
 
-        <section className="grid gap-8 lg:grid-cols-2">
+        <section className="grid gap-10 lg:grid-cols-2">
           <div className="space-y-4">
             <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">Direct lines</p>
             <div className="border-y border-[rgba(0,0,0,0.08)] dark:border-white/15 divide-y divide-[rgba(0,0,0,0.08)] dark:divide-white/15">
@@ -114,16 +106,34 @@ export default function ContactPage() {
           </div>
 
           <div className="space-y-4">
-            <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">Reply cadence</p>
-            <h2 className="text-xl font-semibold text-foreground">What to include</h2>
-            <ul className="space-y-3 text-sm text-foreground/80 leading-relaxed">
-              {replyNotes.map((note) => (
-                <li key={note} className="flex gap-2">
-                  <span className="text-[var(--accent)]">•</span>
-                  <span>{note}</span>
-                </li>
-              ))}
-            </ul>
+            <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">Reply & scheduling</p>
+            <div className="space-y-4 border border-[rgba(0,0,0,0.08)] dark:border-white/15 rounded-[18px] p-5">
+              <div className="flex items-start justify-between gap-3">
+                <div className="space-y-1">
+                  <p className="text-sm text-muted-foreground">Best time: 09:00 & 16:00 AEDT inbox checks</p>
+                  <p className="text-sm text-foreground">Include stakeholders + timeline for a faster reply.</p>
+                </div>
+                <span className="px-3 py-1 rounded-full text-[11px] uppercase tracking-[0.22em] bg-[var(--pill-background)] text-muted-foreground">
+                  <span className="text-foreground">AEDT</span>
+                </span>
+              </div>
+              <ul className="space-y-3 text-sm text-foreground/80 leading-relaxed">
+                {replyNotes.map((note) => (
+                  <li key={note} className="flex gap-2">
+                    <span className="text-[var(--accent)]">•</span>
+                    <span>{note}</span>
+                  </li>
+                ))}
+              </ul>
+              <button
+                type="button"
+                onClick={() => setIsModalOpen(true)}
+                className="w-full inline-flex items-center justify-center gap-2 rounded-full border text-sm md:text-base font-semibold transition duration-200 hover:-translate-y-[1px] border-[rgba(0,0,0,0.12)] bg-white text-foreground shadow-[0_10px_24px_rgba(0,0,0,0.06)] dark:border-[#666] dark:bg-[#1a1a1d] dark:text-white dark:shadow-[0_10px_24px_rgba(0,0,0,0.3)] py-3"
+              >
+                <CalendarDays size={16} />
+                Schedule a slot
+              </button>
+            </div>
           </div>
         </section>
 
@@ -140,26 +150,27 @@ export default function ContactPage() {
               ))}
             </ul>
           </div>
-        </section>
 
-        <section className="space-y-3">
-          <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">Profiles</p>
-          <h2 className="text-xl font-semibold text-foreground">Find me elsewhere</h2>
-          <div className="flex flex-wrap gap-3">
-            {socialLinks.map(({ label, href, icon }) => (
-              <Link
-                key={label}
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 px-4 py-2 border border-[rgba(0,0,0,0.12)] dark:border-white/20 rounded-full text-sm font-medium hover:-translate-y-[1px] transition"
-              >
-                <span>{label}</span>
-                {icon}
-              </Link>
-            ))}
+          <div className="space-y-3">
+            <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">Profiles</p>
+            <h2 className="text-xl font-semibold text-foreground">Find me elsewhere</h2>
+            <div className="flex flex-wrap gap-3">
+              {socialLinks.map(({ label, href, icon }) => (
+                <Link
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-4 py-2 border border-[rgba(0,0,0,0.12)] dark:border-white/20 rounded-full text-sm font-medium hover:-translate-y-[1px] transition"
+                >
+                  <span>{label}</span>
+                  {icon}
+                </Link>
+              ))}
+            </div>
           </div>
         </section>
+
       </main>
       <Footer className="mb-4" />
       <ContactModal
