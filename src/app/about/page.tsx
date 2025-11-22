@@ -104,7 +104,7 @@ export default function AboutPage() {
           </div>
             </div>
             <div className="space-y-5">
-              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">At a glance</p>
+              <p className="text-[14px] uppercase tracking-[0.3em] text-muted-foreground">At a glance</p>
               <div className="flex gap-12">
                 <div>
                   <p className="text-4xl font-medium leading-none">4</p>
@@ -124,7 +124,7 @@ export default function AboutPage() {
         <section className="w-full max-w-4xl mx-auto space-y-20">
           <div className="space-y-10">
             <div className="space-y-2">
-              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Story so far</p>
+              <p className="text-[14px] uppercase tracking-[0.3em] text-muted-foreground">Story so far</p>
               <h2 className="text-[30px] font-medium">Timeline</h2>
             </div>
             <div className="space-y-8">
@@ -143,7 +143,7 @@ export default function AboutPage() {
 
           <div className="grid gap-12 lg:grid-cols-2">
             <div className="space-y-5">
-              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Community</p>
+              <p className="text-[14px] uppercase tracking-[0.3em] text-muted-foreground">Community</p>
             <h2 className="text-[30px] font-medium">Teaching & sharing</h2>
               <ul className="space-y-3 text-[17px]">
                 {contributions.map((item) => (
@@ -154,7 +154,7 @@ export default function AboutPage() {
               </ul>
             </div>
             <div className="space-y-5">
-              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Collaborate</p>
+              <p className="text-[14px] uppercase tracking-[0.3em] text-muted-foreground">Collaborate</p>
             <h2 className="text-[30px] font-medium">Open to thoughtful work</h2>
               <p className="text-[17px] text-black dark:text-black leading-relaxed">
                 Open to research collaborations, talks, and teaching ideas.
