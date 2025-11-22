@@ -95,7 +95,7 @@ export default function ContactPage() {
             Get in touch
           </h1>
           <p className="text-[15px] md:text-base text-muted-foreground max-w-2xl leading-relaxed">
-            Tell me what you are working on, who is involved, and any constraints. I will reply with clear next steps. Start with an email and we can hop on a call if helpful.
+            If you would like to talk about research, teaching, or collaborations, email is the best first step. Please include a few lines about the topic and any timing constraints. I will follow up with clear next steps.
           </p>
           <div className="flex flex-wrap gap-3 pt-2">
             <Link
