@@ -245,9 +245,6 @@ export default function ContactPage() {
             <p className="text-sm text-muted-foreground leading-relaxed">
               Share your number and preferred time in the booking note. I will text first and call if it helps.
             </p>
-            <div className="mt-5 flex justify-end text-sm text-muted-foreground">
-              Tap anywhere outside to close.
-            </div>
           </div>
         </div>
       )}
