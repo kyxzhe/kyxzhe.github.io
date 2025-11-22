@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Mail, Phone, MapPin, CalendarDays, Github } from "lucide-react";
+import { Mail, Phone, MapPin, CalendarDays } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { contactInfo } from "@/lib/constants/contact";
@@ -48,7 +48,7 @@ const socialLinks = [
   { label: "LinkedIn", href: socials.linkedin, icon: <LinkedInMonoIcon className="w-4 h-4" /> },
   { label: "Google Scholar", href: socials.googleScholar, icon: <GoogleScholarIcon className="w-4 h-4" /> },
   { label: "ORCID", href: socials.orcid, icon: <OrcidIcon className="w-4 h-4" /> },
-  { label: "GitHub", href: socials.github, icon: <Github size={16} /> },
+  { label: "GitHub", href: socials.github, icon: <GitHubMonoIcon className="w-4 h-4" /> },
 ];
 
 function LinkedInMonoIcon({ className }: { className?: string }) {
@@ -64,6 +64,20 @@ function LinkedInMonoIcon({ className }: { className?: string }) {
         fill="#fff"
         d="M6.4 9.2h2.2V18H6.4V9.2Zm1.1-4a1.3 1.3 0 1 1 0 2.6 1.3 1.3 0 0 1 0-2.6Zm3.4 4h2.1v1.2c.3-.6 1.1-1.3 2.4-1.3 1.9 0 2.8 1.1 2.8 3.2V18h-2.2v-4.8c0-1-.4-1.6-1.2-1.6-.9 0-1.5.6-1.5 1.7V18h-2.4V9.2Z"
       />
+    </svg>
+  );
+}
+
+function GitHubMonoIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      role="img"
+      aria-label="GitHub"
+      className={className}
+      fill="currentColor"
+    >
+      <path d="M12 1.5c-5.8 0-10.5 4.7-10.5 10.5 0 4.6 3 8.5 7.2 9.9.5.1.7-.2.7-.5l-.01-2c-2.94.64-3.56-1.42-3.56-1.42-.45-1.14-1.1-1.44-1.1-1.44-.9-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.37 1.09 2.95.83.09-.65.35-1.09.63-1.34-2.35-.27-4.82-1.17-4.82-5.2 0-1.15.41-2.08 1.03-2.81-.1-.26-.45-1.35.1-2.81 0 0 .88-.28 2.9 1.07a10.1 10.1 0 0 1 5.28 0c2.02-1.35 2.9-1.07 2.9-1.07.55 1.46.2 2.55.1 2.81.64.73 1.03 1.66 1.03 2.81 0 4.05-2.48 4.92-4.85 5.19.36.3.68.9.68 1.82l-.01 2.7c0 .3.2.6.7.5a10.52 10.52 0 0 0 7.16-9.99C22.5 6.2 17.8 1.5 12 1.5Z" />
     </svg>
   );
 }
