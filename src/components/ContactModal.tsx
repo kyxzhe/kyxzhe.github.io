@@ -540,7 +540,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                       ) : (
                         <>
                           <SendHorizonal size={18} />
-                          Confirm meeting
+                          Confirm request
                         </>
                       )}
                     </button>
