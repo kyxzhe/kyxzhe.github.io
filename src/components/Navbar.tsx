@@ -25,7 +25,7 @@ export default function Navbar() {
           </span>
         </Link>
         <HamburgerButton open={menuOpen} onClick={toggleMenu} />
-        <ul className="hidden md:flex flex-row gap-11 lg:gap-14 list-none m-0 items-center text-[0.96rem] md:text-[1rem] uppercase tracking-[0.13em] text-foreground font-light dark:text-white/80">
+        <ul className="hidden md:flex flex-row gap-11 lg:gap-14 list-none m-0 items-center text-[17px] uppercase tracking-[0.13em] text-foreground font-light dark:text-white/80">
           {navItems.map(({ href, label, title }) => (
             <li key={href}>
               <Link
