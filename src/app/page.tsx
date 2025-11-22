@@ -94,7 +94,7 @@ export default function Home() {
           <h1 className="text-[clamp(2rem,5vw,3.4rem)] font-semibold text-foreground leading-tight whitespace-nowrap">
             Trustworthy Machine Learning
           </h1>
-          <p className="text-base md:text-lg text-[rgba(0,0,0,0.6)] dark:text-white/70 max-w-2xl leading-relaxed">
+          <p className="text-[17px] md:text-[17px] text-[rgba(0,0,0,0.6)] dark:text-white/70 max-w-2xl leading-relaxed">
             PhD researcher in machine learning, working on information diffusion and real-world AI systems.
           </p>
           <div className="flex flex-col sm:flex-row items-center gap-3 mt-4">
