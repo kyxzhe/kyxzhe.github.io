@@ -80,9 +80,9 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
           y: Math.random() * 100,
           dx: Math.cos(angle) * speed,
           dy: Math.sin(angle) * speed,
-          delay: Math.random() * 0.25 + i * 0.0015,
+          delay: Math.random() * 0.35 + i * 0.0015,
           size: 3.5 + Math.random() * 5,
-          duration: 1.1 + Math.random() * 0.45,
+          duration: 2 + Math.random() * 1.5,
         };
       }),
     []
@@ -198,7 +198,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
       setTimeout(() => {
         onClose();
         resetScheduler();
-      }, 1800);
+      }, 10000);
     } catch (error) {
       console.error(error);
       setSubmissionState("error");
@@ -223,16 +223,16 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
           className={`surface-card p-6 md:p-8 lg:p-12 w-full max-w-4xl max-h-[90vh] overflow-y-auto relative ${celebrate ? "shadow-none border-transparent bg-transparent" : ""}`}
           variants={modalVariants}
           initial="hidden"
-          animate={
-            celebrate
-              ? { scale: [1, 0.78, 1.08, 0.5], opacity: [1, 0.9, 1, 0] }
-              : { scale: 1, opacity: 1 }
-          }
-          transition={
-            celebrate
-              ? { duration: 1.2, ease: [0.16, 1, 0.3, 1], times: [0, 0.25, 0.55, 1] }
-              : undefined
-          }
+            animate={
+              celebrate
+                ? { scale: [1, 0.78, 1.08, 0.55], opacity: [1, 0.9, 1, 0.4] }
+                : { scale: 1, opacity: 1 }
+            }
+            transition={
+              celebrate
+                ? { duration: 2.4, ease: [0.16, 1, 0.3, 1], times: [0, 0.2, 0.6, 1] }
+                : undefined
+            }
           exit="exit"
           onClick={(e) => e.stopPropagation()}
         >
@@ -252,10 +252,34 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                       style={{
                         width: p.size,
                         height: p.size,
-                        left: `${p.x}%`,
-                        top: `${p.y}%`,
+                        left: "50%",
+                        top: "50%",
                       }}
-                      initial={{ x: 0, y: 0, opacity: 1, scale: 1 }}
+                      initial={{ x: 0, y: 0, opacity: 0.85, scale: 1 }}
+                      animate={{
+                        x: p.dx * 0.4,
+                        y: p.dy * 0.4,
+                        opacity: 0.9,
+                        scale: 1,
+                      }}
+                      transition={{
+                        duration: 2,
+                        delay: p.delay,
+                        ease: "easeOut",
+                      }}
+                    />
+                  ))}
+                  {particles.map((p, i) => (
+                    <motion.span
+                      key={`out-${i}`}
+                      className="absolute rounded-full bg-[var(--accent-link)]"
+                      style={{
+                        width: p.size,
+                        height: p.size,
+                        left: "50%",
+                        top: "50%",
+                      }}
+                      initial={{ x: p.dx * 0.4, y: p.dy * 0.4, opacity: 0.9, scale: 1 }}
                       animate={{
                         x: p.dx,
                         y: p.dy,
@@ -264,17 +288,17 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                       }}
                       transition={{
                         duration: p.duration,
-                        delay: p.delay,
+                        delay: p.delay + 2,
                         ease: "easeOut",
                       }}
                     />
                   ))}
                   <motion.div
                     className="absolute inset-0 flex items-center justify-center"
-                    initial={{ scale: 0.95, opacity: 0.4 }}
-                    animate={{ scale: [0.95, 1.1, 0.7], opacity: [0.9, 1, 0.6] }}
+                    initial={{ scale: 0.92, opacity: 0.45 }}
+                    animate={{ scale: [0.92, 1.05, 0.6], opacity: [0.85, 1, 0] }}
                     exit={{ opacity: 0 }}
-                    transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], times: [0, 0.55, 1] }}
+                    transition={{ duration: 2.4, ease: [0.16, 1, 0.3, 1], times: [0, 0.55, 1] }}
                   >
                     <motion.svg
                       viewBox="0 0 48 48"
