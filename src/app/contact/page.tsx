@@ -14,34 +14,34 @@ const directLines = [
   {
     label: "Email",
     value: contactInfo.email,
-    hint: "Fastest for research and speaking invites.",
+    hint: "Fastest for inquiries and invites.",
     href: `mailto:${contactInfo.email}`,
     icon: Mail,
   },
   {
     label: "Phone / Signal",
     value: contactInfo.phone,
-    hint: "Text first if possible; I reply within Sydney daytime.",
+    hint: "I rarely pick up calls. Please text first. I reply during Sydney daytime.",
     href: `tel:${contactInfo.phoneRaw}`,
     icon: Phone,
   },
   {
     label: "Location",
     value: contactInfo.location,
-    hint: "Sydney based; async friendly across APAC & EU.",
+    hint: "Based in Sydney. Async friendly with APAC and EU.",
     icon: MapPin,
   },
 ];
 
 const replyNotes = [
-  "Who is deciding and by when?",
-  "Flag urgency in the subject; I triage at 09:00 & 16:00 AEDT.",
+  "Who decides and by when?",
+  "If it is urgent say so in the subject. I triage at 09:00 and 16:00 AEDT.",
 ];
 
 const collaborationAreas = [
-  "Diffusion experiments & intervention design",
-  "Robust learning with noisy or biased supervision",
-  "Ranking / moderation evaluation support",
+  "Planning experiments and interventions",
+  "Making models sturdy in messy situations",
+  "Evaluation, ranking, and moderation support",
 ];
 
 const socialLinks = [
@@ -92,10 +92,10 @@ export default function ContactPage() {
         <section className="mt-2 space-y-5">
           <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Contact</p>
           <h1 className="text-[2.4rem] md:text-[2.6rem] font-semibold leading-tight text-foreground">
-            Let&apos;s talk about social data and robust ML
+            Let&apos;s chat about your project
           </h1>
           <p className="text-[15px] md:text-base text-muted-foreground max-w-2xl leading-relaxed">
-            A quick note with the problem, constraints, and people involved helps me respond with next steps. Email is the clearest channel; we can schedule a call after the context is set.
+            Tell me what you are working on, who is involved, and any constraints. I will reply with clear next steps. Start with an email and we can hop on a call if helpful.
           </p>
           <div className="flex flex-wrap gap-3 pt-2">
             <Link
@@ -143,8 +143,8 @@ export default function ContactPage() {
             <div className="space-y-5 border border-[rgba(0,0,0,0.08)] dark:border-white/15 rounded-[18px] p-6">
               <div className="flex items-start justify-between gap-4">
                 <div className="space-y-1">
-                  <p className="text-sm text-foreground">Include stakeholders + timeline for a faster reply.</p>
-                  <p className="text-sm text-muted-foreground">Inbox checks at 09:00 & 16:00 AEDT.</p>
+                  <p className="text-sm text-foreground">Add stakeholders and a timeline for a quicker reply.</p>
+                  <p className="text-sm text-muted-foreground">I check email at 09:00 and 16:00 AEDT.</p>
                 </div>
                 <span className="px-3 py-1 rounded-full text-[11px] uppercase tracking-[0.22em] bg-[var(--pill-background)] text-muted-foreground">
                   <span className="text-foreground">AEDT</span>
@@ -164,7 +164,7 @@ export default function ContactPage() {
                 className="w-full inline-flex items-center justify-center gap-2 rounded-full border text-sm md:text-base font-semibold border-[rgba(0,0,0,0.12)] bg-white text-foreground dark:border-[#666] dark:bg-[#1a1a1d] dark:text-white py-3 transition-colors duration-150 hover:border-foreground/50"
               >
                 <CalendarDays size={16} />
-                Schedule a slot
+                Book a time
               </button>
             </div>
           </div>
@@ -173,7 +173,7 @@ export default function ContactPage() {
         <section className="grid gap-14 lg:grid-cols-2">
           <div className="space-y-4">
             <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">Collaboration fit</p>
-            <h2 className="text-xl font-semibold text-foreground">Where I add value</h2>
+            <h2 className="text-xl font-semibold text-foreground">Ways I can help</h2>
             <ul className="space-y-3 text-sm text-foreground/80 leading-relaxed">
               {collaborationAreas.map((area) => (
                 <li key={area} className="flex gap-2">
