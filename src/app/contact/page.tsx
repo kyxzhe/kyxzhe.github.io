@@ -188,7 +188,7 @@ export default function ContactPage() {
         <section className="grid gap-14 lg:grid-cols-2">
           <div className="space-y-4">
             <p className="text-xs uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-black">Collaboration fit</p>
-            <h2 className="text-xl font-semibold text-foreground">Ways I can help</h2>
+            <h2 className="text-xl font-medium text-foreground">Ways I can help</h2>
             <ul className="space-y-3 text-sm leading-relaxed">
               {collaborationAreas.map((area) => (
                 <li key={area} className="flex gap-2 text-black dark:text-black">
@@ -201,7 +201,7 @@ export default function ContactPage() {
 
           <div className="space-y-4">
             <p className="text-xs uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-black">Profiles</p>
-            <h2 className="text-xl font-semibold text-foreground">Find me elsewhere</h2>
+            <h2 className="text-xl font-medium text-foreground">Find me elsewhere</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {socialLinks.map(({ label, href, icon }) => (
                 <Link
