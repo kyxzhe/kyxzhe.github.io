@@ -95,7 +95,7 @@ export default function ContactPage() {
             Get in touch
           </h1>
           <p className="text-[15px] md:text-base text-muted-foreground max-w-2xl leading-relaxed">
-            Tell me briefly about your project and any timelines. I usually start by email, then move to a call if helpful.
+            For research, teaching, or collaboration enquiries, please email with a brief outline of the topic and any timelines. I will reply with clear next steps.
           </p>
           <div className="flex flex-wrap gap-3 pt-2">
             <Link
