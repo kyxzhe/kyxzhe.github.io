@@ -100,7 +100,7 @@ export default function ContactPage() {
           <div className="flex flex-wrap gap-3 pt-2">
             <Link
               href={`mailto:${contactInfo.email}`}
-              className="px-6 md:px-7 py-3 rounded-full text-sm md:text-base font-semibold shadow-[0_14px_28px_rgba(0,0,0,0.12)] transition duration-200 hover:-translate-y-[2px] bg-[#141414] text-white dark:bg-[#f5f5f5] dark:text-[#0b0b0d]"
+              className="px-6 md:px-7 py-3 rounded-full text-sm md:text-base font-semibold bg-[#141414] text-white dark:bg-[#f5f5f5] dark:text-[#0b0b0d] transition-colors duration-150 hover:opacity-90"
             >
               Email Kevin
             </Link>
@@ -161,7 +161,7 @@ export default function ContactPage() {
               <button
                 type="button"
                 onClick={() => setIsModalOpen(true)}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-full border text-sm md:text-base font-semibold transition duration-200 hover:-translate-y-[1px] border-[rgba(0,0,0,0.12)] bg-white text-foreground shadow-[0_10px_24px_rgba(0,0,0,0.06)] dark:border-[#666] dark:bg-[#1a1a1d] dark:text-white dark:shadow-[0_10px_24px_rgba(0,0,0,0.3)] py-3"
+                className="w-full inline-flex items-center justify-center gap-2 rounded-full border text-sm md:text-base font-semibold border-[rgba(0,0,0,0.12)] bg-white text-foreground dark:border-[#666] dark:bg-[#1a1a1d] dark:text-white py-3 transition-colors duration-150 hover:border-foreground/50"
               >
                 <CalendarDays size={16} />
                 Schedule a slot
@@ -194,7 +194,7 @@ export default function ContactPage() {
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-between gap-3 px-4 py-2 border border-[rgba(0,0,0,0.12)] dark:border-white/20 rounded-full text-sm font-medium hover:-translate-y-[1px] transition"
+                  className="flex items-center justify-between gap-3 px-4 py-2 border border-[rgba(0,0,0,0.12)] dark:border-white/20 rounded-full text-sm font-medium transition-colors duration-150 hover:border-foreground/50"
                 >
                   <span>{label}</span>
                   <span className="text-muted-foreground">{icon}</span>
