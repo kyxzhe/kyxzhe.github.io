@@ -5,60 +5,60 @@ import { motion } from "motion/react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { contactInfo } from "@/lib/constants/contact";
-import { cardVariants, containerVariants } from "@/lib/animation/variants";
-
-const highlights = [
-  { label: "Base", value: "Sydney, AU" },
-  { label: "Lab", value: "Behavioural Data Science Lab · UTS" },
-  { label: "Teaching", value: "Guest lecturer · USYD" },
-  { label: "Interests", value: "Diffusion · Robust ML · Evaluation" },
-];
-
-const stats = [
-  { label: "Manuscripts in flight", value: "2" },
-  { label: "Talks & lectures", value: "9" },
-  { label: "Teaching terms", value: "4" },
-];
-
-const focus = [
-  "Information diffusion & narrative shifts",
-  "Robust ML for noisy, biased, shifting data",
-  "Temporal + graph representations of social activity",
-  "Evaluation of ranking and moderation interventions",
-];
-
-const currentWork = [
-  "Tracing how stories move across platforms and time",
-  "Testing ranking interventions under imperfect feedback",
-  "Building reproducible pipelines for social data experiments",
-];
+import {
+  cardVariants,
+  containerVariants,
+} from "@/lib/animation/variants";
 
 const timeline = [
   {
-    period: "2025 – now",
     title: "PhD · Behavioural Data Science Lab",
     org: "University of Technology Sydney",
-    note: "Advised by Marian-Andrei Rizoiu; focusing on diffusion and robustness.",
+    period: "2025 – Present",
+    detail:
+      "Working with Dr. Marian-Andrei Rizoiu on information diffusion, social data science, and robust machine learning.",
   },
   {
-    period: "2024 – now",
     title: "Guest lecturer & tutor",
     org: "University of Sydney",
-    note: "Advanced ML and Informatics; one-off lecture on data-centric evaluation.",
+    period: "2024 – Present",
+    detail:
+      "Lead tutorials for Advanced ML and Informatics courses, plus a guest lecture on data-centric evaluation.",
   },
   {
-    period: "2021 – 2024",
-    title: "B.Adv. Computing (Hons) + B.Sc.",
+    title: "B.Adv. Computing (Honours) + B.Sc.",
     org: "University of Sydney",
-    note: "University Medal; research in noisy-label learning and generative models.",
+    period: "2021 – 2024",
+    detail:
+      "Studied noisy-label learning and generative models, somehow graduated with a University Medal.",
   },
 ];
 
-const teaching = [
-  "COMP5328/4328 Advanced ML · Tutorials",
-  "DATA1002/1902 Informatics · Tutorials",
-  "COMP5328 guest lecture · Data-centric evaluation",
-  "Lab and reading-group talks on diffusion, robustness, and evaluation",
+const researchFocus = [
+  "Information diffusion & online narrative dynamics",
+  "Robust ML under noisy, biased, or shifting supervision",
+  "Temporal + graph representations for multimodal social data",
+  "Evaluation of ranking and moderation interventions",
+];
+
+const contributions = [
+  "TA · 2024 S2 COMP5328/4328 Advanced Machine Learning",
+  "TA · 2025 S2 DATA1002/1902 Informatics: Data and Computation",
+  "Guest lecture: COMP5328 on data-centric ML evaluation",
+  "4 internal talks across lab meetings & reading groups",
+];
+
+const aboutIntro = `I’m a PhD student at the University of Technology Sydney, working with Marian-Andrei Rizoiu in the Behavioural Data Science Lab. My research looks at how information spreads online and how to keep machine learning models a little more robust when faced with the messiness of the real world.
+
+Before the PhD, I studied at the University of Sydney (and somehow graduated with a University Medal). Teaching data science and ML became a favourite way to understand tough ideas—there’s nothing like explaining a concept to realise where the gaps are.
+
+Outside academia I’m usually carrying a film camera, hunting for the next coffee spot, or sweating it out at the gym. I rotate hobbies like archery, and I’m always down to trade recommendations for diving, skydiving, or the best flat white in Sydney. If you want to chat about research, photography, or travel-fuelled ideas, feel free to reach out.`;
+
+const highlights = [
+  "📍 Sydney based",
+  "🏛 Behavioural Data Science Lab @ UTS",
+  "🧑‍🏫 Teaching ML + Informatics at USYD",
+  "🤝 Interested in diffusion, robustness, evaluation",
 ];
 
 export default function AboutPage() {
@@ -72,101 +72,97 @@ export default function AboutPage() {
         animate="visible"
       >
         <motion.section
-          className="max-w-4xl w-full flex flex-col gap-10"
+          className="max-w-4xl w-full flex flex-col gap-12"
           variants={cardVariants}
           initial="hidden"
           animate="visible"
         >
-          <div className="flex flex-col gap-5">
-            <p className="text-[0.7rem] uppercase tracking-[0.32em] text-muted-foreground">
-              About Kevin
-            </p>
-            <div className="space-y-3">
-              <h1 className="text-4xl md:text-[2.75rem] font-semibold leading-tight">
-                Social data science, minimal noise
-              </h1>
-              <p className="text-base md:text-lg text-foreground/75 leading-relaxed">
-                I study how information spreads and how to keep machine learning reliable when data is messy. The work sits between diffusion modelling, ranking systems, and human judgement—always with an eye on clear evaluation.
+          <div className="flex flex-col gap-6">
+            <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">About Kevin</p>
+            <div className="space-y-5">
+              <h1 className="text-4xl md:text-5xl font-semibold leading-tight">Research first, people centered</h1>
+              <p className="text-base md:text-lg text-foreground/80 whitespace-pre-line leading-relaxed">{aboutIntro}</p>
+              <div className="flex flex-wrap gap-3 text-sm text-foreground/75">
+                {highlights.map((item) => (
+                  <span key={item} className="px-3 py-1 rounded-full border border-[rgba(0,0,0,0.08)] bg-transparent dark:border-white/20">
+                    {item}
+                  </span>
+                ))}
+              </div>
+              <p className="text-sm text-foreground/70">
+                I like projects where social data, ranking systems, and human decisions meet. When in doubt, I’ll choose conversations over dashboards.
               </p>
-            </div>
-            <div className="flex flex-wrap gap-2 text-sm text-foreground/80">
-              {highlights.map((item) => (
-                <span
-                  key={item.label}
-                  className="px-3 py-[7px] rounded-full border border-[rgba(0,0,0,0.08)] bg-white shadow-[0_10px_22px_rgba(0,0,0,0.06)] dark:bg-[#1b1b1f] dark:border-[#2f2f35] dark:text-white"
-                >
-                  {item.value}
-                </span>
-              ))}
             </div>
           </div>
 
-          <div className="grid gap-10 lg:grid-cols-[1.2fr_0.9fr]">
-            <div className="space-y-5">
-              <p className="text-[0.7rem] uppercase tracking-[0.32em] text-muted-foreground">Focus areas</p>
-              <div className="space-y-3 text-sm md:text-[15px] text-foreground/80">
-                {focus.map((item) => (
-                  <p key={item}>{item}</p>
+          <div className="grid gap-10 lg:grid-cols-[1.3fr_1fr]">
+            <div className="space-y-4">
+              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Focus areas</p>
+              <div className="space-y-3 text-sm text-foreground/80">
+                {researchFocus.map((item) => (
+                  <p key={item} className="leading-relaxed">{item}</p>
                 ))}
               </div>
             </div>
-            <div className="space-y-5">
-              <p className="text-[0.7rem] uppercase tracking-[0.32em] text-muted-foreground">At a glance</p>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
-                {stats.map((item) => (
-                  <div key={item.label} className="space-y-2">
-                    <p className="text-3xl font-semibold leading-tight">{item.value}</p>
-                    <p className="text-[0.72rem] uppercase tracking-[0.28em] text-muted-foreground">{item.label}</p>
-                  </div>
-                ))}
-              </div>
-              <div className="space-y-2 text-sm text-foreground/70 leading-relaxed">
-                {currentWork.map((item) => (
-                  <p key={item}>{item}</p>
-                ))}
+            <div className="space-y-3">
+              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">At a glance</p>
+              <div className="flex flex-col gap-2 text-sm text-foreground/75">
+                <div className="flex items-baseline gap-3">
+                  <span className="text-3xl font-semibold leading-none">4</span>
+                  <span className="text-xs uppercase tracking-[0.25em] text-muted-foreground">Lab talks</span>
+                </div>
+                <div className="flex items-baseline gap-3">
+                  <span className="text-3xl font-semibold leading-none">2</span>
+                  <span className="text-xs uppercase tracking-[0.25em] text-muted-foreground">Manuscripts</span>
+                </div>
+                <p className="text-sm text-foreground/70 leading-relaxed">
+                  Currently tinkering with a pair of manuscripts on diffusion dynamics and evaluation strategy.
+                </p>
               </div>
             </div>
           </div>
         </motion.section>
 
         <section className="w-full max-w-5xl space-y-16">
-          <div className="space-y-6">
+          <div className="space-y-8">
             <div className="space-y-2">
-              <p className="text-[0.7rem] uppercase tracking-[0.32em] text-muted-foreground">Timeline</p>
-              <h2 className="text-2xl font-semibold">Story, kept short</h2>
+              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Story so far</p>
+              <h2 className="text-2xl font-semibold">Timeline</h2>
             </div>
-            <div className="grid gap-6 md:grid-cols-3">
+            <div className="space-y-6">
               {timeline.map((item) => (
-                <div
-                  key={item.title}
-                  className="space-y-2 rounded-2xl border border-[rgba(0,0,0,0.06)] bg-white p-4 shadow-[0_12px_28px_rgba(0,0,0,0.06)] dark:bg-[#1b1b1f] dark:border-[#2f2f35] dark:shadow-[0_12px_28px_rgba(0,0,0,0.45)]"
-                >
-                  <p className="text-[0.68rem] uppercase tracking-[0.24em] text-muted-foreground">
-                    {item.period}
-                  </p>
-                  <h3 className="text-lg font-medium leading-snug">{item.title}</h3>
-                  <p className="text-sm text-foreground/75">{item.org}</p>
-                  <p className="text-sm text-foreground/65 leading-relaxed">{item.note}</p>
+                <div key={item.title} className="flex gap-4">
+                  <div className="w-20 shrink-0 pt-1">
+                    <p className="text-[0.7rem] uppercase tracking-[0.22em] text-muted-foreground">
+                      {item.period}
+                    </p>
+                  </div>
+                  <div className="flex-1 space-y-1 border-l border-[rgba(0,0,0,0.08)] pl-4 dark:border-white/20">
+                    <h3 className="text-lg font-medium leading-snug">{item.title}</h3>
+                    <p className="text-sm text-foreground/70">{item.org}</p>
+                    <p className="text-sm text-foreground/70 leading-relaxed">{item.detail}</p>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="grid gap-10 lg:grid-cols-2">
-            <div className="space-y-4">
-              <p className="text-[0.7rem] uppercase tracking-[0.32em] text-muted-foreground">Community</p>
+          <div className="grid gap-12 lg:grid-cols-2">
+            <div className="space-y-5">
+              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Community</p>
               <h2 className="text-2xl font-semibold">Teaching & sharing</h2>
-              <ul className="space-y-2 text-sm text-foreground/80">
-                {teaching.map((item) => (
-                  <li key={item} className="leading-relaxed">{item}</li>
+              <ul className="space-y-3 text-sm text-foreground/80">
+                {contributions.map((item) => (
+                  <li key={item}>{item}</li>
                 ))}
               </ul>
             </div>
-            <div className="space-y-4">
-              <p className="text-[0.7rem] uppercase tracking-[0.32em] text-muted-foreground">Collaborate</p>
+            <div className="space-y-5">
+              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Collaborate</p>
               <h2 className="text-2xl font-semibold">Open to thoughtful work</h2>
               <p className="text-sm text-foreground/70 leading-relaxed">
-                I partner with researchers and product teams on diffusion modelling, evaluation strategy, and responsible experimentation with social data.
+                I partner with researchers and product teams on diffusion modelling,
+                moderation strategy, and responsible experimentation with social data.
               </p>
               <div className="flex flex-col gap-2 text-sm max-w-xs">
                 <Link
