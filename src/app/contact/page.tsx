@@ -165,9 +165,9 @@ export default function ContactPage() {
                   <span className="text-foreground">AEDT</span>
                 </span>
               </div>
-              <ul className="space-y-3 text-sm text-foreground/80 leading-relaxed">
+              <ul className="space-y-3 text-sm leading-relaxed">
                 {replyNotes.map((note) => (
-                  <li key={note} className="flex gap-2">
+                  <li key={note} className="flex gap-2 text-black dark:text-black">
                     <span className="text-[var(--accent)]">•</span>
                     <span>{note}</span>
                   </li>
