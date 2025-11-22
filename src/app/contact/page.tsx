@@ -80,7 +80,7 @@ export default function ContactPage() {
     {
       label: "Location",
       value: contactInfo.location,
-      hint: "Based in Sydney. Async friendly with APAC and EU.",
+      hint: "Based in Sydney. Happy to meet online across time zones.",
       icon: MapPin,
     },
   ];
