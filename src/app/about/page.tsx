@@ -59,13 +59,13 @@ export default function AboutPage() {
     <div className="flex flex-col min-h-screen font-sans pt-2 md:pt-0 lg:py-6 xl:py-0 xl:pb-6 overflow-visible">
       <Navbar />
       <motion.main
-        className="flex-1 flex flex-col items-center gap-20 px-4 md:px-12 lg:px-16 xl:px-24 py-16"
+        className="flex-1 flex flex-col items-center gap-16 px-4 md:px-16 lg:px-24 py-12"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
         <motion.section
-          className="max-w-4xl md:max-w-5xl w-full flex flex-col gap-14 mx-auto"
+          className="max-w-4xl w-full flex flex-col gap-12"
           variants={cardVariants}
           initial="hidden"
           animate="visible"
@@ -113,7 +113,7 @@ export default function AboutPage() {
           </div>
         </motion.section>
 
-        <section className="w-full max-w-4xl mx-auto space-y-24 py-12">
+        <section className="w-full max-w-4xl mx-auto space-y-20">
           <div className="space-y-10">
             <div className="space-y-2">
               <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Story so far</p>
@@ -133,7 +133,7 @@ export default function AboutPage() {
             </div>
           </div>
 
-          <div className="grid gap-16 lg:grid-cols-2">
+          <div className="grid gap-12 lg:grid-cols-2">
             <div className="space-y-5">
               <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Community</p>
               <h2 className="text-2xl font-semibold">Teaching & sharing</h2>
@@ -143,7 +143,7 @@ export default function AboutPage() {
                 ))}
               </ul>
             </div>
-            <div className="space-y-8">
+            <div className="space-y-5">
               <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Collaborate</p>
               <h2 className="text-2xl font-semibold">Open to thoughtful work</h2>
               <p className="text-sm text-foreground/70 leading-relaxed">
