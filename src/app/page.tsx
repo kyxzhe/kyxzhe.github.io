@@ -91,7 +91,7 @@ export default function Home() {
           <p className="text-[12px] tracking-[0.34em] uppercase text-[rgba(0,0,0,0.6)] dark:text-white/60">
             KEVIN ZHENG · MACHINE LEARNING & DATA
           </p>
-          <h1 className="text-[clamp(2rem,5vw,3.4rem)] font-semibold text-foreground leading-tight whitespace-nowrap">
+          <h1 className="text-[64px] font-semibold text-foreground leading-tight whitespace-nowrap">
             Trustworthy Machine Learning
           </h1>
           <p className="text-[17px] md:text-[17px] text-[rgba(0,0,0,0.6)] dark:text-white/70 max-w-2xl leading-relaxed">
