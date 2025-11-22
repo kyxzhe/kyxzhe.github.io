@@ -72,6 +72,17 @@ const ListRow = ({ item }: { item: NewsItem }) => {
   );
 };
 
+const categoryLabelMap: Record<NewsCategory, string> = {
+  RESEARCH: "Research",
+  AWARD: "Award",
+  MILESTONE: "Milestone",
+  TALK: "Talk",
+};
+
+function formatCategoryLabel(category: string) {
+  return category === "All" ? "All" : categoryLabelMap[category as NewsCategory] ?? category;
+}
+
 export default function NewsPage() {
   const [activeCategory, setActiveCategory] = useState<string>("All");
   const [viewMode, setViewMode] = useState<ViewMode>("list");
@@ -301,7 +312,7 @@ export default function NewsPage() {
                   : "bg-[var(--pill-background)] text-muted-foreground border-[var(--card-border)] hover:border-foreground/40"
               }`}
             >
-              {category}
+              {formatCategoryLabel(category)}
             </button>
           ))}
         </div>
