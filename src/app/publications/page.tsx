@@ -263,7 +263,7 @@ export default function PublicationsPage() {
           <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Publications</p>
           <h1 className="text-[2.4rem] md:text-[2.6rem] font-semibold leading-tight text-foreground">Papers &amp; Preprints</h1>
           <p className="text-[15px] md:text-base text-muted-foreground max-w-2xl leading-relaxed">
-            A curated list of my published and upcoming work, with links to code and materials when available.
+            A curated list of my published and upcoming work, with links to code and materials.
           </p>
           <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground pt-1">
             {metrics.map((metric) => (
