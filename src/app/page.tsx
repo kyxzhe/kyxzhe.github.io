@@ -92,7 +92,7 @@ export default function Home() {
             KEVIN ZHENG · MACHINE LEARNING & TRUSTWORTHY AI
           </p>
           <h1 className="text-[2.6rem] md:text-[3.4rem] font-bold text-foreground leading-tight">
-            Trustworthy AI Researcher
+            Trustworthy AI for Information Ecosystems
           </h1>
           <p className="text-base md:text-lg text-muted-foreground max-w-2xl leading-relaxed">
             Designing diffusion experiments and robust ML safeguards for social platforms.
