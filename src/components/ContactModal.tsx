@@ -72,17 +72,17 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
   const [celebrate, setCelebrate] = useState(false);
   const particles = useMemo(
     () =>
-      Array.from({ length: 80 }).map((_, i) => {
+      Array.from({ length: 120 }).map((_, i) => {
         const angle = Math.random() * Math.PI * 2;
-        const speed = 40 + Math.random() * 60;
+        const speed = 30 + Math.random() * 80;
         return {
           x: Math.random() * 100,
           y: Math.random() * 100,
           dx: Math.cos(angle) * speed,
           dy: Math.sin(angle) * speed,
-          delay: Math.random() * 0.2 + i * 0.002,
-          size: 4 + Math.random() * 4,
-          duration: 0.9 + Math.random() * 0.35,
+          delay: Math.random() * 0.25 + i * 0.0015,
+          size: 3.5 + Math.random() * 5,
+          duration: 1.1 + Math.random() * 0.45,
         };
       }),
     []
@@ -198,7 +198,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
       setTimeout(() => {
         onClose();
         resetScheduler();
-      }, 1500);
+      }, 1800);
     } catch (error) {
       console.error(error);
       setSubmissionState("error");
@@ -219,27 +219,23 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
             resetScheduler();
           }}
         >
-          <motion.div
-            className={`surface-card p-6 md:p-8 lg:p-12 w-full max-w-4xl max-h-[90vh] overflow-y-auto relative ${celebrate ? "shadow-none" : ""}`}
-            variants={modalVariants}
-            initial="hidden"
-            animate={
-              celebrate
-                ? { scale: [1, 0.82, 1.05, 0.55], opacity: [1, 0.9, 1, 0] }
-                : { scale: 1, opacity: 1 }
-            }
-            transition={
-              celebrate
-                ? { duration: 0.9, ease: [0.16, 1, 0.3, 1], times: [0, 0.35, 0.6, 1] }
-                : undefined
-            }
-            exit="exit"
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              backgroundColor: celebrate ? "transparent" : "rgba(255,255,255,0.83)",
-              borderColor: celebrate ? "transparent" : undefined,
-            }}
-          >
+        <motion.div
+          className={`surface-card p-6 md:p-8 lg:p-12 w-full max-w-4xl max-h-[90vh] overflow-y-auto relative ${celebrate ? "shadow-none border-transparent bg-transparent" : ""}`}
+          variants={modalVariants}
+          initial="hidden"
+          animate={
+            celebrate
+              ? { scale: [1, 0.78, 1.08, 0.5], opacity: [1, 0.9, 1, 0] }
+              : { scale: 1, opacity: 1 }
+          }
+          transition={
+            celebrate
+              ? { duration: 1.2, ease: [0.16, 1, 0.3, 1], times: [0, 0.25, 0.55, 1] }
+              : undefined
+          }
+          exit="exit"
+          onClick={(e) => e.stopPropagation()}
+        >
             <AnimatePresence>
               {celebrate && (
                 <motion.div
@@ -275,10 +271,10 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                   ))}
                   <motion.div
                     className="absolute inset-0 flex items-center justify-center"
-                    initial={{ scale: 0.9, opacity: 0.4 }}
-                    animate={{ scale: 1, opacity: 1 }}
+                    initial={{ scale: 0.95, opacity: 0.4 }}
+                    animate={{ scale: [0.95, 1.1, 0.7], opacity: [0.9, 1, 0.6] }}
                     exit={{ opacity: 0 }}
-                    transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                    transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], times: [0, 0.55, 1] }}
                   >
                     <motion.svg
                       viewBox="0 0 48 48"
@@ -293,7 +289,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                         strokeLinejoin="round"
                         initial={{ pathLength: 0 }}
                         animate={{ pathLength: 1 }}
-                        transition={{ duration: 0.4, ease: "easeOut" }}
+                        transition={{ duration: 0.45, ease: "easeOut" }}
                       />
                     </motion.svg>
                   </motion.div>
