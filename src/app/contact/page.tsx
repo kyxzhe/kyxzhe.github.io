@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Mail, Phone, MapPin, CalendarDays, Linkedin, Github } from "lucide-react";
+import { Mail, Phone, MapPin, CalendarDays, Github } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { contactInfo } from "@/lib/constants/contact";
@@ -45,11 +45,28 @@ const collaborationAreas = [
 ];
 
 const socialLinks = [
-  { label: "LinkedIn", href: socials.linkedin, icon: <Linkedin size={16} /> },
+  { label: "LinkedIn", href: socials.linkedin, icon: <LinkedInMonoIcon className="w-4 h-4" /> },
   { label: "Google Scholar", href: socials.googleScholar, icon: <GoogleScholarIcon className="w-4 h-4" /> },
   { label: "ORCID", href: socials.orcid, icon: <OrcidIcon className="w-4 h-4" /> },
   { label: "GitHub", href: socials.github, icon: <Github size={16} /> },
 ];
+
+function LinkedInMonoIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      role="img"
+      aria-label="LinkedIn"
+      className={className}
+    >
+      <rect x="1" y="1" width="22" height="22" rx="4.5" fill="currentColor" />
+      <path
+        fill="#fff"
+        d="M6.4 9.2h2.2V18H6.4V9.2Zm1.1-4a1.3 1.3 0 1 1 0 2.6 1.3 1.3 0 0 1 0-2.6Zm3.4 4h2.1v1.2c.3-.6 1.1-1.3 2.4-1.3 1.9 0 2.8 1.1 2.8 3.2V18h-2.2v-4.8c0-1-.4-1.6-1.2-1.6-.9 0-1.5.6-1.5 1.7V18h-2.4V9.2Z"
+      />
+    </svg>
+  );
+}
 
 export default function ContactPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -152,14 +169,14 @@ export default function ContactPage() {
           <div className="space-y-4">
             <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">Profiles</p>
             <h2 className="text-xl font-semibold text-foreground">Find me elsewhere</h2>
-            <div className="flex flex-wrap gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {socialLinks.map(({ label, href, icon }) => (
                 <Link
                   key={label}
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 min-w-[210px] max-w-[260px] inline-flex items-center justify-between gap-3 px-4 py-2 border border-[rgba(0,0,0,0.12)] dark:border-white/20 rounded-full text-sm font-medium hover:-translate-y-[1px] transition"
+                  className="flex items-center justify-between gap-3 px-4 py-2 border border-[rgba(0,0,0,0.12)] dark:border-white/20 rounded-full text-sm font-medium hover:-translate-y-[1px] transition"
                 >
                   <span>{label}</span>
                   <span className="text-muted-foreground">{icon}</span>
