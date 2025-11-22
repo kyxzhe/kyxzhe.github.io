@@ -124,7 +124,7 @@ export default function Home() {
                 : "0 18px 36px rgba(0,0,0,0.08)",
             }}
             transition={{ type: "spring", stiffness: 240, damping: 30 }}
-            className="w-full rounded-[26px] bg-gradient-to-b from-white to-[rgb(245,245,245)] border border-[rgba(0,0,0,0.08)] ring-1 ring-[rgba(0,0,0,0.02)] ring-offset-0 px-[18px] pt-[18px] pb-[16px] flex flex-col gap-3 overflow-hidden shadow-none dark:bg-[#1b1b1f] dark:border-[#2f2f35]"
+            className="w-full rounded-[26px] bg-white border border-[rgba(0,0,0,0.08)] px-[18px] pt-[18px] pb-[16px] flex flex-col gap-3 overflow-hidden dark:bg-[#1b1b1f] dark:border-[#2f2f35]"
           >
             <AnimatePresence initial={false}>
               {isExpanded && (
