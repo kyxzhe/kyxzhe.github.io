@@ -220,12 +220,25 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
           }}
         >
           <motion.div
-            className={`surface-card p-6 md:p-8 lg:p-12 w-full max-w-4xl max-h-[90vh] overflow-y-auto relative bg-[rgba(255,255,255,0.83)] dark:bg-[rgba(12,14,18,0.83)] ${celebrate ? "opacity-60 scale-[0.98]" : "opacity-100"}`}
+            className={`surface-card p-6 md:p-8 lg:p-12 w-full max-w-4xl max-h-[90vh] overflow-y-auto relative ${celebrate ? "shadow-none" : ""}`}
             variants={modalVariants}
             initial="hidden"
-            animate="visible"
+            animate={
+              celebrate
+                ? { scale: [1, 0.82, 1.05, 0.55], opacity: [1, 0.9, 1, 0] }
+                : { scale: 1, opacity: 1 }
+            }
+            transition={
+              celebrate
+                ? { duration: 0.9, ease: [0.16, 1, 0.3, 1], times: [0, 0.35, 0.6, 1] }
+                : undefined
+            }
             exit="exit"
             onClick={(e) => e.stopPropagation()}
+            style={{
+              backgroundColor: celebrate ? "transparent" : "rgba(255,255,255,0.83)",
+              borderColor: celebrate ? "transparent" : undefined,
+            }}
           >
             <AnimatePresence>
               {celebrate && (
@@ -236,13 +249,6 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <motion.div
-                    className="absolute inset-0 bg-[rgba(255,255,255,0.8)] dark:bg-[rgba(12,14,18,0.9)]"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.25 }}
-                  />
                   {particles.map((p, i) => (
                     <motion.span
                       key={i}
