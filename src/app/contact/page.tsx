@@ -62,7 +62,6 @@ function GitHubMonoIcon({ className }: { className?: string }) {
 export default function ContactPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showCallInfo, setShowCallInfo] = useState(false);
-  const tzAbbr = "AEDT";
   const directLines = [
     {
       label: "Email",
@@ -162,7 +161,7 @@ export default function ContactPage() {
                   <p className="text-sm text-muted-foreground">Clear context gets a faster response.</p>
                 </div>
                 <span className="px-3 py-1 rounded-full text-[11px] uppercase tracking-[0.22em] bg-[var(--pill-background)] text-muted-foreground">
-                  <span className="text-foreground">{tzAbbr}</span>
+                  <span className="text-foreground">AEDT</span>
                 </span>
               </div>
               <ul className="space-y-3 text-sm text-foreground/80 leading-relaxed">
