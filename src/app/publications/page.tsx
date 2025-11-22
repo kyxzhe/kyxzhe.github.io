@@ -60,10 +60,10 @@ const AuthorLine = ({ authors }: { authors: string[] }) => (
     {authors.map((author, index) => {
       const highlight = author.toLowerCase().includes("yuxiang zheng");
       return (
-        <span
-          key={`${author}-${index}`}
-          className={highlight ? "font-semibold text-foreground" : ""}
-        >
+          <span
+            key={`${author}-${index}`}
+            className={highlight ? "text-foreground" : ""}
+          >
           {author}
           {index < authors.length - 1 && ", "}
         </span>
@@ -87,11 +87,11 @@ const ResourceRow = ({
       <span>{venue}</span>
       {showDot && <span>·</span>}
       {code && (
-        <Link
-          href={code.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 text-foreground font-semibold hover:underline underline-offset-4"
+          <Link
+            href={code.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 text-foreground hover:underline underline-offset-4"
           onClick={(event) => event.stopPropagation()}
           onKeyDown={(event) => event.stopPropagation()}
         >
@@ -130,7 +130,7 @@ const ListRow = ({ item }: { item: Publication }) => {
       <p className="text-[10.2px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-black">{item.category}</p>
       <div className="flex items-start justify-between gap-3">
         <div className="space-y-2">
-          <h3 className="text-xl font-semibold leading-snug text-foreground">{item.title}</h3>
+          <h3 className="text-xl leading-snug text-foreground">{item.title}</h3>
           <AuthorLine authors={item.authors} />
           <p className="text-sm text-foreground/80 leading-relaxed max-w-3xl">{item.summary}</p>
           <ResourceRow venue={item.venue} resources={item.resources} />
@@ -235,7 +235,7 @@ export default function PublicationsPage() {
           <p className="text-sm uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-black">
             {item.category} · {formatDate(item.date)}
           </p>
-          <h3 className="text-lg font-semibold leading-snug">{item.title}</h3>
+          <h3 className="text-lg leading-snug">{item.title}</h3>
           <AuthorLine authors={item.authors} />
           <p className="text-sm text-black dark:text-black flex-1 line-clamp-3">{item.summary}</p>
           <ResourceRow venue={item.venue} resources={item.resources} />
@@ -258,7 +258,7 @@ export default function PublicationsPage() {
   );
 
   return (
-    <div className="min-h-screen bg-white text-foreground dark:bg-[#0b0b0d] dark:text-[#f5f5f5]">
+    <div className="min-h-screen bg-white text-foreground dark:bg-[#0b0b0d] dark:text-[#f5f5f5] font-normal">
       <Navbar />
 
       {(filterOpen || sortOpen) && (
@@ -274,7 +274,7 @@ export default function PublicationsPage() {
       <main className="flex-1 mx-auto w-full max-w-5xl px-2 md:px-4 lg:px-0 py-6 flex flex-col gap-6">
         <section className="mt-4 space-y-2">
           <p className="text-xs uppercase tracking-[0.3em] text-[rgba(0,0,0,0.6)] dark:text-black">Publications</p>
-          <h1 className="text-[2.4rem] md:text-[2.6rem] font-semibold leading-tight text-foreground">Papers &amp; Preprints</h1>
+          <h1 className="text-[2.4rem] md:text-[2.6rem] leading-tight text-foreground">Papers &amp; Preprints</h1>
           <p className="text-[15px] md:text-base text-[rgba(0,0,0,0.6)] dark:text-black max-w-2xl leading-relaxed">
             A curated list of my published and upcoming work, with links to code and materials.
           </p>
@@ -285,16 +285,16 @@ export default function PublicationsPage() {
                 className="flex items-baseline gap-2 border-b border-border pb-1"
               >
                 <span className="text-xs uppercase tracking-[0.3em]">{metric.label}</span>
-                <span className="text-lg text-foreground font-semibold">{metric.value}</span>
+                <span className="text-lg text-foreground">{metric.value}</span>
               </div>
             ))}
           </div>
         </section>
 
-        <div className="flex flex-wrap items-center justify-between gap-3 text-sm font-medium">
+        <div className="flex flex-wrap items-center justify-between gap-3 text-sm font-normal">
           <p className="text-[rgba(0,0,0,0.6)] dark:text-black">Showing {sortedItems.length} publications</p>
 
-          <div className="relative flex items-center gap-4 text-sm font-medium">
+          <div className="relative flex items-center gap-4 text-sm font-normal">
             <div className="relative flex items-center gap-1">
               <button
                 className="flex items-center gap-1"
@@ -324,7 +324,7 @@ export default function PublicationsPage() {
               {filterOpen && (
                 <div className="absolute top-full mt-2 right-0 w-[420px] z-40 surface-card p-4 flex flex-col gap-4 shadow-xl rounded-2xl border border-border">
                   <div className="flex items-center justify-between text-sm text-foreground">
-                    <p className="font-semibold">Filters</p>
+                    <p className="font-normal">Filters</p>
                     <button
                       type="button"
                       className="text-[rgba(0,0,0,0.6)] dark:text-black"
