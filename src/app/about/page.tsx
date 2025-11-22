@@ -95,13 +95,13 @@ export default function AboutPage() {
           <div className="grid gap-10 lg:grid-cols-2">
             <div className="space-y-5">
               <p className="text-[14px] uppercase tracking-[0.3em] text-muted-foreground">Focus areas</p>
-              <div className="space-y-4 text-sm">
-                {researchFocus.map((item) => (
-                  <p key={item} className="text-foreground dark:text-black">
-                    {item}
-                  </p>
-                ))}
-              </div>
+          <div className="space-y-4 text-[17px]">
+            {researchFocus.map((item) => (
+              <p key={item} className="text-foreground dark:text-black">
+                {item}
+              </p>
+            ))}
+          </div>
             </div>
             <div className="space-y-5">
               <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">At a glance</p>
