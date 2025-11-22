@@ -306,11 +306,11 @@ export default function NewsPage() {
               key={category}
               type="button"
               onClick={() => setActiveCategory(category)}
-              className={`px-3 py-1.5 rounded-full border transition-colors ${
-                activeCategory === category
-                  ? "bg-[var(--accent-soft)] text-foreground border-[var(--card-border)]"
-                  : "bg-[var(--pill-background)] text-muted-foreground border-[var(--card-border)] hover:border-foreground/40"
-              }`}
+                className={`px-3 py-1.5 rounded-full border transition-colors bg-[rgba(0,0,0,0.04)] ${
+                  activeCategory === category
+                    ? "text-foreground border-[var(--card-border)]"
+                    : "text-muted-foreground border-[var(--card-border)] hover:border-foreground/40"
+                }`}
             >
               {formatCategoryLabel(category)}
             </button>
