@@ -12,7 +12,7 @@ import ContactModal from "@/components/ContactModal";
 
 const replyNotes = [
   "What is the topic and who is involved?",
-  "Clear context helps me reply quickly.",
+  "Are there any deadlines or time zones I should know about?",
   "If it is urgent, please say so in the subject line.",
 ];
 
@@ -159,7 +159,7 @@ export default function ContactPage() {
               <div className="flex items-start justify-between gap-4">
                 <div className="space-y-1">
                   <p className="text-sm text-foreground">Include who is involved and any timelines for a quicker reply.</p>
-                  <p className="text-sm text-muted-foreground">Clear context gets a faster response.</p>
+                  <p className="text-sm text-muted-foreground">Clear context helps me reply quickly.</p>
                 </div>
                 <span className="px-3 py-1 rounded-full text-[11px] uppercase tracking-[0.22em] bg-[var(--pill-background)] text-muted-foreground">
                   <span className="text-foreground">AEDT</span>
