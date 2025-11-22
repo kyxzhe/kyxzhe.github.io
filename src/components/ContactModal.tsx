@@ -320,38 +320,40 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                 </motion.div>
               )}
             </AnimatePresence>
-            <motion.button
-              className="absolute top-6 right-6 p-2 rounded-full bg-[var(--accent-soft)] text-[var(--accent)] hover:opacity-80 transition-colors z-10"
-              onClick={() => {
-                onClose();
-                resetScheduler();
-              }}
-              variants={iconVariants}
-              initial="hidden"
-              animate="visible"
-              whileHover="hover"
-            >
-              <X size={24} className="text-foreground" />
-            </motion.button>
+            {!celebrate && (
+              <>
+                <motion.button
+                  className="absolute top-6 right-6 p-2 rounded-full bg-[var(--accent-soft)] text-[var(--accent)] hover:opacity-80 transition-colors z-10"
+                  onClick={() => {
+                    onClose();
+                    resetScheduler();
+                  }}
+                  variants={iconVariants}
+                  initial="hidden"
+                  animate="visible"
+                  whileHover="hover"
+                >
+                  <X size={24} className="text-foreground" />
+                </motion.button>
 
-            <motion.div
-              className="text-center mb-8 md:mb-12"
-              variants={textVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-medium mb-3">
-                {mode === "info" ? "Contact me" : "Reserve a slot"}
-              </h1>
-              <p className="text-lg md:text-xl text-muted-foreground">
-                {mode === "info"
-                  ? "Let’s talk about diffusion experiments, moderation strategy, or teaching collaborations."
-                  : "Pick a time, leave context, and I’ll reply with a confirmation email."}
-              </p>
-            </motion.div>
+                <motion.div
+                  className="text-center mb-8 md:mb-12"
+                  variants={textVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  <h1 className="text-4xl md:text-6xl lg:text-7xl font-medium mb-3">
+                    {mode === "info" ? "Contact me" : "Reserve a slot"}
+                  </h1>
+                  <p className="text-lg md:text-xl text-muted-foreground">
+                    {mode === "info"
+                      ? "Let’s talk about diffusion experiments, moderation strategy, or teaching collaborations."
+                      : "Pick a time, leave context, and I’ll reply with a confirmation email."}
+                  </p>
+                </motion.div>
 
-            <AnimatePresence mode="wait">
-              {mode === "info" ? (
+                <AnimatePresence mode="wait">
+                  {mode === "info" ? (
                 <motion.div
                   key="info"
                   variants={innerSwapVariants}
@@ -669,6 +671,8 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                 </motion.div>
               )}
             </AnimatePresence>
+            </>
+            )}
           </motion.div>
         </motion.div>
       )}
