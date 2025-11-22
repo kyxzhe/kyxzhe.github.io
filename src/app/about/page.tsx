@@ -78,12 +78,12 @@ export default function AboutPage() {
           animate="visible"
         >
           <div className="flex flex-col gap-6">
-            <p className="text-xs uppercase tracking-[0.3em] text-[rgba(0,0,0,0.6)] dark:text-white/60">About Kevin</p>
+            <p className="text-xs uppercase tracking-[0.3em] text-[rgba(0,0,0,0.6)] dark:text-black">About Kevin</p>
             <div className="space-y-4">
-              <h1 className="text-4xl md:text-5xl font-semibold leading-tight">Research first, people in mind</h1>
-              <p className="text-base md:text-lg text-foreground whitespace-pre-line leading-relaxed">{aboutIntro}</p>
+              <h1 className="text-4xl md:text-5xl font-semibold leading-tight text-[rgba(0,0,0,0.6)] dark:text-black">Research first, people in mind</h1>
+              <p className="text-base md:text-lg text-[rgba(0,0,0,0.6)] dark:text-black whitespace-pre-line leading-relaxed">{aboutIntro}</p>
             </div>
-            <div className="flex flex-col gap-4 text-sm text-foreground/70">
+            <div className="flex flex-col gap-4 text-sm text-[rgba(0,0,0,0.6)] dark:text-black">
               <div className="flex flex-wrap gap-x-8 gap-y-2">
                 <span>📍 Sydney based</span>
                 <span>🏛 Behavioural Data Science Lab @ UTS</span>
@@ -94,26 +94,26 @@ export default function AboutPage() {
 
           <div className="grid gap-10 lg:grid-cols-2">
             <div className="space-y-5">
-              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Focus areas</p>
-              <div className="space-y-4 text-sm text-foreground/80">
+              <p className="text-xs uppercase tracking-[0.3em] text-[rgba(0,0,0,0.6)] dark:text-black">Focus areas</p>
+              <div className="space-y-4 text-sm text-[rgba(0,0,0,0.6)] dark:text-black">
                 {researchFocus.map((item) => (
                   <p key={item}>{item}</p>
                 ))}
               </div>
             </div>
             <div className="space-y-5">
-              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">At a glance</p>
+              <p className="text-xs uppercase tracking-[0.3em] text-[rgba(0,0,0,0.6)] dark:text-black">At a glance</p>
               <div className="flex gap-12">
                 <div>
                   <p className="text-4xl font-semibold leading-none">4</p>
-                  <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mt-3">Lab talks</p>
+                  <p className="text-xs uppercase tracking-[0.3em] text-[rgba(0,0,0,0.6)] dark:text-black mt-3">Lab talks</p>
                 </div>
                 <div>
                   <p className="text-4xl font-semibold leading-none">2</p>
-                  <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mt-3">Manuscripts</p>
+                  <p className="text-xs uppercase tracking-[0.3em] text-[rgba(0,0,0,0.6)] dark:text-black mt-3">Manuscripts</p>
                 </div>
               </div>
-            <div className="text-sm text-foreground/70 leading-relaxed">
+            <div className="text-sm text-[rgba(0,0,0,0.6)] dark:text-black leading-relaxed">
             </div>
           </div>
           </div>
@@ -122,18 +122,18 @@ export default function AboutPage() {
         <section className="w-full max-w-4xl mx-auto space-y-20">
           <div className="space-y-10">
             <div className="space-y-2">
-              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Story so far</p>
+              <p className="text-xs uppercase tracking-[0.3em] text-[rgba(0,0,0,0.6)] dark:text-black">Story so far</p>
               <h2 className="text-2xl font-semibold">Timeline</h2>
             </div>
             <div className="space-y-8">
               {timeline.map((item) => (
                 <div key={item.title} className="space-y-2">
-                  <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                  <p className="text-xs uppercase tracking-[0.2em] text-[rgba(0,0,0,0.6)] dark:text-black">
                     {item.period}
                   </p>
                   <h3 className="text-lg font-medium">{item.title}</h3>
-                  <p className="text-sm text-foreground/70">{item.org}</p>
-                  <p className="text-sm text-foreground/70">{item.detail}</p>
+                  <p className="text-sm text-[rgba(0,0,0,0.6)] dark:text-black">{item.org}</p>
+                  <p className="text-sm text-[rgba(0,0,0,0.6)] dark:text-black">{item.detail}</p>
                 </div>
               ))}
             </div>
@@ -141,18 +141,18 @@ export default function AboutPage() {
 
           <div className="grid gap-12 lg:grid-cols-2">
             <div className="space-y-5">
-              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Community</p>
+              <p className="text-xs uppercase tracking-[0.3em] text-[rgba(0,0,0,0.6)] dark:text-black">Community</p>
               <h2 className="text-2xl font-semibold">Teaching & sharing</h2>
-              <ul className="space-y-3 text-sm text-foreground/80">
+              <ul className="space-y-3 text-sm text-[rgba(0,0,0,0.6)] dark:text-black">
                 {contributions.map((item) => (
                   <li key={item}>{item}</li>
                 ))}
               </ul>
             </div>
             <div className="space-y-5">
-              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Collaborate</p>
+              <p className="text-xs uppercase tracking-[0.3em] text-[rgba(0,0,0,0.6)] dark:text-black">Collaborate</p>
               <h2 className="text-2xl font-semibold">Open to thoughtful work</h2>
-              <p className="text-sm text-foreground/70 leading-relaxed">
+              <p className="text-sm text-[rgba(0,0,0,0.6)] dark:text-black leading-relaxed">
                 Open to research collaborations, talks, and teaching ideas.
                 If you think I could be a good fit, feel free to get in touch.
               </p>
@@ -165,7 +165,7 @@ export default function AboutPage() {
                 </Link>
                 <Link
                   href="/"
-                  className="text-foreground/60 text-center underline underline-offset-4 hover:text-foreground transition-colors"
+                  className="text-[rgba(0,0,0,0.6)] dark:text-black text-center underline underline-offset-4 hover:text-black transition-colors"
                 >
                   Back to home
                 </Link>
