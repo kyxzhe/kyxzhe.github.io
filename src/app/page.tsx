@@ -124,7 +124,7 @@ export default function Home() {
                 : "0 18px 36px rgba(0,0,0,0.08)",
             }}
             transition={{ type: "spring", stiffness: 240, damping: 30 }}
-            className="w-full rounded-[26px] bg-white border border-[rgba(0,0,0,0.08)] px-[18px] pt-[18px] pb-[16px] flex flex-col gap-3 overflow-hidden dark:bg-[#1b1b1f] dark:border-[#2f2f35] dark:shadow-[0_18px_38px_rgba(0,0,0,0.55)]"
+            className="w-full rounded-[26px] bg-gradient-to-b from-white to-[rgb(245,245,245)] border border-[rgba(0,0,0,0.08)] ring-1 ring-[rgba(0,0,0,0.02)] ring-offset-0 px-[18px] pt-[18px] pb-[16px] flex flex-col gap-3 overflow-hidden shadow-none dark:bg-[#1b1b1f] dark:border-[#2f2f35]"
           >
             <AnimatePresence initial={false}>
               {isExpanded && (
@@ -195,7 +195,7 @@ export default function Home() {
               </div>
               <button
                 type="button"
-                className={`inline-flex h-10 w-10 items-center justify-center rounded-full border border-[rgba(0,0,0,0.12)] bg-gradient-to-b from-white/90 to-[rgb(229,231,235)] shadow-none transition disabled:opacity-60 disabled:cursor-not-allowed ${prompt.trim() ? "text-foreground dark:bg-white dark:text-[#0b0b0d]" : "text-[rgba(0,0,0,0.6)] dark:bg-white/15 dark:text-white"}`}
+              className={`inline-flex h-10 w-10 items-center justify-center rounded-full border border-[rgba(0,0,0,0.12)] transition disabled:opacity-60 disabled:cursor-not-allowed ${prompt.trim() ? "bg-[rgb(229,231,235)] text-foreground dark:bg-white dark:text-[#0b0b0d]" : "bg-[rgb(229,231,235)] text-[rgba(0,0,0,0.6)] dark:bg-white/15 dark:text-white"}`}
                 aria-label="Submit question"
                 onClick={handleSend}
                 disabled={!prompt.trim() || isLoading}
