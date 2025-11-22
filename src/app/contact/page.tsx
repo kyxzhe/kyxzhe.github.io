@@ -92,7 +92,7 @@ export default function ContactPage() {
         <section className="mt-2 space-y-5">
           <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Contact</p>
           <h1 className="text-[2.4rem] md:text-[2.6rem] font-semibold leading-tight text-foreground">
-            Let&apos;s chat about your project
+            Get in touch
           </h1>
           <p className="text-[15px] md:text-base text-muted-foreground max-w-2xl leading-relaxed">
             Tell me what you are working on, who is involved, and any constraints. I will reply with clear next steps. Start with an email and we can hop on a call if helpful.
