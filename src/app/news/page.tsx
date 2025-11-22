@@ -54,7 +54,7 @@ const ListRow = ({ item }: { item: NewsItem }) => {
         <h3 className="text-xl font-semibold leading-snug text-foreground">{item.title}</h3>
         <p className="text-sm text-[rgba(0,0,0,0.6)] dark:text-black whitespace-nowrap">{formatDate(item.date)}</p>
       </div>
-      <p className="text-sm text-foreground/80 leading-relaxed max-w-3xl">{item.summary}</p>
+      <p className="text-sm text-black dark:text-black leading-relaxed max-w-3xl">{item.summary}</p>
     </article>
   );
 
