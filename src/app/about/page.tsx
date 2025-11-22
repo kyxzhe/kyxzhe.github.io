@@ -63,7 +63,7 @@ If you’d like to talk about research, photography, or the eternal debate over 
 
 export default function AboutPage() {
   return (
-    <div className="flex flex-col min-h-screen font-sans pt-2 md:pt-0 lg:py-6 xl:py-0 xl:pb-6 overflow-visible">
+    <div className="flex flex-col min-h-screen font-sans font-normal pt-2 md:pt-0 lg:py-6 xl:py-0 xl:pb-6 overflow-visible">
       <Navbar />
       <motion.main
         className="flex-1 flex flex-col items-center gap-16 px-4 md:px-16 lg:px-24 py-12"
@@ -80,7 +80,7 @@ export default function AboutPage() {
           <div className="flex flex-col gap-6">
             <p className="text-xs uppercase tracking-[0.3em] text-[rgba(0,0,0,0.6)] dark:text-white/60">About Kevin</p>
             <div className="space-y-4">
-              <h1 className="text-4xl md:text-5xl font-semibold leading-tight">Research first, people in mind</h1>
+              <h1 className="text-4xl md:text-5xl font-medium leading-tight">Research first, people in mind</h1>
               <p className="text-base md:text-lg text-foreground whitespace-pre-line leading-relaxed">{aboutIntro}</p>
             </div>
             <div className="flex flex-col gap-4 text-sm text-[rgba(0,0,0,0.6)] dark:text-black">
@@ -125,7 +125,7 @@ export default function AboutPage() {
           <div className="space-y-10">
             <div className="space-y-2">
               <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Story so far</p>
-              <h2 className="text-2xl font-semibold">Timeline</h2>
+              <h2 className="text-2xl font-medium">Timeline</h2>
             </div>
             <div className="space-y-8">
               {timeline.map((item) => (
@@ -144,7 +144,7 @@ export default function AboutPage() {
           <div className="grid gap-12 lg:grid-cols-2">
             <div className="space-y-5">
               <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Community</p>
-              <h2 className="text-2xl font-semibold">Teaching & sharing</h2>
+              <h2 className="text-2xl font-medium">Teaching & sharing</h2>
               <ul className="space-y-3 text-sm">
                 {contributions.map((item) => (
                   <li key={item} className="text-black dark:text-black">
@@ -155,7 +155,7 @@ export default function AboutPage() {
             </div>
             <div className="space-y-5">
               <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Collaborate</p>
-              <h2 className="text-2xl font-semibold">Open to thoughtful work</h2>
+              <h2 className="text-2xl font-medium">Open to thoughtful work</h2>
               <p className="text-sm text-black dark:text-black leading-relaxed">
                 Open to research collaborations, talks, and teaching ideas.
                 If you think I could be a good fit, feel free to get in touch.
@@ -163,7 +163,7 @@ export default function AboutPage() {
               <div className="flex flex-col gap-2 text-sm max-w-xs mx-auto items-center">
                 <Link
                   href={`mailto:${contactInfo.email}`}
-                  className="btn-primary inline-flex justify-center dark:bg-white dark:text-[#0b0b0d]"
+                  className="btn-primary inline-flex justify-center dark:bg-white dark:text-[#0b0b0d] font-medium"
                 >
                   Email Kevin
                 </Link>
