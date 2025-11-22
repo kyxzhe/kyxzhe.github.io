@@ -125,7 +125,7 @@ export default function AboutPage() {
           <div className="space-y-10">
             <div className="space-y-2">
               <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Story so far</p>
-              <h2 className="text-2xl font-medium">Timeline</h2>
+              <h2 className="text-[30px] font-medium">Timeline</h2>
             </div>
             <div className="space-y-8">
               {timeline.map((item) => (
