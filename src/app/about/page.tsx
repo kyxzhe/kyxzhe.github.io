@@ -130,12 +130,12 @@ export default function AboutPage() {
             <div className="space-y-8">
               {timeline.map((item) => (
                 <div key={item.title} className="space-y-2">
-                  <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                  <p className="text-xs uppercase tracking-[0.2em] text-[rgba(0,0,0,0.6)] dark:text-black">
                     {item.period}
                   </p>
                   <h3 className="text-lg font-medium">{item.title}</h3>
-                  <p className="text-sm text-foreground/70">{item.org}</p>
-                  <p className="text-sm text-foreground/70">{item.detail}</p>
+                  <p className="text-sm text-[rgba(0,0,0,0.6)] dark:text-black">{item.org}</p>
+                  <p className="text-sm text-[rgba(0,0,0,0.6)] dark:text-black">{item.detail}</p>
                 </div>
               ))}
             </div>
