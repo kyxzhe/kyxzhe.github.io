@@ -152,14 +152,14 @@ export default function ContactPage() {
           <div className="space-y-4">
             <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">Profiles</p>
             <h2 className="text-xl font-semibold text-foreground">Find me elsewhere</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="flex flex-wrap gap-3">
               {socialLinks.map(({ label, href, icon }) => (
                 <Link
                   key={label}
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-between gap-3 px-4 py-2 border border-[rgba(0,0,0,0.12)] dark:border-white/20 rounded-full text-sm font-medium hover:-translate-y-[1px] transition"
+                  className="flex-1 min-w-[210px] max-w-[260px] inline-flex items-center justify-between gap-3 px-4 py-2 border border-[rgba(0,0,0,0.12)] dark:border-white/20 rounded-full text-sm font-medium hover:-translate-y-[1px] transition"
                 >
                   <span>{label}</span>
                   <span className="text-muted-foreground">{icon}</span>
