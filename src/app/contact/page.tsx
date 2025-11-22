@@ -1,12 +1,14 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { Mail, Phone, MapPin, ArrowUpRight } from "lucide-react";
+import { Mail, Phone, MapPin, ArrowUpRight, CalendarDays } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { contactInfo } from "@/lib/constants/contact";
 import { socials } from "@/lib/constants/socials";
 import { GoogleScholarIcon, OrcidIcon } from "@/components/icons/AcademicIcons";
+import ContactModal from "@/components/ContactModal";
 
 const directLines = [
   {
@@ -52,6 +54,8 @@ const socialLinks = [
 ];
 
 export default function ContactPage() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-white text-[#141414] dark:bg-[#0b0b0d] dark:text-[#f5f5f5]">
       <Navbar />
@@ -71,12 +75,14 @@ export default function ContactPage() {
             >
               Email Kevin
             </Link>
-            <Link
-              href="/publications"
-              className="px-6 md:px-7 py-3 rounded-full border text-sm md:text-base font-semibold transition duration-200 hover:-translate-y-[1px] border-[rgba(0,0,0,0.12)] bg-white text-foreground shadow-[0_10px_24px_rgba(0,0,0,0.06)] dark:border-[#666] dark:bg-[#1a1a1d] dark:text-white dark:shadow-[0_10px_24px_rgba(0,0,0,0.3)]"
+            <button
+              type="button"
+              onClick={() => setIsModalOpen(true)}
+              className="px-6 md:px-7 py-3 rounded-full border text-sm md:text-base font-semibold transition duration-200 hover:-translate-y-[1px] border-[rgba(0,0,0,0.12)] bg-white text-foreground shadow-[0_10px_24px_rgba(0,0,0,0.06)] dark:border-[#666] dark:bg-[#1a1a1d] dark:text-white dark:shadow-[0_10px_24px_rgba(0,0,0,0.3)] inline-flex items-center gap-2"
             >
-              View work
-            </Link>
+              <CalendarDays size={16} />
+              Schedule a slot
+            </button>
           </div>
         </section>
 
@@ -156,6 +162,7 @@ export default function ContactPage() {
         </section>
       </main>
       <Footer className="mb-4" />
+      <ContactModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   );
 }
