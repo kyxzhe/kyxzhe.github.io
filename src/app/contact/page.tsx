@@ -21,7 +21,7 @@ const directLines = [
   {
     label: "Phone",
     value: "Request a call",
-    hint: "I rarely answer calls. I can call after you request.",
+    hint: "I rarely answer calls. Please request and I will text first.",
     onClick: () => setShowCallInfo(true),
     icon: Phone,
   },
