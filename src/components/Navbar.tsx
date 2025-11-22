@@ -18,8 +18,8 @@ export default function Navbar() {
           className="flex flex-row gap-2 items-center"
           aria-label="Go to homepage"
         >
-          <span className="text-[1.26rem] md:text-[1.32rem] uppercase font-light italic tracking-[0.1em]">Kevin</span>
-          <span className="text-[1.26rem] md:text-[1.32rem] uppercase font-semibold tracking-[0.1em]">Zheng</span>
+          <span className="text-[17px] uppercase font-light italic tracking-[0.1em]">Kevin</span>
+          <span className="text-[17px] uppercase font-semibold tracking-[0.1em]">Zheng</span>
           <span className="chip text-[0.62rem] uppercase tracking-[0.21em] px-[0.6rem] py-[0.44rem]">
             Beta
           </span>
