@@ -300,7 +300,7 @@ export default function NewsPage() {
           </p>
         </section>
 
-        <div className="flex flex-wrap gap-2 text-sm text-[rgba(0,0,0,0.6)] dark:text-black">
+        <div className="flex flex-wrap gap-2 text-[18px] text-[rgba(0,0,0,0.6)] dark:text-black">
           {categories.map((category) => (
             <button
               key={category}
