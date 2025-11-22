@@ -208,13 +208,13 @@ export default function Home() {
               </button>
               {showPlaceholderOverlay && (
                 <AnimatePresence mode="wait">
-                  <motion.div
+                <motion.div
                     key={placeholderIndex}
                     initial={{ y: 10, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     exit={{ y: -10, opacity: 0 }}
                     transition={{ duration: 0.32, ease: "easeOut" }}
-                      className="pointer-events-none absolute left-0 right-0 top-0 text-center px-4 text-[17px] md:text-[17.5px] leading-[1.4] text-[rgba(0,0,0,0.6)] dark:text-white/60"
+                      className="pointer-events-none absolute left-0 right-0 top-0 text-center px-4 text-[16px] md:text-[16px] leading-[1.4] text-[rgba(0,0,0,0.6)] dark:text-white/60"
                   >
                     {rotatingPlaceholders[placeholderIndex]}
                   </motion.div>
