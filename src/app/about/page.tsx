@@ -36,9 +36,9 @@ const timeline = [
 
 const researchFocus = [
   "Information diffusion & online narrative dynamics",
-  "Robust ML under noisy, biased, or shifting supervision",
-  "Temporal + graph representations for multimodal social data",
-  "Evaluation of ranking and moderation interventions",
+  "Dynamic & temporal graph learning on social platforms",
+  "Multimodal representation learning for text, images & video",
+  "Misinformation & disinformation modelling",
 ];
 
 const contributions = [
