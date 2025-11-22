@@ -101,7 +101,7 @@ export default function ContactPage() {
           <div className="flex flex-wrap gap-3 pt-2">
             <Link
               href={`mailto:${contactInfo.email}`}
-              className="px-6 md:px-7 py-3 rounded-full text-sm md:text-base font-semibold bg-[#141414] text-white dark:bg-[#f5f5f5] dark:text-[#0b0b0d] transition-colors duration-150 hover:opacity-90"
+              className="px-6 md:px-7 py-3 rounded-full text-sm md:text-base font-medium bg-[#141414] text-white dark:bg-[#f5f5f5] dark:text-[#0b0b0d] transition-colors duration-150 hover:opacity-90"
             >
               Email Kevin
             </Link>
@@ -138,12 +138,12 @@ export default function ContactPage() {
                 }
                 if (onClick) {
                   return (
-                    <button
-                      key={label}
-                      type="button"
-                      onClick={onClick}
-                      className="w-full text-left hover:text-foreground transition-colors"
-                    >
+                  <button
+                    key={label}
+                    type="button"
+                    onClick={onClick}
+                    className="w-full text-left font-medium hover:text-foreground transition-colors"
+                  >
                       {Row}
                     </button>
                   );
@@ -176,7 +176,7 @@ export default function ContactPage() {
               <button
                 type="button"
                 onClick={() => setIsModalOpen(true)}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-full border text-sm md:text-base font-semibold border-[rgba(0,0,0,0.12)] bg-white text-foreground dark:border-[#666] dark:bg-[#1a1a1d] dark:text-white py-3 transition-colors duration-150 hover:border-foreground/50"
+                className="w-full inline-flex items-center justify-center gap-2 rounded-full border text-sm md:text-base font-medium border-[rgba(0,0,0,0.12)] bg-white text-foreground dark:border-[#666] dark:bg-[#1a1a1d] dark:text-white py-3 transition-colors duration-150 hover:border-foreground/50"
               >
                 <CalendarDays size={16} />
                 Book a time
@@ -237,7 +237,7 @@ export default function ContactPage() {
               <h3 className="text-lg font-semibold">Request a call</h3>
               <button
                 type="button"
-                className="p-2 rounded-full hover:bg-[var(--accent-soft)]"
+                className="p-2 rounded-full font-medium hover:bg-[var(--accent-soft)]"
                 onClick={() => setShowCallInfo(false)}
               >
                 <X size={18} />
