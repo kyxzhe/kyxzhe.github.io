@@ -145,7 +145,7 @@ export default function AboutPage() {
             <div className="space-y-5">
               <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Community</p>
             <h2 className="text-[30px] font-medium">Teaching & sharing</h2>
-              <ul className="space-y-3 text-sm">
+              <ul className="space-y-3 text-[17px]">
                 {contributions.map((item) => (
                   <li key={item} className="text-black dark:text-black">
                     {item}
@@ -156,7 +156,7 @@ export default function AboutPage() {
             <div className="space-y-5">
               <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Collaborate</p>
             <h2 className="text-[30px] font-medium">Open to thoughtful work</h2>
-              <p className="text-sm text-black dark:text-black leading-relaxed">
+              <p className="text-[17px] text-black dark:text-black leading-relaxed">
                 Open to research collaborations, talks, and teaching ideas.
                 If you think I could be a good fit, feel free to get in touch.
               </p>
