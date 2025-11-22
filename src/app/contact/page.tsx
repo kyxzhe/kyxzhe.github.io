@@ -101,7 +101,7 @@ export default function ContactPage() {
           <div className="flex flex-wrap gap-3 pt-2">
             <Link
               href={`mailto:${contactInfo.email}`}
-              className="px-6 md:px-7 py-3 rounded-full text-sm md:text-base font-medium bg-[#141414] text-white dark:bg-[#f5f5f5] dark:text-[#0b0b0d] transition-colors duration-150 hover:opacity-90"
+              className="px-6 md:px-7 py-3 rounded-full text-[14px] font-medium bg-[#141414] text-white dark:bg-[#f5f5f5] dark:text-[#0b0b0d] transition-colors duration-150 hover:opacity-90"
             >
               Email Kevin
             </Link>
