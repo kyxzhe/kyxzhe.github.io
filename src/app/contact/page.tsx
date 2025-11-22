@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Mail, Phone, MapPin, ArrowUpRight, CalendarDays } from "lucide-react";
+import { Mail, Phone, MapPin, CalendarDays, Linkedin, Github } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { contactInfo } from "@/lib/constants/contact";
@@ -47,10 +47,10 @@ const collaborationAreas = [
 ];
 
 const socialLinks = [
-  { label: "LinkedIn", href: socials.linkedin, icon: <ArrowUpRight size={14} /> },
-  { label: "Google Scholar", href: socials.googleScholar, icon: <ArrowUpRight size={14} /> },
-  { label: "ORCID", href: socials.orcid, icon: <ArrowUpRight size={14} /> },
-  { label: "GitHub", href: socials.github, icon: <ArrowUpRight size={14} /> },
+  { label: "LinkedIn", href: socials.linkedin, icon: <Linkedin size={16} /> },
+  { label: "Google Scholar", href: socials.googleScholar, icon: <GoogleScholarIcon className="w-4 h-4" /> },
+  { label: "ORCID", href: socials.orcid, icon: <OrcidIcon className="w-4 h-4" /> },
+  { label: "GitHub", href: socials.github, icon: <Github size={16} /> },
 ];
 
 export default function ContactPage() {
@@ -153,8 +153,6 @@ export default function ContactPage() {
                 className="flex items-center gap-2 px-4 py-2 border border-[rgba(0,0,0,0.12)] dark:border-white/20 rounded-full text-sm font-medium hover:-translate-y-[1px] transition"
               >
                 <span>{label}</span>
-                {label === "Google Scholar" && <GoogleScholarIcon className="w-4 h-4" />}
-                {label === "ORCID" && <OrcidIcon className="w-4 h-4" />}
                 {icon}
               </Link>
             ))}
