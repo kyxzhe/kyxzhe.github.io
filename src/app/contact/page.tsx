@@ -161,7 +161,7 @@ export default function ContactPage() {
                   <p className="text-sm text-black dark:text-black">Include who is involved and timelines for a quicker reply.</p>
                   <p className="text-sm text-[rgba(0,0,0,0.6)] dark:text-black">Clear context helps me reply quickly.</p>
                 </div>
-                <span className="px-3 py-1 rounded-full text-[11px] uppercase tracking-[0.22em] bg-[var(--pill-background)] text-[rgba(0,0,0,0.6)] dark:text-black">
+                <span className="px-3 py-1 rounded-full text-[11px] uppercase tracking-[0.22em] bg-[rgba(0,0,0,0.12)] text-[rgba(0,0,0,0.6)] dark:text-black">
                   <span className="text-foreground">AEDT</span>
                 </span>
               </div>
