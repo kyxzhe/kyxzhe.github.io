@@ -17,6 +17,7 @@ export default function Home() {
   const rotatingPlaceholders = [
     "Interested in my research, teaching, or projects? Feel free to ask here.",
     "对我的科研、教学或项目好奇吗？欢迎在这里随时提问。",
+    "對我嘅研究、教學或者項目有興趣？喺呢度儘管問啦。",
     "私の研究や教育、プロジェクトについて知りたいことがあれば、ここで気軽に聞いてください。",
     "Si te interesa mi investigación, mi docencia o mis proyectos, puedes preguntar aquí.",
     "Si mes recherches, mon enseignement ou mes projets vous intéressent, n’hésitez pas à poser vos questions ici.",
