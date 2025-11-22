@@ -158,7 +158,7 @@ export default function ContactPage() {
             <div className="space-y-5 border border-[rgba(0,0,0,0.08)] dark:border-white/15 rounded-[18px] p-6">
               <div className="flex items-start justify-between gap-4">
                 <div className="space-y-1">
-                  <p className="text-sm text-foreground">Include who is involved and timelines for a quicker reply.</p>
+                  <p className="text-sm text-black dark:text-black">Include who is involved and timelines for a quicker reply.</p>
                   <p className="text-sm text-[rgba(0,0,0,0.6)] dark:text-black">Clear context helps me reply quickly.</p>
                 </div>
                 <span className="px-3 py-1 rounded-full text-[11px] uppercase tracking-[0.22em] bg-[var(--pill-background)] text-[rgba(0,0,0,0.6)] dark:text-black">
