@@ -61,7 +61,7 @@ const ChatInputBar = forwardRef<HTMLInputElement, ChatInputBarProps>(
           }}
           aria-label="Send prompt to ChatGPT"
           disabled={disabled}
-          className="relative flex h-9 w-9 items-center justify-center rounded-full bg-primary-100 text-secondary-100 p-0 ml-2 translate-x-[2px] transition-colors hover:opacity-70 disabled:bg-primary-4 disabled:text-primary-44 disabled:hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-1 disabled:focus-visible:ring-offset-0"
+        className="relative flex h-9 w-9 items-center justify-center rounded-full bg-primary-100 text-secondary-100 p-0 transition-colors hover:opacity-70 disabled:bg-primary-4 disabled:text-primary-44 disabled:hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-1 disabled:focus-visible:ring-offset-0 translate-x-[6px]"
         >
           <span className="sr-only">Send prompt to ChatGPT</span>
           {isLoading ? (
