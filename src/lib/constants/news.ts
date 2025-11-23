@@ -69,4 +69,14 @@ export const newsItems: NewsItem[] = [
     link: "https://arxiv.org/abs/2405.12969",
     linkLabel: "Read preprint",
   },
+  {
+    id: "graduation",
+    title: "Graduated First Class Honours & Dalyell Scholar",
+    category: "MILESTONE",
+    date: "2024-10-03",
+    summary:
+      "Graduated from the University of Sydney with a combined Bachelor of Advanced Computing (Honours, Computational Data Science) and Bachelor of Science in Mathematics, receiving First Class Honours as a Dalyell Scholar, after previously being awarded the University Medal.",
+    topics: ["Milestone", "Honours"],
+    cover: "/projects/work-2.jpg",
+  },
 ];
