@@ -20,7 +20,7 @@ export const newsItems: NewsItem[] = [
     date: "2025-09-01",
     summary:
       "Joined Marian-Andrei Rizoiu’s Behavioural Data Science Lab at UTS to study information diffusion and robust machine learning on social platforms.",
-    topics: ["Robust ML"],
+    topics: ["Robust ML", "Information Diffusion"],
     cover: "/projects/work-3.jpg",
     link: "https://www.behavioral-ds.science/authors/kevin-zheng/",
     linkLabel: "Lab profile",
@@ -42,7 +42,7 @@ export const newsItems: NewsItem[] = [
     date: "2025-01-05",
     summary:
       "Passed the AWS Certified Machine Learning – Specialty exam, validating production-ready ML practice for large-scale systems.",
-    topics: ["MLOps"],
+    topics: ["MLOps", "Certification"],
     cover: "/projects/work-1.jpg",
     link: "https://www.credly.com/badges/b324db7a-0cb4-41b9-b3a7-a3275dde8f6b/public_url",
     linkLabel: "Show credential",
@@ -66,7 +66,7 @@ export const newsItems: NewsItem[] = [
     date: "2024-05-21",
     summary:
       "Posted the EchoAlign preprint “Can We Treat Noisy Labels as Accurate?” on arXiv, proposing to treat noisy labels as accurate by editing inputs instead of relabeling them.",
-    topics: ["Noisy Labels", "Preprint"],
+    topics: ["Noisy Labels", "Preprint", "Robust ML"],
     cover: "/projects/work-1.jpg",
     link: "https://arxiv.org/abs/2405.12969",
     linkLabel: "Read preprint",
@@ -78,7 +78,7 @@ export const newsItems: NewsItem[] = [
     date: "2024-10-03",
     summary:
       "Completed a combined Bachelor of Advanced Computing (Honours, Computational Data Science) and Bachelor of Science (Mathematics) at the University of Sydney and received the University Medal.",
-    topics: ["Honours"],
+    topics: ["Education", "Honours"],
     cover: "/projects/work-2.jpg",
   },
   {
@@ -88,7 +88,7 @@ export const newsItems: NewsItem[] = [
     date: "2024-06-20",
     summary:
       "Started work as a Casual Academic in the School of Computer Science at the University of Sydney, teaching and supporting assessment for undergraduate and postgraduate computing units.",
-    topics: ["Teaching"],
+    topics: ["Teaching", "Career"],
     cover: "/projects/work-4.jpg",
   },
   {
@@ -98,7 +98,7 @@ export const newsItems: NewsItem[] = [
     date: "2022-05-12",
     summary:
       "Joined the Trustworthy Machine Learning Lab at the University of Sydney as a research assistant, working on noisy-label and semi-supervised learning.",
-    topics: ["Research", "Noisy Labels"],
+    topics: ["Research", "Noisy Labels", "Robust ML"],
     cover: "/projects/work-3.jpg",
   },
 ];
