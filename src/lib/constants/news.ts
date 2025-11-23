@@ -57,4 +57,16 @@ export const newsItems: NewsItem[] = [
     topics: ["Teaching", "LLMs"],
     cover: "/projects/work-4.jpg",
   },
+  {
+    id: "preprint-noisy-labels",
+    title: "Preprint: “Can We Treat Noisy Labels as Accurate?”",
+    category: "RESEARCH",
+    date: "2024-05-21",
+    summary:
+      "Posted our EchoAlign preprint on arXiv, proposing to treat noisy labels as accurate by editing inputs instead of relabeling them.",
+    topics: ["Noisy Labels", "Preprint"],
+    cover: "/projects/work-1.jpg",
+    link: "https://arxiv.org/abs/2405.12969",
+    linkLabel: "Read preprint",
+  },
 ];
