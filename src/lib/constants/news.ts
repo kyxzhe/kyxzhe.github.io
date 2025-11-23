@@ -65,7 +65,7 @@ export const newsItems: NewsItem[] = [
     category: "RESEARCH",
     date: "2024-05-21",
     summary:
-      "Posted our EchoAlign preprint on arXiv, proposing to treat noisy labels as accurate by editing inputs instead of relabeling them.",
+      "Posted the EchoAlign preprint “Can We Treat Noisy Labels as Accurate?” on arXiv, proposing to treat noisy labels as accurate by editing inputs instead of relabeling them.",
     topics: ["Noisy Labels", "Preprint"],
     cover: "/projects/work-1.jpg",
     link: "https://arxiv.org/abs/2405.12969",
