@@ -88,13 +88,13 @@ export default function Home() {
       <Navbar />
       <main className="flex-1 w-full flex flex-col items-center justify-center text-center px-6 md:px-12 lg:px-16 pb-16 gap-10 md:gap-14">
         <section className="w-full max-w-3xl flex flex-col items-center gap-5 md:gap-6">
-          <p className="text-[12px] tracking-[0.34em] uppercase text-[rgba(0,0,0,0.6)] dark:text-white/60">
+          <p className="text-[12px] tracking-[0.34em] uppercase text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.6)]">
             KEVIN ZHENG · MACHINE LEARNING & DATA
           </p>
           <h1 className="text-[64px] font-semibold text-foreground leading-tight whitespace-nowrap">
             Trustworthy Machine Learning
           </h1>
-          <p className="text-[17px] md:text-[17px] text-[rgba(0,0,0,0.6)] dark:text-white/70 max-w-2xl leading-relaxed">
+          <p className="text-[17px] md:text-[17px] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.6)] max-w-2xl leading-relaxed">
             PhD researcher in machine learning, working on information diffusion and real-world AI systems.
           </p>
           <div className="flex flex-col sm:flex-row items-center gap-3 mt-4">
