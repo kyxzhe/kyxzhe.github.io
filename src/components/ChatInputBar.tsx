@@ -39,7 +39,7 @@ const ChatInputBar = forwardRef<HTMLInputElement, ChatInputBarProps>(
     return (
       <div
         className={cn(
-          "flex items-center gap-2 rounded-full border border-[rgba(60,60,67,0.18)] bg-white/90 px-3 py-2 shadow-[0px_2px_8px_rgba(15,17,21,0.08)] backdrop-blur-sm transition focus-within:shadow-[0px_8px_20px_rgba(15,17,21,0.16)] dark:border-white/10 dark:bg-white/5",
+          "flex items-center gap-2 rounded-full border border-[rgba(60,60,67,0.18)] bg-white/90 px-3 py-2 shadow-[0px_1px_3px_rgba(15,17,21,0.05)] backdrop-blur-sm transition focus-within:shadow-[0px_2px_6px_rgba(15,17,21,0.08)] dark:border-white/10 dark:bg-white/5",
           disabled && "opacity-80",
           className
         )}

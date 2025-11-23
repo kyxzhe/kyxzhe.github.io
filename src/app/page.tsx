@@ -100,13 +100,13 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row items-center gap-3 mt-4">
             <Link
               href="/publications"
-              className="px-6 md:px-7 py-3 rounded-full text-[15px] font-medium shadow-[0_14px_28px_rgba(0,0,0,0.16)] transition duration-200 hover:-translate-y-[2px] bg-[#141414] text-white dark:bg-[#ffffff] dark:text-[#000000]"
+              className="px-6 md:px-7 py-3 rounded-full text-[15px] font-medium shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition duration-200 hover:-translate-y-[2px] bg-[#141414] text-white dark:bg-[#ffffff] dark:text-[#000000]"
             >
               View publications
             </Link>
             <Link
               href="/contact"
-            className="px-6 md:px-7 py-3 rounded-full border text-[15px] font-medium transition duration-200 hover:-translate-y-[1px] border-[rgba(0,0,0,0.12)] bg-white text-foreground shadow-[0_10px_24px_rgba(0,0,0,0.06)] dark:border-[#666] dark:bg-[#000000] dark:text-[rgba(255,255,255,1)] dark:shadow-[0_10px_24px_rgba(0,0,0,0.3)]"
+            className="px-6 md:px-7 py-3 rounded-full border text-[15px] font-medium transition duration-200 hover:-translate-y-[1px] border-[rgba(0,0,0,0.12)] bg-white text-foreground shadow-[0_1px_6px_rgba(0,0,0,0.05)] dark:border-[#666] dark:bg-[#000000] dark:text-[rgba(255,255,255,1)] dark:shadow-[0_2px_8px_rgba(0,0,0,0.24)]"
             >
               Contact
             </Link>
@@ -120,11 +120,11 @@ export default function Home() {
             animate={{
               height: isExpanded ? "auto" : 106,
               boxShadow: isExpanded
-                ? "0 22px 40px rgba(0,0,0,0.12)"
-                : "0 18px 36px rgba(0,0,0,0.08)",
+                ? "0 3px 10px rgba(0,0,0,0.07)"
+                : "0 2px 8px rgba(0,0,0,0.06)",
             }}
             transition={{ type: "spring", stiffness: 240, damping: 30 }}
-            className="w-full rounded-[26px] bg-white border border-[rgba(0,0,0,0.08)] px-[18px] pt-[18px] pb-[16px] flex flex-col gap-3 overflow-hidden dark:bg-[rgba(255,255,255,0.12)] dark:border-none dark:shadow-[0_18px_38px_rgba(0,0,0,0.55)]"
+            className="w-full rounded-[26px] bg-white border border-[rgba(0,0,0,0.08)] px-[18px] pt-[18px] pb-[16px] flex flex-col gap-3 overflow-hidden dark:bg-[rgba(255,255,255,0.12)] dark:border-none dark:shadow-[0_3px_12px_rgba(0,0,0,0.26)]"
           >
             <AnimatePresence initial={false}>
               {isExpanded && (
@@ -148,7 +148,7 @@ export default function Home() {
                             <div
                             className={`max-w-[85%] text-sm md:text-[15px] leading-relaxed text-left ${
                                 message.role === "user"
-                                  ? "bg-[#f2f2f4] text-foreground border border-[rgba(0,0,0,0.06)] rounded-2xl px-3 py-[10px] shadow-[0_6px_14px_rgba(0,0,0,0.05)] dark:bg-[#2a2a30] dark:text-white dark:border-[#3a3a42] dark:shadow-[0_8px_18px_rgba(0,0,0,0.45)]"
+                                  ? "bg-[#f2f2f4] text-foreground border border-[rgba(0,0,0,0.06)] rounded-2xl px-3 py-[10px] shadow-[0_1px_5px_rgba(0,0,0,0.04)] dark:bg-[#2a2a30] dark:text-white dark:border-[#3a3a42] dark:shadow-[0_2px_8px_rgba(0,0,0,0.22)]"
                                   : "text-foreground dark:text-white"
                               }`}
                             >
