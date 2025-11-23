@@ -20,9 +20,6 @@ export default function Navbar() {
         >
           <span className="text-[17px] uppercase font-light italic tracking-[0.1em]">Kevin</span>
           <span className="text-[17px] uppercase font-semibold tracking-[0.1em]">Zheng</span>
-          <span className="chip text-[0.62rem] uppercase tracking-[0.21em] px-[0.6rem] py-[0.44rem]">
-            Beta
-          </span>
         </Link>
         <HamburgerButton open={menuOpen} onClick={toggleMenu} />
         <ul className="hidden md:flex flex-row gap-11 lg:gap-14 list-none m-0 items-center text-[17px] uppercase tracking-[0.13em] text-foreground font-light dark:text-white/80">
