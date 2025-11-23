@@ -209,13 +209,13 @@ export default function Home() {
                 <svg
                   width="15"
                   height="17"
-                  viewBox="0 0 15 17"
+                  viewBox="0 0 32 32"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                   className={`h-[17px] w-[15px] ${prompt.trim() ? "text-white dark:text-black" : "text-[rgba(0,0,0,0.44)] dark:text-white"}`}
                 >
                   <path
-                    d="M7.5 16.5L7.5 0.5M7.5 0.5L0 7.5M7.5 0.5L15 7.5"
+                    d="M16 22L16 10M16 10L11 15M16 10L21 15"
                     stroke="currentColor"
                     strokeWidth="1.7"
                     strokeLinecap="round"
