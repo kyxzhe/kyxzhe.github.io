@@ -29,7 +29,7 @@ export const newsItems: NewsItem[] = [
     id: "medal",
     title: "University Medal · University of Sydney",
     category: "AWARD",
-    date: "2025-10-03",
+    date: "2025-08-20",
     summary:
       "Received the University Medal from the University of Sydney for my honours thesis on learning with noisy labels.",
     topics: ["Awards", "Noisy Labels"],
