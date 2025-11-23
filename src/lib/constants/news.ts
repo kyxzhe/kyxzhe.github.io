@@ -81,4 +81,24 @@ export const newsItems: NewsItem[] = [
     topics: ["Milestone", "Honours"],
     cover: "/projects/work-2.jpg",
   },
+  {
+    id: "teaching-started-comp5328",
+    title: "Started teaching for COMP5328: Advanced Machine Learning",
+    category: "TEACHING",
+    date: "2024-06-20",
+    summary:
+      "Started work as a casual academic for COMP5328 Advanced Machine Learning at the University of Sydney, leading tutorials and supporting assessment.",
+    topics: ["Teaching", "Education"],
+    cover: "/projects/work-4.jpg",
+  },
+  {
+    id: "joined-trustworthy-ml-lab",
+    title: "Joined Trustworthy Machine Learning Lab",
+    category: "RESEARCH",
+    date: "2022-05-12",
+    summary:
+      "Joined the Trustworthy Machine Learning Lab at the University of Sydney as a research assistant, working on noisy-label and semi-supervised learning.",
+    topics: ["Research", "Noisy Labels"],
+    cover: "/projects/work-3.jpg",
+  },
 ];
