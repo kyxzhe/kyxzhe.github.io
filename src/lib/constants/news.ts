@@ -37,7 +37,7 @@ export const newsItems: NewsItem[] = [
     id: "aws-cert",
     title: "AWS Certified Machine Learning – Specialty",
     category: "AWARD",
-    date: "2025-01-12",
+    date: "2025-01-05",
     summary:
       "Passed the AWS Certified Machine Learning – Specialty exam, validating production-ready ML practice for large-scale systems.",
     topics: ["MLOps", "Credential"],
