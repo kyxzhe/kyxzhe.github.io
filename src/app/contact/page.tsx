@@ -160,7 +160,7 @@ export default function ContactPage() {
               <div className="flex items-start justify-between gap-4">
                 <div className="space-y-1">
                   <p className="text-[17px] text-black dark:text-white">Include who is involved and timelines for a quicker reply.</p>
-                  <p className="text-[17px] text-[rgba(0,0,0,0.6)] dark:text-[rgba(25,255,255,0.6)]">Clear context helps me reply quickly.</p>
+                  <p className="text-[17px] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.6)]">Clear context helps me reply quickly.</p>
                 </div>
                 <span className="px-3 py-1 rounded-full text-[11px] uppercase tracking-[0.22em] bg-[rgba(0,0,0,0.04)] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)] dark:bg-[rgba(255,255,255,0.12)]">
                   <span className="text-foreground">AEDT</span>
