@@ -17,7 +17,7 @@ export const newsItems: NewsItem[] = [
     id: "phd-start",
     title: "Started PhD at UTS Behavioural Data Science Lab",
     category: "RESEARCH",
-    date: "2025-09-05",
+    date: "2025-09-01",
     summary:
       "Joined Marian-Andrei Rizoiu and the Behavioural Data Science Lab to study information diffusion and robust ML for social platforms.",
     topics: ["Diffusion", "Robust ML"],
