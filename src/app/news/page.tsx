@@ -348,7 +348,7 @@ export default function NewsPage() {
                 />
               </button>
               {filterOpen && (
-                <div className="absolute top-full mt-2 w-[calc(100vw-2rem)] max-w-[420px] sm:w-[420px] left-1/2 sm:left-auto sm:right-0 -translate-x-1/2 sm:translate-x-0 z-40 surface-card p-4 flex flex-col gap-4 shadow-xl rounded-2xl border border-border">
+                <div className="absolute top-full mt-2 w-[min(420px,calc(100vw-2rem))] left-1 right-auto sm:left-auto sm:right-0 z-40 surface-card p-4 flex flex-col gap-4 shadow-xl rounded-2xl border border-border">
                   <div className="flex items-center justify-between text-sm text-foreground">
                     <p className="font-semibold">Filters</p>
                     <button
@@ -419,7 +419,7 @@ export default function NewsPage() {
                 <ArrowUpDown size={16} />
               </button>
               {sortOpen && (
-                <div className="absolute top-full mt-2 w-[calc(100vw-2rem)] max-w-[256px] sm:w-64 left-1/2 sm:left-auto sm:right-0 -translate-x-1/2 sm:translate-x-0 z-40 surface-card p-3 flex flex-col gap-2 shadow-xl rounded-2xl border border-border text-sm text-foreground">
+                <div className="absolute top-full mt-2 w-[min(256px,calc(100vw-2rem))] left-1 sm:left-auto sm:right-0 z-40 surface-card p-3 flex flex-col gap-2 shadow-xl rounded-2xl border border-border text-sm text-foreground">
                   {sortOptions.map((option) => (
                     <label
                       key={option.value}
