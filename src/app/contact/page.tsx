@@ -30,7 +30,7 @@ const socialLinks = [
 ];
 
 function LinkedInMonoIcon({ className }: { className?: string }) {
-  const classes = `${className ?? ""} dark:[&>rect]:fill-transparent`;
+  const classes = `${className ?? ""} dark:[&>rect]:stroke-white dark:[&>rect]:fill-white dark:[&>path]:fill-black`;
   return (
     <svg
       viewBox="0 0 24 24"
@@ -38,7 +38,7 @@ function LinkedInMonoIcon({ className }: { className?: string }) {
       aria-label="LinkedIn"
       className={classes}
     >
-      <rect x="1" y="1" width="22" height="22" rx="4.5" fill="currentColor" />
+      <rect x="1" y="1" width="22" height="22" rx="4.5" fill="currentColor" stroke="currentColor" />
       <path
         fill="#fff"
         d="M6.4 9.2h2.2V18H6.4V9.2Zm1.1-4a1.3 1.3 0 1 1 0 2.6 1.3 1.3 0 0 1 0-2.6Zm3.4 4h2.1v1.2c.3-.6 1.1-1.3 2.4-1.3 1.9 0 2.8 1.1 2.8 3.2V18h-2.2v-4.8c0-1-.4-1.6-1.2-1.6-.9 0-1.5.6-1.5 1.7V18h-2.4V9.2Z"
