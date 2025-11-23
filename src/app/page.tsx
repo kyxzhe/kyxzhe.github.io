@@ -207,12 +207,12 @@ export default function Home() {
                 />
               ) : (
                 <svg
-                  width="24"
-                  height="24"
+                  width="15"
+                  height="17"
                   viewBox="0 0 32 32"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
-                  className={`h-6 w-6 ${prompt.trim() ? "text-white dark:text-black" : "text-[rgba(0,0,0,0.44)] dark:text-white"}`}
+                  className={`h-[17px] w-[15px] ${prompt.trim() ? "text-white dark:text-black" : "text-[rgba(0,0,0,0.44)] dark:text-white"}`}
                 >
                   <path
                     d="M16 22L16 10M16 10L11 15M16 10L21 15"
