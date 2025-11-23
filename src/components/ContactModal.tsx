@@ -189,7 +189,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
     <AnimatePresence mode="wait">
       {isOpen && (
         <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[rgba(0,0,0,0.25)] backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[rgba(0,0,0,0.3)] dark:bg-[rgba(0,0,0,0.6)] backdrop-blur-sm transition-colors"
           variants={backdropVariants}
           initial="hidden"
           animate="visible"
@@ -387,17 +387,27 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                     initial="hidden"
                     animate="visible"
                   >
-                        <div className="flex flex-wrap gap-3 items-center justify-end">
-                          {submissionState === "success" && (
-                            <span className="inline-flex items-center gap-1 text-xs uppercase tracking-[0.3em] text-green-500">
-                              <Check size={14} /> Confirmed
+                        <div className="flex flex-wrap items-center justify-between gap-3">
+                          <div className="flex items-center gap-2">
+                            <span className="chip text-[10px] py-2 uppercase tracking-[0.28em]">
+                              AEDT
                             </span>
-                          )}
-                          {submissionState === "error" && (
-                            <span className="inline-flex items-center gap-1 text-xs uppercase tracking-[0.3em] text-red-500">
-                              <AlertCircle size={14} /> Failed
+                            <span className="text-xs text-muted-foreground">
+                              Replies within 1 business day
                             </span>
-                          )}
+                          </div>
+                          <div className="flex flex-wrap gap-2 items-center justify-end">
+                            {submissionState === "success" && (
+                              <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/40 bg-emerald-500/10 px-3 py-1 text-[11px] uppercase tracking-[0.26em] text-emerald-600 dark:text-emerald-300">
+                                <Check size={14} /> Confirmed
+                              </span>
+                            )}
+                            {submissionState === "error" && (
+                              <span className="inline-flex items-center gap-2 rounded-full border border-red-400/40 bg-red-500/10 px-3 py-1 text-[11px] uppercase tracking-[0.26em] text-red-600 dark:text-red-300">
+                                <AlertCircle size={14} /> Failed
+                              </span>
+                            )}
+                          </div>
                         </div>
 
                     <div className="surface-card p-4">
@@ -433,11 +443,11 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                                 setSelectedSlotId(null);
                               }}
                               aria-pressed={isActive}
-                    className={`chip text-sm transition-colors ${
-                      isActive
-                        ? "bg-[rgba(41,151,255,0.08)] text-[var(--accent-link)] border-[var(--accent-link)]"
-                        : "hover:bg-[var(--accent-soft)]"
-                    }`}
+                              className={`chip text-sm transition-all ${
+                                isActive
+                                  ? "bg-[var(--toggle-selected-bg)] border-foreground text-foreground shadow-[0_14px_40px_-24px_rgba(0,0,0,0.35)] dark:shadow-[0_26px_60px_-28px_rgba(0,0,0,0.7)]"
+                                  : "hover:bg-[var(--accent-soft)] hover:border-foreground/60 hover:text-foreground"
+                              }`}
                             >
                               <span className="flex items-center gap-2">
                                 {day.displayLabel}
@@ -461,12 +471,12 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                             key={slot.id}
                             disabled={slot.booked || submissionState === "loading"}
                             onClick={() => setSelectedSlotId(slot.id)}
-                            className={`surface-card px-4 py-4 text-left transition-all ${
+                            className={`surface-card px-4 py-4 text-left transition-all border border-[var(--card-border)] ${
                               slot.booked
                                 ? "border-border/30 text-muted-foreground cursor-not-allowed line-through opacity-60"
                                 : isSelected
-                                  ? "border-brand-accent bg-[rgba(41,151,255,0.12)] shadow-[0_12px_30px_-20px_rgba(0,0,0,0.8)]"
-                                  : "border-border hover:bg-[var(--accent-soft)]"
+                                  ? "border-foreground bg-[var(--toggle-selected-bg)] shadow-[0_16px_48px_-26px_rgba(0,0,0,0.45)] ring-1 ring-foreground/10 dark:shadow-[0_30px_70px_-36px_rgba(0,0,0,0.75)]"
+                                  : "hover:bg-[var(--accent-soft)] hover:border-foreground/60"
                             }`}
                           >
                             <div className="flex items-center justify-between">
@@ -490,7 +500,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                           type="text"
                           value={formValues.name}
                           onChange={(e) => setFormValues((prev) => ({ ...prev, name: e.target.value }))}
-                          className="rounded-[12px] border border-border bg-transparent px-4 py-3 focus:outline-none focus:border-foreground placeholder:text-muted-foreground/70"
+                          className="rounded-[12px] border border-border bg-transparent px-4 py-3 focus:outline-none focus:border-foreground/80 focus:ring-2 focus:ring-[var(--accent-soft)] transition-colors placeholder:text-muted-foreground/70"
                           placeholder="Ada Lovelace"
                         />
                       </div>
@@ -500,7 +510,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                           type="email"
                           value={formValues.email}
                           onChange={(e) => setFormValues((prev) => ({ ...prev, email: e.target.value }))}
-                          className="rounded-[12px] border border-border bg-transparent px-4 py-3 focus:outline-none focus:border-foreground placeholder:text-muted-foreground/70"
+                          className="rounded-[12px] border border-border bg-transparent px-4 py-3 focus:outline-none focus:border-foreground/80 focus:ring-2 focus:ring-[var(--accent-soft)] transition-colors placeholder:text-muted-foreground/70"
                           placeholder="you@example.com"
                           aria-invalid={!emailValid}
                         />
@@ -516,7 +526,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                         value={formValues.note}
                         onChange={(e) => setFormValues((prev) => ({ ...prev, note: e.target.value }))}
                         rows={3}
-                        className="rounded-[12px] border border-border bg-transparent px-4 py-3 focus:outline-none focus:border-foreground placeholder:text-muted-foreground/70"
+                        className="rounded-[12px] border border-border bg-transparent px-4 py-3 focus:outline-none focus:border-foreground/80 focus:ring-2 focus:ring-[var(--accent-soft)] transition-colors placeholder:text-muted-foreground/70"
                         placeholder="Context, collaborators, or agenda."
                       />
                     </div>
