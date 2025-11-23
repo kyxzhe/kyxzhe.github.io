@@ -53,7 +53,7 @@ export const newsItems: NewsItem[] = [
     category: "TEACHING",
     date: "2024-10-25",
     summary:
-      "Delivered a guest lecture for COMP5328: Advanced Machine Learning at the University of Sydney on large language models and the GPT architecture.",
+      "Delivered a guest lecture on large language models and the GPT architecture for a postgraduate machine learning course at the University of Sydney.",
     topics: ["Teaching", "LLMs"],
     cover: "/projects/work-4.jpg",
   },
