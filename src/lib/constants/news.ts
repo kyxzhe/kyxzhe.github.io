@@ -83,11 +83,11 @@ export const newsItems: NewsItem[] = [
   },
   {
     id: "teaching-started-comp5328",
-    title: "Started teaching for COMP5328: Advanced Machine Learning",
+    title: "Started as Casual Academic at the University of Sydney",
     category: "TEACHING",
     date: "2024-06-20",
     summary:
-      "Started work as a casual academic for COMP5328 Advanced Machine Learning at the University of Sydney, leading tutorials and supporting assessment.",
+      "Started work as a Casual Academic in the School of Computer Science at the University of Sydney, teaching and supporting assessment for undergraduate and postgraduate computing units.",
     topics: ["Teaching", "Education"],
     cover: "/projects/work-4.jpg",
   },
