@@ -39,7 +39,7 @@ const ChatInputBar = forwardRef<HTMLInputElement, ChatInputBarProps>(
     return (
       <div
         className={cn(
-          "flex items-center gap-2 rounded-full border border-[rgba(60,60,67,0.18)] bg-white/90 px-3 py-2 pr-5 shadow-[0px_1px_3px_rgba(15,17,21,0.05)] backdrop-blur-sm transition focus-within:shadow-[0px_2px_6px_rgba(15,17,21,0.08)] dark:border-white/10 dark:bg-white/5",
+          "flex items-center gap-2 rounded-full border border-[rgba(60,60,67,0.18)] bg-white/90 px-3 py-2 shadow-[0px_1px_3px_rgba(15,17,21,0.05)] backdrop-blur-sm transition focus-within:shadow-[0px_2px_6px_rgba(15,17,21,0.08)] dark:border-white/10 dark:bg-white/5",
           disabled && "opacity-80",
           className
         )}
@@ -61,7 +61,7 @@ const ChatInputBar = forwardRef<HTMLInputElement, ChatInputBarProps>(
           }}
           aria-label="Send prompt to ChatGPT"
           disabled={disabled}
-          className="relative flex h-9 w-9 items-center justify-center rounded-full bg-primary-100 text-secondary-100 p-0 translate-x-[3px] transition-colors hover:opacity-70 disabled:bg-primary-4 disabled:text-primary-44 disabled:hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-1 disabled:focus-visible:ring-offset-0"
+          className="relative flex h-9 w-9 items-center justify-center rounded-full bg-primary-100 text-secondary-100 p-0 transition-colors hover:opacity-70 disabled:bg-primary-4 disabled:text-primary-44 disabled:hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-1 disabled:focus-visible:ring-offset-0"
         >
           <span className="sr-only">Send prompt to ChatGPT</span>
           {isLoading ? (
@@ -75,7 +75,7 @@ const ChatInputBar = forwardRef<HTMLInputElement, ChatInputBarProps>(
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M16 22L16 10M16 10L11 15M16 10L21 15"
+                d="M16 22L16 10L11 15L16 10L21 15"
                 stroke="currentColor"
                 strokeWidth="1.7"
                 strokeLinecap="round"
