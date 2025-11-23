@@ -195,7 +195,7 @@ export default function Home() {
               </div>
               <button
                 type="button"
-              className={`inline-flex h-10 w-10 items-center justify-center rounded-full transition disabled:opacity-60 disabled:cursor-not-allowed ${prompt.trim() ? "bg-black text-white" : "bg-[rgb(229,231,235)] text-[rgba(0,0,0,0.6)] dark:bg-white/15 dark:text-white"}`}
+              className={`inline-flex h-10 w-10 items-center justify-center rounded-full transition disabled:opacity-60 disabled:cursor-not-allowed ${prompt.trim() ? "bg-black text-white dark:bg-white dark:text-black" : "bg-[rgb(229,231,235)] text-[rgba(0,0,0,0.6)] dark:bg-white/15 dark:text-white"}`}
               aria-label="Submit question"
               onClick={handleSend}
               disabled={!prompt.trim() || isLoading}
@@ -203,7 +203,7 @@ export default function Home() {
               {isLoading ? (
                 <Loader2
                   size={17}
-                  className={`animate-spin ${prompt.trim() ? "text-white" : ""}`}
+                  className={`animate-spin ${prompt.trim() ? "text-white dark:text-black" : ""}`}
                 />
               ) : (
                 <ArrowUp
@@ -211,7 +211,7 @@ export default function Home() {
                   strokeWidth={2.4}
                   className={`${
                     prompt.trim()
-                      ? "text-white"
+                      ? "text-white dark:text-black"
                       : "text-[rgba(0,0,0,0.44)] dark:text-white"
                   }`}
                 />
