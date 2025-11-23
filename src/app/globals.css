@@ -32,6 +32,11 @@
     --toggle-selected-bg: rgba(255, 255, 255, 0.14);
     color-scheme: dark;
   }
+
+  ::selection {
+    background: rgba(255, 255, 255, 0.12);
+    color: var(--foreground);
+  }
 }
 
 @theme inline {
