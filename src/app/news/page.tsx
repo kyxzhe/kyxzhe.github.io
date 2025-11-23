@@ -419,7 +419,7 @@ export default function NewsPage() {
                 <ArrowUpDown size={16} />
               </button>
               {sortOpen && (
-                <div className="absolute top-full mt-2 right-0 w-64 z-40 surface-card p-3 flex flex-col gap-2 shadow-xl rounded-2xl border border-border text-sm text-foreground">
+                <div className="absolute top-full mt-2 w-[min(256px,calc(100vw-2rem))] left-1 sm:left-auto sm:right-0 z-40 surface-card p-3 flex flex-col gap-2 shadow-xl rounded-2xl border border-border text-sm text-foreground">
                   {sortOptions.map((option) => (
                     <label
                       key={option.value}
