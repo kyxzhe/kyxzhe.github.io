@@ -1,7 +1,7 @@
 "use client";
 
 import { forwardRef, type KeyboardEvent } from "react";
-import { ArrowUp, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils/util";
 
 interface ChatInputBarProps {
@@ -55,18 +55,33 @@ const ChatInputBar = forwardRef<HTMLInputElement, ChatInputBarProps>(
           aria-label={placeholder}
         />
         <button
-          type="button"
+          type="submit"
           onClick={() => {
             if (!disabled) onSubmit();
           }}
-          aria-label="Send message"
+          aria-label="Send prompt to ChatGPT"
           disabled={disabled}
-          className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[var(--accent)] text-white transition hover:brightness-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:bg-[var(--accent-soft)] disabled:text-white/70 dark:focus-visible:ring-offset-0"
+          className="relative flex h-9 w-9 items-center justify-center rounded-full bg-primary-100 text-secondary-100 p-0 transition-colors hover:opacity-70 disabled:bg-primary-4 disabled:text-primary-44 disabled:hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-1 disabled:focus-visible:ring-offset-0"
         >
+          <span className="sr-only">Send prompt to ChatGPT</span>
           {isLoading ? (
-            <Loader2 size={16} className="animate-spin" />
+            <Loader2 size={16} className="animate-spin" aria-hidden="true" />
           ) : (
-            <ArrowUp size={16} />
+            <svg
+              width="36"
+              height="36"
+              viewBox="0 0 32 32"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M16 22L16 10M16 10L11 15M16 10L21 15"
+                stroke="currentColor"
+                strokeWidth="1.7"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
           )}
         </button>
       </div>
