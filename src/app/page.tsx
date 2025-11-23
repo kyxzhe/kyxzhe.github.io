@@ -222,7 +222,7 @@ export default function Home() {
               )}
             </div>
           </motion.div>
-          <p className="text-xs text-[rgba(0,0,0,0.6)] dark:text-white/70 text-center w-full max-w-4xl">
+          <p className="text-xs text-[rgba(0,0,0,0.6)] dark:text-[rgb(243,243,243)] text-center w-full max-w-4xl">
             ChatBot can make mistakes. Check important info.
           </p>
           {error && (
