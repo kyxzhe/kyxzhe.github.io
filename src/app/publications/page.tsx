@@ -261,16 +261,6 @@ export default function PublicationsPage() {
     <div className="min-h-screen bg-white text-foreground dark:bg-[#0b0b0d] dark:text-[#f5f5f5] font-medium">
       <Navbar />
 
-      {(filterOpen || sortOpen) && (
-        <div
-          className="fixed inset-0 z-30"
-          onClick={() => {
-            setFilterOpen(false);
-            setSortOpen(false);
-          }}
-        />
-      )}
-
       <main className="flex-1 mx-auto w-full max-w-5xl px-2 md:px-4 lg:px-0 py-6 flex flex-col gap-6">
         <section className="mt-4 space-y-2">
           <p className="text-xs uppercase tracking-[0.3em] text-[rgba(0,0,0,0.6)] dark:text-foreground/70">Publications</p>
