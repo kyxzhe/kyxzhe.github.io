@@ -34,7 +34,7 @@ export const publications: Publication[] = [
     id: "echoalign",
     title: "Can We Treat Noisy Labels as Accurate?",
     category: "Research",
-    date: "2024-05-20",
+    date: "2024-05-21",
     venue: "arXiv",
     summary:
       "EchoAlign reframes noisy-label learning by editing instances rather than relabelling them. Controllable generators repair corrupted regions while feature-space tests keep distribution shifts honest.",
