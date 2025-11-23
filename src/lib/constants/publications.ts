@@ -37,7 +37,7 @@ export const publications: Publication[] = [
     date: "2024-05-21",
     venue: "arXiv",
     summary:
-      "EchoAlign reframes noisy-label learning by editing instances rather than relabelling them. Controllable generators repair corrupted regions while feature-space tests keep distribution shifts honest.",
+      "EchoAlign is a method for learning with noisy labels that edits training images with controllable generative models instead of relabeling them. A feature-similarity filter keeps trustworthy original examples, leading to state-of-the-art robustness under instance-dependent label noise.",
     topics: ["Robust ML", "Noisy Labels", "Generative Models"],
     tags: ["Preprint", "Code Available"],
     cover: "/projects/work-1.jpg",
