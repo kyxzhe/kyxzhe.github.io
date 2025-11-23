@@ -3,7 +3,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Link from "next/link";
-import { ArrowUp, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useState, useCallback, useEffect, useRef, KeyboardEvent } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { sendChatRequest, type ChatMessage } from "@/lib/api/chat";
@@ -206,15 +206,22 @@ export default function Home() {
                   className={`animate-spin ${prompt.trim() ? "text-white dark:text-black" : ""}`}
                 />
               ) : (
-                <ArrowUp
-                  size={24}
-                  strokeWidth={2.4}
-                  className={`${
-                    prompt.trim()
-                      ? "text-white dark:text-black"
-                      : "text-[rgba(0,0,0,0.44)] dark:text-white"
-                  }`}
-                />
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 32 32"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className={`h-6 w-6 ${prompt.trim() ? "text-white dark:text-black" : "text-[rgba(0,0,0,0.44)] dark:text-white"}`}
+                >
+                  <path
+                    d="M16 22L16 10M16 10L11 15M16 10L21 15"
+                    stroke="currentColor"
+                    strokeWidth="1.7"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
               )}
             </button>
               {showPlaceholderOverlay && (
