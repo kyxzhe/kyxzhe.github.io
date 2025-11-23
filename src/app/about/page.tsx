@@ -162,7 +162,7 @@ export default function AboutPage() {
               <div className="flex flex-col gap-2 text-sm max-w-xs mx-auto items-center">
                 <Link
                   href={`mailto:${contactInfo.email}`}
-                  className="btn-primary inline-flex justify-center dark:bg-white dark:text-[#0b0b0d] font-medium"
+                  className="btn-primary inline-flex justify-center dark:bg-white dark:text-[#0b0b0d] font-medium shadow-[0_1px_6px_rgba(0,0,0,0.05)] dark:shadow-[0_2px_8px_rgba(0,0,0,0.24)]"
                 >
                   Email Kevin
                 </Link>
