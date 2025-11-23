@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import Script from "next/script";
 import "./globals.css";
 import ConsoleProvider from "@/components/Console";
-import { Analytics } from "@vercel/analytics/next"
+import { Analytics } from "@vercel/analytics/next";
+import { siteMetadata } from "@/lib/seo/config";
+import { getPersonJsonLd, getWebsiteJsonLd } from "@/lib/seo/schema";
 
 // Initialize OpenAI Sans font
 const openAiSans = localFont({
@@ -62,26 +65,39 @@ const openAiSans = localFont({
   display: 'swap',
 });
 export const metadata: Metadata = {
-  title: "Kevin Zheng | Social Data Science & Robust ML",
-  description: "PhD student mapping information diffusion, social data science, and robust machine learning in the Behavioural Data Science Lab at UTS.",
+  metadataBase: new URL(siteMetadata.baseUrl),
+  title: siteMetadata.title,
+  description: siteMetadata.description,
   keywords: ["Kevin Zheng", "information diffusion", "social data science", "robust machine learning", "misinformation"],
-  authors: [{ name: "Yuxiang (Kevin) Zheng" }],
-  creator: "Yuxiang (Kevin) Zheng",
-  publisher: "Yuxiang (Kevin) Zheng",
+  authors: [{ name: siteMetadata.author.name }],
+  creator: siteMetadata.author.name,
+  publisher: siteMetadata.author.name,
   robots: {
     index: true,
     follow: true,
   },
   openGraph: {
     type: "website",
-    title: "Kevin Zheng | Social Data Science & Robust ML",
+    url: siteMetadata.baseUrl,
+    title: siteMetadata.title,
     description: "Researching how information travels online and how to keep models trustworthy under messy supervision.",
-    siteName: "Kevin Zheng",
+    siteName: siteMetadata.siteName,
+    images: [
+      {
+        url: siteMetadata.defaultImage,
+        width: 1200,
+        height: 630,
+        alt: "Kevin Zheng — Social Data Science & Robust ML",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Kevin Zheng | Social Data Science & Robust ML",
+    title: siteMetadata.title,
     description: "Information diffusion, social data science, and robust machine learning at UTS.",
+  },
+  alternates: {
+    canonical: "/",
   },
 };
 export default function RootLayout({
@@ -93,6 +109,16 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${openAiSans.variable} antialiased`}>
         <ConsoleProvider />
+        <Script
+          id="ld-website"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(getWebsiteJsonLd()) }}
+        />
+        <Script
+          id="ld-person"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(getPersonJsonLd()) }}
+        />
         {children}
         <Analytics />
       </body>
