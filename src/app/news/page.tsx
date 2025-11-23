@@ -280,7 +280,7 @@ export default function NewsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-foreground dark:bg-[#0b0b0d] dark:text-[#f5f5f5] font-medium">
+    <div className="min-h-screen bg-white text-foreground dark:bg-[#000000] dark:text-[#f5f5f5] font-medium">
       <Navbar />
       {(filterOpen || sortOpen) && (
         <div
