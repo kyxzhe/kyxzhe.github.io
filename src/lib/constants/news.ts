@@ -17,7 +17,7 @@ export const newsItems: NewsItem[] = [
     id: "phd-start",
     title: "Started PhD at UTS Behavioural Data Science Lab",
     category: "RESEARCH",
-    date: "2025-10-03",
+    date: "2025-09-01",
     summary:
       "Joined Marian-Andrei Rizoiu’s Behavioural Data Science Lab at UTS to study information diffusion and robust ML on social platforms.",
     topics: ["Diffusion", "Robust ML"],
@@ -25,11 +25,11 @@ export const newsItems: NewsItem[] = [
   },
   {
     id: "medal",
-    title: "Awarded: University Medal · University of Sydney",
+    title: "University Medal · University of Sydney",
     category: "AWARD",
-    date: "2025-09-01",
+    date: "2025-10-03",
     summary:
-      "Honours thesis on noisy-label learning capped off with the University Medal—grateful for every messy dataset that led here.",
+      "Received the University Medal from the University of Sydney for my honours thesis on learning with noisy labels.",
     topics: ["Awards", "Noisy Labels"],
     cover: "/projects/work-2.jpg",
   },
