@@ -40,3 +40,41 @@ export const getBreadcrumbJsonLd = (crumbs: { name: string; url: string }[]) => 
     item: crumb.url,
   })),
 });
+
+type ArticleInput = {
+  id?: string;
+  title: string;
+  description: string;
+  url: string;
+  image?: string;
+  datePublished: string;
+  dateModified?: string;
+  authors?: string[];
+};
+
+export const getArticleJsonLd = ({
+  id,
+  title,
+  description,
+  url,
+  image,
+  datePublished,
+  dateModified,
+  authors = [siteMetadata.author.name],
+}: ArticleInput) => ({
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "@id": id ? `${url}#${id}` : url,
+  headline: title,
+  description,
+  url,
+  mainEntityOfPage: url,
+  image: image ?? siteMetadata.defaultImage,
+  datePublished,
+  dateModified: dateModified ?? datePublished,
+  author: authors.map((name) => ({ "@type": "Person", name })),
+  publisher: {
+    "@type": "Person",
+    name: siteMetadata.author.name,
+  },
+});
