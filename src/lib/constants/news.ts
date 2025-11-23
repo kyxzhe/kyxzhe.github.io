@@ -56,6 +56,8 @@ export const newsItems: NewsItem[] = [
       "Delivered a guest lecture on large language models and the GPT architecture for a postgraduate machine learning course at the University of Sydney.",
     topics: ["Teaching", "LLMs"],
     cover: "/projects/work-4.jpg",
+    link: "https://docs.google.com/presentation/d/1dVlNKH4T4I7cRENnod2oLhxw31iyObg0/edit?usp=sharing&ouid=108745846433296526416&rtpof=true&sd=true",
+    linkLabel: "View slides",
   },
   {
     id: "preprint-noisy-labels",
