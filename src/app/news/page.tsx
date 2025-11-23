@@ -80,6 +80,7 @@ const categoryLabelMap: Record<NewsCategory, string> = {
   AWARD: "Award",
   MILESTONE: "Milestone",
   TALK: "Talk",
+  TEACHING: "Teaching",
 };
 
 function formatCategoryLabel(category: string) {

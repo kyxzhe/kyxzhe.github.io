@@ -1,4 +1,4 @@
-export type NewsCategory = "RESEARCH" | "AWARD" | "MILESTONE" | "TALK";
+export type NewsCategory = "RESEARCH" | "AWARD" | "MILESTONE" | "TALK" | "TEACHING";
 
 export type NewsItem = {
   id: string;
@@ -46,5 +46,15 @@ export const newsItems: NewsItem[] = [
     cover: "/projects/work-1.jpg",
     link: "https://www.credly.com/badges/b324db7a-0cb4-41b9-b3a7-a3275dde8f6b/public_url",
     linkLabel: "Show credential",
+  },
+  {
+    id: "teaching-guest-lecture",
+    title: "Guest lecture for COMP5328: Advanced Machine Learning",
+    category: "TEACHING",
+    date: "2024-10-25",
+    summary:
+      "Delivered a guest lecture for COMP5328: Advanced Machine Learning at the University of Sydney on large language models and the GPT architecture.",
+    topics: ["Teaching", "LLMs"],
+    cover: "/projects/work-4.jpg",
   },
 ];
