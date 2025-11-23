@@ -78,12 +78,12 @@ export default function AboutPage() {
           animate="visible"
         >
           <div className="flex flex-col gap-6">
-            <p className="text-xs uppercase tracking-[0.3em] text-[rgba(0,0,0,0.6)] dark:text-white/60">About Kevin</p>
+            <p className="text-xs uppercase tracking-[0.3em] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.6)]">About Kevin</p>
             <div className="space-y-4">
               <h1 className="text-4xl md:text-5xl font-medium leading-tight">Research first, people in mind</h1>
               <p className="text-[17px] text-foreground whitespace-pre-line leading-relaxed">{aboutIntro}</p>
             </div>
-            <div className="flex flex-col gap-4 text-sm text-[rgba(0,0,0,0.6)] dark:text-foreground/70">
+            <div className="flex flex-col gap-4 text-sm text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]">
               <div className="flex flex-wrap gap-x-8 gap-y-2">
                 <span>📍 Sydney based</span>
                 <span>🏛 Behavioural Data Science Lab @ UTS</span>
@@ -94,25 +94,25 @@ export default function AboutPage() {
 
           <div className="grid gap-10 lg:grid-cols-2">
             <div className="space-y-5">
-              <p className="text-[14px] uppercase tracking-[0.3em] text-muted-foreground">Focus areas</p>
+              <p className="text-[14px] uppercase tracking-[0.3em] text-muted-foreground dark:text-[rgba(255,255,255,0.8)]">Focus areas</p>
           <div className="space-y-4 text-[17px]">
-            {researchFocus.map((item) => (
-              <p key={item} className="text-foreground dark:text-foreground/90">
+          {researchFocus.map((item) => (
+              <p key={item} className="text-foreground dark:text-white">
                 {item}
               </p>
             ))}
           </div>
             </div>
             <div className="space-y-5">
-              <p className="text-[14px] uppercase tracking-[0.3em] text-muted-foreground">At a glance</p>
+              <p className="text-[14px] uppercase tracking-[0.3em] text-muted-foreground dark:text-[rgba(255,255,255,0.8)]">At a glance</p>
               <div className="flex gap-12">
                 <div>
                   <p className="text-4xl font-medium leading-none">4</p>
-                  <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mt-3">Lab talks</p>
+                  <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mt-3 dark:text-[rgba(255,255,255,0.8)]">Lab talks</p>
                 </div>
                 <div>
                   <p className="text-4xl font-medium leading-none">2</p>
-                  <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mt-3">Manuscripts</p>
+                  <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mt-3 dark:text-[rgba(255,255,255,0.8)]">Manuscripts</p>
                 </div>
               </div>
             <div className="text-sm text-foreground/70 leading-relaxed">
@@ -124,18 +124,18 @@ export default function AboutPage() {
         <section className="w-full max-w-4xl mx-auto space-y-20">
           <div className="space-y-10">
             <div className="space-y-2">
-              <p className="text-[14px] uppercase tracking-[0.3em] text-muted-foreground">Story so far</p>
+              <p className="text-[14px] uppercase tracking-[0.3em] text-muted-foreground dark:text-[rgba(255,255,255,0.8)]">Story so far</p>
               <h2 className="text-[30px] font-medium">Timeline</h2>
             </div>
             <div className="space-y-8">
               {timeline.map((item) => (
                 <div key={item.title} className="space-y-2">
-                  <p className="text-[14px] uppercase tracking-[0.2em] text-[rgba(0,0,0,0.6)] dark:text-foreground/70">
+                  <p className="text-[14px] uppercase tracking-[0.2em] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.6)]">
                     {item.period}
                   </p>
                   <h3 className="text-[17px] font-medium">{item.title}</h3>
-                  <p className="text-[14px] text-[rgba(0,0,0,0.6)] dark:text-foreground/70">{item.org}</p>
-                  <p className="text-[14px] text-[rgba(0,0,0,0.6)] dark:text-foreground/70">{item.detail}</p>
+                  <p className="text-[14px] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.6)]">{item.org}</p>
+                  <p className="text-[14px] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.6)]">{item.detail}</p>
                 </div>
               ))}
             </div>
@@ -143,20 +143,20 @@ export default function AboutPage() {
 
           <div className="grid gap-12 lg:grid-cols-2">
             <div className="space-y-5">
-              <p className="text-[14px] uppercase tracking-[0.3em] text-muted-foreground">Community</p>
+              <p className="text-[14px] uppercase tracking-[0.3em] text-muted-foreground dark:text-[rgba(255,255,255,0.8)]">Community</p>
             <h2 className="text-[30px] font-medium">Teaching & sharing</h2>
               <ul className="space-y-3 text-[17px]">
                 {contributions.map((item) => (
-                  <li key={item} className="text-black dark:text-foreground/90">
+                  <li key={item} className="text-black dark:text-white">
                     {item}
                   </li>
                 ))}
               </ul>
             </div>
             <div className="space-y-5">
-              <p className="text-[14px] uppercase tracking-[0.3em] text-muted-foreground">Collaborate</p>
+              <p className="text-[14px] uppercase tracking-[0.3em] text-muted-foreground dark:text-[rgba(255,255,255,0.8)]">Collaborate</p>
             <h2 className="text-[30px] font-medium">Open to thoughtful work</h2>
-              <p className="text-[17px] text-black dark:text-foreground leading-relaxed">
+              <p className="text-[17px] text-black dark:text-white leading-relaxed">
                 Open to research collaborations, talks, and teaching ideas.
                 If you think I could be a good fit, feel free to get in touch.
               </p>
