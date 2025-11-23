@@ -75,7 +75,7 @@ export const newsItems: NewsItem[] = [
     category: "MILESTONE",
     date: "2024-10-03",
     summary:
-      "Graduated from the University of Sydney with a combined Bachelor of Advanced Computing (Honours, Computational Data Science) and Bachelor of Science in Mathematics, with First Class Honours, the University Medal, and recognition as a Dalyell Scholar.",
+      "Completed a combined Bachelor of Advanced Computing (Honours, Computational Data Science) and Bachelor of Science (Mathematics) at the University of Sydney and received the University Medal.",
     topics: ["Milestone", "Honours"],
     cover: "/projects/work-2.jpg",
   },
