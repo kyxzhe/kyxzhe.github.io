@@ -30,12 +30,13 @@ const socialLinks = [
 ];
 
 function LinkedInMonoIcon({ className }: { className?: string }) {
+  const classes = `${className ?? ""} dark:[&>rect]:fill-transparent`;
   return (
     <svg
       viewBox="0 0 24 24"
       role="img"
       aria-label="LinkedIn"
-      className={className}
+      className={classes}
     >
       <rect x="1" y="1" width="22" height="22" rx="4.5" fill="currentColor" />
       <path
