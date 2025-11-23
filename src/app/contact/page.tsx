@@ -120,12 +120,12 @@ export default function ContactPage() {
                       idx === directLines.length - 1 ? "border-b-0" : ""
                     } ${clickable ? "cursor-pointer" : ""}`}
                   >
-                    <div className="flex items-center gap-2 text-[12px] uppercase tracking-[0.26em] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.44)]">
+                    <div className="flex items-center gap-2 text-[12px] uppercase tracking-[0.26em] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.6)]">
                       {Icon && <Icon size={14} />}
                       <span>{label}</span>
                     </div>
                     <p className="text-[17px] font-medium text-foreground">{value}</p>
-                    <p className="text-[14px] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.44)]">{hint}</p>
+                    <p className="text-[14px] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.6)]">{hint}</p>
                   </div>
                 );
 
