@@ -35,11 +35,11 @@ export const newsItems: NewsItem[] = [
   },
   {
     id: "aws-cert",
-    title: "Certified: AWS Machine Learning – Specialty",
+    title: "AWS Certified Machine Learning – Specialty",
     category: "AWARD",
     date: "2025-01-12",
     summary:
-      "Passed the AWS ML Specialty exam to benchmark production-ready practices for future platform-scale experiments.",
+      "Passed the AWS Certified Machine Learning – Specialty exam, validating production-ready ML practice for large-scale systems.",
     topics: ["MLOps", "Credential"],
     cover: "/projects/work-1.jpg",
     link: "https://www.credly.com/badges/b324db7a-0cb4-41b9-b3a7-a3275dde8f6b/public_url",
