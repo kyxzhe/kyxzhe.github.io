@@ -83,7 +83,7 @@ export default function AboutPage() {
               <h1 className="text-4xl md:text-5xl font-medium leading-tight">Research first, people in mind</h1>
               <p className="text-[17px] text-foreground whitespace-pre-line leading-relaxed">{aboutIntro}</p>
             </div>
-            <div className="flex flex-col gap-4 text-sm text-[rgba(0,0,0,0.6)] dark:text-black">
+            <div className="flex flex-col gap-4 text-sm text-[rgba(0,0,0,0.6)] dark:text-foreground/70">
               <div className="flex flex-wrap gap-x-8 gap-y-2">
                 <span>📍 Sydney based</span>
                 <span>🏛 Behavioural Data Science Lab @ UTS</span>
@@ -97,7 +97,7 @@ export default function AboutPage() {
               <p className="text-[14px] uppercase tracking-[0.3em] text-muted-foreground">Focus areas</p>
           <div className="space-y-4 text-[17px]">
             {researchFocus.map((item) => (
-              <p key={item} className="text-foreground dark:text-black">
+              <p key={item} className="text-foreground dark:text-foreground/90">
                 {item}
               </p>
             ))}
@@ -130,12 +130,12 @@ export default function AboutPage() {
             <div className="space-y-8">
               {timeline.map((item) => (
                 <div key={item.title} className="space-y-2">
-                  <p className="text-[14px] uppercase tracking-[0.2em] text-[rgba(0,0,0,0.6)] dark:text-black">
+                  <p className="text-[14px] uppercase tracking-[0.2em] text-[rgba(0,0,0,0.6)] dark:text-foreground/70">
                     {item.period}
                   </p>
                   <h3 className="text-[17px] font-medium">{item.title}</h3>
-                  <p className="text-[14px] text-[rgba(0,0,0,0.6)] dark:text-black">{item.org}</p>
-                  <p className="text-[14px] text-[rgba(0,0,0,0.6)] dark:text-black">{item.detail}</p>
+                  <p className="text-[14px] text-[rgba(0,0,0,0.6)] dark:text-foreground/70">{item.org}</p>
+                  <p className="text-[14px] text-[rgba(0,0,0,0.6)] dark:text-foreground/70">{item.detail}</p>
                 </div>
               ))}
             </div>
@@ -147,7 +147,7 @@ export default function AboutPage() {
             <h2 className="text-[30px] font-medium">Teaching & sharing</h2>
               <ul className="space-y-3 text-[17px]">
                 {contributions.map((item) => (
-                  <li key={item} className="text-black dark:text-black">
+                  <li key={item} className="text-black dark:text-foreground/90">
                     {item}
                   </li>
                 ))}
@@ -156,7 +156,7 @@ export default function AboutPage() {
             <div className="space-y-5">
               <p className="text-[14px] uppercase tracking-[0.3em] text-muted-foreground">Collaborate</p>
             <h2 className="text-[30px] font-medium">Open to thoughtful work</h2>
-              <p className="text-[17px] text-black dark:text-black leading-relaxed">
+              <p className="text-[17px] text-black dark:text-foreground leading-relaxed">
                 Open to research collaborations, talks, and teaching ideas.
                 If you think I could be a good fit, feel free to get in touch.
               </p>
