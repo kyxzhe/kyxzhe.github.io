@@ -204,16 +204,16 @@ export default function ContactPage() {
             <h2 className="text-[30px] font-medium text-foreground">Find me elsewhere</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {socialLinks.map(({ label, href, icon }) => (
-                <Link
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-between gap-3 px-4 py-2 border border-[rgba(0,0,0,0.12)] dark:border-white/20 rounded-full text-[17px] font-medium transition-colors duration-150 hover:border-foreground/50"
-                >
-                  <span className="text-[15px]">{label}</span>
-                  <span className="text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]">{icon}</span>
-                </Link>
+              <Link
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-between gap-3 px-4 py-2 border border-[rgba(0,0,0,0.12)] dark:border-white/20 rounded-full text-[17px] font-medium transition-colors duration-150 hover:border-foreground/50"
+              >
+                <span className="text-[15px] dark:text-white">{label}</span>
+                <span className="text-[rgba(0,0,0,0.6)] dark:text-white">{icon}</span>
+              </Link>
               ))}
             </div>
           </div>
