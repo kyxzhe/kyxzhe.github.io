@@ -171,7 +171,7 @@ export default function Home() {
             <div className="relative w-full">
               <textarea
                 placeholder=""
-                className="w-full min-h-[72px] pr-12 resize-none bg-transparent text-[17px] md:text-[17.5px] leading-[1.4] text-foreground focus:outline-none dark:text-white"
+                className="w-full min-h-[72px] pr-14 pb-2 resize-none bg-transparent text-[17px] md:text-[17.5px] leading-[1.4] text-foreground focus:outline-none dark:text-white"
                 aria-label="Ask a question"
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
@@ -193,7 +193,7 @@ export default function Home() {
               )}
               <button
                 type="button"
-                className={`absolute right-3 top-1/2 -translate-y-1/2 inline-flex h-9 w-9 items-center justify-center rounded-full transition disabled:opacity-60 disabled:cursor-not-allowed ${prompt.trim() ? "bg-black text-white dark:bg-white dark:text-black" : "bg-[rgb(229,231,235)] text-[rgba(0,0,0,0.6)] dark:bg-white/15 dark:text-white"}`}
+                className={`absolute right-3 bottom-3 inline-flex h-9 w-9 items-center justify-center rounded-full transition disabled:opacity-60 disabled:cursor-not-allowed ${prompt.trim() ? "bg-black text-white dark:bg-white dark:text-black" : "bg-[rgb(229,231,235)] text-[rgba(0,0,0,0.6)] dark:bg-white/15 dark:text-white"}`}
                 aria-label="Submit question"
                 onClick={handleSend}
                 disabled={!prompt.trim() || isLoading}
