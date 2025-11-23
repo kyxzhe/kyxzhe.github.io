@@ -168,69 +168,71 @@ export default function Home() {
               )}
             </AnimatePresence>
 
-            <div className="relative w-full">
-              <textarea
-                placeholder=""
-                className="w-full min-h-[72px] pr-12 pb-3 resize-none bg-transparent text-[17px] md:text-[17.5px] leading-[1.4] text-foreground focus:outline-none dark:text-white"
-                aria-label="Ask a question"
-                value={prompt}
-                onChange={(e) => setPrompt(e.target.value)}
-                onKeyDown={handleKeyDown}
-              />
-              {showCaretHint && (
-                <AnimatePresence>
-                  <motion.div
-                    key="caret-hint"
-                    initial={{ y: 6, opacity: 0 }}
-                    animate={{ y: 0, opacity: 0.8 }}
-                    exit={{ y: -6, opacity: 0 }}
-                    transition={{ duration: 0.18, ease: "easeOut" }}
-                    className="pointer-events-none absolute left-0 top-0 text-[17px] md:text-[17.5px] leading-[1.4] text-[rgba(0,0,0,0.6)] dark:text-white/60"
-                  >
-                    -&gt;
-                  </motion.div>
-                </AnimatePresence>
-              )}
+            <div className="flex items-end gap-3 relative w-full">
+              <div className="flex-1 relative">
+                <textarea
+                  placeholder=""
+                  className="w-full min-h-[72px] resize-none bg-transparent text-[17px] md:text-[17.5px] leading-[1.4] text-foreground focus:outline-none dark:text-white"
+                  aria-label="Ask a question"
+                  value={prompt}
+                  onChange={(e) => setPrompt(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                />
+                {showCaretHint && (
+                  <AnimatePresence>
+                    <motion.div
+                      key="caret-hint"
+                      initial={{ y: 6, opacity: 0 }}
+                      animate={{ y: 0, opacity: 0.8 }}
+                      exit={{ y: -6, opacity: 0 }}
+                      transition={{ duration: 0.18, ease: "easeOut" }}
+                      className="pointer-events-none absolute left-0 top-0 text-[17px] md:text-[17.5px] leading-[1.4] text-[rgba(0,0,0,0.6)] dark:text-white/60"
+                    >
+                      -&gt;
+                    </motion.div>
+                  </AnimatePresence>
+                )}
+              </div>
               <button
                 type="button"
-                className={`absolute right-4 bottom-3 inline-flex h-9 w-9 items-center justify-center rounded-full transition disabled:opacity-60 disabled:cursor-not-allowed ${prompt.trim() ? "bg-black text-white dark:bg-white dark:text-black" : "bg-[rgb(229,231,235)] text-[rgba(0,0,0,0.6)] dark:bg-white/15 dark:text-white"}`}
-                aria-label="Submit question"
-                onClick={handleSend}
-                disabled={!prompt.trim() || isLoading}
-              >
-                {isLoading ? (
-                  <Loader2
-                    size={17}
-                    className={`animate-spin ${prompt.trim() ? "text-white dark:text-black" : ""}`}
+              className={`inline-flex h-9 w-9 items-center justify-center rounded-full transition disabled:opacity-60 disabled:cursor-not-allowed ${prompt.trim() ? "bg-black text-white dark:bg-white dark:text-black" : "bg-[rgb(229,231,235)] text-[rgba(0,0,0,0.6)] dark:bg-white/15 dark:text-white"}`}
+              aria-label="Submit question"
+              onClick={handleSend}
+              disabled={!prompt.trim() || isLoading}
+            >
+              {isLoading ? (
+                <Loader2
+                  size={17}
+                  className={`animate-spin ${prompt.trim() ? "text-white dark:text-black" : ""}`}
+                />
+              ) : (
+                <svg
+                  width="15"
+                  height="17"
+                  viewBox="0 0 15 17"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className={`h-[17px] w-[15px] ${prompt.trim() ? "text-white dark:text-black" : "text-[rgba(0,0,0,0.44)] dark:text-white"}`}
+                >
+                  <path
+                    d="M7.5 16.5L7.5 0.5M7.5 0.5L0 7.5M7.5 0.5L15 7.5"
+                    stroke="currentColor"
+                    strokeWidth="1.7"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
-                ) : (
-                  <svg
-                    width="15"
-                    height="17"
-                    viewBox="0 0 15 17"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className={`h-[17px] w-[15px] ${prompt.trim() ? "text-white dark:text-black" : "text-[rgba(0,0,0,0.44)] dark:text-white"}`}
-                  >
-                    <path
-                      d="M7.5 16.5L7.5 0.5M7.5 0.5L0 7.5M7.5 0.5L15 7.5"
-                      stroke="currentColor"
-                      strokeWidth="1.7"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                )}
-              </button>
+                </svg>
+              )}
+            </button>
               {showPlaceholderOverlay && (
                 <AnimatePresence mode="wait">
-                  <motion.div
+                <motion.div
                     key={placeholderIndex}
                     initial={{ y: 10, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     exit={{ y: -10, opacity: 0 }}
                     transition={{ duration: 0.32, ease: "easeOut" }}
-                    className="pointer-events-none absolute left-0 right-0 top-0 text-center px-4 text-[16px] md:text-[16px] leading-[1.4] text-[rgba(0,0,0,0.6)] dark:text-white/60"
+                      className="pointer-events-none absolute left-0 right-0 top-0 text-center px-4 text-[16px] md:text-[16px] leading-[1.4] text-[rgba(0,0,0,0.6)] dark:text-white/60"
                   >
                     {rotatingPlaceholders[placeholderIndex]}
                   </motion.div>
