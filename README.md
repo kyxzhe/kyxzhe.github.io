@@ -1,27 +1,53 @@
 # Kevin Zheng — Personal Site
 
-This repo powers [kyxzhe.github.io](https://kyxzhe.github.io), my public notebook for research, experiments, and side interests. It’s a plain Next.js 15 app deployed through GitHub Pages (static export).
+A static Next.js 15 notebook for sharing research notes, experiments, and side projects at [kyxzhe.github.io](https://kyxzhe.github.io). The site is exported via `pnpm build` and hosted on GitHub Pages.
 
-## Local Dev
+## Quick Start
 
-```bash
-corepack enable pnpm
-pnpm install
-pnpm run dev    # http://localhost:3000
-pnpm run build  # generates out/ for Pages
-```
+1. Install dependencies:
+   ```bash
+   corepack enable pnpm
+   pnpm install
+   ```
+2. Run the dev server:
+   ```bash
+   pnpm dev
+   # visit http://localhost:3000
+   ```
+3. Export a static build for GitHub Pages:
+   ```bash
+   pnpm build
+   # output appears in out/
+   ```
 
-## Content Quick Links
+## Site Structure
 
-- Hero/About copy: `src/lib/constants/siteContent.ts`
-- Contact & socials: `src/lib/constants/contact.ts`, `src/lib/constants/socials.ts`
+- `src/app`: App Router entry points for landing, news, publications, etc.; edit the corresponding `page.tsx`/`layout.tsx` files to adjust content.
+- `src/components`, `src/hooks`, `src/lib`: Shared UI, hooks, and constants (look at `src/lib/constants/*` for curated copy such as publications, socials, and general site text).
+- `public`: Static assets like cover images and icons—replace files here when updating graphics.
+- Configuration: `.github/workflows/deploy.yml` handles the static export and Pages deployment; change it only if you want to modify the CI/CD behavior.
+
+## Content Hooks
+
+- Hero/about text: `src/lib/constants/siteContent.ts`
+- Contact panel: `src/lib/constants/contact.ts`
+- Social links: `src/lib/constants/socials.ts`
 - Publication cards: `src/lib/constants/publications.ts`
 - Console easter egg: `src/lib/utils/consoleUtil.ts`
 
-Everything else is standard Next.js plumbing (App Router under `src/app`, components in `src/components`). No fancy CMS—just edit the files and push to `main`. GitHub Actions (`.github/workflows/deploy.yml`) handles the export + Pages deployment.
+## Chatbot Beta
 
-## Chatbot beta
+- The homepage chatbot card opens `ChatBotModal`, which POSTs to `https://kevin-bot.kyx-zhe.workers.dev/chat` by default.
+- Override the endpoint via `NEXT_PUBLIC_CHAT_API_URL` in `.env.local` if you host a different Worker.
+- Worker payload: `{ "messages": [{ "role": "user" | "assistant", "content": string }] }`
+- Worker response: `{ "response": "<text>" }`
 
-- The “Chatbot” card on the homepage opens `ChatBotModal`, which calls a Cloudflare Worker via `POST`.
-- By default it calls `https://kevin-bot.kyx-zhe.workers.dev/chat`. Override via `NEXT_PUBLIC_CHAT_API_URL=...` in `.env.local` if you redeploy the Worker or use a different route.
-- The Worker should accept `{ "messages": [{ "role": "user" | "assistant", "content": string }] }` and respond with `{ "response": "<text>" }`.
+## Contributing & Deploying
+
+- Feel free to tweak content, add experiments, or polish the layout. Run `pnpm lint` before committing.
+- Push to `main` to trigger the GitHub Actions workflow; it exports the site and publishes to GitHub Pages automatically.
+- If you want to collaborate: open an issue or PR, describe the change, and include any screenshots if UI is affected.
+
+## License
+
+MIT © Kevin Zheng
