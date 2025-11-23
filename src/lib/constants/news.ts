@@ -19,7 +19,7 @@ export const newsItems: NewsItem[] = [
     category: "MILESTONE",
     date: "2025-09-01",
     summary:
-      "Joined Marian-Andrei Rizoiu’s Behavioural Data Science Lab at UTS to study information diffusion and robust ML on social platforms.",
+      "Joined Marian-Andrei Rizoiu’s Behavioural Data Science Lab at UTS to study information diffusion and robust machine learning on social platforms.",
     topics: ["Diffusion", "Robust ML"],
     cover: "/projects/work-3.jpg",
     link: "https://www.behavioral-ds.science/authors/kevin-zheng/",
