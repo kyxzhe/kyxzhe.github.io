@@ -195,17 +195,28 @@ export default function Home() {
               </div>
               <button
                 type="button"
-              className={`inline-flex h-10 w-10 items-center justify-center rounded-full transition disabled:opacity-60 disabled:cursor-not-allowed ${prompt.trim() ? "bg-[rgb(229,231,235)] text-foreground dark:bg-white dark:text-[#0b0b0d]" : "bg-[rgb(229,231,235)] text-[rgba(0,0,0,0.6)] dark:bg-white/15 dark:text-white"}`}
-                aria-label="Submit question"
-                onClick={handleSend}
-                disabled={!prompt.trim() || isLoading}
-              >
-                {isLoading ? (
-                  <Loader2 size={17} className="animate-spin" />
-                ) : (
-                  <ArrowUp size={24} strokeWidth={2.4} className="text-[rgba(0,0,0,0.44)] dark:text-white" />
-                )}
-              </button>
+              className={`inline-flex h-10 w-10 items-center justify-center rounded-full transition disabled:opacity-60 disabled:cursor-not-allowed ${prompt.trim() ? "bg-black text-white" : "bg-[rgb(229,231,235)] text-[rgba(0,0,0,0.6)] dark:bg-white/15 dark:text-white"}`}
+              aria-label="Submit question"
+              onClick={handleSend}
+              disabled={!prompt.trim() || isLoading}
+            >
+              {isLoading ? (
+                <Loader2
+                  size={17}
+                  className={`animate-spin ${prompt.trim() ? "text-white" : ""}`}
+                />
+              ) : (
+                <ArrowUp
+                  size={24}
+                  strokeWidth={2.4}
+                  className={`${
+                    prompt.trim()
+                      ? "text-white"
+                      : "text-[rgba(0,0,0,0.44)] dark:text-white"
+                  }`}
+                />
+              )}
+            </button>
               {showPlaceholderOverlay && (
                 <AnimatePresence mode="wait">
                 <motion.div
