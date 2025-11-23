@@ -42,7 +42,7 @@ export const newsItems: NewsItem[] = [
     date: "2025-01-05",
     summary:
       "Passed the AWS Certified Machine Learning – Specialty exam, validating production-ready ML practice for large-scale systems.",
-    topics: ["MLOps", "Credential"],
+    topics: ["MLOps"],
     cover: "/projects/work-1.jpg",
     link: "https://www.credly.com/badges/b324db7a-0cb4-41b9-b3a7-a3275dde8f6b/public_url",
     linkLabel: "Show credential",
@@ -78,7 +78,7 @@ export const newsItems: NewsItem[] = [
     date: "2024-10-03",
     summary:
       "Completed a combined Bachelor of Advanced Computing (Honours, Computational Data Science) and Bachelor of Science (Mathematics) at the University of Sydney and received the University Medal.",
-    topics: ["Milestone", "Honours"],
+    topics: ["Honours"],
     cover: "/projects/work-2.jpg",
   },
   {
@@ -88,7 +88,7 @@ export const newsItems: NewsItem[] = [
     date: "2024-06-20",
     summary:
       "Started work as a Casual Academic in the School of Computer Science at the University of Sydney, teaching and supporting assessment for undergraduate and postgraduate computing units.",
-    topics: ["Teaching", "Education"],
+    topics: ["Teaching"],
     cover: "/projects/work-4.jpg",
   },
   {
