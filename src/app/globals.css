@@ -33,10 +33,6 @@
     color-scheme: dark;
   }
 
-  ::selection {
-    background: rgba(255, 255, 255, 0.12);
-    color: var(--foreground);
-  }
 }
 
 @theme inline {
@@ -67,6 +63,13 @@ body {
 ::selection {
   background: rgba(0, 0, 0, 0.12);
   color: var(--foreground);
+}
+
+@media (prefers-color-scheme: dark) {
+  ::selection {
+    background: #d9d9dd;
+    color: #0b0b0d;
+  }
 }
 
 @layer utilities {
