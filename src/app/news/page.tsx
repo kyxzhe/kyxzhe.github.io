@@ -348,7 +348,7 @@ export default function NewsPage() {
                 />
               </button>
               {filterOpen && (
-                <div className="absolute top-full mt-2 w-[420px] max-w-[calc(100vw-2rem)] left-1 sm:left-auto sm:right-0 z-40 surface-card p-4 flex flex-col gap-4 shadow-xl rounded-2xl border border-border">
+                <div className="absolute top-full mt-2 w-[min(420px,calc(100vw-2rem))] left-1 right-auto sm:left-auto sm:right-0 z-40 surface-card p-4 flex flex-col gap-4 shadow-xl rounded-2xl border border-border">
                   <div className="flex items-center justify-between text-sm text-foreground">
                     <p className="font-semibold">Filters</p>
                     <button
