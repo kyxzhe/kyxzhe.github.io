@@ -97,7 +97,7 @@ export default function AboutPage() {
               <p className="text-[14px] uppercase tracking-[0.3em] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]">Focus areas</p>
               <div className="space-y-4 text-[17px]">
                 {researchFocus.map((item) => (
-                  <p key={item} className="text-foreground dark:text-[rgba(255,255,255,0.8)]">
+                  <p key={item} className="text-foreground dark:text-white">
                     {item}
                   </p>
                 ))}
