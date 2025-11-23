@@ -54,7 +54,7 @@ const ListRow = ({ item }: { item: NewsItem }) => {
         <h3 className="text-[17px] leading-snug text-foreground">{item.title}</h3>
         <p className="text-[14px] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.44)] whitespace-nowrap">{formatDate(item.date)}</p>
       </div>
-      <p className="text-[14px] text-foreground/80 dark:text-foreground/90 leading-relaxed max-w-3xl">{item.summary}</p>
+      <p className="text-[14px] text-foreground/80 dark:text-white leading-relaxed max-w-3xl">{item.summary}</p>
     </article>
   );
 
@@ -163,7 +163,7 @@ export default function NewsPage() {
                 <h2 className="text-[48px] leading-tight text-foreground">
                   {heroItem.title}
                 </h2>
-                <p className="text-[14px] text-foreground/80 leading-relaxed max-w-2xl">{heroItem.summary}</p>
+                <p className="text-[14px] text-foreground/80 dark:text-white leading-relaxed max-w-2xl">{heroItem.summary}</p>
                 {heroItem.link && (
                   <Link href={heroItem.link} className="text-sm text-brand-accent" target="_blank" rel="noopener noreferrer">
                     Read update
@@ -198,7 +198,7 @@ export default function NewsPage() {
                     <h3 className="text-[17px] leading-tight text-foreground">
                       {item.title}
                     </h3>
-                    <p className="text-[14px] text-foreground/80 line-clamp-3">{item.summary}</p>
+                    <p className="text-[14px] text-foreground/80 dark:text-white line-clamp-3">{item.summary}</p>
                   </div>
                 </motion.div>
               );
@@ -250,7 +250,7 @@ export default function NewsPage() {
                     <h3 className="text-[17px] leading-tight text-foreground">
                       {item.title}
                     </h3>
-                    <p className="text-[14px] text-foreground/80 line-clamp-3">{item.summary}</p>
+                    <p className="text-[14px] text-foreground/80 dark:text-white line-clamp-3">{item.summary}</p>
                   </div>
                 </motion.div>
               );
