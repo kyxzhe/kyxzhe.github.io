@@ -85,9 +85,9 @@ export default function AboutPage() {
             </div>
             <div className="flex flex-col gap-4 text-sm text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]">
               <div className="flex flex-wrap gap-x-8 gap-y-2">
-                <span>📍 Sydney based</span>
-                <span>🏛 Behavioural Data Science Lab @ UTS</span>
-                <span>🧑‍🏫 Teaching ML + Data Science @ USYD</span>
+                <span className="dark:text-[rgba(255,255,255,0.8)]">📍 Sydney based</span>
+                <span className="dark:text-[rgba(255,255,255,0.8)]">🏛 Behavioural Data Science Lab @ UTS</span>
+                <span className="dark:text-[rgba(255,255,255,0.8)]">🧑‍🏫 Teaching ML + Data Science @ USYD</span>
               </div>
             </div>
           </div>
