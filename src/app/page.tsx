@@ -14,6 +14,9 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
+  const streamBufferRef = useRef("");
+  const streamTimerRef = useRef<number | null>(null);
+  const streamedOnceRef = useRef(false);
   const rotatingPlaceholders = [
     "Interested in my research, teaching, or projects? Feel free to ask here.",
     "对我的科研、教学或项目好奇吗？欢迎在这里随时提问。",
@@ -46,38 +49,62 @@ export default function Home() {
     const userMessage: ChatMessage = { role: "user", content: nextPrompt };
     const requestMessages: ChatMessage[] = [...messages, userMessage];
     const assistantPlaceholder: ChatMessage = { role: "assistant", content: "" };
+    streamBufferRef.current = "";
+    streamedOnceRef.current = false;
+    if (streamTimerRef.current) {
+      clearTimeout(streamTimerRef.current);
+      streamTimerRef.current = null;
+    }
     try {
       setMessages([...requestMessages, assistantPlaceholder]);
       setIsExpanded(true);
 
+      const flushBuffer = () => {
+        setMessages((prev) => {
+          if (!prev.length || !streamBufferRef.current) return prev;
+          const updated = [...prev];
+          const lastIndex = updated.length - 1;
+          if (updated[lastIndex]?.role !== "assistant") return prev;
+          updated[lastIndex] = {
+            ...updated[lastIndex],
+            content: `${updated[lastIndex].content}${streamBufferRef.current}`,
+          };
+          streamBufferRef.current = "";
+          return updated;
+        });
+        if (streamBufferRef.current.length > 0) {
+          streamTimerRef.current = window.setTimeout(flushBuffer, 28);
+        } else {
+          streamTimerRef.current = null;
+        }
+      };
+
       const appendChunk = (chunk: string) => {
         if (!chunk) return;
+        streamedOnceRef.current = true;
+        streamBufferRef.current += chunk;
+        if (!streamTimerRef.current) {
+          streamTimerRef.current = window.setTimeout(flushBuffer, 18);
+        }
+      };
+
+      const reply = await sendChatRequest(requestMessages, { onChunk: appendChunk });
+      // 若没有流式回调（非 SSE），用最终文本一次性展示
+      if (!streamedOnceRef.current) {
         setMessages((prev) => {
           if (!prev.length) return prev;
           const updated = [...prev];
           const lastIndex = updated.length - 1;
-          if (updated[lastIndex]?.role !== "assistant") {
-            return prev;
-          }
-          updated[lastIndex] = {
-            ...updated[lastIndex],
-            content: `${updated[lastIndex].content}${chunk}`,
-          };
+          if (updated[lastIndex]?.role !== "assistant") return prev;
+          updated[lastIndex] = { ...updated[lastIndex], content: reply };
           return updated;
         });
-      };
-
-      const reply = await sendChatRequest(requestMessages, { onChunk: appendChunk });
-      setMessages((prev) => {
-        if (!prev.length) return prev;
-        const updated = [...prev];
-        const lastIndex = updated.length - 1;
-        if (updated[lastIndex]?.role !== "assistant") {
-          return prev;
+      } else if (reply && reply.length > 0) {
+        streamBufferRef.current += reply;
+        if (!streamTimerRef.current) {
+          streamTimerRef.current = window.setTimeout(flushBuffer, 18);
         }
-        updated[lastIndex] = { ...updated[lastIndex], content: reply };
-        return updated;
-      });
+      }
     } catch (err) {
       console.error(err);
       setMessages((prev) => {

@@ -19,6 +19,9 @@ export default function ChatIntroPanel() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const streamBufferRef = useRef("");
+  const streamTimerRef = useRef<number | null>(null);
+  const streamedOnceRef = useRef(false);
   const canSend = input.trim().length > 0 && !isLoading;
 
   useEffect(() => {
@@ -34,33 +37,60 @@ export default function ChatIntroPanel() {
     const userMessage: ChatMessage = { role: "user", content: nextInput };
     const nextHistory: ChatMessage[] = [...messages, userMessage];
     setMessages([...nextHistory, { role: "assistant", content: "" }]);
+    streamBufferRef.current = "";
+    streamedOnceRef.current = false;
+    if (streamTimerRef.current) {
+      clearTimeout(streamTimerRef.current);
+      streamTimerRef.current = null;
+    }
     setIsLoading(true);
 
-    const appendChunk = (chunk: string) => {
-      if (!chunk) return;
+    const flushBuffer = () => {
       setMessages((prev) => {
-        if (!prev.length) return prev;
+        if (!prev.length || !streamBufferRef.current) return prev;
         const updated = [...prev];
         const lastIndex = updated.length - 1;
         if (updated[lastIndex]?.role !== "assistant") return prev;
         updated[lastIndex] = {
           ...updated[lastIndex],
-          content: `${updated[lastIndex].content}${chunk}`,
+          content: `${updated[lastIndex].content}${streamBufferRef.current}`,
         };
+        streamBufferRef.current = "";
         return updated;
       });
+      if (streamBufferRef.current.length > 0) {
+        streamTimerRef.current = window.setTimeout(flushBuffer, 28);
+      } else {
+        streamTimerRef.current = null;
+      }
+    };
+
+    const appendChunk = (chunk: string) => {
+      if (!chunk) return;
+      streamedOnceRef.current = true;
+      streamBufferRef.current += chunk;
+      if (!streamTimerRef.current) {
+        streamTimerRef.current = window.setTimeout(flushBuffer, 18);
+      }
     };
 
     try {
       const reply = await sendChatRequest(nextHistory, { onChunk: appendChunk });
-      setMessages((prev) => {
-        if (!prev.length) return prev;
-        const updated = [...prev];
-        const lastIndex = updated.length - 1;
-        if (updated[lastIndex]?.role !== "assistant") return prev;
-        updated[lastIndex] = { ...updated[lastIndex], content: reply };
-        return updated;
-      });
+      if (!streamedOnceRef.current) {
+        setMessages((prev) => {
+          if (!prev.length) return prev;
+          const updated = [...prev];
+          const lastIndex = updated.length - 1;
+          if (updated[lastIndex]?.role !== "assistant") return prev;
+          updated[lastIndex] = { ...updated[lastIndex], content: reply };
+          return updated;
+        });
+      } else if (reply && reply.length > 0) {
+        streamBufferRef.current += reply;
+        if (!streamTimerRef.current) {
+          streamTimerRef.current = window.setTimeout(flushBuffer, 18);
+        }
+      }
     } catch (err) {
       console.error(err);
       setMessages((prev) => {
