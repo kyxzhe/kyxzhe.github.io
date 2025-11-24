@@ -1,25 +1,29 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "motion/react";
 import { AlertTriangle, Sparkles } from "lucide-react";
 import { cardVariants } from "@/lib/animation/variants";
 import { type ChatMessage, sendChatRequest } from "@/lib/api/chat";
 import ChatInputBar from "@/components/ChatInputBar";
+import { KEVIN_SYSTEM_PROMPT } from "@/lib/constants/chat";
+import { useChatMessages } from "@/hooks/useChatMessages";
+
+const assistantGreeting =
+  "Hi there! Ask me about research, teaching, certifications, or where to find a good flat white.";
 
 export default function ChatIntroPanel() {
-  const [messages, setMessages] = useState<ChatMessage[]>([
-    {
-      role: "assistant",
-      content:
-        "Hi there! Ask me about research, teaching, certifications, or where to find a good flat white.",
-    },
-  ]);
+  const [messages, setMessages] = useChatMessages({
+    storageKey: "chat-intro-history",
+    systemMessage: KEVIN_SYSTEM_PROMPT,
+    assistantGreeting,
+  });
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const canSend = input.trim().length > 0 && !isLoading;
+  const visibleMessages = useMemo(() => messages.filter((msg) => msg.role !== "system"), [messages]);
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -83,7 +87,7 @@ export default function ChatIntroPanel() {
     if (scrollRef.current) {
       scrollRef.current.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
     }
-  }, [messages]);
+  }, [visibleMessages]);
 
   return (
     <motion.div
@@ -118,7 +122,7 @@ export default function ChatIntroPanel() {
             ref={scrollRef}
             className="flex-1 min-h-0 space-y-3 text-sm overflow-y-auto pr-2"
           >
-            {messages.map((msg, idx) => (
+            {visibleMessages.map((msg, idx) => (
               <div
                 key={`${msg.role}-${idx}-${msg.content.slice(0, 8)}`}
                 className={`flex ${msg.role === "assistant" ? "justify-start" : "justify-end"}`}

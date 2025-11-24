@@ -4,13 +4,19 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import { Loader2 } from "lucide-react";
-import { useState, useCallback, useEffect, useRef, KeyboardEvent } from "react";
+import { useState, useCallback, useEffect, useMemo, useRef, KeyboardEvent } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { sendChatRequest, type ChatMessage } from "@/lib/api/chat";
+import { KEVIN_SYSTEM_PROMPT } from "@/lib/constants/chat";
+import { useChatMessages } from "@/hooks/useChatMessages";
 
 export default function Home() {
   const [prompt, setPrompt] = useState("");
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [messages, setMessages] = useChatMessages({
+    storageKey: "chat-home-history",
+    systemMessage: KEVIN_SYSTEM_PROMPT,
+  });
+  const visibleMessages = useMemo(() => messages.filter((msg) => msg.role !== "system"), [messages]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -93,7 +99,7 @@ export default function Home() {
     } finally {
       setIsLoading(false);
     }
-  }, [prompt, isLoading, messages]);
+  }, [prompt, isLoading, messages, setMessages]);
 
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === "Enter" && !event.shiftKey) {
@@ -103,19 +109,19 @@ export default function Home() {
   };
 
   useEffect(() => {
-    if ((messages.length > 0 || isLoading) && !isExpanded) {
+    if ((visibleMessages.length > 0 || isLoading) && !isExpanded) {
       setIsExpanded(true);
     }
-  }, [messages.length, isLoading, isExpanded]);
+  }, [visibleMessages.length, isLoading, isExpanded]);
 
   const historyEndRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     historyEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-  }, [messages, isLoading]);
+  }, [visibleMessages, isLoading]);
 
-  const showPlaceholderOverlay = !prompt.trim() && messages.length === 0;
-  const showCaretHint = !prompt.trim() && messages.length > 0;
+  const showPlaceholderOverlay = !prompt.trim() && visibleMessages.length === 0;
+  const showCaretHint = !prompt.trim() && visibleMessages.length > 0;
 
   return (
     <div className="flex flex-col min-h-screen font-sans font-medium">
@@ -171,10 +177,10 @@ export default function Home() {
                   className="w-full flex-1"
                 >
                     <div className="max-h-[320px] md:max-h-[360px] overflow-y-auto space-y-3 pr-[6px] pt-1">
-                      {messages.length === 0 && !isLoading ? (
+                      {visibleMessages.length === 0 && !isLoading ? (
                         <p className="text-sm text-[rgba(0,0,0,0.6)] dark:text-white/60">发送后这里会展开显示完整对话。</p>
                       ) : (
-                        messages.map((message, index) => (
+                        visibleMessages.map((message, index) => (
                           <div
                             key={`${message.role}-${index}`}
                             className={`flex gap-2 ${message.role === "user" ? "justify-end" : "justify-start"}`}

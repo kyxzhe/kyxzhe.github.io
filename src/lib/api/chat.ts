@@ -1,7 +1,8 @@
 "use client";
 
+export type ChatRole = "system" | "user" | "assistant";
 export type ChatMessage = {
-  role: "user" | "assistant";
+  role: ChatRole;
   content: string;
 };
 

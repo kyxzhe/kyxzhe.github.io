@@ -5,6 +5,8 @@ import { AnimatePresence, motion } from "motion/react";
 import { AlertTriangle, MessagesSquare, Sparkles, X } from "lucide-react";
 import ChatInputBar from "@/components/ChatInputBar";
 import { type ChatMessage, sendChatRequest } from "@/lib/api/chat";
+import { KEVIN_SYSTEM_PROMPT } from "@/lib/constants/chat";
+import { useChatMessages } from "@/hooks/useChatMessages";
 
 interface ChatBotModalProps {
   open: boolean;
@@ -15,9 +17,11 @@ const assistantGreeting =
   "Hi there! Ask me about research, teaching, certifications, or the best flat white in Sydney.";
 
 export default function ChatBotModal({ open, onClose }: ChatBotModalProps) {
-  const [messages, setMessages] = useState<ChatMessage[]>([
-    { role: "assistant", content: assistantGreeting },
-  ]);
+  const [messages, setMessages] = useChatMessages({
+    storageKey: "chatbot-modal-history",
+    systemMessage: KEVIN_SYSTEM_PROMPT,
+    assistantGreeting,
+  });
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -32,11 +36,16 @@ export default function ChatBotModal({ open, onClose }: ChatBotModalProps) {
     }
   }, [open]);
 
+  const visibleMessages = useMemo(
+    () => messages.filter((message) => message.role !== "system"),
+    [messages]
+  );
+
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
     }
-  }, [messages]);
+  }, [visibleMessages]);
 
   const handleSend = async () => {
     if (!canSend) return;
@@ -91,7 +100,7 @@ export default function ChatBotModal({ open, onClose }: ChatBotModalProps) {
     }
   };
 
-  const latestMessages = useMemo(() => messages.slice(-12), [messages]);
+  const latestMessages = useMemo(() => visibleMessages.slice(-12), [visibleMessages]);
 
   return (
     <AnimatePresence>
