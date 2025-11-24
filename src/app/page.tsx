@@ -18,13 +18,14 @@ export default function Home() {
     "Interested in my research, teaching, or projects? Feel free to ask here.",
     "对我的科研、教学或项目好奇吗？欢迎在这里随时提问。",
     "對我嘅研究、教學或者項目有興趣？喺呢度儘管問啦。",
+    "Dacă te interesează cercetările mele, predarea sau proiectele, poți întreba aici.",
     "私の研究や教育、プロジェクトについて知りたいことがあれば、ここで気軽に聞いてください。",
+    "제 연구나 강의, 프로젝트에 대해 궁금한 점이 있으시면 여기에서 편하게 질문해 주세요.",
     "Si te interesa mi investigación, mi docencia o mis proyectos, puedes preguntar aquí.",
     "Si mes recherches, mon enseignement ou mes projets vous intéressent, n’hésitez pas à poser vos questions ici.",
     "Wenn Sie sich für meine Forschung, meine Lehre oder meine Projekte interessieren, können Sie mir hier gerne Ihre Fragen stellen.",
     "Se ti interessano le mie ricerche, la mia attività didattica o i miei progetti, puoi farmi delle domande qui.",
     "Если вам интересны мои исследования, преподавание или проекты, вы можете смело задавать свои вопросы здесь.",
-    "제 연구나 강의, 프로젝트에 대해 궁금한 점이 있으시면 여기에서 편하게 질문해 주세요.",
   ];
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
 
@@ -36,37 +37,6 @@ export default function Home() {
     return () => clearInterval(id);
   }, [rotatingPlaceholders.length]);
 
-  const flushTimerRef = useRef<number | null>(null);
-  const bufferRef = useRef("");
-  const streamedRef = useRef(false);
-  const sliceSize = 6;
-  const tickMs = 28;
-
-  const startFlush = () => {
-    if (flushTimerRef.current) return;
-    const step = () => {
-      setMessages((prev) => {
-        if (!prev.length || !bufferRef.current) return prev;
-        const updated = [...prev];
-        const lastIndex = updated.length - 1;
-        if (updated[lastIndex]?.role !== "assistant") return prev;
-        const slice = bufferRef.current.slice(0, sliceSize);
-        bufferRef.current = bufferRef.current.slice(sliceSize);
-        updated[lastIndex] = {
-          ...updated[lastIndex],
-          content: `${updated[lastIndex].content}${slice}`,
-        };
-        return updated;
-      });
-      if (bufferRef.current.length > 0) {
-        flushTimerRef.current = window.setTimeout(step, tickMs);
-      } else {
-        flushTimerRef.current = null;
-      }
-    };
-    flushTimerRef.current = window.setTimeout(step, tickMs);
-  };
-
   const handleSend = useCallback(async () => {
     const nextPrompt = prompt.trim();
     if (!nextPrompt || isLoading) return;
@@ -77,38 +47,38 @@ export default function Home() {
     const userMessage: ChatMessage = { role: "user", content: nextPrompt };
     const requestMessages: ChatMessage[] = [...messages, userMessage];
     const assistantPlaceholder: ChatMessage = { role: "assistant", content: "" };
-    bufferRef.current = "";
-    streamedRef.current = false;
-    if (flushTimerRef.current) {
-      clearTimeout(flushTimerRef.current);
-      flushTimerRef.current = null;
-    }
-
     try {
       setMessages([...requestMessages, assistantPlaceholder]);
       setIsExpanded(true);
 
       const appendChunk = (chunk: string) => {
         if (!chunk) return;
-        streamedRef.current = true;
-        bufferRef.current += chunk;
-        startFlush();
-      };
-
-      const reply = await sendChatRequest(requestMessages, { onChunk: appendChunk });
-      if (!streamedRef.current) {
         setMessages((prev) => {
           if (!prev.length) return prev;
           const updated = [...prev];
           const lastIndex = updated.length - 1;
-          if (updated[lastIndex]?.role !== "assistant") return prev;
-          updated[lastIndex] = { ...updated[lastIndex], content: reply };
+          if (updated[lastIndex]?.role !== "assistant") {
+            return prev;
+          }
+          updated[lastIndex] = {
+            ...updated[lastIndex],
+            content: `${updated[lastIndex].content}${chunk}`,
+          };
           return updated;
         });
-      } else if (reply && reply.length > 0) {
-        bufferRef.current += reply;
-        startFlush();
-      }
+      };
+
+      const reply = await sendChatRequest(requestMessages, { onChunk: appendChunk });
+      setMessages((prev) => {
+        if (!prev.length) return prev;
+        const updated = [...prev];
+        const lastIndex = updated.length - 1;
+        if (updated[lastIndex]?.role !== "assistant") {
+          return prev;
+        }
+        updated[lastIndex] = { ...updated[lastIndex], content: reply };
+        return updated;
+      });
     } catch (err) {
       console.error(err);
       setMessages((prev) => {

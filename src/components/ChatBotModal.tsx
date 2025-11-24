@@ -24,11 +24,6 @@ export default function ChatBotModal({ open, onClose }: ChatBotModalProps) {
 
   const inputRef = useRef<HTMLInputElement | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
-  const bufferRef = useRef("");
-  const flushTimerRef = useRef<number | null>(null);
-  const streamedRef = useRef(false);
-  const sliceSize = 6;
-  const tickMs = 28;
   const canSend = input.trim().length > 0 && !isLoading;
 
   useEffect(() => {
@@ -43,31 +38,6 @@ export default function ChatBotModal({ open, onClose }: ChatBotModalProps) {
     }
   }, [messages]);
 
-  const startFlush = () => {
-    if (flushTimerRef.current) return;
-    const step = () => {
-      setMessages((prev) => {
-        if (!prev.length || !bufferRef.current) return prev;
-        const updated = [...prev];
-        const lastIndex = updated.length - 1;
-        if (updated[lastIndex]?.role !== "assistant") return prev;
-        const slice = bufferRef.current.slice(0, sliceSize);
-        bufferRef.current = bufferRef.current.slice(sliceSize);
-        updated[lastIndex] = {
-          ...updated[lastIndex],
-          content: `${updated[lastIndex].content}${slice}`,
-        };
-        return updated;
-      });
-      if (bufferRef.current.length > 0) {
-        flushTimerRef.current = window.setTimeout(step, tickMs);
-      } else {
-        flushTimerRef.current = null;
-      }
-    };
-    flushTimerRef.current = window.setTimeout(step, tickMs);
-  };
-
   const handleSend = async () => {
     if (!canSend) return;
 
@@ -78,36 +48,33 @@ export default function ChatBotModal({ open, onClose }: ChatBotModalProps) {
     const userMessage: ChatMessage = { role: "user", content: nextInput };
     const nextHistory: ChatMessage[] = [...messages, userMessage];
     setMessages([...nextHistory, { role: "assistant", content: "" }]);
-    bufferRef.current = "";
-    streamedRef.current = false;
-    if (flushTimerRef.current) {
-      clearTimeout(flushTimerRef.current);
-      flushTimerRef.current = null;
-    }
     setIsLoading(true);
 
     const appendChunk = (chunk: string) => {
       if (!chunk) return;
-      streamedRef.current = true;
-      bufferRef.current += chunk;
-      startFlush();
+      setMessages((prev) => {
+        if (!prev.length) return prev;
+        const updated = [...prev];
+        const lastIndex = updated.length - 1;
+        if (updated[lastIndex]?.role !== "assistant") return prev;
+        updated[lastIndex] = {
+          ...updated[lastIndex],
+          content: `${updated[lastIndex].content}${chunk}`,
+        };
+        return updated;
+      });
     };
 
     try {
       const reply = await sendChatRequest(nextHistory, { onChunk: appendChunk });
-      if (!streamedRef.current) {
-        setMessages((prev) => {
-          if (!prev.length) return prev;
-          const updated = [...prev];
-          const lastIndex = updated.length - 1;
-          if (updated[lastIndex]?.role !== "assistant") return prev;
-          updated[lastIndex] = { ...updated[lastIndex], content: reply };
-          return updated;
-        });
-      } else if (reply && reply.length > 0) {
-        bufferRef.current += reply;
-        startFlush();
-      }
+      setMessages((prev) => {
+        if (!prev.length) return prev;
+        const updated = [...prev];
+        const lastIndex = updated.length - 1;
+        if (updated[lastIndex]?.role !== "assistant") return prev;
+        updated[lastIndex] = { ...updated[lastIndex], content: reply };
+        return updated;
+      });
     } catch (err) {
       console.error(err);
       setMessages((prev) => {
