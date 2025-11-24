@@ -7,14 +7,12 @@ import { Loader2 } from "lucide-react";
 import { useState, useCallback, useEffect, useMemo, useRef, KeyboardEvent } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { sendChatRequest, type ChatMessage } from "@/lib/api/chat";
-import { KEVIN_SYSTEM_PROMPT } from "@/lib/constants/chat";
 import { useChatMessages } from "@/hooks/useChatMessages";
 
 export default function Home() {
   const [prompt, setPrompt] = useState("");
   const [messages, setMessages] = useChatMessages({
     storageKey: "chat-home-history",
-    systemMessage: KEVIN_SYSTEM_PROMPT,
   });
   const visibleMessages = useMemo(() => messages.filter((msg) => msg.role !== "system"), [messages]);
   const [isLoading, setIsLoading] = useState(false);

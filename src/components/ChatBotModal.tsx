@@ -5,7 +5,6 @@ import { AnimatePresence, motion } from "motion/react";
 import { AlertTriangle, MessagesSquare, Sparkles, X } from "lucide-react";
 import ChatInputBar from "@/components/ChatInputBar";
 import { type ChatMessage, sendChatRequest } from "@/lib/api/chat";
-import { KEVIN_SYSTEM_PROMPT } from "@/lib/constants/chat";
 import { useChatMessages } from "@/hooks/useChatMessages";
 
 interface ChatBotModalProps {
@@ -13,14 +12,9 @@ interface ChatBotModalProps {
   onClose: () => void;
 }
 
-const assistantGreeting =
-  "Hi there! Ask me about research, teaching, certifications, or the best flat white in Sydney.";
-
 export default function ChatBotModal({ open, onClose }: ChatBotModalProps) {
   const [messages, setMessages] = useChatMessages({
     storageKey: "chatbot-modal-history",
-    systemMessage: KEVIN_SYSTEM_PROMPT,
-    assistantGreeting,
   });
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
