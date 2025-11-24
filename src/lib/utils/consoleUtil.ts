@@ -2,10 +2,8 @@ import { contactInfo } from "@/lib/constants/contact";
 import {
   aboutIntro,
   collaborationPitch,
-  contributions,
   funFacts,
   researchFocus,
-  timeline,
 } from "@/lib/constants/about";
 import { heroContent } from "@/lib/constants/siteContent";
 import { socials } from "@/lib/constants/socials";
@@ -80,8 +78,6 @@ export const consoleUtil = {
   },
   researchHighlights: researchFocus,
   funFacts,
-  timeline,
-  contributions,
   collaborationPitch,
   socialEntries,
   heroTagline,
@@ -107,7 +103,6 @@ export const consoleUtil = {
 
     console.log(`%c\n📬 Contact & Availability`, this.styles.info);
     console.log(`%c• Email: ${this.developerInfo.email}`, this.styles.link);
-    console.log(`%c• Phone: ${this.developerInfo.phone}`, this.styles.info);
     console.log(`%c• Location: ${this.developerInfo.location}`, this.styles.info);
     console.log(`%c• Availability: ${this.developerInfo.availability}`, this.styles.message);
     console.log(`%c• Website: ${this.developerInfo.website}`, this.styles.link);
@@ -120,16 +115,6 @@ export const consoleUtil = {
     console.log(`%c\n📌 Research Highlights`, this.styles.info);
     this.researchHighlights.forEach((line) =>
       console.log(`%c${line}`, this.styles.info)
-    );
-
-    console.log(`%c\n📜 Timeline`, this.styles.info);
-    this.timeline.slice(0, 2).forEach((entry) => {
-      console.log(`%c• ${entry.period} · ${entry.title}`, this.styles.info);
-    });
-
-    console.log(`%c\n🧑‍🏫 Teaching & sharing`, this.styles.info);
-    this.contributions.forEach((item) =>
-      console.log(`%c• ${item}`, this.styles.info)
     );
 
     console.log(`%c\n🎲 Fun Facts`, this.styles.message);
@@ -164,7 +149,6 @@ export const consoleUtil = {
         console.log(`%c${this.developerInfo.message}`, this.styles.message);
         console.log(`%c\n📍 ${this.developerInfo.location} · ${this.developerInfo.availability}`, this.styles.info);
         console.log(`%c• Email: ${this.developerInfo.email}`, this.styles.link);
-        console.log(`%c• Phone: ${this.developerInfo.phone}`, this.styles.info);
         console.log(`%c• Website: ${this.developerInfo.website}`, this.styles.link);
       },
 
