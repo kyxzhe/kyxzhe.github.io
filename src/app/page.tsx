@@ -44,30 +44,29 @@ export default function Home() {
     setPrompt("");
 
     const userMessage: ChatMessage = { role: "user", content: nextPrompt };
-    const requestMessages = [...messages, userMessage];
-    const placeholder: ChatMessage = { role: "assistant", content: "" };
-
-    setMessages([...requestMessages, placeholder]);
-    setIsExpanded(true);
-
-    const appendChunk = (chunk: string) => {
-      if (!chunk) return;
-      setMessages((prev) => {
-        if (!prev.length) return prev;
-        const updated = [...prev];
-        const lastIndex = updated.length - 1;
-        if (updated[lastIndex]?.role !== "assistant") {
-          return prev;
-        }
-        updated[lastIndex] = {
-          ...updated[lastIndex],
-          content: `${updated[lastIndex].content ?? ""}${chunk}`,
-        };
-        return updated;
-      });
-    };
-
+    const requestMessages: ChatMessage[] = [...messages, userMessage];
+    const assistantPlaceholder: ChatMessage = { role: "assistant", content: "" };
     try {
+      setMessages([...requestMessages, assistantPlaceholder]);
+      setIsExpanded(true);
+
+      const appendChunk = (chunk: string) => {
+        if (!chunk) return;
+        setMessages((prev) => {
+          if (!prev.length) return prev;
+          const updated = [...prev];
+          const lastIndex = updated.length - 1;
+          if (updated[lastIndex]?.role !== "assistant") {
+            return prev;
+          }
+          updated[lastIndex] = {
+            ...updated[lastIndex],
+            content: `${updated[lastIndex].content}${chunk}`,
+          };
+          return updated;
+        });
+      };
+
       const reply = await sendChatRequest(requestMessages, { onChunk: appendChunk });
       setMessages((prev) => {
         if (!prev.length) return prev;
@@ -83,7 +82,8 @@ export default function Home() {
       console.error(err);
       setMessages((prev) => {
         if (!prev.length) return prev;
-        if (prev[prev.length - 1]?.role === "assistant") {
+        const last = prev[prev.length - 1];
+        if (last?.role === "assistant" && last.content === "") {
           return prev.slice(0, -1);
         }
         return prev;

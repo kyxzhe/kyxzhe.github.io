@@ -23,6 +23,7 @@ export default function ChatBotModal({ open, onClose }: ChatBotModalProps) {
   const [error, setError] = useState<string | null>(null);
 
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
   const canSend = input.trim().length > 0 && !isLoading;
 
   useEffect(() => {
@@ -30,6 +31,12 @@ export default function ChatBotModal({ open, onClose }: ChatBotModalProps) {
       setTimeout(() => inputRef.current?.focus(), 150);
     }
   }, [open]);
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
+    }
+  }, [messages]);
 
   const handleSend = async () => {
     if (!canSend) return;
@@ -39,8 +46,8 @@ export default function ChatBotModal({ open, onClose }: ChatBotModalProps) {
     setError(null);
 
     const userMessage: ChatMessage = { role: "user", content: nextInput };
-    const requestHistory = [...messages, userMessage];
-    setMessages([...requestHistory, { role: "assistant", content: "" }]);
+    const nextHistory: ChatMessage[] = [...messages, userMessage];
+    setMessages([...nextHistory, { role: "assistant", content: "" }]);
     setIsLoading(true);
 
     const appendChunk = (chunk: string) => {
@@ -49,26 +56,22 @@ export default function ChatBotModal({ open, onClose }: ChatBotModalProps) {
         if (!prev.length) return prev;
         const updated = [...prev];
         const lastIndex = updated.length - 1;
-        if (updated[lastIndex]?.role !== "assistant") {
-          return prev;
-        }
+        if (updated[lastIndex]?.role !== "assistant") return prev;
         updated[lastIndex] = {
           ...updated[lastIndex],
-          content: `${updated[lastIndex].content ?? ""}${chunk}`,
+          content: `${updated[lastIndex].content}${chunk}`,
         };
         return updated;
       });
     };
 
     try {
-      const reply = await sendChatRequest(requestHistory, { onChunk: appendChunk });
+      const reply = await sendChatRequest(nextHistory, { onChunk: appendChunk });
       setMessages((prev) => {
         if (!prev.length) return prev;
         const updated = [...prev];
         const lastIndex = updated.length - 1;
-        if (updated[lastIndex]?.role !== "assistant") {
-          return prev;
-        }
+        if (updated[lastIndex]?.role !== "assistant") return prev;
         updated[lastIndex] = { ...updated[lastIndex], content: reply };
         return updated;
       });
@@ -76,7 +79,8 @@ export default function ChatBotModal({ open, onClose }: ChatBotModalProps) {
       console.error(err);
       setMessages((prev) => {
         if (!prev.length) return prev;
-        if (prev[prev.length - 1]?.role === "assistant") {
+        const last = prev[prev.length - 1];
+        if (last?.role === "assistant" && last.content === "") {
           return prev.slice(0, -1);
         }
         return prev;
@@ -128,7 +132,7 @@ export default function ChatBotModal({ open, onClose }: ChatBotModalProps) {
             <p className="text-sm text-muted-foreground mb-4">
               Powered by Cloudflare Workers AI. Treat responses as friendly context, not formal advice.
             </p>
-            <div className="flex-1 overflow-y-auto space-y-3 pr-1 mb-4">
+            <div ref={scrollRef} className="flex-1 overflow-y-auto space-y-3 pr-1 mb-4">
               {latestMessages.map((message, index) => (
                 <div
                   key={`${message.role}-${index}-${message.content.slice(0, 8)}`}

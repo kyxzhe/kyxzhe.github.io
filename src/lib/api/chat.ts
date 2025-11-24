@@ -5,17 +5,17 @@ export type ChatMessage = {
   content: string;
 };
 
-export interface ChatStreamOptions {
+const DEFAULT_CHAT_API_URL = "https://kevin-bot.kyx-zhe.workers.dev/chat";
+const CHAT_API_URL = process.env.NEXT_PUBLIC_CHAT_API_URL ?? DEFAULT_CHAT_API_URL;
+
+export interface ChatRequestOptions {
   signal?: AbortSignal;
   onChunk?: (chunk: string) => void;
 }
 
-const DEFAULT_CHAT_API_URL = "https://kevin-bot.kyx-zhe.workers.dev/chat";
-const CHAT_API_URL = process.env.NEXT_PUBLIC_CHAT_API_URL ?? DEFAULT_CHAT_API_URL;
-
 export async function sendChatRequest(
   messages: ChatMessage[],
-  options?: ChatStreamOptions
+  options?: ChatRequestOptions
 ): Promise<string> {
   if (!CHAT_API_URL) {
     throw new Error(
@@ -41,67 +41,74 @@ export async function sendChatRequest(
     );
   }
 
-  const contentType = (response.headers.get("content-type") ?? "").toLowerCase();
-  if (contentType.includes("event-stream") && response.body) {
-    return streamSseResponse(response.body, options?.onChunk);
+  // 优先走 SSE 流
+  const contentType = (response.headers.get("content-type") || "").toLowerCase();
+  if (contentType.includes("text/event-stream") && response.body) {
+    return readSseStream(response.body, options?.onChunk);
   }
 
-  const fallbackText = await response.text();
-  let parsedFallback: Record<string, unknown> | null = null;
-  try {
-    parsedFallback = JSON.parse(fallbackText);
-  } catch {
-    // swallow parse errors so we can treat the response as raw text
+  // 兼容旧的 JSON 一次性返回
+  const data = (await response.json().catch(() => null)) as { response?: string } | null;
+  if (data?.response) {
+    return data.response.trim();
   }
 
-  const finalText =
-    (parsedFallback && extractChunkFromPayload(parsedFallback)) ??
-    (typeof fallbackText === "string" ? fallbackText : null);
-
-  if (!finalText || !finalText.trim()) {
-    throw new Error("Chat service did not return a valid response.");
-  }
-
-  return finalText.trim();
+  throw new Error("Chat service did not return a valid response.");
 }
 
-async function streamSseResponse(
-  body: ReadableStream<Uint8Array>,
+function extractText(payload: unknown): string | null {
+  if (!payload) return null;
+  if (typeof payload === "string") {
+    try {
+      const parsed = JSON.parse(payload);
+      return extractText(parsed);
+    } catch {
+      return payload;
+    }
+  }
+  if (typeof payload !== "object") return null;
+
+  const val = (key: string) => {
+    const v = (payload as Record<string, unknown>)[key];
+    return typeof v === "string" ? v : null;
+  };
+
+  return (
+    val("response") ??
+    val("content") ??
+    val("text") ??
+    (payload as { delta?: { content?: string; text?: string } }).delta?.content ??
+    (payload as { delta?: { content?: string; text?: string } }).delta?.text ??
+    null
+  );
+}
+
+async function readSseStream(
+  stream: ReadableStream<Uint8Array>,
   onChunk?: (chunk: string) => void
 ): Promise<string> {
-  const reader = body.getReader();
+  const reader = stream.getReader();
   const decoder = new TextDecoder();
   let buffer = "";
-  let accumulated = "";
+  let fullText = "";
   let done = false;
 
-  const processLine = (line: string) => {
-    const trimmed = line.trim();
-    if (!trimmed) {
-      return false;
+  const handleEvent = (eventBlock: string) => {
+    const lines = eventBlock.split(/\r?\n/);
+    for (const line of lines) {
+      if (!line.startsWith("data:")) continue;
+      const data = line.slice(5).trim();
+      if (!data) continue;
+      if (data === "[DONE]") {
+        done = true;
+        return;
+      }
+      const chunk = extractText(data);
+      if (chunk) {
+        fullText += chunk;
+        onChunk?.(chunk);
+      }
     }
-
-    if (!trimmed.startsWith("data:")) {
-      return false;
-    }
-
-    const payload = trimmed.slice(5).trim();
-    if (!payload) {
-      return false;
-    }
-
-    if (payload === "[DONE]") {
-      done = true;
-      return true;
-    }
-
-    const chunk = extractChunkFromPayload(payload);
-    if (chunk) {
-      accumulated += chunk;
-      onChunk?.(chunk);
-    }
-
-    return false;
   };
 
   try {
@@ -109,101 +116,25 @@ async function streamSseResponse(
       const { value, done: streamDone } = await reader.read();
       if (value) {
         buffer += decoder.decode(value, { stream: true });
-      }
-      if (streamDone) {
-        break;
-      }
-
-      const parts = buffer.split(/\r?\n/);
-      buffer = parts.pop() ?? "";
-      for (const part of parts) {
-        if (processLine(part)) {
-          break;
+        const parts = buffer.split("\n\n");
+        buffer = parts.pop() ?? "";
+        for (const part of parts) {
+          handleEvent(part);
+          if (done) break;
         }
       }
-    }
-
-    if (!done && buffer) {
-      processLine(buffer);
+      if (streamDone) {
+        // flush remaining buffer
+        buffer += decoder.decode();
+        if (buffer.trim()) {
+          handleEvent(buffer);
+        }
+        break;
+      }
     }
   } finally {
     reader.releaseLock();
   }
 
-  return accumulated.trim();
-}
-
-function extractChunkFromPayload(payload: string | Record<string, unknown>): string | null {
-  if (typeof payload === "string") {
-    try {
-      const parsed = JSON.parse(payload);
-      return extractChunkFromPayload(parsed);
-    } catch {
-      return payload;
-    }
-  }
-
-  if (!payload || typeof payload !== "object") {
-    return null;
-  }
-
-  const asString = (value: unknown): string | null =>
-    typeof value === "string" && value.length > 0 ? value : null;
-
-  const responseText = asString(payload["response"]);
-  if (responseText) {
-    return responseText;
-  }
-
-  const contentText = asString(payload["content"]);
-  if (contentText) {
-    return contentText;
-  }
-
-  const textValue = asString(payload["text"]);
-  if (textValue) {
-    return textValue;
-  }
-
-  const chunkValue = asString(payload["chunk"]);
-  if (chunkValue) {
-    return chunkValue;
-  }
-
-  const message = payload["message"];
-  if (message && typeof message === "object") {
-    const messageContent = asString((message as Record<string, unknown>)["content"]);
-    if (messageContent) {
-      return messageContent;
-    }
-  }
-
-  const delta = payload["delta"];
-  if (delta) {
-    if (typeof delta === "string") {
-      return delta;
-    }
-    if (typeof delta === "object" && delta !== null) {
-      const deltaContent = asString((delta as Record<string, unknown>)["content"]);
-      if (deltaContent) {
-        return deltaContent;
-      }
-      const deltaText = asString((delta as Record<string, unknown>)["text"]);
-      if (deltaText) {
-        return deltaText;
-      }
-    }
-  }
-
-  const choices = payload["choices"];
-  if (Array.isArray(choices)) {
-    for (const choice of choices) {
-      const chunk = extractChunkFromPayload(choice as Record<string, unknown>);
-      if (chunk) {
-        return chunk;
-      }
-    }
-  }
-
-  return null;
+  return fullText.trim();
 }

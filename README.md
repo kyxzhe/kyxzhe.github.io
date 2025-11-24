@@ -40,7 +40,7 @@ A static Next.js 15 notebook for sharing research notes, experiments, and side p
 - The homepage chatbot card opens `ChatBotModal`, which POSTs to `https://kevin-bot.kyx-zhe.workers.dev/chat` by default.
 - Override the endpoint via `NEXT_PUBLIC_CHAT_API_URL` in `.env.local` if you host a different Worker.
 - Worker payload: `{ "messages": [{ "role": "user" | "assistant", "content": string }] }`
-- Worker response: SSE stream (`text/event-stream`). Each `data:` event carries an incremental chunk of the reply, ending with `[DONE]`, and the inbox renders those chunks as they arrive (JSON responses with `{ "response": ... }` are still parsed for compatibility).
+- Worker response: Server-Sent Events (`text/event-stream`). Each `data:` line JSON-parses to `{ "response": "<chunk>" }`, streamed until `[DONE]`. Plain JSON `{ "response": "<text>" }` is still accepted for compatibility.
 
 ## Contributing & Deploying
 

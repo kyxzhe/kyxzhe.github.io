@@ -32,8 +32,8 @@ export default function ChatIntroPanel() {
     setError(null);
 
     const userMessage: ChatMessage = { role: "user", content: nextInput };
-    const requestHistory = [...messages, userMessage];
-    setMessages([...requestHistory, { role: "assistant", content: "" }]);
+    const nextHistory: ChatMessage[] = [...messages, userMessage];
+    setMessages([...nextHistory, { role: "assistant", content: "" }]);
     setIsLoading(true);
 
     const appendChunk = (chunk: string) => {
@@ -42,26 +42,22 @@ export default function ChatIntroPanel() {
         if (!prev.length) return prev;
         const updated = [...prev];
         const lastIndex = updated.length - 1;
-        if (updated[lastIndex]?.role !== "assistant") {
-          return prev;
-        }
+        if (updated[lastIndex]?.role !== "assistant") return prev;
         updated[lastIndex] = {
           ...updated[lastIndex],
-          content: `${updated[lastIndex].content ?? ""}${chunk}`,
+          content: `${updated[lastIndex].content}${chunk}`,
         };
         return updated;
       });
     };
 
     try {
-      const reply = await sendChatRequest(requestHistory, { onChunk: appendChunk });
+      const reply = await sendChatRequest(nextHistory, { onChunk: appendChunk });
       setMessages((prev) => {
         if (!prev.length) return prev;
         const updated = [...prev];
         const lastIndex = updated.length - 1;
-        if (updated[lastIndex]?.role !== "assistant") {
-          return prev;
-        }
+        if (updated[lastIndex]?.role !== "assistant") return prev;
         updated[lastIndex] = { ...updated[lastIndex], content: reply };
         return updated;
       });
@@ -69,7 +65,8 @@ export default function ChatIntroPanel() {
       console.error(err);
       setMessages((prev) => {
         if (!prev.length) return prev;
-        if (prev[prev.length - 1]?.role === "assistant") {
+        const last = prev[prev.length - 1];
+        if (last?.role === "assistant" && last.content === "") {
           return prev.slice(0, -1);
         }
         return prev;
