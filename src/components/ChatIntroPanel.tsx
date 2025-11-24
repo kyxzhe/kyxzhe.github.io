@@ -31,18 +31,49 @@ export default function ChatIntroPanel() {
     setInput("");
     setError(null);
 
-    const nextHistory: ChatMessage[] = [
-      ...messages,
-      { role: "user" as const, content: nextInput },
-    ];
-    setMessages(nextHistory);
+    const userMessage: ChatMessage = { role: "user", content: nextInput };
+    const requestHistory = [...messages, userMessage];
+    setMessages([...requestHistory, { role: "assistant", content: "" }]);
     setIsLoading(true);
 
+    const appendChunk = (chunk: string) => {
+      if (!chunk) return;
+      setMessages((prev) => {
+        if (!prev.length) return prev;
+        const updated = [...prev];
+        const lastIndex = updated.length - 1;
+        if (updated[lastIndex]?.role !== "assistant") {
+          return prev;
+        }
+        updated[lastIndex] = {
+          ...updated[lastIndex],
+          content: `${updated[lastIndex].content ?? ""}${chunk}`,
+        };
+        return updated;
+      });
+    };
+
     try {
-      const reply = await sendChatRequest(nextHistory);
-      setMessages((prev) => [...prev, { role: "assistant" as const, content: reply }]);
+      const reply = await sendChatRequest(requestHistory, { onChunk: appendChunk });
+      setMessages((prev) => {
+        if (!prev.length) return prev;
+        const updated = [...prev];
+        const lastIndex = updated.length - 1;
+        if (updated[lastIndex]?.role !== "assistant") {
+          return prev;
+        }
+        updated[lastIndex] = { ...updated[lastIndex], content: reply };
+        return updated;
+      });
     } catch (err) {
       console.error(err);
+      setMessages((prev) => {
+        if (!prev.length) return prev;
+        if (prev[prev.length - 1]?.role === "assistant") {
+          return prev.slice(0, -1);
+        }
+        return prev;
+      });
       setError(err instanceof Error ? err.message : "Something went wrong.");
     } finally {
       setIsLoading(false);

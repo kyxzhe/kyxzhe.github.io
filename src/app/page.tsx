@@ -43,18 +43,51 @@ export default function Home() {
     setError(null);
     setPrompt("");
 
-    const requestMessages: ChatMessage[] = [
-      ...messages,
-      { role: "user", content: nextPrompt },
-    ];
+    const userMessage: ChatMessage = { role: "user", content: nextPrompt };
+    const requestMessages = [...messages, userMessage];
+    const placeholder: ChatMessage = { role: "assistant", content: "" };
+
+    setMessages([...requestMessages, placeholder]);
+    setIsExpanded(true);
+
+    const appendChunk = (chunk: string) => {
+      if (!chunk) return;
+      setMessages((prev) => {
+        if (!prev.length) return prev;
+        const updated = [...prev];
+        const lastIndex = updated.length - 1;
+        if (updated[lastIndex]?.role !== "assistant") {
+          return prev;
+        }
+        updated[lastIndex] = {
+          ...updated[lastIndex],
+          content: `${updated[lastIndex].content ?? ""}${chunk}`,
+        };
+        return updated;
+      });
+    };
+
     try {
-      setMessages(requestMessages);
-      setIsExpanded(true);
-      const reply = await sendChatRequest(requestMessages);
-      setMessages((prev) => [...prev, { role: "assistant", content: reply }]);
-      setPrompt("");
+      const reply = await sendChatRequest(requestMessages, { onChunk: appendChunk });
+      setMessages((prev) => {
+        if (!prev.length) return prev;
+        const updated = [...prev];
+        const lastIndex = updated.length - 1;
+        if (updated[lastIndex]?.role !== "assistant") {
+          return prev;
+        }
+        updated[lastIndex] = { ...updated[lastIndex], content: reply };
+        return updated;
+      });
     } catch (err) {
       console.error(err);
+      setMessages((prev) => {
+        if (!prev.length) return prev;
+        if (prev[prev.length - 1]?.role === "assistant") {
+          return prev.slice(0, -1);
+        }
+        return prev;
+      });
       setError(err instanceof Error ? err.message : "Something went wrong.");
     } finally {
       setIsLoading(false);
@@ -78,7 +111,7 @@ export default function Home() {
 
   useEffect(() => {
     historyEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-  }, [messages.length, isLoading]);
+  }, [messages, isLoading]);
 
   const showPlaceholderOverlay = !prompt.trim() && messages.length === 0;
   const showCaretHint = !prompt.trim() && messages.length > 0;
