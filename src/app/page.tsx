@@ -15,6 +15,7 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
   const streamBufferRef = useRef("");
+  const tokenQueueRef = useRef<string[]>([]);
   const streamTimerRef = useRef<number | null>(null);
   const streamedOnceRef = useRef(false);
   const rotatingPlaceholders = [
@@ -50,6 +51,7 @@ export default function Home() {
     const requestMessages: ChatMessage[] = [...messages, userMessage];
     const assistantPlaceholder: ChatMessage = { role: "assistant", content: "" };
     streamBufferRef.current = "";
+    tokenQueueRef.current = [];
     streamedOnceRef.current = false;
     if (streamTimerRef.current) {
       clearTimeout(streamTimerRef.current);
@@ -59,33 +61,48 @@ export default function Home() {
       setMessages([...requestMessages, assistantPlaceholder]);
       setIsExpanded(true);
 
-      const flushBuffer = () => {
-        setMessages((prev) => {
-          if (!prev.length || !streamBufferRef.current) return prev;
-          const updated = [...prev];
-          const lastIndex = updated.length - 1;
-          if (updated[lastIndex]?.role !== "assistant") return prev;
-          updated[lastIndex] = {
-            ...updated[lastIndex],
-            content: `${updated[lastIndex].content}${streamBufferRef.current}`,
-          };
-          streamBufferRef.current = "";
-          return updated;
-        });
-        if (streamBufferRef.current.length > 0) {
-          streamTimerRef.current = window.setTimeout(flushBuffer, 28);
-        } else {
-          streamTimerRef.current = null;
+      const flushStep = () => {
+        if (!tokenQueueRef.current.length && streamBufferRef.current) {
+          const { tokens, remainder } = tokenize(streamBufferRef.current);
+          tokenQueueRef.current.push(...tokens);
+          streamBufferRef.current = remainder;
         }
+
+        if (!tokenQueueRef.current.length) {
+          streamTimerRef.current = null;
+          return;
+        }
+
+        const nextToken = tokenQueueRef.current.shift() ?? "";
+        if (nextToken) {
+          setMessages((prev) => {
+            if (!prev.length) return prev;
+            const updated = [...prev];
+            const lastIndex = updated.length - 1;
+            if (updated[lastIndex]?.role !== "assistant") {
+              return prev;
+            }
+            updated[lastIndex] = {
+              ...updated[lastIndex],
+              content: `${updated[lastIndex].content}${nextToken}`,
+            };
+            return updated;
+          });
+        }
+
+        streamTimerRef.current = window.setTimeout(flushStep, 22);
+      };
+
+      const scheduleFlush = () => {
+        if (streamTimerRef.current) return;
+        streamTimerRef.current = window.setTimeout(flushStep, 18);
       };
 
       const appendChunk = (chunk: string) => {
         if (!chunk) return;
         streamedOnceRef.current = true;
         streamBufferRef.current += chunk;
-        if (!streamTimerRef.current) {
-          streamTimerRef.current = window.setTimeout(flushBuffer, 18);
-        }
+        scheduleFlush();
       };
 
       const reply = await sendChatRequest(requestMessages, { onChunk: appendChunk });
@@ -101,8 +118,11 @@ export default function Home() {
         });
       } else if (reply && reply.length > 0) {
         streamBufferRef.current += reply;
+        const { tokens, remainder } = tokenize(streamBufferRef.current);
+        tokenQueueRef.current.push(...tokens);
+        streamBufferRef.current = remainder;
         if (!streamTimerRef.current) {
-          streamTimerRef.current = window.setTimeout(flushBuffer, 18);
+          streamTimerRef.current = window.setTimeout(flushStep, 18);
         }
       }
     } catch (err) {

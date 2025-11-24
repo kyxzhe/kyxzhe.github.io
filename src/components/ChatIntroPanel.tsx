@@ -20,9 +20,80 @@ export default function ChatIntroPanel() {
   const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const streamBufferRef = useRef("");
+  const tokenQueueRef = useRef<string[]>([]);
   const streamTimerRef = useRef<number | null>(null);
   const streamedOnceRef = useRef(false);
   const canSend = input.trim().length > 0 && !isLoading;
+
+  const tokenize = (text: string): { tokens: string[]; remainder: string } => {
+    const tokens: string[] = [];
+    let current = "";
+    const flushCurrent = () => {
+      if (current) {
+        tokens.push(current);
+        current = "";
+      }
+    };
+    const isCJK = (ch: string) => /[\u3400-\u4DBF\u4E00-\u9FFF]/.test(ch);
+    const isWhitespace = (ch: string) => /\s/.test(ch);
+    const isPunctuation = (ch: string) => /[.,!?;:()"“”'’`·\-–—，。！？；：（）【】\[\]{}<>]/.test(ch);
+
+    for (let i = 0; i < text.length; i++) {
+      const ch = text[i]!;
+      if (isCJK(ch)) {
+        flushCurrent();
+        tokens.push(ch);
+        continue;
+      }
+      if (isWhitespace(ch)) {
+        flushCurrent();
+        tokens.push(ch);
+        continue;
+      }
+      if (isPunctuation(ch)) {
+        flushCurrent();
+        tokens.push(ch);
+        continue;
+      }
+      current += ch;
+    }
+    return { tokens, remainder: current };
+  };
+
+  const scheduleFlush = () => {
+    if (streamTimerRef.current) return;
+    streamTimerRef.current = window.setTimeout(flushStep, 22);
+  };
+
+  const flushStep = () => {
+    if (!tokenQueueRef.current.length && streamBufferRef.current) {
+      const { tokens, remainder } = tokenize(streamBufferRef.current);
+      tokenQueueRef.current.push(...tokens);
+      streamBufferRef.current = remainder;
+    }
+
+    if (!tokenQueueRef.current.length) {
+      streamTimerRef.current = null;
+      return;
+    }
+
+    const nextToken = tokenQueueRef.current.shift() ?? "";
+    if (nextToken) {
+      setMessages((prev) => {
+        if (!prev.length) return prev;
+        const updated = [...prev];
+        const lastIndex = updated.length - 1;
+        if (updated[lastIndex]?.role !== "assistant") return prev;
+        updated[lastIndex] = {
+          ...updated[lastIndex],
+          content: `${updated[lastIndex].content}${nextToken}`,
+        };
+        return updated;
+      });
+    }
+
+    streamTimerRef.current = window.setTimeout(flushStep, 22);
+  };
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -38,6 +109,7 @@ export default function ChatIntroPanel() {
     const nextHistory: ChatMessage[] = [...messages, userMessage];
     setMessages([...nextHistory, { role: "assistant", content: "" }]);
     streamBufferRef.current = "";
+    tokenQueueRef.current = [];
     streamedOnceRef.current = false;
     if (streamTimerRef.current) {
       clearTimeout(streamTimerRef.current);
@@ -45,33 +117,11 @@ export default function ChatIntroPanel() {
     }
     setIsLoading(true);
 
-    const flushBuffer = () => {
-      setMessages((prev) => {
-        if (!prev.length || !streamBufferRef.current) return prev;
-        const updated = [...prev];
-        const lastIndex = updated.length - 1;
-        if (updated[lastIndex]?.role !== "assistant") return prev;
-        updated[lastIndex] = {
-          ...updated[lastIndex],
-          content: `${updated[lastIndex].content}${streamBufferRef.current}`,
-        };
-        streamBufferRef.current = "";
-        return updated;
-      });
-      if (streamBufferRef.current.length > 0) {
-        streamTimerRef.current = window.setTimeout(flushBuffer, 28);
-      } else {
-        streamTimerRef.current = null;
-      }
-    };
-
     const appendChunk = (chunk: string) => {
       if (!chunk) return;
       streamedOnceRef.current = true;
       streamBufferRef.current += chunk;
-      if (!streamTimerRef.current) {
-        streamTimerRef.current = window.setTimeout(flushBuffer, 18);
-      }
+      scheduleFlush();
     };
 
     try {
@@ -87,9 +137,7 @@ export default function ChatIntroPanel() {
         });
       } else if (reply && reply.length > 0) {
         streamBufferRef.current += reply;
-        if (!streamTimerRef.current) {
-          streamTimerRef.current = window.setTimeout(flushBuffer, 18);
-        }
+        scheduleFlush();
       }
     } catch (err) {
       console.error(err);
