@@ -83,8 +83,13 @@ export function useChatMessages(options: UseChatMessagesOptions) {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+    const hasHistory = messages.some((msg) => msg.role !== "system");
     try {
-      sessionStorage.setItem(storageKey, JSON.stringify(messages));
+      if (hasHistory) {
+        sessionStorage.setItem(storageKey, JSON.stringify(messages));
+      } else {
+        sessionStorage.removeItem(storageKey);
+      }
     } catch {
       // ignore storage write failures (e.g., quota limits)
     }

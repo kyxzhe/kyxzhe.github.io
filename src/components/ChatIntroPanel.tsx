@@ -9,10 +9,14 @@ import ChatInputBar from "@/components/ChatInputBar";
 import { KEVIN_SYSTEM_PROMPT } from "@/lib/constants/chat";
 import { useChatMessages } from "@/hooks/useChatMessages";
 
+const assistantGreeting =
+  "Hi there! Ask me about research, teaching, certifications, or where to find a good flat white.";
+
 export default function ChatIntroPanel() {
   const [messages, setMessages] = useChatMessages({
     storageKey: "chat-intro-history",
     systemMessage: KEVIN_SYSTEM_PROMPT,
+    assistantGreeting,
   });
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
