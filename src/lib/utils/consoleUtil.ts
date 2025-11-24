@@ -198,7 +198,7 @@ export const consoleUtil = {
       },
       ack: () => {
         console.log(`%c✨ Acknowledgements`, this.styles.title);
-        console.log(`%c感谢 Yilin Ye 在网站视觉与交互设计上的指导意见。`, this.styles.info);
+        console.log(`%cSpecial thanks to Yilin Ye for guidance on the site’s visual and interaction design.`, this.styles.info);
       },
     };
   },
