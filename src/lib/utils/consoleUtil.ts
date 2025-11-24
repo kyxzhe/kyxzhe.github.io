@@ -24,6 +24,7 @@ declare global {
       ascii: () => void;
       heart: () => void;
       collab: () => void;
+      notes: () => void;
     };
   }
 }
@@ -51,13 +52,25 @@ const socialEntries = (Object.keys(socials) as Array<keyof typeof socials>).map(
   })
 );
 
+const consoleNotes = [
+  "This studio console waits ~1s to pop open with ASCII vibes so the page can hydrate first.",
+  "Devtools detection pulses every 500ms to spot the extra-sized viewport explorers.",
+  "The hero tagline is stitched right out of the landing copy, so console fans stay aligned.",
+];
+
 export const consoleUtil = {
   asciiArt: `
- _  __                 _             ______
-| |/ /___  ___ _   _  | | _____ _ __|___  /___  ___  _ __
-| ' // _ \\/ __| | | | | |/ / _ \\ '__| / // _ \\/ _ \\| '_ \\
-| . \\  __/\\__ \\ |_| | |   <  __/ |   / /|  __/ (_) | | | |
-|_|\\_\\___||___/\\__,_| |_|\\_\\___|_|  /_/  \\___|\\___/|_| |_|
+   ____  __  __   ____   ___     ___   _____
+  / __ \\/ / / /  / __ \\ /   |   /   | / ___/
+ / /_/ / /_/ /  / / / // /| |  / /| | \\__ \\
+/ ____/ __  /  / /_/ // ___ | / ___ |___/ /
+/_/   /_/ /_/   \\____//_/  |_|/_/  |_/____/
+
+   .----.  .----.  .----.  .----.  .----.
+  / /\\  \\ \\/ /\\ \\ \\/ /\\ \\ \\/ /\\ \\ \\/ /\\ \\
+ ( (  )  )  ( (  )  )  ( (  )  )  ( (  )  )
+  \\ \\/ /  \\/ /\\ \\/ /  \\/ /\\ \\/ /  \\/ /\\ \\/
+   '----'  '----'  '----'  '----'  '----'
 `,
   developerInfo: {
     ...contactInfo,
@@ -72,6 +85,7 @@ export const consoleUtil = {
   socialEntries,
   heroTagline,
   aboutSnippet,
+  consoleNotes,
   styles: {
     title: "color: #ff6b6b; font-size: 16px; font-weight: bold;",
     ascii: "color: #4ecdc4; font-family: monospace; font-size: 10px; line-height: 1;",
@@ -122,6 +136,11 @@ export const consoleUtil = {
       console.log(`%c${line}`, this.styles.message)
     );
 
+    console.log(`%c\n🎧 Console whispers`, this.styles.info);
+    this.consoleNotes.forEach((note) =>
+      console.log(`%c• ${note}`, this.styles.message)
+    );
+
     console.log(`%c\n🤝 Collaborate`, this.styles.title);
     console.log(`%c${this.collaborationPitch}`, this.styles.info);
 
@@ -130,6 +149,7 @@ export const consoleUtil = {
     console.log(`%c• kevinZheng.links() — Website & social links`, this.styles.info);
     console.log(`%c• kevinZheng.ascii() — Repeat the artwork`, this.styles.info);
     console.log(`%c• kevinZheng.collab() — Collaboration pitch`, this.styles.info);
+    console.log(`%c• kevinZheng.notes() — Console whispers`, this.styles.info);
     console.log(`%c• kevinZheng.heart() — Small morale boost`, this.styles.info);
   },
 
@@ -167,6 +187,12 @@ export const consoleUtil = {
         console.log(`%c🤝 Collaborate`, this.styles.title);
         console.log(`%c${this.collaborationPitch}`, this.styles.info);
         console.log(`%cSay hi: ${this.developerInfo.email}`, this.styles.link);
+      },
+      notes: () => {
+        console.log(`%c🎧 Console whispers`, this.styles.info);
+        this.consoleNotes.forEach((note) =>
+          console.log(`%c• ${note}`, this.styles.message)
+        );
       },
     };
   },
