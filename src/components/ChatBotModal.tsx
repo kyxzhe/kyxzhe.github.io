@@ -24,9 +24,11 @@ export default function ChatBotModal({ open, onClose }: ChatBotModalProps) {
 
   const inputRef = useRef<HTMLInputElement | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
-  const streamBufferRef = useRef("");
-  const streamTimerRef = useRef<number | null>(null);
-  const streamedOnceRef = useRef(false);
+  const bufferRef = useRef("");
+  const flushTimerRef = useRef<number | null>(null);
+  const streamedRef = useRef(false);
+  const sliceSize = 6;
+  const tickMs = 28;
   const canSend = input.trim().length > 0 && !isLoading;
 
   useEffect(() => {
@@ -41,6 +43,31 @@ export default function ChatBotModal({ open, onClose }: ChatBotModalProps) {
     }
   }, [messages]);
 
+  const startFlush = () => {
+    if (flushTimerRef.current) return;
+    const step = () => {
+      setMessages((prev) => {
+        if (!prev.length || !bufferRef.current) return prev;
+        const updated = [...prev];
+        const lastIndex = updated.length - 1;
+        if (updated[lastIndex]?.role !== "assistant") return prev;
+        const slice = bufferRef.current.slice(0, sliceSize);
+        bufferRef.current = bufferRef.current.slice(sliceSize);
+        updated[lastIndex] = {
+          ...updated[lastIndex],
+          content: `${updated[lastIndex].content}${slice}`,
+        };
+        return updated;
+      });
+      if (bufferRef.current.length > 0) {
+        flushTimerRef.current = window.setTimeout(step, tickMs);
+      } else {
+        flushTimerRef.current = null;
+      }
+    };
+    flushTimerRef.current = window.setTimeout(step, tickMs);
+  };
+
   const handleSend = async () => {
     if (!canSend) return;
 
@@ -51,46 +78,24 @@ export default function ChatBotModal({ open, onClose }: ChatBotModalProps) {
     const userMessage: ChatMessage = { role: "user", content: nextInput };
     const nextHistory: ChatMessage[] = [...messages, userMessage];
     setMessages([...nextHistory, { role: "assistant", content: "" }]);
-    streamBufferRef.current = "";
-    streamedOnceRef.current = false;
-    if (streamTimerRef.current) {
-      clearTimeout(streamTimerRef.current);
-      streamTimerRef.current = null;
+    bufferRef.current = "";
+    streamedRef.current = false;
+    if (flushTimerRef.current) {
+      clearTimeout(flushTimerRef.current);
+      flushTimerRef.current = null;
     }
     setIsLoading(true);
 
-    const flushBuffer = () => {
-      setMessages((prev) => {
-        if (!prev.length || !streamBufferRef.current) return prev;
-        const updated = [...prev];
-        const lastIndex = updated.length - 1;
-        if (updated[lastIndex]?.role !== "assistant") return prev;
-        updated[lastIndex] = {
-          ...updated[lastIndex],
-          content: `${updated[lastIndex].content}${streamBufferRef.current}`,
-        };
-        streamBufferRef.current = "";
-        return updated;
-      });
-      if (streamBufferRef.current.length > 0) {
-        streamTimerRef.current = window.setTimeout(flushBuffer, 28);
-      } else {
-        streamTimerRef.current = null;
-      }
-    };
-
     const appendChunk = (chunk: string) => {
       if (!chunk) return;
-      streamedOnceRef.current = true;
-      streamBufferRef.current += chunk;
-      if (!streamTimerRef.current) {
-        streamTimerRef.current = window.setTimeout(flushBuffer, 18);
-      }
+      streamedRef.current = true;
+      bufferRef.current += chunk;
+      startFlush();
     };
 
     try {
       const reply = await sendChatRequest(nextHistory, { onChunk: appendChunk });
-      if (!streamedOnceRef.current) {
+      if (!streamedRef.current) {
         setMessages((prev) => {
           if (!prev.length) return prev;
           const updated = [...prev];
@@ -100,10 +105,8 @@ export default function ChatBotModal({ open, onClose }: ChatBotModalProps) {
           return updated;
         });
       } else if (reply && reply.length > 0) {
-        streamBufferRef.current += reply;
-        if (!streamTimerRef.current) {
-          streamTimerRef.current = window.setTimeout(flushBuffer, 18);
-        }
+        bufferRef.current += reply;
+        startFlush();
       }
     } catch (err) {
       console.error(err);

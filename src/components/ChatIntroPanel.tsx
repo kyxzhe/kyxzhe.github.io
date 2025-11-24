@@ -19,85 +19,41 @@ export default function ChatIntroPanel() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const streamBufferRef = useRef("");
-  const tokenQueueRef = useRef<string[]>([]);
-  const streamTimerRef = useRef<number | null>(null);
-  const streamedOnceRef = useRef(false);
+  const bufferRef = useRef("");
+  const flushTimerRef = useRef<number | null>(null);
+  const streamedRef = useRef(false);
+  const sliceSize = 6;
+  const tickMs = 28;
   const canSend = input.trim().length > 0 && !isLoading;
-
-  const tokenize = (text: string): { tokens: string[]; remainder: string } => {
-    const tokens: string[] = [];
-    let current = "";
-    const flushCurrent = () => {
-      if (current) {
-        tokens.push(current);
-        current = "";
-      }
-    };
-    const isCJK = (ch: string) => /[\u3400-\u4DBF\u4E00-\u9FFF]/.test(ch);
-    const isWhitespace = (ch: string) => /\s/.test(ch);
-    const isPunctuation = (ch: string) => /[.,!?;:()"“”'’`·\-–—，。！？；：（）【】\[\]{}<>]/.test(ch);
-
-    for (let i = 0; i < text.length; i++) {
-      const ch = text[i]!;
-      if (isCJK(ch)) {
-        flushCurrent();
-        tokens.push(ch);
-        continue;
-      }
-      if (isWhitespace(ch)) {
-        flushCurrent();
-        tokens.push(ch);
-        continue;
-      }
-      if (isPunctuation(ch)) {
-        flushCurrent();
-        tokens.push(ch);
-        continue;
-      }
-      current += ch;
-    }
-    return { tokens, remainder: current };
-  };
-
-  const scheduleFlush = () => {
-    if (streamTimerRef.current) return;
-    streamTimerRef.current = window.setTimeout(flushStep, 22);
-  };
-
-  const flushStep = () => {
-    if (!tokenQueueRef.current.length && streamBufferRef.current) {
-      const { tokens, remainder } = tokenize(streamBufferRef.current);
-      tokenQueueRef.current.push(...tokens);
-      streamBufferRef.current = remainder;
-    }
-
-    if (!tokenQueueRef.current.length) {
-      streamTimerRef.current = null;
-      return;
-    }
-
-    const nextToken = tokenQueueRef.current.shift() ?? "";
-    if (nextToken) {
-      setMessages((prev) => {
-        if (!prev.length) return prev;
-        const updated = [...prev];
-        const lastIndex = updated.length - 1;
-        if (updated[lastIndex]?.role !== "assistant") return prev;
-        updated[lastIndex] = {
-          ...updated[lastIndex],
-          content: `${updated[lastIndex].content}${nextToken}`,
-        };
-        return updated;
-      });
-    }
-
-    streamTimerRef.current = window.setTimeout(flushStep, 22);
-  };
 
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
+
+  const startFlush = () => {
+    if (flushTimerRef.current) return;
+    const step = () => {
+      setMessages((prev) => {
+        if (!prev.length || !bufferRef.current) return prev;
+        const updated = [...prev];
+        const lastIndex = updated.length - 1;
+        if (updated[lastIndex]?.role !== "assistant") return prev;
+        const slice = bufferRef.current.slice(0, sliceSize);
+        bufferRef.current = bufferRef.current.slice(sliceSize);
+        updated[lastIndex] = {
+          ...updated[lastIndex],
+          content: `${updated[lastIndex].content}${slice}`,
+        };
+        return updated;
+      });
+      if (bufferRef.current.length > 0) {
+        flushTimerRef.current = window.setTimeout(step, tickMs);
+      } else {
+        flushTimerRef.current = null;
+      }
+    };
+    flushTimerRef.current = window.setTimeout(step, tickMs);
+  };
 
   const handleSend = async () => {
     if (!canSend) return;
@@ -108,25 +64,24 @@ export default function ChatIntroPanel() {
     const userMessage: ChatMessage = { role: "user", content: nextInput };
     const nextHistory: ChatMessage[] = [...messages, userMessage];
     setMessages([...nextHistory, { role: "assistant", content: "" }]);
-    streamBufferRef.current = "";
-    tokenQueueRef.current = [];
-    streamedOnceRef.current = false;
-    if (streamTimerRef.current) {
-      clearTimeout(streamTimerRef.current);
-      streamTimerRef.current = null;
+    bufferRef.current = "";
+    streamedRef.current = false;
+    if (flushTimerRef.current) {
+      clearTimeout(flushTimerRef.current);
+      flushTimerRef.current = null;
     }
     setIsLoading(true);
 
     const appendChunk = (chunk: string) => {
       if (!chunk) return;
-      streamedOnceRef.current = true;
-      streamBufferRef.current += chunk;
-      scheduleFlush();
+      streamedRef.current = true;
+      bufferRef.current += chunk;
+      startFlush();
     };
 
     try {
       const reply = await sendChatRequest(nextHistory, { onChunk: appendChunk });
-      if (!streamedOnceRef.current) {
+      if (!streamedRef.current) {
         setMessages((prev) => {
           if (!prev.length) return prev;
           const updated = [...prev];
@@ -136,8 +91,8 @@ export default function ChatIntroPanel() {
           return updated;
         });
       } else if (reply && reply.length > 0) {
-        streamBufferRef.current += reply;
-        scheduleFlush();
+        bufferRef.current += reply;
+        startFlush();
       }
     } catch (err) {
       console.error(err);
