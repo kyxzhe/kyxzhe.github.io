@@ -25,6 +25,7 @@ declare global {
       heart: () => void;
       collab: () => void;
       notes: () => void;
+      ack: () => void;
     };
   }
 }
@@ -150,6 +151,7 @@ export const consoleUtil = {
     console.log(`%c• kevinZheng.ascii() — Repeat the artwork`, this.styles.info);
     console.log(`%c• kevinZheng.collab() — Collaboration pitch`, this.styles.info);
     console.log(`%c• kevinZheng.notes() — Console whispers`, this.styles.info);
+    console.log(`%c• kevinZheng.ack() — Acknowledgements`, this.styles.info);
     console.log(`%c• kevinZheng.heart() — Small morale boost`, this.styles.info);
   },
 
@@ -193,6 +195,10 @@ export const consoleUtil = {
         this.consoleNotes.forEach((note) =>
           console.log(`%c• ${note}`, this.styles.message)
         );
+      },
+      ack: () => {
+        console.log(`%c✨ Acknowledgements`, this.styles.title);
+        console.log(`%c感谢 Yilin Ye 在网站视觉与交互设计上的指导意见。`, this.styles.info);
       },
     };
   },
