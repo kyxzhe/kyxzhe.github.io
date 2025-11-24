@@ -18,7 +18,7 @@ export default function Home() {
     "Interested in my research, teaching, or projects? Feel free to ask here.",
     "对我的科研、教学或项目好奇吗？欢迎在这里随时提问。",
     "對我嘅研究、教學或者項目有興趣？喺呢度儘管問啦。",
-    "Dacă te interesează cercetările mele, predarea sau proiectele, poți întreba aici.",
+    "Ești interesat de cercetarea mea, activitatea mea didactică sau proiectele mele? Nu ezita să întrebi aici.",
     "私の研究や教育、プロジェクトについて知りたいことがあれば、ここで気軽に聞いてください。",
     "제 연구나 강의, 프로젝트에 대해 궁금한 점이 있으시면 여기에서 편하게 질문해 주세요.",
     "Si te interesa mi investigación, mi docencia o mis proyectos, puedes preguntar aquí.",
