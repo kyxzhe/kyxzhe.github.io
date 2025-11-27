@@ -132,7 +132,7 @@ export default function ChatBotModal({ open, onClose }: ChatBotModalProps) {
               KevinBot
               <MessagesSquare size={18} className="text-brand-accent" />
             </h2>
-            <p className="text-sm text-muted-foreground mb-4">
+            <p className="text-[16px] leading-[1.5] text-muted-foreground mb-4">
               Powered by Cloudflare Workers AI. Treat responses as friendly context, not formal advice.
             </p>
             <div ref={scrollRef} className="flex-1 overflow-y-auto space-y-3 pr-1 mb-4">
@@ -142,7 +142,7 @@ export default function ChatBotModal({ open, onClose }: ChatBotModalProps) {
                   className={`flex ${message.role === "assistant" ? "justify-start" : "justify-end"}`}
                 >
                   <div
-                    className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm ${
+                    className={`max-w-[85%] rounded-2xl px-4 py-3 text-[16px] leading-[1.5] ${
                       message.role === "assistant"
                         ? "bg-[var(--card)] border border-[var(--card-border)] text-foreground"
                         : "bg-[var(--accent)] text-white"
@@ -169,7 +169,7 @@ export default function ChatBotModal({ open, onClose }: ChatBotModalProps) {
               ))}
             </div>
             {error && (
-              <div className="card-row text-sm text-red-500">
+              <div className="card-row text-[16px] leading-[1.4] text-red-500">
                 <AlertTriangle size={16} />
                 {error}
               </div>

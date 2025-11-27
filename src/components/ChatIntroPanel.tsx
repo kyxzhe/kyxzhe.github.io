@@ -114,7 +114,7 @@ export default function ChatIntroPanel() {
         <div className="flex-1 flex flex-col min-h-0 gap-3">
           <div
             ref={scrollRef}
-            className="flex-1 min-h-0 space-y-3 text-sm overflow-y-auto pr-2"
+            className="flex-1 min-h-0 space-y-3 text-[16px] leading-[1.5] overflow-y-auto pr-2"
           >
             {visibleMessages.map((msg, idx) => (
               <div

@@ -176,7 +176,7 @@ export default function Home() {
                 >
                     <div className="max-h-[320px] md:max-h-[360px] overflow-y-auto space-y-3 pr-[6px] pt-1">
                       {visibleMessages.length === 0 && !isLoading ? (
-                        <p className="text-sm text-[rgba(0,0,0,0.6)] dark:text-white/60">发送后这里会展开显示完整对话。</p>
+                        <p className="text-[16px] leading-[1.5] text-[rgba(0,0,0,0.6)] dark:text-white/60">发送后这里会展开显示完整对话。</p>
                       ) : (
                         visibleMessages.map((message, index) => (
                           <div
@@ -184,7 +184,7 @@ export default function Home() {
                             className={`flex gap-2 ${message.role === "user" ? "justify-end" : "justify-start"}`}
                           >
                             <div
-                            className={`max-w-[85%] text-sm md:text-[15px] leading-relaxed text-left ${
+                            className={`max-w-[85%] text-[16px] leading-relaxed text-left ${
                                 message.role === "user"
                                   ? "bg-[#f2f2f4] text-foreground border border-[rgba(0,0,0,0.06)] rounded-2xl px-3 py-[10px] shadow-[0_1px_5px_rgba(0,0,0,0.04)] dark:bg-[#2a2a30] dark:text-white dark:border-[#3a3a42] dark:shadow-[0_2px_8px_rgba(0,0,0,0.22)]"
                                   : "text-foreground dark:text-white"
@@ -216,7 +216,7 @@ export default function Home() {
               <div className="relative w-full">
                 <textarea
                   placeholder=""
-                  className="w-full min-h-[72px] resize-none bg-transparent pe-[52px] pr-[52px] text-[17px] md:text-[17.5px] leading-[1.4] text-foreground focus:outline-none dark:text-white"
+                  className="w-full min-h-[72px] resize-none bg-transparent pe-[52px] pr-[52px] text-[16px] md:text-[16px] leading-[1.4] text-foreground focus:outline-none dark:text-white"
                   aria-label="Ask a question"
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
@@ -230,7 +230,7 @@ export default function Home() {
                       animate={{ y: 0, opacity: 0.8 }}
                       exit={{ y: -6, opacity: 0 }}
                       transition={{ duration: 0.18, ease: "easeOut" }}
-                      className="pointer-events-none absolute left-0 top-0 text-[17px] md:text-[17.5px] leading-[1.4] text-[rgba(0,0,0,0.6)] dark:text-white/60"
+                      className="pointer-events-none absolute left-0 top-0 text-[16px] md:text-[16px] leading-[1.4] text-[rgba(0,0,0,0.6)] dark:text-white/60"
                     >
                       -&gt;
                     </motion.div>

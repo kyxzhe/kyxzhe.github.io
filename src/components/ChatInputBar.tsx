@@ -51,7 +51,7 @@ const ChatInputBar = forwardRef<HTMLInputElement, ChatInputBarProps>(
           placeholder={placeholder}
           onChange={(event) => onChange(event.target.value)}
           onKeyDown={handleKeyDown}
-          className="flex-1 bg-transparent px-1 py-1 text-sm text-foreground placeholder:text-muted-foreground/70 focus:outline-none"
+          className="flex-1 bg-transparent px-1 py-1 text-[16px] leading-[1.4] text-foreground placeholder:text-muted-foreground/70 focus:outline-none"
           aria-label={placeholder}
         />
         <div className="ie-3 absolute bottom-4 right-4 mt-auto flex justify-end">
