@@ -19,6 +19,18 @@ const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
         remarkPlugins={[remarkGfm, remarkMath]}
         rehypePlugins={[rehypeKatex]}
         components={{
+          h1: ({ node, ...props }) => (
+            <h1 className="text-[22px] font-semibold leading-[1.35] mt-2 mb-3" {...props} />
+          ),
+          h2: ({ node, ...props }) => (
+            <h2 className="text-[20px] font-semibold leading-[1.35] mt-2 mb-3" {...props} />
+          ),
+          h3: ({ node, ...props }) => (
+            <h3 className="text-[18px] font-semibold leading-[1.35] mt-2 mb-2" {...props} />
+          ),
+          h4: ({ node, ...props }) => (
+            <h4 className="text-[16px] font-semibold leading-[1.35] mt-2 mb-2" {...props} />
+          ),
           p: ({ node, ...props }) => (
             <p className="whitespace-pre-line leading-[1.5]" {...props} />
           ),
