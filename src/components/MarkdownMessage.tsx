@@ -3,6 +3,7 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
+import remarkSupersub from "remark-supersub";
 import rehypeKatex from "rehype-katex";
 import rehypeRaw from "rehype-raw";
 import type { HTMLAttributes, ReactNode } from "react";
@@ -18,7 +19,7 @@ const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
   return (
     <div className={cn("space-y-2", className)}>
       <ReactMarkdown
-        remarkPlugins={[remarkGfm, remarkMath]}
+        remarkPlugins={[remarkMath, remarkGfm, remarkSupersub]}
         rehypePlugins={[rehypeRaw, rehypeKatex]}
         skipHtml={false}
         components={{
