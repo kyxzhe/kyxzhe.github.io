@@ -75,6 +75,7 @@ const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
     };
 
     const codeBackground = "var(--pill-background)";
+    const codeLabel = (language ?? "text").toLowerCase();
 
     return (
       <div
@@ -82,10 +83,10 @@ const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
         style={{ background: codeBackground }}
       >
         <div
-          className="flex items-center justify-between px-3 py-2 text-[12px] uppercase tracking-[0.12em] text-[rgb(93,93,93)] dark:text-[rgb(243,243,243)]"
+          className="flex items-center justify-between px-3 py-2 text-[12px] tracking-[0.12em] text-[rgb(93,93,93)] dark:text-[rgb(243,243,243)]"
           style={{ background: codeBackground }}
         >
-          <span className="flex-1 text-left truncate">{language ?? "code"}</span>
+          <span className="flex-1 text-left truncate lowercase">{codeLabel}</span>
           <button
             type="button"
             onClick={handleCopy}
