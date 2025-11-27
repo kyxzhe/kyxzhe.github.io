@@ -8,8 +8,31 @@ import remarkDeflist from "remark-deflist";
 import rehypeKatex from "rehype-katex";
 import rehypeRaw from "rehype-raw";
 import { useState, type HTMLAttributes, type ReactNode } from "react";
+import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
+import jsx from "react-syntax-highlighter/dist/cjs/languages/prism/jsx";
+import tsx from "react-syntax-highlighter/dist/cjs/languages/prism/tsx";
+import typescript from "react-syntax-highlighter/dist/cjs/languages/prism/typescript";
+import javascript from "react-syntax-highlighter/dist/cjs/languages/prism/javascript";
+import python from "react-syntax-highlighter/dist/cjs/languages/prism/python";
+import bash from "react-syntax-highlighter/dist/cjs/languages/prism/bash";
+import json from "react-syntax-highlighter/dist/cjs/languages/prism/json";
+import markdown from "react-syntax-highlighter/dist/cjs/languages/prism/markdown";
+import { oneDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import { cn } from "@/lib/utils/util";
 import "katex/dist/katex.min.css";
+
+SyntaxHighlighter.registerLanguage("jsx", jsx);
+SyntaxHighlighter.registerLanguage("tsx", tsx);
+SyntaxHighlighter.registerLanguage("ts", typescript);
+SyntaxHighlighter.registerLanguage("typescript", typescript);
+SyntaxHighlighter.registerLanguage("javascript", javascript);
+SyntaxHighlighter.registerLanguage("js", javascript);
+SyntaxHighlighter.registerLanguage("py", python);
+SyntaxHighlighter.registerLanguage("python", python);
+SyntaxHighlighter.registerLanguage("bash", bash);
+SyntaxHighlighter.registerLanguage("shell", bash);
+SyntaxHighlighter.registerLanguage("json", json);
+SyntaxHighlighter.registerLanguage("markdown", markdown);
 
 interface MarkdownMessageProps {
   content: string;
@@ -29,6 +52,8 @@ const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
         : Array.isArray(children)
           ? children.join("")
           : "";
+    const language =
+      (className?.match(/language-([\w-]+)/)?.[1] as string | undefined) || undefined;
 
     const handleCopy = async () => {
       try {
@@ -42,51 +67,36 @@ const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
 
     return (
       <div className="relative group">
-        <pre className="rounded-lg bg-[rgba(0,0,0,0.08)] px-4 py-3 overflow-x-auto text-[var(--foreground)] dark:bg-white/10">
-          <code className={cn("block text-[0.95em] leading-[1.6] font-mono text-inherit", className)} {...props}>
-            {children}
-          </code>
-        </pre>
+        {language ? (
+          <SyntaxHighlighter
+            language={language}
+            style={oneDark}
+            PreTag="div"
+            customStyle={{
+              margin: 0,
+              borderRadius: "10px",
+              background: "rgba(0,0,0,0.08)",
+            }}
+            codeTagProps={{
+              className: "text-[0.95em] leading-[1.6] font-mono",
+            }}
+            wrapLongLines
+          >
+            {text}
+          </SyntaxHighlighter>
+        ) : (
+          <pre className="rounded-lg bg-[rgba(0,0,0,0.08)] px-4 py-3 overflow-x-auto text-[var(--foreground)] dark:bg-white/10">
+            <code className={cn("block text-[0.95em] leading-[1.6] font-mono text-inherit", className)} {...props}>
+              {children}
+            </code>
+          </pre>
+        )}
         <button
           type="button"
           onClick={handleCopy}
           className="absolute top-2 right-2 inline-flex items-center gap-1 bg-transparent px-2 py-[6px] text-[12.5px] text-white/90 transition hover:opacity-80 dark:text-white"
-          aria-label="Copy code"
         >
-          {copied ? (
-            <>
-              <span aria-hidden="true">✓</span>
-              <span>Copied</span>
-            </>
-          ) : (
-            <>
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true"
-                className="text-white/80"
-              >
-                <path
-                  d="M15 4H6.5A2.5 2.5 0 0 0 4 6.5v9A2.5 2.5 0 0 0 6.5 18H15a2.5 2.5 0 0 0 2.5-2.5v-9A2.5 2.5 0 0 0 15 4Z"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M18 15.5h-.5A2.5 2.5 0 0 1 15 13V5.5"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <span>Copy</span>
-            </>
-          )}
+          {copied ? "✓ Copied" : "Copy"}
         </button>
       </div>
     );
