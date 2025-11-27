@@ -6,6 +6,7 @@ import { AlertTriangle, MessagesSquare, Sparkles, X } from "lucide-react";
 import ChatInputBar from "@/components/ChatInputBar";
 import { type ChatMessage, sendChatRequest } from "@/lib/api/chat";
 import { useChatMessages } from "@/hooks/useChatMessages";
+import MarkdownMessage from "@/components/MarkdownMessage";
 
 interface ChatBotModalProps {
   open: boolean;
@@ -157,13 +158,10 @@ export default function ChatBotModal({ open, onClose }: ChatBotModalProps) {
                     >
                       {message.role === "assistant" ? "KevinBot" : "You"}
                     </p>
-                    <p
-                      className={`whitespace-pre-line ${
-                        message.role === "user" ? "text-right text-white" : ""
-                      }`}
-                    >
-                      {message.content}
-                    </p>
+                    <MarkdownMessage
+                      content={message.content}
+                      className={message.role === "user" ? "text-right text-white" : ""}
+                    />
                   </div>
                 </div>
               ))}

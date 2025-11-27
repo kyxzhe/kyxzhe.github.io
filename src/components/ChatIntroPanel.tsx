@@ -7,6 +7,7 @@ import { cardVariants } from "@/lib/animation/variants";
 import { type ChatMessage, sendChatRequest } from "@/lib/api/chat";
 import ChatInputBar from "@/components/ChatInputBar";
 import { useChatMessages } from "@/hooks/useChatMessages";
+import MarkdownMessage from "@/components/MarkdownMessage";
 
 export default function ChatIntroPanel() {
   const [messages, setMessages] = useChatMessages({
@@ -128,7 +129,10 @@ export default function ChatIntroPanel() {
                       : "rounded-full px-4 py-2 bg-[rgba(233,233,233,0.5)] text-foreground text-right dark:bg-[rgba(50,50,50,0.85)] dark:text-white"
                   }`}
                 >
-                  <p className="whitespace-pre-line">{msg.content}</p>
+                  <MarkdownMessage
+                    content={msg.content}
+                    className={msg.role === "user" ? "text-right" : "text-left"}
+                  />
                 </div>
               </div>
             ))}

@@ -7,6 +7,7 @@ import { Loader2 } from "lucide-react";
 import { useState, useCallback, useEffect, useMemo, useRef, KeyboardEvent } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { sendChatRequest, type ChatMessage } from "@/lib/api/chat";
+import MarkdownMessage from "@/components/MarkdownMessage";
 import { useChatMessages } from "@/hooks/useChatMessages";
 
 export default function Home() {
@@ -195,7 +196,7 @@ export default function Home() {
                                 : "rounded-2xl text-foreground dark:text-white"
                             }`}
                             >
-                              {message.content}
+                              <MarkdownMessage content={message.content} />
                             </div>
                           </div>
                         ))
