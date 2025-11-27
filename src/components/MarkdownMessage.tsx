@@ -4,6 +4,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
+import type { HTMLAttributes, ReactNode } from "react";
 import { cn } from "@/lib/utils/util";
 import "katex/dist/katex.min.css";
 
@@ -49,15 +50,23 @@ const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
               {...props}
             />
           ),
-          code: ({ inline, ...props }) =>
+          code: ({
+            inline,
+            children,
+            ...props
+          }: { inline?: boolean; children?: ReactNode } & HTMLAttributes<HTMLElement>) =>
             inline ? (
               <code
                 className="rounded bg-[rgba(0,0,0,0.06)] px-[4px] py-[2px] text-[0.95em] font-mono dark:bg-white/15"
                 {...props}
-              />
+              >
+                {children}
+              </code>
             ) : (
               <pre className="rounded bg-[rgba(0,0,0,0.06)] px-3 py-2 overflow-x-auto dark:bg-white/10">
-                <code className="text-[0.95em] leading-[1.6] font-mono" {...props} />
+                <code className="text-[0.95em] leading-[1.6] font-mono" {...props}>
+                  {children}
+                </code>
               </pre>
             ),
           table: ({ node, ...props }) => (
@@ -71,11 +80,12 @@ const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
           tbody: ({ node, ...props }) => (
             <tbody className="[&_td]:border [&_td]:border-[rgba(0,0,0,0.1)] [&_td]:px-3 [&_td]:py-2 dark:[&_td]:border-white/15" {...props} />
           ),
-          img: ({ node, ...props }) => (
+          img: ({ node, alt, ...props }) => (
             <img
               className="max-w-full rounded-md border border-[rgba(0,0,0,0.06)] bg-white dark:border-white/10"
               loading="lazy"
               referrerPolicy="no-referrer"
+              alt={typeof alt === "string" && alt.length > 0 ? alt : "markdown image"}
               {...props}
             />
           ),
