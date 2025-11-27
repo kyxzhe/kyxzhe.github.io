@@ -57,10 +57,21 @@ const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
               />
             ) : (
               <code
-                className="block rounded bg-[rgba(0,0,0,0.06)] px-3 py-2 text-[0.95em] dark:bg-white/10"
+                className="block rounded bg-[rgba(0,0,0,0.06)] px-3 py-2 text-[0.95em] leading-[1.6] whitespace-pre overflow-x-auto dark:bg-white/10"
                 {...props}
               />
             ),
+          table: ({ node, ...props }) => (
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse text-[15px] leading-[1.5]" {...props} />
+            </div>
+          ),
+          thead: ({ node, ...props }) => (
+            <thead className="[&_th]:border [&_th]:border-[rgba(0,0,0,0.1)] [&_th]:px-3 [&_th]:py-2 dark:[&_th]:border-white/20 bg-[rgba(0,0,0,0.02)] dark:bg-white/5" {...props} />
+          ),
+          tbody: ({ node, ...props }) => (
+            <tbody className="[&_td]:border [&_td]:border-[rgba(0,0,0,0.1)] [&_td]:px-3 [&_td]:py-2 dark:[&_td]:border-white/15" {...props} />
+          ),
         }}
       >
         {content}
