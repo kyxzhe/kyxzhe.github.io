@@ -19,10 +19,10 @@ const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
             <p className="whitespace-pre-line leading-[1.5]" {...props} />
           ),
           ul: ({ node, ...props }) => (
-            <ul className="list-disc list-inside space-y-1 leading-[1.5]" {...props} />
+            <ul className="list-disc pl-5 space-y-1 leading-[1.5]" {...props} />
           ),
           ol: ({ node, ...props }) => (
-            <ol className="list-decimal list-inside space-y-1 leading-[1.5]" {...props} />
+            <ol className="list-decimal pl-5 space-y-1 leading-[1.5]" {...props} />
           ),
           li: ({ node, ...props }) => <li className="leading-[1.5]" {...props} />,
           a: ({ node, ...props }) => (
