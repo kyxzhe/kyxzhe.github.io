@@ -123,7 +123,7 @@ export default function Home() {
     historyEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [visibleMessages, isLoading]);
 
-  const showPlaceholderOverlay = !prompt.trim() && visibleMessages.length === 0;
+  const showPlaceholderOverlay = isHydrated && !prompt.trim() && visibleMessages.length === 0;
   const showCaretHint = isHydrated && !prompt.trim() && visibleMessages.length > 0;
 
   return (
