@@ -20,31 +20,31 @@ const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
         remarkPlugins={[remarkGfm, remarkMath]}
         rehypePlugins={[rehypeKatex]}
         components={{
-          h1: ({ node, ...props }) => (
-            <h1 className="text-[22px] font-semibold leading-[1.35] mt-2 mb-3" {...props} />
+          h1: ({ node, className, ...props }) => (
+            <h1 className={cn("text-[22px] font-semibold leading-[1.35] mt-2 mb-3", className)} {...props} />
           ),
-          h2: ({ node, ...props }) => (
-            <h2 className="text-[20px] font-semibold leading-[1.35] mt-2 mb-3" {...props} />
+          h2: ({ node, className, ...props }) => (
+            <h2 className={cn("text-[20px] font-semibold leading-[1.35] mt-2 mb-3", className)} {...props} />
           ),
-          h3: ({ node, ...props }) => (
-            <h3 className="text-[18px] font-semibold leading-[1.35] mt-2 mb-2" {...props} />
+          h3: ({ node, className, ...props }) => (
+            <h3 className={cn("text-[18px] font-semibold leading-[1.35] mt-2 mb-2", className)} {...props} />
           ),
-          h4: ({ node, ...props }) => (
-            <h4 className="text-[16px] font-semibold leading-[1.35] mt-2 mb-2" {...props} />
+          h4: ({ node, className, ...props }) => (
+            <h4 className={cn("text-[16px] font-semibold leading-[1.35] mt-2 mb-2", className)} {...props} />
           ),
-          p: ({ node, ...props }) => (
-            <p className="whitespace-pre-line leading-[1.5]" {...props} />
+          p: ({ node, className, ...props }) => (
+            <p className={cn("whitespace-pre-line leading-[1.5]", className)} {...props} />
           ),
-          ul: ({ node, ...props }) => (
-            <ul className="list-disc pl-5 space-y-1 leading-[1.5]" {...props} />
+          ul: ({ node, className, ...props }) => (
+            <ul className={cn("list-disc pl-5 space-y-1 leading-[1.5]", className)} {...props} />
           ),
-          ol: ({ node, ...props }) => (
-            <ol className="list-decimal pl-5 space-y-1 leading-[1.5]" {...props} />
+          ol: ({ node, className, ...props }) => (
+            <ol className={cn("list-decimal pl-5 space-y-1 leading-[1.5]", className)} {...props} />
           ),
-          li: ({ node, ...props }) => <li className="leading-[1.5]" {...props} />,
-          a: ({ node, ...props }) => (
+          li: ({ node, className, ...props }) => <li className={cn("leading-[1.5]", className)} {...props} />,
+          a: ({ node, className, ...props }) => (
             <a
-              className="underline decoration-from-font underline-offset-2 text-[var(--accent)]"
+              className={cn("underline decoration-from-font underline-offset-2 text-[var(--accent)]", className)}
               target="_blank"
               rel="noreferrer"
               {...props}
