@@ -4,6 +4,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import remarkSupersub from "remark-supersub";
+import remarkDeflist from "remark-deflist";
 import rehypeKatex from "rehype-katex";
 import rehypeRaw from "rehype-raw";
 import type { HTMLAttributes, ReactNode } from "react";
@@ -19,7 +20,7 @@ const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
   return (
     <div className={cn("space-y-2", className)}>
       <ReactMarkdown
-        remarkPlugins={[remarkMath, remarkGfm, remarkSupersub]}
+        remarkPlugins={[remarkMath, remarkGfm, remarkDeflist, remarkSupersub]}
         rehypePlugins={[rehypeRaw, rehypeKatex]}
         skipHtml={false}
         components={{
@@ -37,9 +38,6 @@ const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
           ),
           p: ({ node, className, ...props }) => (
             <div className={cn("whitespace-pre-line leading-[1.5]", className)} {...props} />
-          ),
-          ul: ({ node, className, ...props }) => (
-            <ul className={cn("list-disc pl-5 space-y-1 leading-[1.5]", className)} {...props} />
           ),
           ol: ({ node, className, children, ...props }) => (
             <ol
@@ -63,6 +61,17 @@ const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
             <li className={cn("leading-[1.5]", className)} {...props}>
               {children}
             </li>
+          ),
+          dl: ({ node, className, children, ...props }) => (
+            <dl className={cn("space-y-2", className)} {...props}>
+              {children}
+            </dl>
+          ),
+          dt: ({ node, className, ...props }) => (
+            <dt className={cn("font-semibold leading-[1.5]", className)} {...props} />
+          ),
+          dd: ({ node, className, ...props }) => (
+            <dd className={cn("pl-4 leading-[1.5] text-[rgba(255,255,255,0.88)] dark:text-white", className)} {...props} />
           ),
           a: ({ node, className, ...props }) => (
             <a
@@ -119,6 +128,9 @@ const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
           ),
           u: ({ node, className, ...props }) => (
             <u className={cn("underline underline-offset-2", className)} {...props} />
+          ),
+          hr: ({ node, className, ...props }) => (
+            <hr className={cn("my-3 border-t border-[rgba(255,255,255,0.3)] dark:border-white/40", className)} {...props} />
           ),
         }}
       >
