@@ -90,7 +90,7 @@ const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
           <button
             type="button"
             onClick={handleCopy}
-            className="inline-flex items-center gap-1 bg-transparent px-1.5 py-[4px] text-[12.5px] text-[rgb(93,93,93)] transition hover:opacity-80 dark:text-[rgb(243,243,243)]"
+            className="inline-flex items-center gap-1 bg-transparent px-1.5 py-[4px] text-[12px] text-[rgb(93,93,93)] transition hover:opacity-80 dark:text-[rgb(243,243,243)]"
             aria-label="Copy code"
           >
             {copied ? (
