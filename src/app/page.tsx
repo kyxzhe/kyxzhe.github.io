@@ -251,7 +251,7 @@ export default function Home() {
                   </AnimatePresence>
                 )}
               </div>
-              <div className="ie-3 absolute bottom-4 right-4 mt-auto flex justify-end">
+              <div className="ie-3 absolute bottom-1 right-[-6px] mt-auto flex justify-end">
                 <button
                   type="submit"
                   aria-label="Send prompt to ChatGPT"
