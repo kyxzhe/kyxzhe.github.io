@@ -156,13 +156,13 @@ export default function Home() {
             layout
             initial={false}
             animate={{
-              height: isExpanded ? "auto" : 108,
+              height: isExpanded ? "auto" : 112,
               boxShadow: isExpanded
                 ? "0 3px 10px rgba(0,0,0,0.07)"
                 : "0 2px 8px rgba(0,0,0,0.06)",
             }}
             transition={{ type: "spring", stiffness: 240, damping: 30 }}
-            className="w-full rounded-[26px] bg-white border border-[rgba(0,0,0,0.08)] px-[18px] pt-[18px] pb-[18px] flex flex-col gap-3 overflow-hidden dark:bg-[rgba(255,255,255,0.12)] dark:border-none dark:shadow-[0_3px_12px_rgba(0,0,0,0.26)]"
+            className="relative w-full rounded-[26px] bg-white border border-[rgba(0,0,0,0.08)] px-5 pt-5 pb-5 flex flex-col gap-3 overflow-hidden dark:bg-[rgba(255,255,255,0.12)] dark:border-none dark:shadow-[0_3px_12px_rgba(0,0,0,0.26)]"
           >
             <AnimatePresence initial={false}>
               {isExpanded && (
@@ -206,11 +206,11 @@ export default function Home() {
               )}
             </AnimatePresence>
 
-            <div className="relative w-full flex items-end">
+            <div className="flex items-end gap-3 relative w-full">
               <div className="flex-1 relative">
                 <textarea
                   placeholder=""
-                  className="w-full min-h-[72px] resize-none bg-transparent text-[17px] md:text-[17.5px] leading-[1.4] text-foreground focus:outline-none pr-[52px] dark:text-white"
+                  className="w-full min-h-[72px] resize-none bg-transparent text-[17px] md:text-[17.5px] leading-[1.4] text-foreground focus:outline-none dark:text-white"
                   aria-label="Ask a question"
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
@@ -233,7 +233,7 @@ export default function Home() {
               </div>
               <button
                 type="button"
-              className={`absolute right-0 bottom-0 inline-flex h-9 w-9 items-center justify-center rounded-full transition disabled:opacity-60 disabled:cursor-not-allowed ${prompt.trim() ? "bg-black text-white dark:bg-white dark:text-black" : "bg-[rgb(229,231,235)] text-[rgba(0,0,0,0.6)] dark:bg-white/15 dark:text-white"}`}
+              className={`inline-flex h-9 w-9 items-center justify-center rounded-full transition disabled:opacity-60 disabled:cursor-not-allowed ${prompt.trim() ? "bg-black text-white dark:bg-white dark:text-black" : "bg-[rgb(229,231,235)] text-[rgba(0,0,0,0.6)] dark:bg-white/15 dark:text-white"}`}
               aria-label="Submit question"
               onClick={handleSend}
               disabled={!prompt.trim() || isLoading}
