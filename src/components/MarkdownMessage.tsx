@@ -39,11 +39,19 @@ const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
             <ul className={cn("list-disc pl-5 space-y-1 leading-[1.5]", className)} {...props} />
           ),
           ol: ({ node, className, ...props }) => (
-            <ol className={cn("list-decimal pl-5 space-y-1 leading-[1.5]")}{...props}>
-              {props.children}
-            </ol>
+            <ol
+              className={cn("pl-5 space-y-1 leading-[1.5]", className)}
+              style={{ listStyleType: "decimal", listStylePosition: "outside" }}
+              {...props}
+            />
           ),
-          li: ({ node, className, ...props }) => <li className={cn("leading-[1.5] list-decimal list-inside", className)} {...props} />,
+          li: ({ node, className, ...props }) => (
+            <li
+              className={cn("leading-[1.5]", className)}
+              style={{ listStyleType: "inherit" }}
+              {...props}
+            />
+          ),
           a: ({ node, className, ...props }) => (
             <a
               className={cn("underline decoration-from-font underline-offset-2 text-[var(--accent)]", className)}
