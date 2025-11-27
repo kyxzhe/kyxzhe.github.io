@@ -213,9 +213,7 @@ export default function Home() {
                 handleSend();
               }}
             >
-              <label
-                className="@md:rounded-3xl light:border-primary-12 dark:bg-primary-4 light:border light:bg-secondary-100 light:shadow-splash-chatpgpt-input relative flex w-full cursor-text flex-col overflow-hidden rounded-2xl border border-[rgba(0,0,0,0.08)] bg-white/90 py-4 pe-[52px] ps-4 shadow-[0px_1px_3px_rgba(15,17,21,0.05)] backdrop-blur-sm transition focus-within:shadow-[0px_2px_6px_rgba(15,17,21,0.08)] dark:border-white/10 dark:bg-white/5"
-              >
+              <label className="@md:rounded-3xl light:border-primary-12 dark:bg-primary-4 light:border light:bg-secondary-100 light:shadow-splash-chatpgpt-input relative flex w-full cursor-text flex-col overflow-hidden rounded-2xl py-4 pe-[52px] ps-4">
                 <div className="sr-only">Message ChatGPT</div>
                 {showPlaceholderOverlay && (
                   <AnimatePresence mode="wait">
@@ -260,9 +258,9 @@ export default function Home() {
 
               <div className="ie-3 absolute bottom-3 mt-auto flex justify-end right-3">
                 <button
-                  className="bg-primary-100 text-secondary-100 disabled:bg-primary-4 disabled:text-primary-44 relative h-9 w-9 rounded-full p-0 transition-colors hover:opacity-70 disabled:hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-1 disabled:focus-visible:ring-offset-0"
+                  className="bg-primary-100 text-secondary-100 disabled:bg-primary-4 disabled:text-primary-44 relative h-9 w-9 rounded-full p-0 transition-colors hover:opacity-70 disabled:hover:opacity-100"
                   type="submit"
-                  aria-label="Submit question"
+                  aria-label="Send prompt to ChatGPT"
                   disabled={!prompt.trim() || isLoading}
                 >
                   {isLoading ? (
