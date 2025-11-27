@@ -156,13 +156,13 @@ export default function Home() {
             layout
             initial={false}
             animate={{
-              height: isExpanded ? "auto" : 106,
+              height: isExpanded ? "auto" : 108,
               boxShadow: isExpanded
                 ? "0 3px 10px rgba(0,0,0,0.07)"
                 : "0 2px 8px rgba(0,0,0,0.06)",
             }}
             transition={{ type: "spring", stiffness: 240, damping: 30 }}
-            className="w-full rounded-[26px] bg-white border border-[rgba(0,0,0,0.08)] px-[18px] pt-[18px] pb-[16px] flex flex-col gap-3 overflow-hidden dark:bg-[rgba(255,255,255,0.12)] dark:border-none dark:shadow-[0_3px_12px_rgba(0,0,0,0.26)]"
+            className="w-full rounded-[26px] bg-white border border-[rgba(0,0,0,0.08)] px-[18px] pt-[18px] pb-[18px] flex flex-col gap-3 overflow-hidden dark:bg-[rgba(255,255,255,0.12)] dark:border-none dark:shadow-[0_3px_12px_rgba(0,0,0,0.26)]"
           >
             <AnimatePresence initial={false}>
               {isExpanded && (
