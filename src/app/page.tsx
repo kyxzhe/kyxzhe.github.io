@@ -18,6 +18,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isHydrated, setIsHydrated] = useState(false);
   const rotatingPlaceholders = [
     "Interested in my research, teaching, or projects? Feel free to ask here.",
     "对我的科研、教学或项目好奇吗？欢迎在这里随时提问。",
@@ -112,6 +113,10 @@ export default function Home() {
     }
   }, [visibleMessages.length, isLoading, isExpanded]);
 
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
+
   const historyEndRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -119,7 +124,7 @@ export default function Home() {
   }, [visibleMessages, isLoading]);
 
   const showPlaceholderOverlay = !prompt.trim() && visibleMessages.length === 0;
-  const showCaretHint = !prompt.trim() && visibleMessages.length > 0;
+  const showCaretHint = isHydrated && !prompt.trim() && visibleMessages.length > 0;
 
   return (
     <div className="flex flex-col min-h-screen font-sans font-medium">
