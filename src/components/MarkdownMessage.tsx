@@ -90,33 +90,7 @@ const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
                 <span>Copied</span>
               </>
             ) : (
-              <>
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  aria-hidden="true"
-                  className="text-white/80"
-                >
-                  <path
-                    d="M15 4H6.5A2.5 2.5 0 0 0 4 6.5v9A2.5 2.5 0 0 0 6.5 18H15a2.5 2.5 0 0 0 2.5-2.5v-9A2.5 2.5 0 0 0 15 4Z"
-                    stroke="currentColor"
-                    strokeWidth="1.6"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M18 15.5h-.5A2.5 2.5 0 0 1 15 13V5.5"
-                    stroke="currentColor"
-                    strokeWidth="1.6"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-                <span>Copy</span>
-              </>
+              <span>Copy</span>
             )}
           </button>
         </div>
