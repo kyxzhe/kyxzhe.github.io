@@ -17,6 +17,10 @@ import python from "react-syntax-highlighter/dist/cjs/languages/prism/python";
 import bash from "react-syntax-highlighter/dist/cjs/languages/prism/bash";
 import json from "react-syntax-highlighter/dist/cjs/languages/prism/json";
 import markdown from "react-syntax-highlighter/dist/cjs/languages/prism/markdown";
+import java from "react-syntax-highlighter/dist/cjs/languages/prism/java";
+import sql from "react-syntax-highlighter/dist/cjs/languages/prism/sql";
+import c from "react-syntax-highlighter/dist/cjs/languages/prism/c";
+import cpp from "react-syntax-highlighter/dist/cjs/languages/prism/cpp";
 import { oneDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import { cn } from "@/lib/utils/util";
 import "katex/dist/katex.min.css";
@@ -33,6 +37,11 @@ SyntaxHighlighter.registerLanguage("bash", bash);
 SyntaxHighlighter.registerLanguage("shell", bash);
 SyntaxHighlighter.registerLanguage("json", json);
 SyntaxHighlighter.registerLanguage("markdown", markdown);
+SyntaxHighlighter.registerLanguage("java", java);
+SyntaxHighlighter.registerLanguage("sql", sql);
+SyntaxHighlighter.registerLanguage("c", c);
+SyntaxHighlighter.registerLanguage("cpp", cpp);
+SyntaxHighlighter.registerLanguage("c++", cpp);
 
 interface MarkdownMessageProps {
   content: string;
