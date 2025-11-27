@@ -206,11 +206,11 @@ export default function Home() {
               )}
             </AnimatePresence>
 
-            <div className="flex items-end gap-3 relative w-full">
+            <div className="relative w-full flex items-end">
               <div className="flex-1 relative">
                 <textarea
                   placeholder=""
-                  className="w-full min-h-[72px] resize-none bg-transparent text-[17px] md:text-[17.5px] leading-[1.4] text-foreground focus:outline-none dark:text-white"
+                  className="w-full min-h-[72px] resize-none bg-transparent text-[17px] md:text-[17.5px] leading-[1.4] text-foreground focus:outline-none pr-[52px] dark:text-white"
                   aria-label="Ask a question"
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
@@ -233,7 +233,7 @@ export default function Home() {
               </div>
               <button
                 type="button"
-              className={`inline-flex h-9 w-9 items-center justify-center rounded-full transition disabled:opacity-60 disabled:cursor-not-allowed ${prompt.trim() ? "bg-black text-white dark:bg-white dark:text-black" : "bg-[rgb(229,231,235)] text-[rgba(0,0,0,0.6)] dark:bg-white/15 dark:text-white"}`}
+              className={`absolute right-0 bottom-0 inline-flex h-9 w-9 items-center justify-center rounded-full transition disabled:opacity-60 disabled:cursor-not-allowed ${prompt.trim() ? "bg-black text-white dark:bg-white dark:text-black" : "bg-[rgb(229,231,235)] text-[rgba(0,0,0,0.6)] dark:bg-white/15 dark:text-white"}`}
               aria-label="Submit question"
               onClick={handleSend}
               disabled={!prompt.trim() || isLoading}
