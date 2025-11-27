@@ -33,7 +33,7 @@ const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
             <h4 className={cn("text-[16px] font-semibold leading-[1.35] mt-2 mb-2", className)} {...props} />
           ),
           p: ({ node, className, ...props }) => (
-            <p className={cn("whitespace-pre-line leading-[1.5]", className)} {...props} />
+            <div className={cn("whitespace-pre-line leading-[1.5]", className)} {...props} />
           ),
           ul: ({ node, className, ...props }) => (
             <ul className={cn("list-disc pl-5 space-y-1 leading-[1.5]", className)} {...props} />
