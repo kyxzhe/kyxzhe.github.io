@@ -88,14 +88,14 @@ const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
           }: { inline?: boolean; children?: ReactNode } & HTMLAttributes<HTMLElement>) =>
             inline ? (
               <code
-                className="rounded bg-[rgba(0,0,0,0.06)] px-[4px] py-[2px] text-[0.95em] font-mono dark:bg-white/15"
+                className="rounded bg-[rgba(0,0,0,0.08)] px-[4px] py-[2px] text-[0.95em] font-mono text-[var(--foreground)] dark:bg-white/15"
                 {...props}
               >
                 {children}
               </code>
             ) : (
-              <pre className="rounded bg-[rgba(0,0,0,0.06)] px-3 py-2 overflow-x-auto dark:bg-white/10">
-                <code className="text-[0.95em] leading-[1.6] font-mono" {...props}>
+              <pre className="rounded-lg bg-[rgba(0,0,0,0.08)] px-4 py-3 overflow-x-auto text-[var(--foreground)] dark:bg-white/10">
+                <code className="block text-[0.95em] leading-[1.6] font-mono text-inherit" {...props}>
                   {children}
                 </code>
               </pre>
