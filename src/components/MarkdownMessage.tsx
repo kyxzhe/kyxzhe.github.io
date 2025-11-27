@@ -52,14 +52,13 @@ const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
           code: ({ inline, ...props }) =>
             inline ? (
               <code
-                className="rounded bg-[rgba(0,0,0,0.06)] px-[4px] py-[2px] text-[0.95em] dark:bg-white/15"
+                className="rounded bg-[rgba(0,0,0,0.06)] px-[4px] py-[2px] text-[0.95em] font-mono dark:bg-white/15"
                 {...props}
               />
             ) : (
-              <code
-                className="block rounded bg-[rgba(0,0,0,0.06)] px-3 py-2 text-[0.95em] leading-[1.6] whitespace-pre overflow-x-auto dark:bg-white/10"
-                {...props}
-              />
+              <pre className="rounded bg-[rgba(0,0,0,0.06)] px-3 py-2 overflow-x-auto dark:bg-white/10">
+                <code className="text-[0.95em] leading-[1.6] font-mono" {...props} />
+              </pre>
             ),
           table: ({ node, ...props }) => (
             <div className="overflow-x-auto">
