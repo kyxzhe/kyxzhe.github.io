@@ -2,7 +2,10 @@
 
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
 import { cn } from "@/lib/utils/util";
+import "katex/dist/katex.min.css";
 
 interface MarkdownMessageProps {
   content: string;
@@ -13,7 +16,8 @@ const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
   return (
     <div className={cn("space-y-2", className)}>
       <ReactMarkdown
-        remarkPlugins={[remarkGfm]}
+        remarkPlugins={[remarkGfm, remarkMath]}
+        rehypePlugins={[rehypeKatex]}
         components={{
           p: ({ node, ...props }) => (
             <p className="whitespace-pre-line leading-[1.5]" {...props} />
