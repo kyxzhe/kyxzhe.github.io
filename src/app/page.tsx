@@ -185,10 +185,10 @@ export default function Home() {
                           >
                             <div
                             className={`max-w-[85%] text-[16px] leading-relaxed text-left ${
-                                message.role === "user"
-                                  ? "bg-[#f2f2f4] text-foreground border border-[rgba(0,0,0,0.06)] rounded-2xl px-3 py-[10px] shadow-[0_1px_5px_rgba(0,0,0,0.04)] dark:bg-[#2a2a30] dark:text-white dark:border-[#3a3a42] dark:shadow-[0_2px_8px_rgba(0,0,0,0.22)]"
-                                  : "text-foreground dark:text-white"
-                              }`}
+                              message.role === "user"
+                                ? "bg-[#f2f2f4] text-foreground rounded-full px-4 py-2 shadow-[0_1px_5px_rgba(0,0,0,0.04)] dark:bg-[#2a2a30] dark:text-white dark:shadow-[0_2px_8px_rgba(0,0,0,0.22)]"
+                                : "rounded-2xl text-foreground dark:text-white"
+                            }`}
                             >
                               {message.content}
                             </div>

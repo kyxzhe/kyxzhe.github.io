@@ -142,10 +142,10 @@ export default function ChatBotModal({ open, onClose }: ChatBotModalProps) {
                   className={`flex ${message.role === "assistant" ? "justify-start" : "justify-end"}`}
                 >
                   <div
-                    className={`max-w-[85%] rounded-2xl px-4 py-3 text-[16px] leading-[1.5] ${
+                    className={`max-w-[85%] text-[16px] leading-[1.5] ${
                       message.role === "assistant"
-                        ? "bg-[var(--card)] border border-[var(--card-border)] text-foreground"
-                        : "bg-[var(--accent)] text-white"
+                        ? "rounded-2xl px-4 py-3 bg-[var(--card)] border border-[var(--card-border)] text-foreground"
+                        : "rounded-full px-5 py-2 bg-[var(--accent)] text-white"
                     }`}
                   >
                     <p
