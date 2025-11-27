@@ -71,6 +71,14 @@ const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
           tbody: ({ node, ...props }) => (
             <tbody className="[&_td]:border [&_td]:border-[rgba(0,0,0,0.1)] [&_td]:px-3 [&_td]:py-2 dark:[&_td]:border-white/15" {...props} />
           ),
+          img: ({ node, ...props }) => (
+            <img
+              className="max-w-full rounded-md border border-[rgba(0,0,0,0.06)] bg-white dark:border-white/10"
+              loading="lazy"
+              referrerPolicy="no-referrer"
+              {...props}
+            />
+          ),
         }}
       >
         {content}
