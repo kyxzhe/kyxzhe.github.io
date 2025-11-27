@@ -125,7 +125,7 @@ export default function ChatIntroPanel() {
                   className={`max-w-[85%] ${
                     msg.role === "assistant"
                       ? "rounded-2xl px-4 py-2 bubble-muted text-left"
-                      : "rounded-full px-4 py-2 bg-[var(--accent)] text-white text-right"
+                      : "rounded-full px-4 py-2 bg-[rgba(233,233,233,0.5)] text-foreground text-right"
                   }`}
                 >
                   <p className="whitespace-pre-line">{msg.content}</p>

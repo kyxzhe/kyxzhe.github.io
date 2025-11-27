@@ -145,7 +145,7 @@ export default function ChatBotModal({ open, onClose }: ChatBotModalProps) {
                     className={`max-w-[85%] text-[16px] leading-[1.5] ${
                       message.role === "assistant"
                         ? "rounded-2xl px-4 py-3 bg-[var(--card)] border border-[var(--card-border)] text-foreground"
-                        : "rounded-full px-5 py-2 bg-[var(--accent)] text-white"
+                        : "rounded-full px-5 py-2 bg-[rgba(233,233,233,0.5)] text-foreground"
                     }`}
                   >
                     <p
