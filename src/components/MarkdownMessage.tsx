@@ -7,7 +7,7 @@ import remarkSupersub from "remark-supersub";
 import remarkDeflist from "remark-deflist";
 import rehypeKatex from "rehype-katex";
 import rehypeRaw from "rehype-raw";
-import type { HTMLAttributes, ReactNode } from "react";
+import { useState, type HTMLAttributes, type ReactNode } from "react";
 import { cn } from "@/lib/utils/util";
 import "katex/dist/katex.min.css";
 
@@ -17,6 +17,47 @@ interface MarkdownMessageProps {
 }
 
 const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
+  const CodeBlock = ({
+    children,
+    className,
+    ...props
+  }: { children?: ReactNode; className?: string } & HTMLAttributes<HTMLElement>) => {
+    const [copied, setCopied] = useState(false);
+    const text =
+      typeof children === "string"
+        ? children
+        : Array.isArray(children)
+          ? children.join("")
+          : "";
+
+    const handleCopy = async () => {
+      try {
+        await navigator.clipboard.writeText(text);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 1400);
+      } catch {
+        // ignore clipboard errors
+      }
+    };
+
+    return (
+      <div className="relative group">
+        <pre className="rounded-lg bg-[rgba(0,0,0,0.08)] px-4 py-3 overflow-x-auto text-[var(--foreground)] dark:bg-white/10">
+          <code className={cn("block text-[0.95em] leading-[1.6] font-mono text-inherit", className)} {...props}>
+            {children}
+          </code>
+        </pre>
+        <button
+          type="button"
+          onClick={handleCopy}
+          className="absolute top-2 right-2 inline-flex items-center gap-1 rounded-full bg-[rgba(0,0,0,0.12)] px-3 py-[6px] text-[13px] text-white/90 transition-opacity hover:opacity-90 dark:bg-white/15 dark:text-white"
+        >
+          {copied ? "✓ Copied" : "Copy"}
+        </button>
+      </div>
+    );
+  };
+
   return (
     <div className={cn("space-y-2", className)}>
       <ReactMarkdown
@@ -94,11 +135,7 @@ const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
                 {children}
               </code>
             ) : (
-              <pre className="rounded-lg bg-[rgba(0,0,0,0.08)] px-4 py-3 overflow-x-auto text-[var(--foreground)] dark:bg-white/10">
-                <code className="block text-[0.95em] leading-[1.6] font-mono text-inherit" {...props}>
-                  {children}
-                </code>
-              </pre>
+              <CodeBlock {...props}>{children}</CodeBlock>
             ),
           table: ({ node, ...props }) => (
             <div className="overflow-x-auto">
