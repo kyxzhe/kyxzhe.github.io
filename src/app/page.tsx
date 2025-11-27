@@ -213,28 +213,10 @@ export default function Home() {
                 handleSend();
               }}
             >
-              <label className="@md:rounded-3xl light:border-primary-12 dark:bg-primary-4 light:border light:bg-secondary-100 light:shadow-splash-chatpgpt-input relative flex w-full cursor-text flex-col overflow-hidden rounded-2xl py-4 pe-[52px] ps-4">
-                <div className="sr-only">Message ChatGPT</div>
-                {showPlaceholderOverlay && (
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={placeholderIndex}
-                      initial={{ y: 10, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      exit={{ y: -10, opacity: 0 }}
-                      transition={{ duration: 0.32, ease: "easeOut" }}
-                      className="min-h-sm pointer-events-none absolute left-0 top-0 w-full select-none px-4 pt-4 text-p2 !text-base text-[rgba(0,0,0,0.6)] dark:text-white/60"
-                    >
-                      <div className="overflow-hidden text-ellipsis whitespace-nowrap">
-                        {rotatingPlaceholders[placeholderIndex]}
-                      </div>
-                    </motion.div>
-                  </AnimatePresence>
-                )}
+              <div className="relative w-full">
                 <textarea
-                  className="placeholder:text-primary-60 text-p2 w-full resize-none bg-transparent !text-base focus:outline-none"
-                  rows={3}
                   placeholder=""
+                  className="w-full min-h-[72px] resize-none bg-transparent pe-[52px] pr-[52px] text-[17px] md:text-[17.5px] leading-[1.4] text-foreground focus:outline-none dark:text-white"
                   aria-label="Ask a question"
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
@@ -248,25 +230,35 @@ export default function Home() {
                       animate={{ y: 0, opacity: 0.8 }}
                       exit={{ y: -6, opacity: 0 }}
                       transition={{ duration: 0.18, ease: "easeOut" }}
-                      className="pointer-events-none absolute left-0 top-0 px-4 pt-4 text-[17px] md:text-[17.5px] leading-[1.4] text-[rgba(0,0,0,0.6)] dark:text-white/60"
+                      className="pointer-events-none absolute left-0 top-0 text-[17px] md:text-[17.5px] leading-[1.4] text-[rgba(0,0,0,0.6)] dark:text-white/60"
                     >
                       -&gt;
                     </motion.div>
                   </AnimatePresence>
                 )}
-              </label>
-
+                {showPlaceholderOverlay && (
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={placeholderIndex}
+                      initial={{ y: 10, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      exit={{ y: -10, opacity: 0 }}
+                      transition={{ duration: 0.32, ease: "easeOut" }}
+                      className="pointer-events-none absolute left-0 right-0 top-0 text-center px-4 text-[16px] md:text-[16px] leading-[1.4] text-[rgba(0,0,0,0.6)] dark:text-white/60"
+                    >
+                      {rotatingPlaceholders[placeholderIndex]}
+                    </motion.div>
+                  </AnimatePresence>
+                )}
+              </div>
               <div className="ie-3 absolute bottom-4 right-4 mt-auto flex justify-end">
                 <button
-                  className={`relative h-9 w-9 rounded-full p-0 transition-colors hover:opacity-70 disabled:hover:opacity-100 ${
-                    prompt.trim()
-                      ? "bg-primary-100 text-secondary-100"
-                      : "bg-[rgba(0,0,0,0.06)] text-[rgba(0,0,0,0.35)] dark:bg-white/15 dark:text-white/60"
-                  }`}
                   type="submit"
                   aria-label="Send prompt to ChatGPT"
                   disabled={!prompt.trim() || isLoading}
+                  className="relative inline-flex h-9 w-9 items-center justify-center rounded-full p-0 transition-colors hover:opacity-70 disabled:hover:opacity-100 bg-[rgba(0,0,0,0.06)] text-[rgba(0,0,0,0.35)] dark:bg-white/15 dark:text-white/60 enabled:bg-primary-100 enabled:text-secondary-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-1 disabled:focus-visible:ring-offset-0"
                 >
+                  <span className="sr-only">Send prompt to ChatGPT</span>
                   {isLoading ? (
                     <Loader2 size={16} className="animate-spin" aria-hidden="true" />
                   ) : (
