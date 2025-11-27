@@ -38,19 +38,28 @@ const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
           ul: ({ node, className, ...props }) => (
             <ul className={cn("list-disc pl-5 space-y-1 leading-[1.5]", className)} {...props} />
           ),
-          ol: ({ node, className, ...props }) => (
+          ol: ({ node, className, children, ...props }) => (
             <ol
               className={cn("pl-5 space-y-1 leading-[1.5]", className)}
               style={{ listStyleType: "decimal", listStylePosition: "outside" }}
               {...props}
-            />
+            >
+              {children}
+            </ol>
           ),
-          li: ({ node, className, ...props }) => (
-            <li
-              className={cn("leading-[1.5]", className)}
-              style={{ listStyleType: "inherit" }}
+          ul: ({ node, className, children, ...props }) => (
+            <ul
+              className={cn("pl-5 space-y-1 leading-[1.5]", className)}
+              style={{ listStyleType: "disc", listStylePosition: "outside" }}
               {...props}
-            />
+            >
+              {children}
+            </ul>
+          ),
+          li: ({ node, className, children, ...props }) => (
+            <li className={cn("leading-[1.5]", className)} {...props}>
+              {children}
+            </li>
           ),
           a: ({ node, className, ...props }) => (
             <a
