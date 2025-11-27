@@ -61,8 +61,10 @@ const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
         : Array.isArray(children)
           ? children.join("")
           : "";
-    const language =
+    const languageRaw =
       (className?.match(/language-([\w-]+)/)?.[1] as string | undefined) || undefined;
+    const languageLabel = (languageRaw ?? "text").toUpperCase();
+    const language = languageRaw ?? "text";
 
     const handleCopy = async () => {
       try {
@@ -77,7 +79,7 @@ const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
     return (
       <div className="relative group max-w-full overflow-hidden rounded-lg border border-[rgba(255,255,255,0.08)] dark:border-white/10 bg-[rgba(13,13,13,0.05)] dark:bg-[rgba(255,255,255,0.05)]">
         <div className="flex items-center justify-between px-3 py-2 text-[12px] uppercase tracking-[0.12em] text-[rgb(93,93,93)] dark:text-[rgb(243,243,243)]">
-          <span className="flex-1 text-left truncate">{language ?? "code"}</span>
+          <span className="flex-1 text-left truncate">{languageLabel}</span>
           <button
             type="button"
             onClick={handleCopy}
