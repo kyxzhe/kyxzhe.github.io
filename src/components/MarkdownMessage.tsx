@@ -50,7 +50,7 @@ const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
         <button
           type="button"
           onClick={handleCopy}
-          className="absolute top-2 right-2 inline-flex items-center gap-1 rounded-md border border-white/25 bg-[rgba(0,0,0,0.08)] px-2.5 py-[6px] text-[12.5px] text-white/90 transition hover:bg-[rgba(255,255,255,0.08)] hover:border-white/35 dark:border-white/30 dark:bg-white/10 dark:text-white"
+          className="absolute top-2 right-2 inline-flex items-center gap-1 bg-transparent px-2 py-[6px] text-[12.5px] text-white/90 transition hover:opacity-80 dark:text-white"
         >
           {copied ? "✓ Copied" : "Copy"}
         </button>
