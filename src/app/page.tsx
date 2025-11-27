@@ -256,7 +256,7 @@ export default function Home() {
                 )}
               </label>
 
-              <div className="ie-3 absolute bottom-3 right-3 mt-auto flex justify-end">
+              <div className="ie-3 absolute bottom-4 right-4 mt-auto flex justify-end">
                 <button
                   className={`relative h-9 w-9 rounded-full p-0 transition-colors hover:opacity-70 disabled:hover:opacity-100 ${
                     prompt.trim()
