@@ -223,7 +223,7 @@ export default function Home() {
                       animate={{ y: 0, opacity: 1 }}
                       exit={{ y: -10, opacity: 0 }}
                       transition={{ duration: 0.32, ease: "easeOut" }}
-                      className="text-primary-60 min-h-sm pointer-events-none absolute left-0 top-0 w-full select-none px-4 pt-4 text-p2 !text-base"
+                      className="min-h-sm pointer-events-none absolute left-0 top-0 w-full select-none px-4 pt-4 text-p2 !text-base text-[rgba(0,0,0,0.6)] dark:text-white/60"
                     >
                       <div className="overflow-hidden text-ellipsis whitespace-nowrap">
                         {rotatingPlaceholders[placeholderIndex]}
@@ -234,7 +234,7 @@ export default function Home() {
                 <textarea
                   className="placeholder:text-primary-60 text-p2 w-full resize-none bg-transparent !text-base focus:outline-none"
                   rows={3}
-                  placeholder="Message ChatGPT"
+                  placeholder=""
                   aria-label="Ask a question"
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
@@ -258,7 +258,11 @@ export default function Home() {
 
               <div className="ie-3 absolute bottom-3 mt-auto flex justify-end right-3">
                 <button
-                  className="bg-primary-100 text-secondary-100 disabled:bg-primary-4 disabled:text-primary-44 relative h-9 w-9 rounded-full p-0 transition-colors hover:opacity-70 disabled:hover:opacity-100"
+                  className={`relative h-9 w-9 rounded-full p-0 transition-colors hover:opacity-70 disabled:hover:opacity-100 ${
+                    prompt.trim()
+                      ? "bg-primary-100 text-secondary-100"
+                      : "bg-[rgba(0,0,0,0.06)] text-[rgba(0,0,0,0.35)] dark:bg-white/15 dark:text-white/60"
+                  }`}
                   type="submit"
                   aria-label="Send prompt to ChatGPT"
                   disabled={!prompt.trim() || isLoading}
