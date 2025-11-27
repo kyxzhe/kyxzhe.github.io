@@ -63,7 +63,7 @@ const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
           : "";
     const languageRaw =
       (className?.match(/language-([\w-]+)/)?.[1] as string | undefined) || undefined;
-    const languageLabel = (languageRaw ?? "text").toUpperCase();
+    const languageLabel = (languageRaw ?? "text").toLowerCase();
     const language = languageRaw ?? "text";
 
     const handleCopy = async () => {
@@ -77,7 +77,7 @@ const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
     };
 
     return (
-      <div className="relative group max-w-full overflow-hidden rounded-lg border border-[rgba(0,0,0,0.06)] dark:border-white/10 bg-[rgba(13,13,13,0.05)] dark:bg-[rgba(255,255,255,0.05)]">
+      <div className="relative group max-w-full overflow-hidden rounded-lg border border-[rgba(255,255,255,0.08)] dark:border-white/10 bg-[rgba(13,13,13,0.05)] dark:bg-[rgba(255,255,255,0.05)]">
         <div className="flex items-center justify-between px-3 py-2 text-[12px] uppercase tracking-[0.12em] text-[rgb(93,93,93)] dark:text-[rgb(243,243,243)]">
           <span className="flex-1 text-left truncate">{languageLabel}</span>
           <button
@@ -96,27 +96,25 @@ const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
             )}
           </button>
         </div>
-        <div className="max-h-[420px] overflow-auto">
+        <div className="max-h-[420px] overflow-auto bg-[rgba(13,13,13,0.05)] dark:bg-[rgba(255,255,255,0.05)]">
           {language ? (
-            <div className="bg-[rgba(13,13,13,0.05)] dark:bg-[rgba(255,255,255,0.05)] px-4 py-3">
-              <div className="overflow-auto">
-                <SyntaxHighlighter
-                  language={language}
-                  style={oneDark}
-                  PreTag="div"
-                  customStyle={{
-                    margin: 0,
-                    background: "transparent",
-                  }}
-                  codeTagProps={{
-                    className: "text-[0.95em] leading-[1.6] font-mono",
-                  }}
-                  wrapLongLines={false}
-                >
-                  {text}
-                </SyntaxHighlighter>
-              </div>
-            </div>
+            <SyntaxHighlighter
+              language={language}
+              style={oneDark}
+              PreTag="div"
+              customStyle={{
+                margin: 0,
+                borderRadius: "0 0 10px 10px",
+                background: "transparent",
+                padding: "12px 16px",
+              }}
+              codeTagProps={{
+                className: "text-[0.95em] leading-[1.6] font-mono",
+              }}
+              wrapLongLines={false}
+            >
+              {text}
+            </SyntaxHighlighter>
           ) : (
             <pre className="rounded-b-lg bg-[rgba(13,13,13,0.05)] px-4 py-3 overflow-x-auto text-[var(--foreground)] dark:bg-[rgba(255,255,255,0.05)]">
               <code className={cn("block text-[0.95em] leading-[1.6] font-mono text-inherit", className)} {...props}>
