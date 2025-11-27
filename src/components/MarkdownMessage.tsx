@@ -4,6 +4,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
+import rehypeRaw from "rehype-raw";
 import type { HTMLAttributes, ReactNode } from "react";
 import { cn } from "@/lib/utils/util";
 import "katex/dist/katex.min.css";
@@ -18,7 +19,8 @@ const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
     <div className={cn("space-y-2", className)}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm, remarkMath]}
-        rehypePlugins={[rehypeKatex]}
+        rehypePlugins={[rehypeRaw, rehypeKatex]}
+        skipHtml={false}
         components={{
           h1: ({ node, className, ...props }) => (
             <h1 className={cn("text-[22px] font-semibold leading-[1.35] mt-2 mb-3", className)} {...props} />
@@ -107,6 +109,15 @@ const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
               alt={typeof alt === "string" && alt.length > 0 ? alt : "markdown image"}
               {...props}
             />
+          ),
+          sup: ({ node, className, ...props }) => (
+            <sup className={cn("align-super text-[0.85em]", className)} {...props} />
+          ),
+          sub: ({ node, className, ...props }) => (
+            <sub className={cn("align-sub text-[0.85em]", className)} {...props} />
+          ),
+          u: ({ node, className, ...props }) => (
+            <u className={cn("underline underline-offset-2", className)} {...props} />
           ),
         }}
       >
