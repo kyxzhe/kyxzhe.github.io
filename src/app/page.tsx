@@ -156,13 +156,13 @@ export default function Home() {
             layout
             initial={false}
             animate={{
-              height: isExpanded ? "auto" : 104,
+              height: isExpanded ? "auto" : 106,
               boxShadow: isExpanded
                 ? "0 3px 10px rgba(0,0,0,0.07)"
                 : "0 2px 8px rgba(0,0,0,0.06)",
             }}
             transition={{ type: "spring", stiffness: 240, damping: 30 }}
-            className="relative w-full rounded-[26px] bg-white border border-[rgba(0,0,0,0.08)] flex flex-col gap-3 overflow-hidden py-4 ps-4 pe-[52px] dark:bg-[rgba(255,255,255,0.12)] dark:border-none dark:shadow-[0_3px_12px_rgba(0,0,0,0.26)]"
+            className="w-full rounded-[26px] bg-white border border-[rgba(0,0,0,0.08)] px-[18px] pt-[18px] pb-[16px] flex flex-col gap-3 overflow-hidden dark:bg-[rgba(255,255,255,0.12)] dark:border-none dark:shadow-[0_3px_12px_rgba(0,0,0,0.26)]"
           >
             <AnimatePresence initial={false}>
               {isExpanded && (
@@ -206,11 +206,37 @@ export default function Home() {
               )}
             </AnimatePresence>
 
-            <div className="relative w-full">
-              <div className="relative">
+            <form
+              className="relative w-full"
+              onSubmit={(event) => {
+                event.preventDefault();
+                handleSend();
+              }}
+            >
+              <label
+                className="@md:rounded-3xl light:border-primary-12 dark:bg-primary-4 light:border light:bg-secondary-100 light:shadow-splash-chatpgpt-input relative flex w-full cursor-text flex-col overflow-hidden rounded-2xl border border-[rgba(0,0,0,0.08)] bg-white/90 py-4 pe-[52px] ps-4 shadow-[0px_1px_3px_rgba(15,17,21,0.05)] backdrop-blur-sm transition focus-within:shadow-[0px_2px_6px_rgba(15,17,21,0.08)] dark:border-white/10 dark:bg-white/5"
+              >
+                <div className="sr-only">Message ChatGPT</div>
+                {showPlaceholderOverlay && (
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={placeholderIndex}
+                      initial={{ y: 10, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      exit={{ y: -10, opacity: 0 }}
+                      transition={{ duration: 0.32, ease: "easeOut" }}
+                      className="text-primary-60 min-h-sm pointer-events-none absolute left-0 top-0 w-full select-none px-4 pt-4 text-p2 !text-base"
+                    >
+                      <div className="overflow-hidden text-ellipsis whitespace-nowrap">
+                        {rotatingPlaceholders[placeholderIndex]}
+                      </div>
+                    </motion.div>
+                  </AnimatePresence>
+                )}
                 <textarea
-                  placeholder=""
-                  className="w-full min-h-[72px] resize-none bg-transparent text-[17px] md:text-[17.5px] leading-[1.4] text-foreground focus:outline-none dark:text-white"
+                  className="placeholder:text-primary-60 text-p2 w-full resize-none bg-transparent !text-base focus:outline-none"
+                  rows={3}
+                  placeholder="Message ChatGPT"
                   aria-label="Ask a question"
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
@@ -224,59 +250,44 @@ export default function Home() {
                       animate={{ y: 0, opacity: 0.8 }}
                       exit={{ y: -6, opacity: 0 }}
                       transition={{ duration: 0.18, ease: "easeOut" }}
-                      className="pointer-events-none absolute left-0 top-0 text-[17px] md:text-[17.5px] leading-[1.4] text-[rgba(0,0,0,0.6)] dark:text-white/60"
+                      className="pointer-events-none absolute left-0 top-0 px-4 pt-4 text-[17px] md:text-[17.5px] leading-[1.4] text-[rgba(0,0,0,0.6)] dark:text-white/60"
                     >
                       -&gt;
                     </motion.div>
                   </AnimatePresence>
                 )}
-              </div>
-              <button
-                type="button"
-                className={`absolute right-3 bottom-3 inline-flex h-9 w-9 items-center justify-center rounded-full transition disabled:opacity-60 disabled:cursor-not-allowed ${prompt.trim() ? "bg-black text-white dark:bg-white dark:text-black" : "bg-[rgb(229,231,235)] text-[rgba(0,0,0,0.6)] dark:bg-white/15 dark:text-white"}`}
-                aria-label="Submit question"
-                onClick={handleSend}
-                disabled={!prompt.trim() || isLoading}
-              >
-              {isLoading ? (
-                <Loader2
-                  size={17}
-                  className={`animate-spin ${prompt.trim() ? "text-white dark:text-black" : ""}`}
-                />
-              ) : (
-                <svg
-                  width="15"
-                  height="17"
-                  viewBox="0 0 15 17"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className={`h-[17px] w-[15px] ${prompt.trim() ? "text-white dark:text-black" : "text-[rgba(0,0,0,0.44)] dark:text-white"}`}
+              </label>
+
+              <div className="ie-3 absolute bottom-3 mt-auto flex justify-end right-3">
+                <button
+                  className="bg-primary-100 text-secondary-100 disabled:bg-primary-4 disabled:text-primary-44 relative h-9 w-9 rounded-full p-0 transition-colors hover:opacity-70 disabled:hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-1 disabled:focus-visible:ring-offset-0"
+                  type="submit"
+                  aria-label="Submit question"
+                  disabled={!prompt.trim() || isLoading}
                 >
-                  <path
-                    d="M7.5 16.5L7.5 0.5M7.5 0.5L0 7.5M7.5 0.5L15 7.5"
-                    stroke="currentColor"
-                    strokeWidth="1.7"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              )}
-            </button>
-              {showPlaceholderOverlay && (
-                <AnimatePresence mode="wait">
-                <motion.div
-                    key={placeholderIndex}
-                    initial={{ y: 10, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    exit={{ y: -10, opacity: 0 }}
-                    transition={{ duration: 0.32, ease: "easeOut" }}
-                      className="pointer-events-none absolute left-0 right-0 top-0 text-center px-4 text-[16px] md:text-[16px] leading-[1.4] text-[rgba(0,0,0,0.6)] dark:text-white/60"
-                  >
-                    {rotatingPlaceholders[placeholderIndex]}
-                  </motion.div>
-                </AnimatePresence>
-              )}
-            </div>
+                  {isLoading ? (
+                    <Loader2 size={16} className="animate-spin" aria-hidden="true" />
+                  ) : (
+                    <svg
+                      width="36"
+                      height="36"
+                      viewBox="0 0 32 32"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M16 22L16 10M16 10L11 15M16 10L21 15"
+                        stroke="currentColor"
+                        strokeWidth="1.7"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  )}
+                </button>
+              </div>
+            </form>
           </motion.div>
           <p className="text-xs text-[rgba(0,0,0,0.6)] dark:text-[rgb(243,243,243)] text-center w-full max-w-4xl">
             ChatBot can make mistakes. Check important info.
