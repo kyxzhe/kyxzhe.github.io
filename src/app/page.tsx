@@ -250,8 +250,8 @@ export default function Home() {
                       animate={{ y: 0, opacity: 1 }}
                       exit={{ y: -10, opacity: 0 }}
                       transition={{ duration: 0.32, ease: "easeOut" }}
-                      className="pointer-events-none absolute left-0 right-[54px] sm:right-0 top-0 text-left sm:text-center px-3 sm:px-4 text-[15px] md:text-[16px] leading-[1.45] text-[rgba(0,0,0,0.6)] dark:text-white/60"
-                      style={{ display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}
+                      className="pointer-events-none absolute left-0 right-[68px] sm:right-0 top-0 text-left sm:text-center px-3 sm:px-4 text-[15px] md:text-[16px] leading-[1.45] text-[rgba(0,0,0,0.6)] dark:text-white/60"
+                      style={{ whiteSpace: "normal", wordBreak: "break-word" }}
                     >
                       {rotatingPlaceholders[placeholderIndex]}
                     </motion.div>
