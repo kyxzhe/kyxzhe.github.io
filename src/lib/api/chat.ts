@@ -78,6 +78,24 @@ function extractText(payload: unknown): string | null {
     val("response") ??
     val("content") ??
     val("text") ??
+    (payload as { choices?: Array<{ delta?: { content?: string; text?: string }; text?: string }> }).choices?.find(
+      (choice) =>
+        typeof choice?.delta?.content === "string" ||
+        typeof choice?.delta?.text === "string" ||
+        typeof choice?.text === "string"
+    )?.delta?.content ??
+    (payload as { choices?: Array<{ delta?: { content?: string; text?: string }; text?: string }> }).choices?.find(
+      (choice) =>
+        typeof choice?.delta?.content === "string" ||
+        typeof choice?.delta?.text === "string" ||
+        typeof choice?.text === "string"
+    )?.delta?.text ??
+    (payload as { choices?: Array<{ delta?: { content?: string; text?: string }; text?: string }> }).choices?.find(
+      (choice) =>
+        typeof choice?.delta?.content === "string" ||
+        typeof choice?.delta?.text === "string" ||
+        typeof choice?.text === "string"
+    )?.text ??
     (payload as { delta?: { content?: string; text?: string } }).delta?.content ??
     (payload as { delta?: { content?: string; text?: string } }).delta?.text ??
     null
