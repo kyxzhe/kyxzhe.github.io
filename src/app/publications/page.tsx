@@ -39,14 +39,6 @@ function formatDate(isoDate: string) {
   return `${day} ${monthLabel} ${year}`;
 }
 
-function formatCardDate(isoDate: string) {
-  const [year, month, day] = isoDate.split("-").map(Number);
-  if (!year || !month || !day) return isoDate;
-  const monthLabel = MONTH_ABBREVIATIONS[month - 1];
-  if (!monthLabel) return isoDate;
-  return `${monthLabel} ${day}, ${year}`;
-}
-
 const topics = Array.from(new Set(publications.flatMap((item) => item.topics))).sort();
 const years = Array.from(
   new Set(publications.map((item) => new Date(item.date).getFullYear()))
@@ -84,7 +76,7 @@ const AuthorLine = ({ authors }: { authors: string[] }) => (
 
 const CardMetaLine = ({ item }: { item: Publication }) => (
   <p className="text-[11px] uppercase tracking-[0.18em] text-white/58">
-    {item.category} <span className="mx-1.5">·</span> {formatCardDate(item.date)}
+    {item.category} <span className="mx-1.5">·</span> {formatDate(item.date)}
   </p>
 );
 

@@ -38,14 +38,6 @@ function formatListDate(isoDate: string) {
   return `${day} ${monthLabel} ${year}`;
 }
 
-function formatCardDate(isoDate: string) {
-  const [year, month, day] = isoDate.split("-").map(Number);
-  if (!year || !month || !day) return isoDate;
-  const monthLabel = MONTH_ABBREVIATIONS[month - 1];
-  if (!monthLabel) return isoDate;
-  return `${monthLabel} ${day}, ${year}`;
-}
-
 const categories = ["All", ...Array.from(new Set(newsItems.map((item) => item.category)))];
 const topics = Array.from(new Set(newsItems.flatMap((item) => item.topics))).sort();
 const years = Array.from(new Set(newsItems.map((item) => new Date(item.date).getFullYear()))).sort((a, b) => b - a);
@@ -104,7 +96,7 @@ const ListRow = ({ item }: { item: NewsItem }) => {
 function MetaLine({ item }: { item: NewsItem }) {
   return (
     <p className="text-[11px] uppercase tracking-[0.18em] text-white/58">
-      {formatCategoryLabel(item.category)} <span className="mx-1.5">·</span> {formatCardDate(item.date)}
+      {formatCategoryLabel(item.category)} <span className="mx-1.5">·</span> {formatListDate(item.date)}
     </p>
   );
 }
