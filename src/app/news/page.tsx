@@ -95,8 +95,8 @@ export default function NewsPage() {
   }, [filteredItems]);
 
   const leadItem = sortedItems[0];
-  const sideRailItems = sortedItems.slice(1, 3);
-  const recentItems = sortedItems.slice(3);
+  const sideRailItems = sortedItems.slice(1, 4);
+  const recentItems = sortedItems.slice(4);
   const leftColumnItems = recentItems.filter((_, index) => index % 2 === 0);
   const rightColumnItems = recentItems.filter((_, index) => index % 2 === 1);
 
@@ -156,8 +156,8 @@ export default function NewsPage() {
         </div>
 
         {leadItem && (
-          <section className="grid gap-3 lg:grid-cols-[minmax(0,1.45fr)_360px] xl:grid-cols-[minmax(0,1.7fr)_392px] items-start">
-            <ClickableCard item={leadItem} className="block">
+          <section className="grid gap-3 lg:grid-cols-[minmax(0,1.42fr)_360px] xl:grid-cols-[minmax(0,1.64fr)_392px] items-start">
+            <ClickableCard item={leadItem} className="block lg:self-start lg:sticky lg:top-8">
               <motion.article
                 whileHover={{ y: -3 }}
                 transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
@@ -185,7 +185,7 @@ export default function NewsPage() {
               </motion.article>
             </ClickableCard>
 
-            <div className="flex flex-col gap-6 lg:sticky lg:top-8">
+            <div className="flex flex-col gap-6">
               {sideRailItems.map((item) => (
                 <ClickableCard key={item.id} item={item} className="block">
                   <motion.article
@@ -204,8 +204,8 @@ export default function NewsPage() {
                         />
                       </div>
                     </div>
-                    <div className="pt-3.5">
-                      <h3 className="max-w-[24rem] text-[24px] leading-[1.08] tracking-[-0.03em] text-white">
+                    <div className="pt-3">
+                      <h3 className="max-w-[24rem] text-[22px] leading-[1.08] tracking-[-0.03em] text-white">
                         {item.title}
                       </h3>
                       <div className="pt-2">
