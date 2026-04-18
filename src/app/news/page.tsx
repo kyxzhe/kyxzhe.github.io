@@ -156,8 +156,8 @@ export default function NewsPage() {
         </div>
 
         {leadItem && (
-          <section className="grid gap-3 lg:grid-cols-[minmax(0,1.42fr)_360px] xl:grid-cols-[minmax(0,1.64fr)_392px] items-start">
-            <ClickableCard item={leadItem} className="block lg:self-start lg:sticky lg:top-8">
+          <section className="grid gap-3 lg:grid-cols-[minmax(0,1.42fr)_360px] xl:grid-cols-[minmax(0,1.64fr)_392px] items-start pb-4 md:pb-6">
+            <ClickableCard item={leadItem} className="block lg:self-start lg:sticky lg:top-0">
               <motion.article
                 whileHover={{ y: -3 }}
                 transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
@@ -174,11 +174,11 @@ export default function NewsPage() {
                     />
                   </div>
                 </div>
-                <div className="pt-4">
-                  <h2 className="max-w-4xl text-[34px] md:text-[46px] leading-[1] tracking-[-0.04em] text-white">
+                <div className="pt-3">
+                  <h2 className="max-w-4xl text-[30px] md:text-[40px] leading-[0.98] tracking-[-0.04em] text-white">
                     {leadItem.title}
                   </h2>
-                  <div className="pt-3">
+                  <div className="pt-2.5">
                     <MetaLine item={leadItem} />
                   </div>
                 </div>
