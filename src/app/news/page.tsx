@@ -466,7 +466,7 @@ export default function NewsPage() {
           </section>
         ) : null}
 
-        {recentItems.length > 0 && (
+        {viewMode === "grid" && recentItems.length > 0 && (
           <section className="pt-8 md:pt-14">
             <div className="mb-6 flex items-center justify-between gap-4">
               <h2 className="text-[26px] md:text-[30px] tracking-[-0.03em] text-white">Recent updates</h2>
