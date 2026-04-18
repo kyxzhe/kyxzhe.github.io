@@ -125,8 +125,6 @@ export default function Home() {
   }, [visibleMessages, isLoading]);
 
   const showPlaceholderOverlay = isHydrated && !prompt.trim() && visibleMessages.length === 0;
-  const showCaretHint = isHydrated && !prompt.trim() && visibleMessages.length > 0;
-
   return (
     <div className="flex flex-col min-h-screen font-sans font-medium">
       <Navbar />
@@ -164,11 +162,11 @@ export default function Home() {
             animate={{
               height: isExpanded ? "auto" : 106,
               boxShadow: isExpanded
-                ? "0 3px 10px rgba(0,0,0,0.07)"
-                : "0 2px 8px rgba(0,0,0,0.06)",
+                ? "var(--composer-shadow)"
+                : "var(--composer-shadow)",
             }}
             transition={{ type: "spring", stiffness: 240, damping: 30 }}
-            className="w-full font-normal rounded-[1rem] bg-white border border-[rgba(0,0,0,0.08)] px-[18px] pt-[18px] pb-[16px] flex flex-col gap-3 overflow-hidden dark:bg-[rgba(255,255,255,0.05)] dark:border-none dark:shadow-[0_3px_12px_rgba(0,0,0,0.26)]"
+            className="w-full font-normal rounded-[28px] border px-4 pt-4 pb-3 md:px-5 md:pt-5 md:pb-4 flex flex-col gap-3 overflow-hidden bg-[var(--composer-bg)] border-[var(--composer-border)]"
           >
             <AnimatePresence initial={false}>
               {isExpanded && (
@@ -222,35 +220,21 @@ export default function Home() {
               <div className="relative w-full">
                 <textarea
                   placeholder=""
-                  className="w-full min-h-[72px] resize-none bg-transparent pe-[52px] pr-[52px] text-[16px] md:text-[16px] leading-[1.4] text-foreground focus:outline-none dark:text-white"
+                  className="w-full min-h-[64px] resize-none bg-transparent pr-[56px] md:pr-[60px] text-[15px] md:text-[15px] leading-[1.45] text-foreground placeholder:text-transparent focus:outline-none dark:text-white"
                   aria-label="Ask a question"
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
                   onKeyDown={handleKeyDown}
                 />
-                {showCaretHint && (
-                  <AnimatePresence>
-                    <motion.div
-                      key="caret-hint"
-                      initial={{ y: 6, opacity: 0 }}
-                      animate={{ y: 0, opacity: 0.8 }}
-                      exit={{ y: -6, opacity: 0 }}
-                      transition={{ duration: 0.18, ease: "easeOut" }}
-                      className="pointer-events-none absolute left-0 top-0 text-[16px] md:text-[16px] leading-[1.4] text-[rgba(0,0,0,0.6)] dark:text-white/60"
-                    >
-                      -&gt;
-                    </motion.div>
-                  </AnimatePresence>
-                )}
                 {showPlaceholderOverlay && (
                   <AnimatePresence mode="wait">
                     <motion.div
                       key={placeholderIndex}
-                      initial={{ y: 10, opacity: 0 }}
+                      initial={{ y: 8, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
-                      exit={{ y: -10, opacity: 0 }}
-                      transition={{ duration: 0.32, ease: "easeOut" }}
-                      className="pointer-events-none absolute left-0 right-[68px] sm:right-0 top-0 text-left sm:text-center px-3 sm:px-4 text-[15px] md:text-[16px] leading-[1.45] text-[rgba(0,0,0,0.6)] dark:text-white/60"
+                      exit={{ y: -8, opacity: 0 }}
+                      transition={{ duration: 0.24, ease: "easeOut" }}
+                      className="pointer-events-none absolute left-0 right-[56px] top-0 text-left px-0 text-[13px] md:text-[13px] leading-[1.4] text-[var(--composer-placeholder)]"
                       style={{ whiteSpace: "normal", wordBreak: "break-word" }}
                     >
                       {rotatingPlaceholders[placeholderIndex]}
@@ -258,20 +242,20 @@ export default function Home() {
                   </AnimatePresence>
                 )}
               </div>
-              <div className="ie-3 absolute bottom-1 right-[-6px] mt-auto flex justify-end">
+              <div className="absolute bottom-0 right-0 flex justify-end">
                 <button
                   type="submit"
                   aria-label="Send prompt to ChatGPT"
                   disabled={!prompt.trim() || isLoading}
-                  className="relative inline-flex h-9 w-9 items-center justify-center rounded-full p-0 transition-colors hover:opacity-70 disabled:hover:opacity-100 bg-[rgba(0,0,0,0.06)] text-[rgba(0,0,0,0.35)] dark:bg-white/15 dark:text-white/60 enabled:bg-black enabled:text-white dark:enabled:bg-white dark:enabled:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-1 disabled:focus-visible:ring-offset-0"
+                  className="relative inline-flex h-9 w-9 items-center justify-center rounded-full border border-transparent p-0 transition-all duration-150 hover:opacity-90 disabled:hover:opacity-100 bg-[var(--composer-button-idle)] text-[var(--composer-button-idle-fg)] enabled:bg-black enabled:text-white dark:enabled:bg-white dark:enabled:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(15,15,17,0.18)] dark:focus-visible:ring-[rgba(255,255,255,0.22)]"
                 >
                   <span className="sr-only">Send prompt to ChatGPT</span>
                   {isLoading ? (
-                    <Loader2 size={16} className="animate-spin" aria-hidden="true" />
+                    <Loader2 size={14} className="animate-spin" aria-hidden="true" />
                   ) : (
                     <svg
-                      width="36"
-                      height="36"
+                      width="18"
+                      height="18"
                       viewBox="0 0 32 32"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
