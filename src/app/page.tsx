@@ -155,18 +155,18 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="w-full max-w-[71rem] flex flex-col items-center gap-4 mt-2">
+        <section className="w-full max-w-[48rem] flex flex-col items-center gap-4 mt-2">
           <motion.div
             layout
             initial={false}
             animate={{
-              height: isExpanded ? "auto" : 184,
+              height: isExpanded ? "auto" : 106,
               boxShadow: isExpanded
                 ? "var(--composer-shadow)"
                 : "var(--composer-shadow)",
             }}
             transition={{ type: "spring", stiffness: 240, damping: 30 }}
-            className="w-full font-normal rounded-[38px] border px-6 pt-6 pb-5 md:px-7 md:pt-7 md:pb-6 flex flex-col gap-3 overflow-hidden bg-[var(--composer-bg)] border-[var(--composer-border)]"
+            className="w-full font-normal rounded-[28px] border px-4 pt-4 pb-3 md:px-5 md:pt-5 md:pb-4 flex flex-col gap-3 overflow-hidden bg-[var(--composer-bg)] border-[var(--composer-border)]"
           >
             <AnimatePresence initial={false}>
               {isExpanded && (
@@ -220,7 +220,7 @@ export default function Home() {
               <div className="relative w-full">
                 <textarea
                   placeholder=""
-                  className="w-full min-h-[126px] resize-none bg-transparent pr-[88px] md:pr-[104px] text-[18px] md:text-[20px] leading-[1.45] text-foreground placeholder:text-transparent focus:outline-none dark:text-white"
+                  className="w-full min-h-[64px] resize-none bg-transparent pr-[56px] md:pr-[60px] text-[15px] md:text-[15px] leading-[1.45] text-foreground placeholder:text-transparent focus:outline-none dark:text-white"
                   aria-label="Ask a question"
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
@@ -234,7 +234,7 @@ export default function Home() {
                       animate={{ y: 0, opacity: 1 }}
                       exit={{ y: -8, opacity: 0 }}
                       transition={{ duration: 0.24, ease: "easeOut" }}
-                      className="pointer-events-none absolute left-0 right-[88px] md:right-[104px] top-[4px] text-left px-0 text-[18px] md:text-[20px] leading-[1.4] text-[var(--composer-placeholder)]"
+                      className="pointer-events-none absolute left-0 right-[56px] top-0 text-left px-0 text-[13px] md:text-[13px] leading-[1.4] text-[var(--composer-placeholder)]"
                       style={{ whiteSpace: "normal", wordBreak: "break-word" }}
                     >
                       {rotatingPlaceholders[placeholderIndex]}
@@ -242,20 +242,20 @@ export default function Home() {
                   </AnimatePresence>
                 )}
               </div>
-              <div className="absolute bottom-5 right-5 md:bottom-6 md:right-6 flex justify-end">
+              <div className="absolute bottom-0 right-0 flex justify-end">
                 <button
                   type="submit"
                   aria-label="Send prompt to ChatGPT"
                   disabled={!prompt.trim() || isLoading}
-                  className="relative inline-flex h-14 w-14 md:h-16 md:w-16 items-center justify-center rounded-full border border-transparent p-0 transition-all duration-150 hover:opacity-92 disabled:hover:opacity-100 bg-[var(--composer-button-idle)] text-[var(--composer-button-idle-fg)] enabled:bg-black enabled:text-white dark:enabled:bg-[#3f3f3f] dark:enabled:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(15,15,17,0.18)] dark:focus-visible:ring-[rgba(255,255,255,0.22)]"
+                  className="relative inline-flex h-9 w-9 items-center justify-center rounded-full border border-transparent p-0 transition-all duration-150 hover:opacity-90 disabled:hover:opacity-100 bg-[var(--composer-button-idle)] text-[var(--composer-button-idle-fg)] enabled:bg-black enabled:text-white dark:enabled:bg-white dark:enabled:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(15,15,17,0.18)] dark:focus-visible:ring-[rgba(255,255,255,0.22)]"
                 >
                   <span className="sr-only">Send prompt to ChatGPT</span>
                   {isLoading ? (
-                    <Loader2 size={20} className="animate-spin" aria-hidden="true" />
+                    <Loader2 size={14} className="animate-spin" aria-hidden="true" />
                   ) : (
                     <svg
-                      width="28"
-                      height="28"
+                      width="18"
+                      height="18"
                       viewBox="0 0 32 32"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
