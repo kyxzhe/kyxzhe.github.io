@@ -30,7 +30,15 @@ const MONTH_ABBREVIATIONS = [
   "Dec",
 ];
 
-function formatDate(isoDate: string) {
+function formatListDate(isoDate: string) {
+  const [year, month, day] = isoDate.split("-").map(Number);
+  if (!year || !month || !day) return isoDate;
+  const monthLabel = MONTH_ABBREVIATIONS[month - 1];
+  if (!monthLabel) return isoDate;
+  return `${day} ${monthLabel} ${year}`;
+}
+
+function formatCardDate(isoDate: string) {
   const [year, month, day] = isoDate.split("-").map(Number);
   if (!year || !month || !day) return isoDate;
   const monthLabel = MONTH_ABBREVIATIONS[month - 1];
@@ -69,7 +77,7 @@ const ListRow = ({ item }: { item: NewsItem }) => {
       <div className="flex items-start justify-between gap-3">
         <h3 className="text-[17px] leading-snug text-foreground dark:text-white">{item.title}</h3>
         <p className="text-[14px] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.44)] whitespace-nowrap">
-          {formatDate(item.date)}
+          {formatListDate(item.date)}
         </p>
       </div>
       <p className="text-[14px] text-foreground/80 dark:text-white leading-relaxed max-w-3xl">
@@ -96,7 +104,7 @@ const ListRow = ({ item }: { item: NewsItem }) => {
 function MetaLine({ item }: { item: NewsItem }) {
   return (
     <p className="text-[11px] uppercase tracking-[0.18em] text-white/58">
-      {formatCategoryLabel(item.category)} <span className="mx-1.5">·</span> {formatDate(item.date)}
+      {formatCategoryLabel(item.category)} <span className="mx-1.5">·</span> {formatCardDate(item.date)}
     </p>
   );
 }
@@ -128,7 +136,7 @@ function ClickableCard({
 
 export default function NewsPage() {
   const [activeCategory, setActiveCategory] = useState<string>("All");
-  const [viewMode, setViewMode] = useState<ViewMode>("grid");
+  const [viewMode, setViewMode] = useState<ViewMode>("list");
   const [sortMode, setSortMode] = useState<SortMode>("newest");
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
   const [selectedYears, setSelectedYears] = useState<number[]>([]);
