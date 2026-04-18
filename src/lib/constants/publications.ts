@@ -32,10 +32,10 @@ export type Publication = {
 export const publications: Publication[] = [
   {
     id: "echoalign",
-    title: "Can We Treat Noisy Labels as Accurate?",
+    title: "EchoAlign: Bridging Generative and Discriminative Learning under Noisy Labels",
     category: "Research",
-    date: "2024-05-21",
-    venue: "arXiv",
+    date: "2026-03-17",
+    venue: "Frontiers of Computer Science",
     summary:
       "EchoAlign learns from noisy labels by editing images with controllable generators and selecting clean originals via feature similarity, greatly improving robustness to instance-dependent noise.",
     topics: ["Robust ML", "Noisy Labels", "Generative Models"],
@@ -45,8 +45,6 @@ export const publications: Publication[] = [
       "Yuxiang Zheng",
       "Zhongyi Han",
       "Yilong Yin",
-      "Xin Gao",
-      "Tongliang Liu",
     ],
     resources: [
       {
