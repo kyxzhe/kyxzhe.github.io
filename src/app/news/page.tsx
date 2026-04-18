@@ -403,7 +403,7 @@ export default function NewsPage() {
             ))}
           </section>
         ) : leadItem ? (
-          <section className="grid gap-3 lg:grid-cols-[minmax(0,1.42fr)_360px] xl:grid-cols-[minmax(0,1.64fr)_392px] items-start pb-4 md:pb-6">
+          <section className="w-full max-w-[1360px] self-center grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px] xl:grid-cols-[minmax(0,1fr)_348px] items-start pb-4 md:pb-6">
             <ClickableCard item={leadItem} className="block lg:self-start lg:sticky lg:top-0">
               <motion.article
                 whileHover={{ y: -3 }}
@@ -411,18 +411,18 @@ export default function NewsPage() {
                 className="group"
               >
                 <div className="overflow-hidden rounded-[4px] bg-[#090909]">
-                  <div className="relative aspect-[1.58/1] w-full">
+                  <div className="relative aspect-[1.68/1] w-full">
                     <Image
                       src={leadItem.cover}
                       alt={leadItem.title}
                       fill
-                      sizes="(max-width: 1024px) 100vw, 66vw"
+                      sizes="(max-width: 1024px) 100vw, 72vw"
                       className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
                     />
                   </div>
                 </div>
                 <div className="pt-3">
-                  <h2 className="max-w-4xl text-[30px] md:text-[40px] leading-[0.98] tracking-[-0.04em] text-white">
+                  <h2 className="max-w-4xl text-[30px] md:text-[44px] leading-[0.98] tracking-[-0.04em] text-white">
                     {leadItem.title}
                   </h2>
                   <div className="pt-2.5">
@@ -451,11 +451,11 @@ export default function NewsPage() {
                         />
                       </div>
                     </div>
-                    <div className="pt-3">
-                      <h3 className="max-w-[24rem] text-[22px] leading-[1.08] tracking-[-0.03em] text-white">
+                    <div className="pt-2.5">
+                      <h3 className="max-w-[20rem] text-[17px] md:text-[19px] leading-[1.12] tracking-[-0.02em] text-white">
                         {item.title}
                       </h3>
-                      <div className="pt-2">
+                      <div className="pt-1.5">
                         <MetaLine item={item} />
                       </div>
                     </div>
@@ -467,13 +467,13 @@ export default function NewsPage() {
         ) : null}
 
         {viewMode === "grid" && recentItems.length > 0 && (
-          <section className="pt-8 md:pt-14">
+          <section className="w-full max-w-[1360px] self-center pt-10 md:pt-16">
             <div className="mb-6 flex items-center justify-between gap-4">
-              <h2 className="text-[26px] md:text-[30px] tracking-[-0.03em] text-white">Recent updates</h2>
+              <h2 className="text-[22px] md:text-[28px] tracking-[-0.03em] text-white">Recent updates</h2>
               <p className="text-sm text-white/48">Showing {sortedItems.length} items</p>
             </div>
 
-            <div className="grid gap-x-12 gap-y-8 md:grid-cols-2">
+            <div className="grid gap-x-16 gap-y-8 md:grid-cols-2">
               {[leftColumnItems, rightColumnItems].map((column, columnIndex) => (
                 <div key={columnIndex} className="flex flex-col gap-4">
                   {column.map((item, index) => (
@@ -487,7 +487,7 @@ export default function NewsPage() {
                           delay: index * 0.06,
                           ease: [0.22, 1, 0.36, 1],
                         }}
-                        className="group grid grid-cols-[102px_minmax(0,1fr)] gap-4 rounded-[6px] border border-transparent p-0 transition-colors hover:border-white/10"
+                        className="group grid grid-cols-[96px_minmax(0,1fr)] md:grid-cols-[104px_minmax(0,1fr)] gap-4 rounded-[6px] border border-transparent p-0 transition-colors hover:border-white/10"
                       >
                         <div className="overflow-hidden rounded-[4px] bg-[#090909]">
                           <div className="relative aspect-square w-full">
@@ -495,13 +495,13 @@ export default function NewsPage() {
                               src={item.cover}
                               alt={item.title}
                               fill
-                              sizes="102px"
+                              sizes="104px"
                               className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
                             />
                           </div>
                         </div>
                         <div className="flex min-w-0 flex-col justify-center py-1">
-                          <h3 className="text-[22px] leading-[1.1] tracking-[-0.03em] text-white">
+                          <h3 className="text-[18px] md:text-[20px] leading-[1.12] tracking-[-0.025em] text-white">
                             {item.title}
                           </h3>
                           <div className="pt-2">
