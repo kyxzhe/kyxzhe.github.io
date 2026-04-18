@@ -75,7 +75,7 @@ const AuthorLine = ({ authors }: { authors: string[] }) => (
 );
 
 const CardMetaLine = ({ item }: { item: Publication }) => (
-  <p className="text-[11px] uppercase tracking-[0.18em] text-white/58">
+  <p className="text-[11px] uppercase tracking-[0.18em] text-[rgba(0,0,0,0.5)] dark:text-white/58">
     {item.category} <span className="mx-1.5">·</span> {formatDate(item.date)}
   </p>
 );
@@ -283,7 +283,7 @@ export default function PublicationsPage() {
                 </div>
               </div>
               <div className="pt-3">
-                <h2 className="max-w-4xl text-[30px] md:text-[44px] leading-[0.98] tracking-[-0.04em] text-white">
+                <h2 className="max-w-4xl text-[30px] md:text-[44px] leading-[0.98] tracking-[-0.04em] text-foreground dark:text-white">
                   {leadItem.title}
                 </h2>
                 <div className="pt-2.5">
@@ -292,7 +292,7 @@ export default function PublicationsPage() {
                 <div className="pt-2.5">
                   <AuthorLine authors={leadItem.authors} />
                 </div>
-                <p className="pt-3 max-w-3xl text-[15px] leading-relaxed text-white/74">
+                <p className="pt-3 max-w-3xl text-[15px] leading-relaxed text-foreground/74 dark:text-white/74">
                   {leadItem.summary}
                 </p>
                 <div className="pt-4">
@@ -323,7 +323,7 @@ export default function PublicationsPage() {
                       </div>
                     </div>
                     <div className="pt-2.5">
-                      <h3 className="max-w-[17rem] text-[16px] md:text-[18px] leading-[1.12] tracking-[-0.02em] text-white">
+                      <h3 className="max-w-[17rem] text-[16px] md:text-[18px] leading-[1.12] tracking-[-0.02em] text-foreground dark:text-white">
                         {item.title}
                       </h3>
                       <div className="pt-1.5">
@@ -340,8 +340,8 @@ export default function PublicationsPage() {
         {recentItems.length > 0 && (
           <section className="w-full max-w-[1360px] self-center pt-10 md:pt-16">
             <div className="mb-6 flex items-center justify-between gap-4">
-              <h2 className="text-[22px] md:text-[28px] tracking-[-0.03em] text-white">Recent publications</h2>
-              <p className="text-sm text-white/48">Showing {sortedItems.length} items</p>
+              <h2 className="text-[22px] md:text-[28px] tracking-[-0.03em] text-foreground dark:text-white">Recent publications</h2>
+              <p className="text-sm text-[rgba(0,0,0,0.45)] dark:text-white/48">Showing {sortedItems.length} items</p>
             </div>
 
             <div className="grid gap-x-16 gap-y-8 md:grid-cols-2">
@@ -372,7 +372,7 @@ export default function PublicationsPage() {
                           </div>
                         </div>
                         <div className="flex min-w-0 flex-col justify-center py-1">
-                          <h3 className="text-[18px] md:text-[20px] leading-[1.12] tracking-[-0.025em] text-white">
+                          <h3 className="text-[18px] md:text-[20px] leading-[1.12] tracking-[-0.025em] text-foreground dark:text-white">
                             {item.title}
                           </h3>
                           <div className="pt-2">
