@@ -403,7 +403,7 @@ export default function NewsPage() {
             ))}
           </section>
         ) : leadItem ? (
-          <section className="w-full max-w-[1360px] self-center grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px] xl:grid-cols-[minmax(0,1fr)_348px] items-start pb-4 md:pb-6">
+          <section className="w-full max-w-[1360px] self-center grid gap-4 lg:grid-cols-[minmax(0,1fr)_288px] xl:grid-cols-[minmax(0,1fr)_312px] items-start pb-4 md:pb-6">
             <ClickableCard item={leadItem} className="block lg:self-start lg:sticky lg:top-0">
               <motion.article
                 whileHover={{ y: -3 }}
@@ -452,7 +452,7 @@ export default function NewsPage() {
                       </div>
                     </div>
                     <div className="pt-2.5">
-                      <h3 className="max-w-[20rem] text-[17px] md:text-[19px] leading-[1.12] tracking-[-0.02em] text-white">
+                      <h3 className="max-w-[17rem] text-[16px] md:text-[18px] leading-[1.12] tracking-[-0.02em] text-white">
                         {item.title}
                       </h3>
                       <div className="pt-1.5">

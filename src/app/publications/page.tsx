@@ -10,7 +10,6 @@ import { ArrowUpDown, ArrowUpRight, Filter, LayoutGrid, List } from "lucide-reac
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { type Publication, type PublicationResource, publications } from "@/lib/constants/publications";
-import { projectsVariants } from "@/lib/animation/variants";
 import { getArticleJsonLd } from "@/lib/seo/schema";
 import { siteMetadata } from "@/lib/seo/config";
 
@@ -38,6 +37,14 @@ function formatDate(isoDate: string) {
   const monthLabel = MONTH_ABBREVIATIONS[month - 1];
   if (!monthLabel) return isoDate;
   return `${day} ${monthLabel} ${year}`;
+}
+
+function formatCardDate(isoDate: string) {
+  const [year, month, day] = isoDate.split("-").map(Number);
+  if (!year || !month || !day) return isoDate;
+  const monthLabel = MONTH_ABBREVIATIONS[month - 1];
+  if (!monthLabel) return isoDate;
+  return `${monthLabel} ${day}, ${year}`;
 }
 
 const topics = Array.from(new Set(publications.flatMap((item) => item.topics))).sort();
@@ -74,6 +81,47 @@ const AuthorLine = ({ authors }: { authors: string[] }) => (
     })}
   </p>
 );
+
+const CardMetaLine = ({ item }: { item: Publication }) => (
+  <p className="text-[11px] uppercase tracking-[0.18em] text-white/58">
+    {item.category} <span className="mx-1.5">·</span> {formatCardDate(item.date)}
+  </p>
+);
+
+function ClickableCard({
+  item,
+  className,
+  children,
+}: {
+  item: Publication;
+  className?: string;
+  children: React.ReactNode;
+}) {
+  const handleActivate = (
+    event: MouseEvent<HTMLElement> | KeyboardEvent<HTMLElement>
+  ) => {
+    if (!item.link) return;
+    if (event.type === "keydown") {
+      const keyboardEvent = event as KeyboardEvent<HTMLElement>;
+      if (keyboardEvent.key !== "Enter" && keyboardEvent.key !== " ") return;
+      keyboardEvent.preventDefault();
+    }
+    window.open(item.link, "_blank", "noopener,noreferrer");
+  };
+
+  return (
+    <div
+      className={className}
+      role={item.link ? "link" : undefined}
+      tabIndex={item.link ? 0 : -1}
+      aria-label={item.link ? `Open ${item.title}` : undefined}
+      onClick={item.link ? handleActivate : undefined}
+      onKeyDown={item.link ? handleActivate : undefined}
+    >
+      {children}
+    </div>
+  );
+}
 
 const ResourceRow = ({
   venue,
@@ -213,68 +261,143 @@ export default function PublicationsPage() {
     );
   }, [sortedItems]);
 
-  const renderGridCard = (item: Publication) => {
-    const handleActivate = (
-      event: MouseEvent<HTMLElement> | KeyboardEvent<HTMLElement>
-    ) => {
-      if (!item.link) return;
-      if (event.type === "keydown") {
-        const keyboardEvent = event as KeyboardEvent<HTMLElement>;
-        if (keyboardEvent.key !== "Enter" && keyboardEvent.key !== " ") return;
-        keyboardEvent.preventDefault();
-      }
-      window.open(item.link, "_blank", "noopener,noreferrer");
-    };
+  const renderGrid = () => {
+    const leadItem = sortedItems[0];
+    const sideRailItems = sortedItems.slice(1, 4);
+    const recentItems = sortedItems.slice(4);
+    const leftColumnItems = recentItems.filter((_, index) => index % 2 === 0);
+    const rightColumnItems = recentItems.filter((_, index) => index % 2 === 1);
 
-    const card = (
-      <motion.article
-        key={item.id}
-        variants={projectsVariants}
-        whileHover={{ y: -10, boxShadow: "0 25px 50px rgba(0,0,0,0.15)" }}
-        transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
-        className={`surface-card overflow-hidden flex flex-col h-full font-normal ${
-          item.link ? "cursor-pointer" : "opacity-80 cursor-default"
-        }`}
-        role={item.link ? "link" : undefined}
-        tabIndex={item.link ? 0 : -1}
-        aria-label={item.link ? `Open ${item.title}` : undefined}
-        onClick={item.link ? handleActivate : undefined}
-        onKeyDown={item.link ? handleActivate : undefined}
-      >
-        <div className="relative w-full pb-[60%]">
-          <Image
-            src={item.cover}
-            alt={item.title}
-            fill
-            sizes="(max-width: 768px) 100vw, 33vw"
-            className="object-cover"
-          />
-        </div>
-        <div className="p-4 flex flex-col gap-3 flex-1">
-          <p className="text-[12px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.44)]">
-            {item.category} · {formatDate(item.date)}
-          </p>
-          <h3 className="text-[17px] leading-snug">{item.title}</h3>
-          <AuthorLine authors={item.authors} />
-          <p className="text-[14px] text-black dark:text-white flex-1 line-clamp-3">{item.summary}</p>
-          <ResourceRow venue={item.venue} resources={item.resources} />
-        </div>
-      </motion.article>
+    if (!leadItem) return null;
+
+    return (
+      <>
+        <section className="w-full max-w-[1360px] self-center grid gap-4 lg:grid-cols-[minmax(0,1fr)_288px] xl:grid-cols-[minmax(0,1fr)_312px] items-start pb-4 md:pb-6">
+          <ClickableCard item={leadItem} className="block lg:self-start lg:sticky lg:top-0">
+            <motion.article
+              whileHover={{ y: -3 }}
+              transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
+              className={`group ${leadItem.link ? "cursor-pointer" : "cursor-default"}`}
+            >
+              <div className="overflow-hidden rounded-[4px] bg-[#090909]">
+                <div className="relative aspect-[1.68/1] w-full">
+                  <Image
+                    src={leadItem.cover}
+                    alt={leadItem.title}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 72vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                  />
+                </div>
+              </div>
+              <div className="pt-3">
+                <h2 className="max-w-4xl text-[30px] md:text-[44px] leading-[0.98] tracking-[-0.04em] text-white">
+                  {leadItem.title}
+                </h2>
+                <div className="pt-2.5">
+                  <CardMetaLine item={leadItem} />
+                </div>
+                <div className="pt-2.5">
+                  <AuthorLine authors={leadItem.authors} />
+                </div>
+                <p className="pt-3 max-w-3xl text-[15px] leading-relaxed text-white/74">
+                  {leadItem.summary}
+                </p>
+                <div className="pt-4">
+                  <ResourceRow venue={leadItem.venue} resources={leadItem.resources} />
+                </div>
+              </div>
+            </motion.article>
+          </ClickableCard>
+
+          {sideRailItems.length > 0 && (
+            <div className="flex flex-col gap-6">
+              {sideRailItems.map((item) => (
+                <ClickableCard key={item.id} item={item} className="block">
+                  <motion.article
+                    whileHover={{ y: -3 }}
+                    transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
+                    className={`group ${item.link ? "cursor-pointer" : "cursor-default"}`}
+                  >
+                    <div className="overflow-hidden rounded-[4px] bg-[#090909]">
+                      <div className="relative aspect-square w-full">
+                        <Image
+                          src={item.cover}
+                          alt={item.title}
+                          fill
+                          sizes="(max-width: 1024px) 100vw, 312px"
+                          className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                        />
+                      </div>
+                    </div>
+                    <div className="pt-2.5">
+                      <h3 className="max-w-[17rem] text-[16px] md:text-[18px] leading-[1.12] tracking-[-0.02em] text-white">
+                        {item.title}
+                      </h3>
+                      <div className="pt-1.5">
+                        <CardMetaLine item={item} />
+                      </div>
+                    </div>
+                  </motion.article>
+                </ClickableCard>
+              ))}
+            </div>
+          )}
+        </section>
+
+        {recentItems.length > 0 && (
+          <section className="w-full max-w-[1360px] self-center pt-10 md:pt-16">
+            <div className="mb-6 flex items-center justify-between gap-4">
+              <h2 className="text-[22px] md:text-[28px] tracking-[-0.03em] text-white">Recent publications</h2>
+              <p className="text-sm text-white/48">Showing {sortedItems.length} items</p>
+            </div>
+
+            <div className="grid gap-x-16 gap-y-8 md:grid-cols-2">
+              {[leftColumnItems, rightColumnItems].map((column, columnIndex) => (
+                <div key={columnIndex} className="flex flex-col gap-4">
+                  {column.map((item, index) => (
+                    <ClickableCard key={item.id} item={item} className="block">
+                      <motion.article
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, amount: 0.25 }}
+                        transition={{
+                          duration: 0.45,
+                          delay: index * 0.06,
+                          ease: [0.22, 1, 0.36, 1],
+                        }}
+                        className={`group grid grid-cols-[96px_minmax(0,1fr)] md:grid-cols-[104px_minmax(0,1fr)] gap-4 rounded-[6px] border border-transparent p-0 transition-colors hover:border-white/10 ${item.link ? "cursor-pointer" : "cursor-default"}`}
+                      >
+                        <div className="overflow-hidden rounded-[4px] bg-[#090909]">
+                          <div className="relative aspect-square w-full">
+                            <Image
+                              src={item.cover}
+                              alt={item.title}
+                              fill
+                              sizes="104px"
+                              className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                            />
+                          </div>
+                        </div>
+                        <div className="flex min-w-0 flex-col justify-center py-1">
+                          <h3 className="text-[18px] md:text-[20px] leading-[1.12] tracking-[-0.025em] text-white">
+                            {item.title}
+                          </h3>
+                          <div className="pt-2">
+                            <CardMetaLine item={item} />
+                          </div>
+                        </div>
+                      </motion.article>
+                    </ClickableCard>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+      </>
     );
-
-    return <div key={item.id} className="h-full">{card}</div>;
   };
-
-  const renderGrid = () => (
-    <motion.div
-      className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 auto-rows-[1fr]"
-      variants={projectsVariants}
-      initial="hidden"
-      animate="visible"
-    >
-      {sortedItems.map(renderGridCard)}
-    </motion.div>
-  );
 
   return (
     <div className="min-h-screen bg-white text-foreground dark:bg-[#000000] dark:text-[#f5f5f5] font-medium">
