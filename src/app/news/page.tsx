@@ -5,11 +5,15 @@ import Image from "next/image";
 import Link from "next/link";
 import Script from "next/script";
 import { motion } from "motion/react";
+import { ArrowUpDown, Filter, LayoutGrid, List } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { type NewsCategory, type NewsItem, newsItems } from "@/lib/constants/news";
 import { getArticleJsonLd } from "@/lib/seo/schema";
 import { siteMetadata } from "@/lib/seo/config";
+
+type ViewMode = "list" | "grid";
+type SortMode = "newest" | "oldest" | "az" | "za";
 
 const MONTH_ABBREVIATIONS = [
   "Jan",
@@ -35,6 +39,14 @@ function formatDate(isoDate: string) {
 }
 
 const categories = ["All", ...Array.from(new Set(newsItems.map((item) => item.category)))];
+const topics = Array.from(new Set(newsItems.flatMap((item) => item.topics))).sort();
+const years = Array.from(new Set(newsItems.map((item) => new Date(item.date).getFullYear()))).sort((a, b) => b - a);
+const sortOptions: { label: string; value: SortMode }[] = [
+  { label: "Newest → Oldest", value: "newest" },
+  { label: "Oldest → Newest", value: "oldest" },
+  { label: "Alphabetical (A–Z)", value: "az" },
+  { label: "Alphabetical (Z–A)", value: "za" },
+];
 
 const categoryLabelMap: Record<NewsCategory, string> = {
   RESEARCH: "Research",
@@ -47,6 +59,39 @@ const categoryLabelMap: Record<NewsCategory, string> = {
 function formatCategoryLabel(category: string) {
   return category === "All" ? "All" : categoryLabelMap[category as NewsCategory] ?? category;
 }
+
+const ListRow = ({ item }: { item: NewsItem }) => {
+  const row = (
+    <article className="group flex flex-col gap-3 py-6 border-b border-[rgba(0,0,0,0.08)] dark:border-white/20 transition-colors hover:border-foreground/70 font-normal">
+      <p className="text-[12px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.44)]">
+        {item.category}
+      </p>
+      <div className="flex items-start justify-between gap-3">
+        <h3 className="text-[17px] leading-snug text-foreground dark:text-white">{item.title}</h3>
+        <p className="text-[14px] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.44)] whitespace-nowrap">
+          {formatDate(item.date)}
+        </p>
+      </div>
+      <p className="text-[14px] text-foreground/80 dark:text-white leading-relaxed max-w-3xl">
+        {item.summary}
+      </p>
+    </article>
+  );
+
+  if (item.link) {
+    return (
+      <Link key={item.id} href={item.link} target="_blank" rel="noopener noreferrer" className="group block">
+        {row}
+      </Link>
+    );
+  }
+
+  return (
+    <div key={item.id} className="group block cursor-default">
+      {row}
+    </div>
+  );
+};
 
 function MetaLine({ item }: { item: NewsItem }) {
   return (
@@ -83,16 +128,54 @@ function ClickableCard({
 
 export default function NewsPage() {
   const [activeCategory, setActiveCategory] = useState<string>("All");
+  const [viewMode, setViewMode] = useState<ViewMode>("grid");
+  const [sortMode, setSortMode] = useState<SortMode>("newest");
+  const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
+  const [selectedYears, setSelectedYears] = useState<number[]>([]);
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [sortOpen, setSortOpen] = useState(false);
+
+  const toggleTopic = (topic: string) => {
+    setSelectedTopics((prev) =>
+      prev.includes(topic) ? prev.filter((t) => t !== topic) : [...prev, topic]
+    );
+  };
+
+  const toggleYear = (year: number) => {
+    setSelectedYears((prev) =>
+      prev.includes(year) ? prev.filter((y) => y !== year) : [...prev, year]
+    );
+  };
 
   const filteredItems = useMemo(() => {
-    return newsItems.filter((item) => activeCategory === "All" || item.category === activeCategory);
-  }, [activeCategory]);
+    return newsItems.filter((item) => {
+      const categoryMatch = activeCategory === "All" || item.category === activeCategory;
+      const topicsMatch =
+        selectedTopics.length === 0 || selectedTopics.every((topic) => item.topics.includes(topic));
+      const yearsMatch =
+        selectedYears.length === 0 || selectedYears.includes(new Date(item.date).getFullYear());
+      return categoryMatch && topicsMatch && yearsMatch;
+    });
+  }, [activeCategory, selectedTopics, selectedYears]);
 
   const sortedItems = useMemo(() => {
-    return [...filteredItems].sort(
-      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-    );
-  }, [filteredItems]);
+    const sorted = [...filteredItems];
+    sorted.sort((a, b) => {
+      switch (sortMode) {
+        case "newest":
+          return new Date(b.date).getTime() - new Date(a.date).getTime();
+        case "oldest":
+          return new Date(a.date).getTime() - new Date(b.date).getTime();
+        case "az":
+          return a.title.localeCompare(b.title);
+        case "za":
+          return b.title.localeCompare(a.title);
+        default:
+          return 0;
+      }
+    });
+    return sorted;
+  }, [filteredItems, sortMode]);
 
   const leadItem = sortedItems[0];
   const sideRailItems = sortedItems.slice(1, 4);
@@ -124,38 +207,194 @@ export default function NewsPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
       />
       <Navbar />
+      {(filterOpen || sortOpen) && (
+        <div
+          className="fixed inset-0 z-30"
+          onClick={() => {
+            setFilterOpen(false);
+            setSortOpen(false);
+          }}
+        />
+      )}
       <main className="mx-auto w-full max-w-[1360px] px-3 md:px-5 lg:px-6 pt-6 pb-14 flex flex-col gap-10">
-        <section className="space-y-4">
-          <p className="text-[12px] uppercase tracking-[0.32em] text-white/62">News</p>
-          <h1 className="max-w-4xl text-[44px] md:text-[72px] leading-[0.94] tracking-[-0.04em] text-white">
-            Research notes, awards, and milestones.
-          </h1>
-          <p className="max-w-2xl text-[16px] md:text-[18px] leading-relaxed text-white/62">
-            A curated stream of papers, talks, awards, and milestones from my research and teaching work.
+        <section className="mt-4 space-y-2">
+          <p className="text-xs uppercase tracking-[0.3em] text-[rgba(255,255,255,0.8)]">NEWS</p>
+          <h1 className="text-[48px] font-medium leading-tight text-white">News &amp; updates</h1>
+          <p className="text-[15px] md:text-base text-[rgba(255,255,255,0.8)] max-w-2xl leading-relaxed">
+            Updates on new papers, awards, talks, and milestones.
           </p>
         </section>
 
-        <div className="flex flex-wrap gap-2.5 text-sm">
-          {categories.map((category) => {
-            const active = activeCategory === category;
-            return (
-              <button
-                key={category}
-                type="button"
-                onClick={() => setActiveCategory(category)}
-                className={`rounded-full border px-4 py-2.5 transition-colors ${
-                  active
-                    ? "border-white/22 bg-white/12 text-white"
-                    : "border-white/12 bg-transparent text-white/62 hover:border-white/22 hover:text-white"
-                }`}
-              >
-                {formatCategoryLabel(category)}
-              </button>
-            );
-          })}
+        <div className="flex flex-wrap gap-2 text-sm text-[rgba(255,255,255,0.8)]">
+          {categories.map((category) => (
+            <button
+              key={category}
+              type="button"
+              onClick={() => setActiveCategory(category)}
+              className={`px-3 py-1.5 rounded-full border transition-colors ${
+                activeCategory === category
+                  ? "bg-[rgba(255,255,255,0.4)] border-transparent text-white"
+                  : "bg-[rgba(255,255,255,0.12)] border-transparent text-[rgba(255,255,255,0.8)] hover:border-[rgba(255,255,255,0.16)]"
+              }`}
+            >
+              {formatCategoryLabel(category)}
+            </button>
+          ))}
         </div>
 
-        {leadItem && (
+        <div className="flex flex-wrap items-center justify-between gap-3 text-sm font-medium">
+          <p className="text-[rgba(255,255,255,0.8)]">Showing {sortedItems.length} updates</p>
+
+          <div className="relative flex items-center gap-4 text-sm font-medium">
+            <div className="relative flex items-center gap-1">
+              <button
+                className="flex items-center gap-1"
+                onClick={() => {
+                  setFilterOpen((prev) => !prev);
+                  setSortOpen(false);
+                }}
+              >
+                <span
+                  className={
+                    selectedTopics.length > 0 || selectedYears.length > 0 || filterOpen
+                      ? "text-white"
+                      : "text-[rgba(255,255,255,0.8)]"
+                  }
+                >
+                  Filter
+                </span>
+                <Filter
+                  size={16}
+                  className={
+                    selectedTopics.length > 0 || selectedYears.length > 0 || filterOpen
+                      ? "text-white"
+                      : "text-[rgba(255,255,255,0.8)]"
+                  }
+                />
+              </button>
+              {filterOpen && (
+                <div className="absolute top-full mt-2 w-[min(420px,calc(100vw-2rem))] left-1 right-auto sm:left-auto sm:right-0 z-40 surface-card-dark p-4 flex flex-col gap-4 shadow-xl rounded-2xl text-sm">
+                  <div className="flex items-center justify-between text-sm text-white">
+                    <p className="font-semibold">Filters</p>
+                    <button
+                      type="button"
+                      className="text-[rgba(255,255,255,0.8)]"
+                      onClick={() => {
+                        setFilterOpen(false);
+                      }}
+                    >
+                      ×
+                    </button>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4 text-sm text-white">
+                    <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
+                      <p className="text-[11px] uppercase tracking-[0.28em] text-[rgba(255,255,255,0.7)]">Topic</p>
+                      {topics.map((topic) => (
+                        <label key={topic} className="flex items-center gap-2 text-[13px] text-white">
+                          <input
+                            type="checkbox"
+                            checked={selectedTopics.includes(topic)}
+                            onChange={() => toggleTopic(topic)}
+                          />
+                          {topic}
+                        </label>
+                      ))}
+                    </div>
+                    <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
+                      <p className="text-[11px] uppercase tracking-[0.28em] text-[rgba(255,255,255,0.7)]">Year</p>
+                      {years.map((year) => (
+                        <label key={year} className="flex items-center gap-2 text-[13px] text-white">
+                          <input
+                            type="checkbox"
+                            checked={selectedYears.includes(year)}
+                            onChange={() => toggleYear(year)}
+                          />
+                          {year}
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="flex justify-end pt-2 text-xs text-[rgba(255,255,255,0.8)]">
+                    <button
+                      type="button"
+                      className="underline-offset-2 hover:text-white"
+                      onClick={() => {
+                        setSelectedTopics([]);
+                        setSelectedYears([]);
+                      }}
+                    >
+                      Clear all
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="relative flex items-center gap-1">
+              <button
+                className={`flex items-center gap-1 ${
+                  sortOpen ? "text-white" : "text-[rgba(255,255,255,0.8)]"
+                }`}
+                onClick={() => {
+                  setSortOpen((prev) => !prev);
+                  setFilterOpen(false);
+                }}
+              >
+                <span>Sort</span>
+                <ArrowUpDown size={16} />
+              </button>
+              {sortOpen && (
+                <div className="absolute top-full mt-2 w-[min(256px,calc(100vw-2rem))] left-1 sm:left-auto sm:right-0 z-40 surface-card-dark p-3 flex flex-col gap-2 shadow-xl rounded-2xl text-sm text-white">
+                  {sortOptions.map((option) => (
+                    <label key={option.value} className="flex items-center gap-2 text-white/80">
+                      <input
+                        type="radio"
+                        name="news-sort"
+                        value={option.value}
+                        checked={sortMode === option.value}
+                        onChange={() => setSortMode(option.value)}
+                      />
+                      {option.label}
+                    </label>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="flex items-center gap-2 text-[rgba(255,255,255,0.8)]">
+              <button
+                className={`p-2 rounded transition-colors ${
+                  viewMode === "list"
+                    ? "text-white bg-[rgba(255,255,255,0.25)]"
+                    : "hover:text-white"
+                }`}
+                onClick={() => setViewMode("list")}
+                aria-label="List view"
+              >
+                <List size={16} />
+              </button>
+              <button
+                className={`p-2 rounded transition-colors ${
+                  viewMode === "grid"
+                    ? "text-white bg-[rgba(255,255,255,0.25)]"
+                    : "hover:text-white"
+                }`}
+                onClick={() => setViewMode("grid")}
+                aria-label="Grid view"
+              >
+                <LayoutGrid size={16} />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {viewMode === "list" ? (
+          <section className="bg-transparent">
+            {sortedItems.map((item) => (
+              <ListRow key={item.id} item={item} />
+            ))}
+          </section>
+        ) : leadItem ? (
           <section className="grid gap-3 lg:grid-cols-[minmax(0,1.42fr)_360px] xl:grid-cols-[minmax(0,1.64fr)_392px] items-start pb-4 md:pb-6">
             <ClickableCard item={leadItem} className="block lg:self-start lg:sticky lg:top-0">
               <motion.article
@@ -217,7 +456,7 @@ export default function NewsPage() {
               ))}
             </div>
           </section>
-        )}
+        ) : null}
 
         {recentItems.length > 0 && (
           <section className="pt-8 md:pt-14">
