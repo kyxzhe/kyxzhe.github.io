@@ -68,6 +68,14 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteMetadata.baseUrl),
   title: siteMetadata.title,
   description: siteMetadata.description,
+  icons: {
+    icon: [
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico', sizes: 'any' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: '/apple-icon.png',
+  },
   keywords: ["Kevin Zheng", "information diffusion", "social data science", "robust machine learning", "misinformation"],
   authors: [{ name: siteMetadata.author.name }],
   creator: siteMetadata.author.name,
