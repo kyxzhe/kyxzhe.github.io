@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import { siteMetadata } from "@/lib/seo/config";
-import { getBreadcrumbJsonLd } from "@/lib/seo/schema";
+import { getBreadcrumbJsonLd, getCollectionPageJsonLd } from "@/lib/seo/schema";
 
 const pageTitle = "Publications | Kevin Zheng";
 const pageDescription =
@@ -14,17 +14,12 @@ export const metadata: Metadata = {
     canonical: "/publications",
   },
   openGraph: {
+    type: "website",
     title: pageTitle,
     description: pageDescription,
     url: `${siteMetadata.baseUrl}/publications`,
-    images: [
-      {
-        url: siteMetadata.defaultImage,
-        width: 1200,
-        height: 630,
-        alt: "Publications by Kevin Zheng",
-      },
-    ],
+    siteName: siteMetadata.siteName,
+    locale: siteMetadata.locale,
   },
   twitter: {
     title: pageTitle,
@@ -34,10 +29,16 @@ export const metadata: Metadata = {
 };
 
 export default function PublicationsLayout({ children }: { children: React.ReactNode }) {
+  const pageUrl = `${siteMetadata.baseUrl}/publications`;
   const breadcrumb = getBreadcrumbJsonLd([
     { name: "Home", url: siteMetadata.baseUrl },
-    { name: "Publications", url: `${siteMetadata.baseUrl}/publications` },
+    { name: "Publications", url: pageUrl },
   ]);
+  const collectionPage = getCollectionPageJsonLd({
+    title: pageTitle,
+    description: pageDescription,
+    url: pageUrl,
+  });
 
   return (
     <>
@@ -45,6 +46,11 @@ export default function PublicationsLayout({ children }: { children: React.React
         id="ld-breadcrumb-publications"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+      />
+      <Script
+        id="ld-collection-publications"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionPage) }}
       />
       {children}
     </>

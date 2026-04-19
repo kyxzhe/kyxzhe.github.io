@@ -23,7 +23,7 @@ export default function HeroSection() {
       >
         <Image
           src="/svgs/Vector2.svg"
-          alt="Kevin Zheng monogram"
+          alt=""
           width={150}
           height={150}
           className="w-12 lg:w-auto self-end"

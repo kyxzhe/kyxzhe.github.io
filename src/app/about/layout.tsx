@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import { siteMetadata } from "@/lib/seo/config";
-import { getBreadcrumbJsonLd } from "@/lib/seo/schema";
+import { getBreadcrumbJsonLd, getProfilePageJsonLd } from "@/lib/seo/schema";
 
 const pageTitle = "About Kevin Zheng";
 const pageDescription =
@@ -14,17 +14,12 @@ export const metadata: Metadata = {
     canonical: "/about",
   },
   openGraph: {
+    type: "profile",
     title: pageTitle,
     description: pageDescription,
     url: `${siteMetadata.baseUrl}/about`,
-    images: [
-      {
-        url: siteMetadata.defaultImage,
-        width: 1200,
-        height: 630,
-        alt: "Kevin Zheng profile",
-      },
-    ],
+    siteName: siteMetadata.siteName,
+    locale: siteMetadata.locale,
   },
   twitter: {
     title: pageTitle,
@@ -34,10 +29,15 @@ export const metadata: Metadata = {
 };
 
 export default function AboutLayout({ children }: { children: React.ReactNode }) {
+  const pageUrl = `${siteMetadata.baseUrl}/about`;
   const breadcrumb = getBreadcrumbJsonLd([
     { name: "Home", url: siteMetadata.baseUrl },
-    { name: "About", url: `${siteMetadata.baseUrl}/about` },
+    { name: "About", url: pageUrl },
   ]);
+  const profilePage = getProfilePageJsonLd({
+    url: pageUrl,
+    description: pageDescription,
+  });
 
   return (
     <>
@@ -45,6 +45,11 @@ export default function AboutLayout({ children }: { children: React.ReactNode })
         id="ld-breadcrumb-about"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+      />
+      <Script
+        id="ld-profile-about"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(profilePage) }}
       />
       {children}
     </>

@@ -66,6 +66,7 @@ const openAiSans = localFont({
 });
 export const metadata: Metadata = {
   metadataBase: new URL(siteMetadata.baseUrl),
+  applicationName: siteMetadata.applicationName,
   title: siteMetadata.title,
   description: siteMetadata.description,
   icons: {
@@ -84,6 +85,13 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
   openGraph: {
     type: "website",
@@ -91,14 +99,7 @@ export const metadata: Metadata = {
     title: siteMetadata.title,
     description: "Researching how information travels online and how to keep models trustworthy under messy supervision.",
     siteName: siteMetadata.siteName,
-    images: [
-      {
-        url: siteMetadata.defaultImage,
-        width: 1200,
-        height: 630,
-        alt: "Kevin Zheng — Social Data Science & Robust ML",
-      },
-    ],
+    locale: siteMetadata.locale,
   },
   twitter: {
     card: "summary_large_image",

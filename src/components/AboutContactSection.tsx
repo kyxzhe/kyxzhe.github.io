@@ -37,7 +37,7 @@ export default function AboutContactSection() {
           >
             <Image
               src="/svgs/Vector.svg"
-              alt="Monogram icon"
+              alt=""
               width={120}
               height={120}
               className="w-10 md:w-16 lg:w-20"

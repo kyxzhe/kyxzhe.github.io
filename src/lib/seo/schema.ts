@@ -3,22 +3,33 @@ import { siteMetadata } from "./config";
 export const getWebsiteJsonLd = () => ({
   "@context": "https://schema.org",
   "@type": "WebSite",
+  "@id": `${siteMetadata.baseUrl}#website`,
   url: siteMetadata.baseUrl,
   name: siteMetadata.siteName,
+  alternateName: siteMetadata.alternateSiteName,
   description: siteMetadata.description,
   inLanguage: siteMetadata.locale,
+  publisher: {
+    "@id": `${siteMetadata.baseUrl}#person`,
+  },
 });
 
 export const getPersonJsonLd = () => ({
   "@context": "https://schema.org",
   "@type": "Person",
+  "@id": `${siteMetadata.baseUrl}#person`,
   name: siteMetadata.author.name,
   givenName: siteMetadata.author.givenName,
   familyName: siteMetadata.author.familyName,
+  description: siteMetadata.description,
   jobTitle: "PhD Student · Behavioural Data Science Lab",
   affiliation: {
     "@type": "CollegeOrUniversity",
-    name: "University of Technology Sydney",
+    name: siteMetadata.affiliations.current,
+  },
+  alumniOf: {
+    "@type": "CollegeOrUniversity",
+    name: siteMetadata.affiliations.alumni,
   },
   email: siteMetadata.contact.email,
   address: {
@@ -26,8 +37,30 @@ export const getPersonJsonLd = () => ({
     addressLocality: "Sydney",
     addressCountry: "Australia",
   },
+  image: `${siteMetadata.baseUrl}/opengraph-image`,
+  knowsAbout: siteMetadata.researchAreas,
   url: siteMetadata.baseUrl,
   sameAs: Object.values(siteMetadata.social),
+});
+
+type ProfilePageInput = {
+  url: string;
+  description: string;
+};
+
+export const getProfilePageJsonLd = ({ url, description }: ProfilePageInput) => ({
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  "@id": `${url}#profile-page`,
+  url,
+  name: "About Kevin Zheng",
+  description,
+  isPartOf: {
+    "@id": `${siteMetadata.baseUrl}#website`,
+  },
+  mainEntity: {
+    "@id": `${siteMetadata.baseUrl}#person`,
+  },
 });
 
 export const getBreadcrumbJsonLd = (crumbs: { name: string; url: string }[]) => ({
@@ -39,6 +72,31 @@ export const getBreadcrumbJsonLd = (crumbs: { name: string; url: string }[]) => 
     name: crumb.name,
     item: crumb.url,
   })),
+});
+
+type CollectionPageInput = {
+  title: string;
+  description: string;
+  url: string;
+};
+
+export const getCollectionPageJsonLd = ({
+  title,
+  description,
+  url,
+}: CollectionPageInput) => ({
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "@id": `${url}#collection-page`,
+  url,
+  name: title,
+  description,
+  isPartOf: {
+    "@id": `${siteMetadata.baseUrl}#website`,
+  },
+  about: {
+    "@id": `${siteMetadata.baseUrl}#person`,
+  },
 });
 
 type ArticleInput = {
@@ -73,6 +131,9 @@ export const getArticleJsonLd = ({
   datePublished,
   dateModified: dateModified ?? datePublished,
   author: authors.map((name) => ({ "@type": "Person", name })),
+  about: {
+    "@id": `${siteMetadata.baseUrl}#person`,
+  },
   publisher: {
     "@type": "Person",
     name: siteMetadata.author.name,

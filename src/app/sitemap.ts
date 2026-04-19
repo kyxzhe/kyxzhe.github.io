@@ -7,34 +7,47 @@ export const dynamic = "force-static";
 export const revalidate = 3600; // 1 hour
 
 const baseUrl = siteMetadata.baseUrl.replace(/\/$/, "");
+const siteUpdatedAt = "2026-04-19";
+const newsUpdatedAt = newsItems.reduce(
+  (latest, item) => (item.date > latest ? item.date : latest),
+  "2024-01-01"
+);
+const publicationsUpdatedAt = publications.reduce(
+  (latest, item) => (item.date > latest ? item.date : latest),
+  "2024-01-01"
+);
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes: MetadataRoute.Sitemap = [
-    "",
-    "/about",
-    "/news",
-    "/publications",
-    "/contact",
-  ].map((path, index) => ({
-    url: `${baseUrl}${path || "/"}`,
-    lastModified: new Date().toISOString().split("T")[0],
-    changeFrequency: "monthly",
-    priority: index === 0 ? 1 : 0.8,
-  }));
-
-  const newsRoutes: MetadataRoute.Sitemap = newsItems.map((item) => ({
-    url: `${baseUrl}/news#${item.id}`,
-    lastModified: item.date,
-    changeFrequency: "monthly",
-    priority: 0.6,
-  }));
-
-  const publicationRoutes: MetadataRoute.Sitemap = publications.map((pub) => ({
-    url: `${baseUrl}/publications#${pub.id}`,
-    lastModified: pub.date,
-    changeFrequency: "monthly",
-    priority: 0.7,
-  }));
-
-  return [...staticRoutes, ...newsRoutes, ...publicationRoutes];
+  return [
+    {
+      url: `${baseUrl}/`,
+      lastModified: siteUpdatedAt,
+      changeFrequency: "monthly",
+      priority: 1,
+    },
+    {
+      url: `${baseUrl}/about`,
+      lastModified: siteUpdatedAt,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/news`,
+      lastModified: newsUpdatedAt,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/publications`,
+      lastModified: publicationsUpdatedAt,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/contact`,
+      lastModified: siteUpdatedAt,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+  ];
 }

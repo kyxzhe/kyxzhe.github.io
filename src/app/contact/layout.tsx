@@ -14,17 +14,12 @@ export const metadata: Metadata = {
     canonical: "/contact",
   },
   openGraph: {
+    type: "website",
     title: pageTitle,
     description: pageDescription,
     url: `${siteMetadata.baseUrl}/contact`,
-    images: [
-      {
-        url: siteMetadata.defaultImage,
-        width: 1200,
-        height: 630,
-        alt: "Contact Kevin Zheng",
-      },
-    ],
+    siteName: siteMetadata.siteName,
+    locale: siteMetadata.locale,
   },
   twitter: {
     title: pageTitle,

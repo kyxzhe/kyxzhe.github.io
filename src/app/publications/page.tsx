@@ -4,14 +4,11 @@ import { useMemo, useState } from "react";
 import type { MouseEvent, KeyboardEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import Script from "next/script";
 import { motion } from "motion/react";
 import { ArrowUpDown, ArrowUpRight, Filter, LayoutGrid, List } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { type Publication, type PublicationResource, publications } from "@/lib/constants/publications";
-import { getArticleJsonLd } from "@/lib/seo/schema";
-import { siteMetadata } from "@/lib/seo/config";
 
 type ViewMode = "list" | "grid";
 type SortMode = "newest" | "oldest" | "az" | "za";
@@ -237,22 +234,6 @@ export default function PublicationsPage() {
     return sorted;
   }, [filteredItems, sortMode]);
 
-  const articleJsonLd = useMemo(() => {
-    const topItems = sortedItems.slice(0, 5);
-    return topItems.map((item) =>
-      getArticleJsonLd({
-        id: item.id,
-        title: item.title,
-        description: item.summary,
-        url: `${siteMetadata.baseUrl}/publications#${item.id}`,
-        image: item.cover,
-        datePublished: item.date,
-        dateModified: item.date,
-        authors: item.authors,
-      })
-    );
-  }, [sortedItems]);
-
   const renderGrid = () => {
     const leadItem = sortedItems[0];
     const sideRailItems = sortedItems.slice(1, 4);
@@ -393,11 +374,6 @@ export default function PublicationsPage() {
 
   return (
     <div className="min-h-screen bg-white text-foreground dark:bg-[#000000] dark:text-[#f5f5f5] font-medium">
-      <Script
-        id="ld-publications-articles"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
-      />
       <Navbar />
 
       {(filterOpen || sortOpen) && (
