@@ -8,11 +8,38 @@ export type ChatMessage = {
 
 const DEFAULT_CHAT_API_URL = "https://kevin-bot.kyx-zhe.workers.dev/chat";
 const CHAT_API_URL = process.env.NEXT_PUBLIC_CHAT_API_URL ?? DEFAULT_CHAT_API_URL;
+const CHAT_SESSION_KEY = "kevin-bot-session-id";
+let cachedChatSessionId: string | null = null;
 
 export interface ChatRequestOptions {
   signal?: AbortSignal;
   onChunk?: (chunk: string) => void;
   chunkThrottleMs?: number;
+}
+
+function getChatSessionId() {
+  if (cachedChatSessionId) {
+    return cachedChatSessionId;
+  }
+
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  try {
+    const existing = sessionStorage.getItem(CHAT_SESSION_KEY);
+    if (existing) {
+      cachedChatSessionId = existing;
+      return existing;
+    }
+
+    const nextId = crypto.randomUUID();
+    sessionStorage.setItem(CHAT_SESSION_KEY, nextId);
+    cachedChatSessionId = nextId;
+    return nextId;
+  } catch {
+    return null;
+  }
 }
 
 export async function sendChatRequest(
@@ -25,10 +52,12 @@ export async function sendChatRequest(
     );
   }
 
+  const sessionId = getChatSessionId();
   const response = await fetch(CHAT_API_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      ...(sessionId ? { "X-Chat-Session": sessionId } : {}),
     },
     body: JSON.stringify({ messages }),
     signal: options?.signal,
