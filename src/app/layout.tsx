@@ -71,8 +71,6 @@ export const metadata: Metadata = {
   description: siteMetadata.description,
   icons: {
     icon: [
-      { url: '/icon.svg', type: 'image/svg+xml', media: '(prefers-color-scheme: light)' },
-      { url: '/icon-dark.svg', type: 'image/svg+xml', media: '(prefers-color-scheme: dark)' },
       { url: '/favicon.ico', sizes: 'any' },
     ],
     shortcut: '/favicon.ico',
@@ -110,6 +108,41 @@ export const metadata: Metadata = {
     canonical: "/",
   },
 };
+
+const themeFaviconScript = `
+(() => {
+  const version = 'v5';
+  const media = window.matchMedia('(prefers-color-scheme: dark)');
+
+  const upsertLink = (id, rel, href) => {
+    let link = document.getElementById(id);
+    if (!(link instanceof HTMLLinkElement)) {
+      link = document.createElement('link');
+      link.id = id;
+      link.rel = rel;
+      link.type = 'image/x-icon';
+      document.head.appendChild(link);
+    }
+    link.href = href;
+  };
+
+  const applyTheme = (isDark) => {
+    const href = isDark ? '/favicon-dark.ico?' + version : '/favicon.ico?' + version;
+    upsertLink('theme-favicon-icon', 'icon', href);
+    upsertLink('theme-favicon-shortcut', 'shortcut icon', href);
+  };
+
+  applyTheme(media.matches);
+
+  const handleChange = (event) => applyTheme(event.matches);
+  if (typeof media.addEventListener === 'function') {
+    media.addEventListener('change', handleChange);
+  } else if (typeof media.addListener === 'function') {
+    media.addListener(handleChange);
+  }
+})();
+`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -119,6 +152,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${openAiSans.variable} antialiased`}>
         <ConsoleProvider />
+        <Script id="theme-favicon" strategy="beforeInteractive">
+          {themeFaviconScript}
+        </Script>
         <Script
           id="ld-website"
           type="application/ld+json"
