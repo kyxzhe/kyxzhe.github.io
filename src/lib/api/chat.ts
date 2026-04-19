@@ -12,6 +12,7 @@ const CHAT_API_URL = process.env.NEXT_PUBLIC_CHAT_API_URL ?? DEFAULT_CHAT_API_UR
 export interface ChatRequestOptions {
   signal?: AbortSignal;
   onChunk?: (chunk: string) => void;
+  chunkThrottleMs?: number;
 }
 
 export async function sendChatRequest(
@@ -45,7 +46,7 @@ export async function sendChatRequest(
   // 优先走 SSE 流
   const contentType = (response.headers.get("content-type") || "").toLowerCase();
   if (contentType.includes("text/event-stream") && response.body) {
-    return readSseStream(response.body, options?.onChunk);
+    return readSseStream(response.body, options?.onChunk, options?.chunkThrottleMs);
   }
 
   // 兼容旧的 JSON 一次性返回
@@ -104,13 +105,37 @@ function extractText(payload: unknown): string | null {
 
 async function readSseStream(
   stream: ReadableStream<Uint8Array>,
-  onChunk?: (chunk: string) => void
+  onChunk?: (chunk: string) => void,
+  chunkThrottleMs = 48
 ): Promise<string> {
   const reader = stream.getReader();
   const decoder = new TextDecoder();
   let buffer = "";
   let fullText = "";
+  let pendingChunk = "";
   let done = false;
+  let flushTimer: ReturnType<typeof setTimeout> | null = null;
+
+  const flushPendingChunk = () => {
+    if (!pendingChunk) return;
+    onChunk?.(pendingChunk);
+    pendingChunk = "";
+  };
+
+  const enqueueChunk = (chunk: string) => {
+    if (!onChunk) return;
+    if (chunkThrottleMs <= 0) {
+      onChunk(chunk);
+      return;
+    }
+
+    pendingChunk += chunk;
+    if (flushTimer) return;
+    flushTimer = setTimeout(() => {
+      flushTimer = null;
+      flushPendingChunk();
+    }, chunkThrottleMs);
+  };
 
   const handleEvent = (eventBlock: string) => {
     const lines = eventBlock.split(/\r?\n/);
@@ -125,7 +150,7 @@ async function readSseStream(
       const chunk = extractText(data);
       if (chunk) {
         fullText += chunk;
-        onChunk?.(chunk);
+        enqueueChunk(chunk);
       }
     }
   };
@@ -152,6 +177,11 @@ async function readSseStream(
       }
     }
   } finally {
+    if (flushTimer) {
+      clearTimeout(flushTimer);
+      flushTimer = null;
+    }
+    flushPendingChunk();
     reader.releaseLock();
   }
 
