@@ -1,0 +1,34 @@
+# Kevin Zheng
+
+> Personal academic website for Yuxiang (Kevin) Zheng, a PhD student at the University of Technology Sydney working on information diffusion, social data science, and robust machine learning.
+
+## Core Pages
+
+- [Home](https://kyxzhe.github.io/): Research profile, chatbot entry point, and primary navigation.
+- [About](https://kyxzhe.github.io/about): Biography, research focus, education timeline, teaching, and collaboration context.
+- [Publications](https://kyxzhe.github.io/publications): Research papers, preprints, code, and related materials.
+- [News](https://kyxzhe.github.io/news): Research updates, awards, teaching, and career milestones.
+- [Contact](https://kyxzhe.github.io/contact): Email, collaboration topics, scheduling guidance, and official profiles.
+
+## Research Topics
+
+- Information diffusion
+- Social data science
+- Robust machine learning
+- Trustworthy machine learning
+- Misinformation modeling
+- Temporal graph learning
+- Multimodal representation learning
+- Learning with noisy labels
+
+## Official Profiles
+
+- [GitHub](https://github.com/kyxzhe)
+- [Google Scholar](https://scholar.google.com/citations?user=aN71bBIAAAAJ&hl=en)
+- [ORCID](https://orcid.org/0009-0005-6494-8428)
+- [LinkedIn](https://www.linkedin.com/in/kevin-zheng-873686274)
+
+## Machine-Readable Indexes
+
+- [Sitemap](https://kyxzhe.github.io/sitemap.xml)
+- [Robots](https://kyxzhe.github.io/robots.txt)

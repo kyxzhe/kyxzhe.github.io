@@ -2,7 +2,7 @@
 
 Developer: Yuxiang (Kevin) Zheng
 Contact: kevin.zheng@student.uts.edu.au
-GitHub: https://github.com/KevinCarpricorn
+GitHub: https://github.com/kyxzhe
 Website: https://kyxzhe.github.io
 Location: Sydney, Australia
 
@@ -16,7 +16,7 @@ Vercel: For hosting and deployment
 
 /* SITE */
 
-Last update: 2025/01/15
+Last update: 2026/05/14
 Language: English
 Doctype: HTML5
 IDE: Visual Studio Code, Trae AI
@@ -24,8 +24,8 @@ Components: React, TypeScript, Next.js 15
 Styling: Tailwind CSS, CSS Modules
 Animations: Motion
 Icons: Lucide React
-Fonts: Gilroy
-Hosting: Vercel
+Fonts: OpenAI Sans
+Hosting: GitHub Pages
 
 /* EASTER EGGS */
 

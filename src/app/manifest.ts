@@ -12,7 +12,7 @@ export default function manifest(): MetadataRoute.Manifest {
     display: "standalone",
     background_color: "#ffffff",
     theme_color: "#ffffff",
-    lang: "en-AU",
+    lang: siteMetadata.language,
     icons: [
       {
         src: "/favicon.ico",

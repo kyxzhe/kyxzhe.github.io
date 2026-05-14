@@ -4,36 +4,22 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
-import { ArrowUpDown, Filter, LayoutGrid, List } from "lucide-react";
+import { ArrowUpDown, ArrowUpRight, Filter, LayoutGrid, List } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { type NewsCategory, type NewsItem, newsItems } from "@/lib/constants/news";
+import { absoluteUrl, siteMetadata } from "@/lib/seo/config";
+import {
+  getArticleJsonLd,
+  getBreadcrumbJsonLd,
+  getCollectionPageJsonLd,
+  getItemListJsonLd,
+  serializeJsonLd,
+} from "@/lib/seo/schema";
+import { formatDisplayDate } from "@/lib/utils/date";
 
 type ViewMode = "list" | "grid";
 type SortMode = "newest" | "oldest" | "az" | "za";
-
-const MONTH_ABBREVIATIONS = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
-
-function formatListDate(isoDate: string) {
-  const [year, month, day] = isoDate.split("-").map(Number);
-  if (!year || !month || !day) return isoDate;
-  const monthLabel = MONTH_ABBREVIATIONS[month - 1];
-  if (!monthLabel) return isoDate;
-  return `${day} ${monthLabel} ${year}`;
-}
 
 const categories = ["All", ...Array.from(new Set(newsItems.map((item) => item.category)))];
 const topics = Array.from(new Set(newsItems.flatMap((item) => item.topics))).sort();
@@ -44,6 +30,38 @@ const sortOptions: { label: string; value: SortMode }[] = [
   { label: "Alphabetical (A–Z)", value: "az" },
   { label: "Alphabetical (Z–A)", value: "za" },
 ];
+
+const newsPath = (item: NewsItem) => `/news/${item.id}`;
+const pageUrl = `${siteMetadata.baseUrl}/news`;
+const pageDescription =
+  "Latest research updates, awards, talks, and milestones from Yuxiang (Kevin) Zheng on information diffusion and robust machine learning.";
+const breadcrumbJsonLd = getBreadcrumbJsonLd([
+  { name: "Home", url: siteMetadata.baseUrl },
+  { name: "News", url: pageUrl },
+]);
+const collectionJsonLd = getCollectionPageJsonLd({
+  title: "News & Updates | Kevin Zheng",
+  description: pageDescription,
+  url: pageUrl,
+  dateModified: "2026-05-14",
+});
+const itemListJsonLd = getItemListJsonLd({
+  id: "news-list",
+  name: "Kevin Zheng news and updates",
+  url: pageUrl,
+  items: newsItems.map((item) =>
+    getArticleJsonLd({
+      id: item.id,
+      title: item.title,
+      description: item.summary,
+      url: absoluteUrl(`/news/${item.id}`),
+      image: item.cover,
+      datePublished: item.date,
+      keywords: item.topics,
+      type: "Article",
+    })
+  ),
+});
 
 const categoryLabelMap: Record<NewsCategory, string> = {
   RESEARCH: "Research",
@@ -58,69 +76,45 @@ function formatCategoryLabel(category: string) {
 }
 
 const ListRow = ({ item }: { item: NewsItem }) => {
-  const row = (
+  return (
     <article className="group flex flex-col gap-3 py-6 border-b border-[rgba(0,0,0,0.08)] dark:border-white/20 transition-colors hover:border-foreground/70 font-normal">
       <p className="text-[12px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.44)]">
         {item.category}
       </p>
       <div className="flex items-start justify-between gap-3">
-        <h3 className="text-[17px] leading-snug text-foreground dark:text-white">{item.title}</h3>
+        <h3 className="text-[17px] leading-snug text-foreground dark:text-white">
+          <Link href={newsPath(item)} className="hover:underline underline-offset-4">
+            {item.title}
+          </Link>
+        </h3>
         <p className="text-[14px] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.44)] whitespace-nowrap">
-          {formatListDate(item.date)}
+          {formatDisplayDate(item.date)}
         </p>
       </div>
       <p className="text-[14px] text-foreground/80 dark:text-white leading-relaxed max-w-3xl">
         {item.summary}
       </p>
+      {item.link && (
+        <Link
+          href={item.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex w-fit items-center gap-1 text-[12px] uppercase tracking-[0.28em] text-foreground hover:underline underline-offset-4"
+        >
+          {item.linkLabel ?? "Related link"}
+          <ArrowUpRight size={12} />
+        </Link>
+      )}
     </article>
-  );
-
-  if (item.link) {
-    return (
-      <Link key={item.id} href={item.link} target="_blank" rel="noopener noreferrer" className="group block">
-        {row}
-      </Link>
-    );
-  }
-
-  return (
-    <div key={item.id} className="group block cursor-default">
-      {row}
-    </div>
   );
 };
 
 function MetaLine({ item }: { item: NewsItem }) {
   return (
     <p className="text-[11px] uppercase tracking-[0.18em] text-[rgba(0,0,0,0.5)] dark:text-white/58">
-      {formatCategoryLabel(item.category)} <span className="mx-1.5">·</span> {formatListDate(item.date)}
+      {formatCategoryLabel(item.category)} <span className="mx-1.5">·</span> {formatDisplayDate(item.date)}
     </p>
   );
-}
-
-function ClickableCard({
-  item,
-  className,
-  children,
-}: {
-  item: NewsItem;
-  className?: string;
-  children: React.ReactNode;
-}) {
-  if (item.link) {
-    return (
-      <Link
-        href={item.link}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={className}
-      >
-        {children}
-      </Link>
-    );
-  }
-
-  return <div className={className}>{children}</div>;
 }
 
 export default function NewsPage() {
@@ -182,6 +176,21 @@ export default function NewsPage() {
 
   return (
     <div className="min-h-screen bg-white text-foreground dark:bg-[#000000] dark:text-[#f5f5f5] font-medium">
+      <script
+        id="ld-breadcrumb-news"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(breadcrumbJsonLd) }}
+      />
+      <script
+        id="ld-collection-news"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(collectionJsonLd) }}
+      />
+      <script
+        id="ld-item-list-news"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(itemListJsonLd) }}
+      />
       <Navbar />
       {(filterOpen || sortOpen) && (
         <div
@@ -372,63 +381,71 @@ export default function NewsPage() {
           </section>
         ) : leadItem ? (
           <section className="w-full max-w-[1360px] self-center grid gap-4 lg:grid-cols-[minmax(0,1fr)_288px] xl:grid-cols-[minmax(0,1fr)_312px] items-start pb-4 md:pb-6">
-            <ClickableCard item={leadItem} className="block lg:self-start lg:sticky lg:top-0">
+            <div className="block lg:self-start lg:sticky lg:top-0">
               <motion.article
                 whileHover={{ y: -3 }}
                 transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
                 className="group"
               >
-                <div className="overflow-hidden rounded-[4px] bg-[#090909]">
-                  <div className="relative aspect-[1.68/1] w-full">
-                    <Image
-                      src={leadItem.cover}
-                      alt={leadItem.title}
-                      fill
-                      sizes="(max-width: 1024px) 100vw, 72vw"
-                      className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-                    />
+                <Link href={newsPath(leadItem)} aria-label={`Read ${leadItem.title}`}>
+                  <div className="overflow-hidden rounded-[4px] bg-[#090909]">
+                    <div className="relative aspect-[1.68/1] w-full">
+                      <Image
+                        src={leadItem.cover}
+                        alt={leadItem.title}
+                        fill
+                        sizes="(max-width: 1024px) 100vw, 72vw"
+                        className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                      />
+                    </div>
                   </div>
-                </div>
+                </Link>
                 <div className="pt-3">
                   <h2 className="max-w-4xl text-[30px] md:text-[44px] leading-[0.98] tracking-[-0.04em] text-foreground dark:text-white">
-                    {leadItem.title}
+                    <Link href={newsPath(leadItem)} className="hover:underline underline-offset-4">
+                      {leadItem.title}
+                    </Link>
                   </h2>
                   <div className="pt-2.5">
                     <MetaLine item={leadItem} />
                   </div>
                 </div>
               </motion.article>
-            </ClickableCard>
+            </div>
 
             <div className="flex flex-col gap-6">
               {sideRailItems.map((item) => (
-                <ClickableCard key={item.id} item={item} className="block">
+                <div key={item.id} className="block">
                   <motion.article
                     whileHover={{ y: -3 }}
                     transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
                     className="group"
                   >
-                    <div className="overflow-hidden rounded-[4px] bg-[#090909]">
-                      <div className="relative aspect-square w-full">
-                        <Image
-                          src={item.cover}
-                          alt={item.title}
-                          fill
-                          sizes="(max-width: 1024px) 100vw, 392px"
-                          className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                        />
+                    <Link href={newsPath(item)} aria-label={`Read ${item.title}`}>
+                      <div className="overflow-hidden rounded-[4px] bg-[#090909]">
+                        <div className="relative aspect-square w-full">
+                          <Image
+                            src={item.cover}
+                            alt={item.title}
+                            fill
+                            sizes="(max-width: 1024px) 100vw, 392px"
+                            className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                          />
+                        </div>
                       </div>
-                    </div>
+                    </Link>
                     <div className="pt-2.5">
                       <h3 className="max-w-[17rem] text-[16px] md:text-[18px] leading-[1.12] tracking-[-0.02em] text-foreground dark:text-white">
-                        {item.title}
+                        <Link href={newsPath(item)} className="hover:underline underline-offset-4">
+                          {item.title}
+                        </Link>
                       </h3>
                       <div className="pt-1.5">
                         <MetaLine item={item} />
                       </div>
                     </div>
                   </motion.article>
-                </ClickableCard>
+                </div>
               ))}
             </div>
           </section>
@@ -445,7 +462,7 @@ export default function NewsPage() {
               {[leftColumnItems, rightColumnItems].map((column, columnIndex) => (
                 <div key={columnIndex} className="flex flex-col gap-4">
                   {column.map((item, index) => (
-                    <ClickableCard key={item.id} item={item} className="block">
+                    <div key={item.id} className="block">
                       <motion.article
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -457,27 +474,31 @@ export default function NewsPage() {
                         }}
                         className="group grid grid-cols-[96px_minmax(0,1fr)] md:grid-cols-[104px_minmax(0,1fr)] gap-4 rounded-[6px] border border-transparent p-0 transition-colors hover:border-white/10"
                       >
-                        <div className="overflow-hidden rounded-[4px] bg-[#090909]">
-                          <div className="relative aspect-square w-full">
-                            <Image
-                              src={item.cover}
-                              alt={item.title}
-                              fill
-                              sizes="104px"
-                              className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
-                            />
+                        <Link href={newsPath(item)} aria-label={`Read ${item.title}`}>
+                          <div className="overflow-hidden rounded-[4px] bg-[#090909]">
+                            <div className="relative aspect-square w-full">
+                              <Image
+                                src={item.cover}
+                                alt={item.title}
+                                fill
+                                sizes="104px"
+                                className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                              />
+                            </div>
                           </div>
-                        </div>
+                        </Link>
                         <div className="flex min-w-0 flex-col justify-center py-1">
                           <h3 className="text-[18px] md:text-[20px] leading-[1.12] tracking-[-0.025em] text-foreground dark:text-white">
-                            {item.title}
+                            <Link href={newsPath(item)} className="hover:underline underline-offset-4">
+                              {item.title}
+                            </Link>
                           </h3>
                           <div className="pt-2">
                             <MetaLine item={item} />
                           </div>
                         </div>
                       </motion.article>
-                    </ClickableCard>
+                    </div>
                   ))}
                 </div>
               ))}

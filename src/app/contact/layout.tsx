@@ -1,11 +1,16 @@
 import type { Metadata } from "next";
-import Script from "next/script";
-import { siteMetadata } from "@/lib/seo/config";
-import { getBreadcrumbJsonLd } from "@/lib/seo/schema";
+import { defaultSeoImage, siteMetadata } from "@/lib/seo/config";
+import {
+  getBreadcrumbJsonLd,
+  getWebPageJsonLd,
+  serializeJsonLd,
+} from "@/lib/seo/schema";
 
-const pageTitle = "Contact | Kevin Zheng";
+const pageTitle = "Contact";
+const structuredTitle = "Contact | Kevin Zheng";
 const pageDescription =
   "Contact details for Yuxiang (Kevin) Zheng — email, scheduling preferences, and collaboration topics for information diffusion and robust ML.";
+const pageModifiedDate = "2026-05-14";
 
 export const metadata: Metadata = {
   title: pageTitle,
@@ -15,31 +20,46 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    title: pageTitle,
+    title: structuredTitle,
     description: pageDescription,
     url: `${siteMetadata.baseUrl}/contact`,
     siteName: siteMetadata.siteName,
-    locale: siteMetadata.locale,
+    locale: siteMetadata.ogLocale,
+    images: [defaultSeoImage],
   },
   twitter: {
-    title: pageTitle,
+    title: structuredTitle,
     description: pageDescription,
     card: "summary_large_image",
+    images: [defaultSeoImage],
   },
 };
 
 export default function ContactLayout({ children }: { children: React.ReactNode }) {
+  const pageUrl = `${siteMetadata.baseUrl}/contact`;
   const breadcrumb = getBreadcrumbJsonLd([
     { name: "Home", url: siteMetadata.baseUrl },
-    { name: "Contact", url: `${siteMetadata.baseUrl}/contact` },
+    { name: "Contact", url: pageUrl },
   ]);
+  const contactPage = getWebPageJsonLd({
+    title: structuredTitle,
+    description: pageDescription,
+    url: pageUrl,
+    type: "ContactPage",
+    dateModified: pageModifiedDate,
+  });
 
   return (
     <>
-      <Script
+      <script
         id="ld-breadcrumb-contact"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(breadcrumb) }}
+      />
+      <script
+        id="ld-contact-page"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(contactPage) }}
       />
       {children}
     </>

@@ -4,8 +4,12 @@ import Script from "next/script";
 import "./globals.css";
 import ConsoleProvider from "@/components/Console";
 import { Analytics } from "@vercel/analytics/next";
-import { siteMetadata } from "@/lib/seo/config";
-import { getPersonJsonLd, getWebsiteJsonLd } from "@/lib/seo/schema";
+import { defaultSeoImage, siteMetadata } from "@/lib/seo/config";
+import {
+  getPersonJsonLd,
+  getWebsiteJsonLd,
+  serializeJsonLd,
+} from "@/lib/seo/schema";
 
 // Initialize OpenAI Sans font
 const openAiSans = localFont({
@@ -67,7 +71,10 @@ const openAiSans = localFont({
 export const metadata: Metadata = {
   metadataBase: new URL(siteMetadata.baseUrl),
   applicationName: siteMetadata.applicationName,
-  title: siteMetadata.title,
+  title: {
+    default: siteMetadata.title,
+    template: siteMetadata.titleTemplate,
+  },
   description: siteMetadata.description,
   icons: {
     icon: [
@@ -76,10 +83,10 @@ export const metadata: Metadata = {
     shortcut: '/favicon.ico?v7',
     apple: '/apple-icon.png',
   },
-  keywords: ["Kevin Zheng", "information diffusion", "social data science", "robust machine learning", "misinformation"],
   authors: [{ name: siteMetadata.author.name }],
   creator: siteMetadata.author.name,
   publisher: siteMetadata.author.name,
+  category: "research",
   robots: {
     index: true,
     follow: true,
@@ -97,15 +104,20 @@ export const metadata: Metadata = {
     title: siteMetadata.title,
     description: "Researching how information travels online and how to keep models trustworthy under messy supervision.",
     siteName: siteMetadata.siteName,
-    locale: siteMetadata.locale,
+    locale: siteMetadata.ogLocale,
+    images: [defaultSeoImage],
   },
   twitter: {
     card: "summary_large_image",
     title: siteMetadata.title,
     description: "Information diffusion, social data science, and robust machine learning at UTS.",
+    images: [defaultSeoImage],
   },
   alternates: {
     canonical: "/",
+  },
+  verification: {
+    google: "google7695f4aad3ebd2e9.html",
   },
 };
 
@@ -148,22 +160,25 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const websiteJsonLd = getWebsiteJsonLd();
+  const personJsonLd = getPersonJsonLd();
+
   return (
-    <html lang="en">
+    <html lang={siteMetadata.language}>
       <body className={`${openAiSans.variable} antialiased`}>
         <ConsoleProvider />
         <Script id="theme-favicon" strategy="beforeInteractive">
           {themeFaviconScript}
         </Script>
-        <Script
+        <script
           id="ld-website"
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(getWebsiteJsonLd()) }}
+          dangerouslySetInnerHTML={{ __html: serializeJsonLd(websiteJsonLd) }}
         />
-        <Script
+        <script
           id="ld-person"
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(getPersonJsonLd()) }}
+          dangerouslySetInnerHTML={{ __html: serializeJsonLd(personJsonLd) }}
         />
         {children}
         <Analytics />

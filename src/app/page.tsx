@@ -9,6 +9,8 @@ import { AnimatePresence, motion } from "motion/react";
 import { sendChatRequest, type ChatMessage } from "@/lib/api/chat";
 import MarkdownMessage from "@/components/MarkdownMessage";
 import { useChatMessages } from "@/hooks/useChatMessages";
+import { siteMetadata } from "@/lib/seo/config";
+import { getWebPageJsonLd, serializeJsonLd } from "@/lib/seo/schema";
 
 export default function Home() {
   const [prompt, setPrompt] = useState("");
@@ -126,9 +128,20 @@ export default function Home() {
 
   const showPlaceholderOverlay = isHydrated && !prompt.trim() && visibleMessages.length === 0;
   const showCaretHint = isHydrated && !prompt.trim() && visibleMessages.length > 0;
+  const homePageJsonLd = getWebPageJsonLd({
+    title: siteMetadata.title,
+    description: siteMetadata.description,
+    url: siteMetadata.baseUrl,
+    dateModified: "2026-05-14",
+  });
 
   return (
     <div className="flex flex-col min-h-screen font-sans font-medium">
+      <script
+        id="ld-homepage"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(homePageJsonLd) }}
+      />
       <Navbar />
       <main className="flex-1 w-full flex flex-col items-center justify-center text-center px-6 md:px-12 lg:px-16 pb-16 gap-10 md:gap-14">
         <section className="w-full max-w-3xl flex flex-col items-center gap-5 md:gap-6">

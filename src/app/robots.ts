@@ -5,12 +5,14 @@ export const dynamic = "force-static";
 export const revalidate = 3600; // 1 hour
 
 export default function robots(): MetadataRoute.Robots {
+  const host = new URL(siteMetadata.baseUrl).host;
+
   return {
     rules: {
       userAgent: "*",
       allow: "/",
     },
     sitemap: `${siteMetadata.baseUrl}/sitemap.xml`,
-    host: siteMetadata.baseUrl,
+    host,
   };
 }

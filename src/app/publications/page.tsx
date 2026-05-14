@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import type { MouseEvent, KeyboardEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
@@ -9,32 +8,18 @@ import { ArrowUpDown, ArrowUpRight, Filter, LayoutGrid, List } from "lucide-reac
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { type Publication, type PublicationResource, publications } from "@/lib/constants/publications";
+import { absoluteUrl, siteMetadata } from "@/lib/seo/config";
+import {
+  getArticleJsonLd,
+  getBreadcrumbJsonLd,
+  getCollectionPageJsonLd,
+  getItemListJsonLd,
+  serializeJsonLd,
+} from "@/lib/seo/schema";
+import { formatDisplayDate } from "@/lib/utils/date";
 
 type ViewMode = "list" | "grid";
 type SortMode = "newest" | "oldest" | "az" | "za";
-
-const MONTH_ABBREVIATIONS = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
-
-function formatDate(isoDate: string) {
-  const [year, month, day] = isoDate.split("-").map(Number);
-  if (!year || !month || !day) return isoDate;
-  const monthLabel = MONTH_ABBREVIATIONS[month - 1];
-  if (!monthLabel) return isoDate;
-  return `${day} ${monthLabel} ${year}`;
-}
 
 const topics = Array.from(new Set(publications.flatMap((item) => item.topics))).sort();
 const years = Array.from(
@@ -53,6 +38,39 @@ const sortOptions: { label: string; value: SortMode }[] = [
   { label: "Alphabetical (A–Z)", value: "az" },
   { label: "Alphabetical (Z–A)", value: "za" },
 ];
+
+const publicationPath = (item: Publication) => `/publications/${item.id}`;
+const pageUrl = `${siteMetadata.baseUrl}/publications`;
+const pageDescription =
+  "Research papers, preprints, and safety briefs by Yuxiang (Kevin) Zheng on information diffusion and robust machine learning.";
+const breadcrumbJsonLd = getBreadcrumbJsonLd([
+  { name: "Home", url: siteMetadata.baseUrl },
+  { name: "Publications", url: pageUrl },
+]);
+const collectionJsonLd = getCollectionPageJsonLd({
+  title: "Publications | Kevin Zheng",
+  description: pageDescription,
+  url: pageUrl,
+  dateModified: "2026-05-14",
+});
+const itemListJsonLd = getItemListJsonLd({
+  id: "publication-list",
+  name: "Kevin Zheng publications",
+  url: pageUrl,
+  items: publications.map((publication) =>
+    getArticleJsonLd({
+      id: publication.id,
+      title: publication.title,
+      description: publication.summary,
+      url: absoluteUrl(`/publications/${publication.id}`),
+      image: publication.cover,
+      datePublished: publication.date,
+      authors: publication.authors,
+      keywords: [...publication.topics, ...publication.tags],
+      type: "ScholarlyArticle",
+    })
+  ),
+});
 
 const AuthorLine = ({ authors }: { authors: string[] }) => (
   <p className="text-sm text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.44)]">
@@ -73,44 +91,9 @@ const AuthorLine = ({ authors }: { authors: string[] }) => (
 
 const CardMetaLine = ({ item }: { item: Publication }) => (
   <p className="text-[11px] uppercase tracking-[0.18em] text-[rgba(0,0,0,0.5)] dark:text-white/58">
-    {item.category} <span className="mx-1.5">·</span> {formatDate(item.date)}
+    {item.category} <span className="mx-1.5">·</span> {formatDisplayDate(item.date)}
   </p>
 );
-
-function ClickableCard({
-  item,
-  className,
-  children,
-}: {
-  item: Publication;
-  className?: string;
-  children: React.ReactNode;
-}) {
-  const handleActivate = (
-    event: MouseEvent<HTMLElement> | KeyboardEvent<HTMLElement>
-  ) => {
-    if (!item.link) return;
-    if (event.type === "keydown") {
-      const keyboardEvent = event as KeyboardEvent<HTMLElement>;
-      if (keyboardEvent.key !== "Enter" && keyboardEvent.key !== " ") return;
-      keyboardEvent.preventDefault();
-    }
-    window.open(item.link, "_blank", "noopener,noreferrer");
-  };
-
-  return (
-    <div
-      className={className}
-      role={item.link ? "link" : undefined}
-      tabIndex={item.link ? 0 : -1}
-      aria-label={item.link ? `Open ${item.title}` : undefined}
-      onClick={item.link ? handleActivate : undefined}
-      onKeyDown={item.link ? handleActivate : undefined}
-    >
-      {children}
-    </div>
-  );
-}
 
 const ResourceRow = ({
   venue,
@@ -119,63 +102,47 @@ const ResourceRow = ({
   venue: string;
   resources?: PublicationResource[];
 }) => {
-  const code = resources?.find((res) => res.type === "code");
-  const showDot = Boolean(code);
+  const visibleResources = resources ?? [];
+  const showDot = visibleResources.length > 0;
 
   return (
       <div className="flex flex-wrap items-center gap-2 text-[12px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.44)]">
       <span>{venue}</span>
       {showDot && <span>·</span>}
-      {code && (
+      {visibleResources.map((resource) => (
           <Link
-            href={code.url}
+            key={`${resource.type}-${resource.url}`}
+            href={resource.url}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1 text-foreground hover:underline underline-offset-4"
-          onClick={(event) => event.stopPropagation()}
-          onKeyDown={(event) => event.stopPropagation()}
-        >
-          {code.label}
+          >
+          {resource.label}
           <ArrowUpRight size={12} />
         </Link>
-      )}
+      ))}
     </div>
   );
 };
 
 const ListRow = ({ item }: { item: Publication }) => {
-  const handleActivate = (
-    event: MouseEvent<HTMLElement> | KeyboardEvent<HTMLElement>
-  ) => {
-    if (!item.link) return;
-    if (event.type === "keydown") {
-      const keyboardEvent = event as KeyboardEvent<HTMLElement>;
-      if (keyboardEvent.key !== "Enter" && keyboardEvent.key !== " ") return;
-      keyboardEvent.preventDefault();
-    }
-    window.open(item.link, "_blank", "noopener,noreferrer");
-  };
-
   const row = (
     <article
-      className={`group flex flex-col gap-3 py-6 border-b border-[rgba(0,0,0,0.08)] dark:border-white/20 transition-colors hover:border-foreground/70 ${
-        item.link ? "cursor-pointer" : "cursor-default"
-      } font-normal`}
-      role={item.link ? "link" : undefined}
-      tabIndex={item.link ? 0 : -1}
-      aria-label={item.link ? `Open ${item.title}` : undefined}
-      onClick={item.link ? handleActivate : undefined}
-      onKeyDown={item.link ? handleActivate : undefined}
+      className="group flex flex-col gap-3 py-6 border-b border-[rgba(0,0,0,0.08)] dark:border-white/20 transition-colors hover:border-foreground/70 font-normal"
     >
           <p className="text-[12px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.44)]">{item.category}</p>
       <div className="flex items-start justify-between gap-3">
         <div className="space-y-2">
-          <h3 className="text-[17px] leading-snug text-foreground">{item.title}</h3>
+          <h3 className="text-[17px] leading-snug text-foreground">
+            <Link href={publicationPath(item)} className="hover:underline underline-offset-4">
+              {item.title}
+            </Link>
+          </h3>
           <AuthorLine authors={item.authors} />
           <p className="text-[14px] text-foreground/80 leading-relaxed max-w-3xl dark:text-white">{item.summary}</p>
           <ResourceRow venue={item.venue} resources={item.resources} />
         </div>
-          <p className="text-[14px] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.44)] whitespace-nowrap">{formatDate(item.date)}</p>
+          <p className="text-[14px] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.44)] whitespace-nowrap">{formatDisplayDate(item.date)}</p>
       </div>
     </article>
   );
@@ -246,26 +213,30 @@ export default function PublicationsPage() {
     return (
       <>
         <section className="w-full max-w-[1360px] self-center grid gap-4 lg:grid-cols-[minmax(0,1fr)_288px] xl:grid-cols-[minmax(0,1fr)_312px] items-start pb-4 md:pb-6">
-          <ClickableCard item={leadItem} className="block lg:self-start lg:sticky lg:top-0">
+          <div className="block lg:self-start lg:sticky lg:top-0">
             <motion.article
               whileHover={{ y: -3 }}
               transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
-              className={`group ${leadItem.link ? "cursor-pointer" : "cursor-default"}`}
+              className="group"
             >
-              <div className="overflow-hidden rounded-[4px] bg-[#090909]">
-                <div className="relative aspect-[1.68/1] w-full">
-                  <Image
-                    src={leadItem.cover}
-                    alt={leadItem.title}
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 72vw"
-                    className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-                  />
+              <Link href={publicationPath(leadItem)} aria-label={`Read ${leadItem.title}`}>
+                <div className="overflow-hidden rounded-[4px] bg-[#090909]">
+                  <div className="relative aspect-[1.68/1] w-full">
+                    <Image
+                      src={leadItem.cover}
+                      alt={leadItem.title}
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 72vw"
+                      className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                    />
+                  </div>
                 </div>
-              </div>
+              </Link>
               <div className="pt-3">
                 <h2 className="max-w-4xl text-[30px] md:text-[44px] leading-[0.98] tracking-[-0.04em] text-foreground dark:text-white">
-                  {leadItem.title}
+                  <Link href={publicationPath(leadItem)} className="hover:underline underline-offset-4">
+                    {leadItem.title}
+                  </Link>
                 </h2>
                 <div className="pt-2.5">
                   <CardMetaLine item={leadItem} />
@@ -281,38 +252,42 @@ export default function PublicationsPage() {
                 </div>
               </div>
             </motion.article>
-          </ClickableCard>
+          </div>
 
           {sideRailItems.length > 0 && (
             <div className="flex flex-col gap-6">
               {sideRailItems.map((item) => (
-                <ClickableCard key={item.id} item={item} className="block">
+                <div key={item.id} className="block">
                   <motion.article
                     whileHover={{ y: -3 }}
                     transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
-                    className={`group ${item.link ? "cursor-pointer" : "cursor-default"}`}
+                    className="group"
                   >
-                    <div className="overflow-hidden rounded-[4px] bg-[#090909]">
-                      <div className="relative aspect-square w-full">
-                        <Image
-                          src={item.cover}
-                          alt={item.title}
-                          fill
-                          sizes="(max-width: 1024px) 100vw, 312px"
-                          className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                        />
+                    <Link href={publicationPath(item)} aria-label={`Read ${item.title}`}>
+                      <div className="overflow-hidden rounded-[4px] bg-[#090909]">
+                        <div className="relative aspect-square w-full">
+                          <Image
+                            src={item.cover}
+                            alt={item.title}
+                            fill
+                            sizes="(max-width: 1024px) 100vw, 312px"
+                            className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                          />
+                        </div>
                       </div>
-                    </div>
+                    </Link>
                     <div className="pt-2.5">
                       <h3 className="max-w-[17rem] text-[16px] md:text-[18px] leading-[1.12] tracking-[-0.02em] text-foreground dark:text-white">
-                        {item.title}
+                        <Link href={publicationPath(item)} className="hover:underline underline-offset-4">
+                          {item.title}
+                        </Link>
                       </h3>
                       <div className="pt-1.5">
                         <CardMetaLine item={item} />
                       </div>
                     </div>
                   </motion.article>
-                </ClickableCard>
+                </div>
               ))}
             </div>
           )}
@@ -329,7 +304,7 @@ export default function PublicationsPage() {
               {[leftColumnItems, rightColumnItems].map((column, columnIndex) => (
                 <div key={columnIndex} className="flex flex-col gap-4">
                   {column.map((item, index) => (
-                    <ClickableCard key={item.id} item={item} className="block">
+                    <div key={item.id} className="block">
                       <motion.article
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -339,29 +314,33 @@ export default function PublicationsPage() {
                           delay: index * 0.06,
                           ease: [0.22, 1, 0.36, 1],
                         }}
-                        className={`group grid grid-cols-[96px_minmax(0,1fr)] md:grid-cols-[104px_minmax(0,1fr)] gap-4 rounded-[6px] border border-transparent p-0 transition-colors hover:border-white/10 ${item.link ? "cursor-pointer" : "cursor-default"}`}
+                        className="group grid grid-cols-[96px_minmax(0,1fr)] md:grid-cols-[104px_minmax(0,1fr)] gap-4 rounded-[6px] border border-transparent p-0 transition-colors hover:border-white/10"
                       >
-                        <div className="overflow-hidden rounded-[4px] bg-[#090909]">
-                          <div className="relative aspect-square w-full">
-                            <Image
-                              src={item.cover}
-                              alt={item.title}
-                              fill
-                              sizes="104px"
-                              className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
-                            />
+                        <Link href={publicationPath(item)} aria-label={`Read ${item.title}`}>
+                          <div className="overflow-hidden rounded-[4px] bg-[#090909]">
+                            <div className="relative aspect-square w-full">
+                              <Image
+                                src={item.cover}
+                                alt={item.title}
+                                fill
+                                sizes="104px"
+                                className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                              />
+                            </div>
                           </div>
-                        </div>
+                        </Link>
                         <div className="flex min-w-0 flex-col justify-center py-1">
                           <h3 className="text-[18px] md:text-[20px] leading-[1.12] tracking-[-0.025em] text-foreground dark:text-white">
-                            {item.title}
+                            <Link href={publicationPath(item)} className="hover:underline underline-offset-4">
+                              {item.title}
+                            </Link>
                           </h3>
                           <div className="pt-2">
                             <CardMetaLine item={item} />
                           </div>
                         </div>
                       </motion.article>
-                    </ClickableCard>
+                    </div>
                   ))}
                 </div>
               ))}
@@ -374,6 +353,21 @@ export default function PublicationsPage() {
 
   return (
     <div className="min-h-screen bg-white text-foreground dark:bg-[#000000] dark:text-[#f5f5f5] font-medium">
+      <script
+        id="ld-breadcrumb-publications"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(breadcrumbJsonLd) }}
+      />
+      <script
+        id="ld-collection-publications"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(collectionJsonLd) }}
+      />
+      <script
+        id="ld-item-list-publications"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(itemListJsonLd) }}
+      />
       <Navbar />
 
       {(filterOpen || sortOpen) && (
