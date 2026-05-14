@@ -71,9 +71,9 @@ export const metadata: Metadata = {
   description: siteMetadata.description,
   icons: {
     icon: [
-      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon.ico?v7', sizes: 'any', type: 'image/x-icon' },
     ],
-    shortcut: '/favicon.ico',
+    shortcut: '/favicon.ico?v7',
     apple: '/apple-icon.png',
   },
   keywords: ["Kevin Zheng", "information diffusion", "social data science", "robust machine learning", "misinformation"],
@@ -111,7 +111,7 @@ export const metadata: Metadata = {
 
 const themeFaviconScript = `
 (() => {
-  const version = 'v6';
+  const version = 'v7';
   const media = window.matchMedia('(prefers-color-scheme: dark)');
 
   const upsertLink = (id, rel, href) => {
