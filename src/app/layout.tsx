@@ -111,7 +111,7 @@ export const metadata: Metadata = {
 
 const themeFaviconScript = `
 (() => {
-  const version = 'v5';
+  const version = 'v6';
   const media = window.matchMedia('(prefers-color-scheme: dark)');
 
   const upsertLink = (id, rel, href) => {
