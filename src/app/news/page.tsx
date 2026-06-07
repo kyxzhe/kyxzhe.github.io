@@ -432,7 +432,7 @@ export default function NewsPage() {
                   </div>
                 </div>
                 <div className="pt-3">
-                  <h2 className="max-w-4xl text-[30px] md:text-[36px] leading-[1.02] tracking-[-0.035em] text-foreground dark:text-white">
+                  <h2 className="max-w-4xl text-[30px] md:text-[clamp(30px,2.95vw,36px)] leading-[1.02] tracking-[-0.035em] text-foreground dark:text-white">
                     {leadItem.title}
                   </h2>
                   <div className="pt-2.5">
@@ -482,7 +482,7 @@ export default function NewsPage() {
         ) : null}
 
         {viewMode === "grid" && recentItems.length > 0 && (
-          <section className="w-full self-center pt-10 md:pt-16 lg:w-[calc(100vw-84px)] lg:max-w-[1224px]">
+          <section className="w-full self-center pt-10 md:pt-16 lg:pt-[clamp(4rem,calc(100vh-1136px),80rem)] lg:w-[calc(100vw-84px)] lg:max-w-[1224px]">
             <div className="mb-6 flex items-center justify-between gap-4">
               <h2 className="text-[22px] md:text-[28px] tracking-[-0.03em] text-foreground dark:text-white">Recent updates</h2>
               <p className="text-sm text-[rgba(0,0,0,0.45)] dark:text-white/48">Showing {sortedItems.length} items</p>

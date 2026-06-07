@@ -290,7 +290,7 @@ export default function PublicationsPage() {
                 </div>
               </div>
               <div className="pt-3">
-                <h2 className="max-w-4xl text-[30px] md:text-[36px] leading-[1.02] tracking-[-0.035em] text-foreground dark:text-white">
+                <h2 className="max-w-4xl text-[30px] md:text-[clamp(30px,2.95vw,36px)] leading-[1.02] tracking-[-0.035em] text-foreground dark:text-white">
                   {leadItem.title}
                 </h2>
                 <div className="pt-2.5">
