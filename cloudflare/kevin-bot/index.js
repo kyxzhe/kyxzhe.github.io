@@ -116,6 +116,7 @@ const ALLOWED_ORIGINS = [
   "http://localhost:3000",
   "http://127.0.0.1:3000",
 ];
+const MODEL_ID = "@cf/google/gemma-4-26b-a4b-it";
 const MAX_RETRIEVAL_MESSAGES = 6;
 
 function getCorsHeaders(request) {
@@ -380,7 +381,7 @@ const worker = {
         : undefined;
 
       const stream = await env.AI.run(
-        "@cf/google/gemma-4-26b-a4b-it",
+        MODEL_ID,
         {
           messages: chatMessages,
           stream: true,
