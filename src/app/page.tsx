@@ -12,6 +12,34 @@ import { useChatMessages } from "@/hooks/useChatMessages";
 import { siteMetadata } from "@/lib/seo/config";
 import { getWebPageJsonLd, serializeJsonLd } from "@/lib/seo/schema";
 
+const rotatingPlaceholders = [
+  "Interested in my research, teaching, or projects? Feel free to ask here.",
+  "对我的科研、教学或项目好奇吗？欢迎在这里随时提问。",
+  "對我嘅研究、教學或者項目有興趣？喺呢度儘管問啦。",
+  "Ești interesat de cercetarea mea, activitatea mea didactică sau proiectele mele? Nu ezita să întrebi aici.",
+  "私の研究や教育、プロジェクトについて知りたいことがあれば、ここで気軽に聞いてください。",
+  "제 연구나 강의, 프로젝트에 대해 궁금한 점이 있으시면 여기에서 편하게 질문해 주세요.",
+  "Si te interesa mi investigación, mi docencia o mis proyectos, puedes preguntar aquí.",
+  "Si mes recherches, mon enseignement ou mes projets vous intéressent, n’hésitez pas à poser vos questions ici.",
+  "Wenn Sie sich für meine Forschung, meine Lehre oder meine Projekte interessieren, können Sie mir hier gerne Ihre Fragen stellen.",
+  "Se ti interessano le mie ricerche, la mia attività didattica o i miei progetti, puoi farmi delle domande qui.",
+  "Если вам интересны мои исследования, преподавание или проекты, вы можете смело задавать свои вопросы здесь.",
+];
+
+const mobileRotatingPlaceholders = [
+  "Ask about research or projects.",
+  "想了解科研、教学或项目？直接问。",
+  "想問研究、教學或項目？喺度問。",
+  "Întreabă despre cercetare sau proiecte.",
+  "研究・教育・プロジェクトについて質問できます。",
+  "연구, 강의, 프로젝트를 물어보세요.",
+  "Pregunta sobre investigación o proyectos.",
+  "Posez une question sur mes recherches.",
+  "Fragen zu Forschung oder Projekten.",
+  "Chiedi di ricerche o progetti.",
+  "Спросите об исследованиях или проектах.",
+];
+
 export default function Home() {
   const [prompt, setPrompt] = useState("");
   const [messages, setMessages] = useChatMessages({
@@ -22,19 +50,6 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
-  const rotatingPlaceholders = [
-    "Interested in my research, teaching, or projects? Feel free to ask here.",
-    "对我的科研、教学或项目好奇吗？欢迎在这里随时提问。",
-    "對我嘅研究、教學或者項目有興趣？喺呢度儘管問啦。",
-    "Ești interesat de cercetarea mea, activitatea mea didactică sau proiectele mele? Nu ezita să întrebi aici.",
-    "私の研究や教育、プロジェクトについて知りたいことがあれば、ここで気軽に聞いてください。",
-    "제 연구나 강의, 프로젝트에 대해 궁금한 점이 있으시면 여기에서 편하게 질문해 주세요.",
-    "Si te interesa mi investigación, mi docencia o mis proyectos, puedes preguntar aquí.",
-    "Si mes recherches, mon enseignement ou mes projets vous intéressent, n’hésitez pas à poser vos questions ici.",
-    "Wenn Sie sich für meine Forschung, meine Lehre oder meine Projekte interessieren, können Sie mir hier gerne Ihre Fragen stellen.",
-    "Se ti interessano le mie ricerche, la mia attività didattica o i miei progetti, puoi farmi delle domande qui.",
-    "Если вам интересны мои исследования, преподавание или проекты, вы можете смело задавать свои вопросы здесь.",
-  ];
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
 
   useEffect(() => {
@@ -43,7 +58,7 @@ export default function Home() {
     };
     const id = setInterval(rotate, 6000);
     return () => clearInterval(id);
-  }, [rotatingPlaceholders.length]);
+  }, []);
 
   const handleSend = useCallback(async () => {
     const nextPrompt = prompt.trim();
@@ -235,7 +250,7 @@ export default function Home() {
               <div className="relative w-full">
                 <textarea
                   placeholder=""
-                  className="w-full min-h-[72px] resize-none bg-transparent pe-[52px] pr-[52px] text-[16px] md:text-[16px] leading-[1.4] text-foreground focus:outline-none dark:text-white"
+                  className="w-full min-h-[64px] resize-none bg-transparent pr-[58px] text-[16px] leading-[1.4] text-foreground focus:outline-none dark:text-white md:min-h-[72px] md:pr-[52px]"
                   aria-label="Ask a question"
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
@@ -263,15 +278,20 @@ export default function Home() {
                       animate={{ y: 0, opacity: 1 }}
                       exit={{ y: -10, opacity: 0 }}
                       transition={{ duration: 0.32, ease: "easeOut" }}
-                      className="pointer-events-none absolute left-0 right-[68px] sm:right-0 top-0 text-left sm:text-center px-3 sm:px-4 text-[15px] md:text-[16px] leading-[1.45] text-[rgba(0,0,0,0.6)] dark:text-white/60"
+                      className="pointer-events-none absolute left-0 right-[58px] top-0 px-1 text-left text-[14px] leading-[1.45] text-[rgba(0,0,0,0.6)] dark:text-white/60 sm:right-0 sm:px-4 sm:text-center sm:text-[15px] md:text-[16px]"
                       style={{ whiteSpace: "normal", wordBreak: "break-word" }}
                     >
-                      {rotatingPlaceholders[placeholderIndex]}
+                      <span className="hidden sm:block">
+                        {rotatingPlaceholders[placeholderIndex]}
+                      </span>
+                      <span className="block sm:hidden">
+                        {mobileRotatingPlaceholders[placeholderIndex]}
+                      </span>
                     </motion.div>
                   </AnimatePresence>
                 )}
               </div>
-              <div className="ie-3 absolute bottom-0 right-[-6px] mt-auto flex justify-end">
+              <div className="absolute bottom-0 right-0 mt-auto flex justify-end">
                 <button
                   type="submit"
                   aria-label="Send prompt to ChatGPT"

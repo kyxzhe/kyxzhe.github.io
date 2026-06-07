@@ -210,6 +210,57 @@ export default function PublicationsPage() {
 
     if (!leadItem) return null;
 
+    if (sortedItems.length === 1) {
+      return (
+        <section className="w-full max-w-[1080px] self-center pb-4 md:pb-6">
+          <motion.article
+            whileHover={{ y: -3 }}
+            transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
+            className="group grid overflow-hidden rounded-[6px] border border-border bg-[var(--card)] dark:bg-[#0c0c0d] lg:grid-cols-[minmax(0,0.84fr)_minmax(0,1fr)]"
+          >
+            <Link
+              href={publicationPath(leadItem)}
+              aria-label={`Read ${leadItem.title}`}
+              className="block min-w-0"
+            >
+              <div className="relative aspect-[1.36/1] h-full min-h-[280px] w-full bg-[#090909] sm:aspect-[1.55/1] lg:aspect-auto">
+                <Image
+                  src={leadItem.cover}
+                  alt={leadItem.title}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 456px"
+                  className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                  priority
+                />
+              </div>
+            </Link>
+            <div className="flex min-w-0 flex-col justify-center p-5 sm:p-6 md:p-8">
+              <p className="text-[11px] uppercase tracking-[0.24em] text-[rgba(0,0,0,0.5)] dark:text-white/58">
+                Featured publication
+              </p>
+              <h2 className="pt-3 text-[28px] leading-[1.02] tracking-[-0.035em] text-foreground dark:text-white md:text-[38px]">
+                <Link href={publicationPath(leadItem)} className="hover:underline underline-offset-4">
+                  {leadItem.title}
+                </Link>
+              </h2>
+              <div className="pt-3">
+                <CardMetaLine item={leadItem} />
+              </div>
+              <div className="pt-3">
+                <AuthorLine authors={leadItem.authors} />
+              </div>
+              <p className="pt-4 max-w-2xl text-[15px] leading-relaxed text-foreground/74 dark:text-white/74">
+                {leadItem.summary}
+              </p>
+              <div className="pt-5">
+                <ResourceRow venue={leadItem.venue} resources={leadItem.resources} />
+              </div>
+            </div>
+          </motion.article>
+        </section>
+      );
+    }
+
     return (
       <>
         <section className="w-full max-w-[1360px] self-center grid gap-4 lg:grid-cols-[minmax(0,1fr)_288px] xl:grid-cols-[minmax(0,1fr)_312px] items-start pb-4 md:pb-6">
@@ -432,13 +483,13 @@ export default function PublicationsPage() {
                   />
               </button>
               {filterOpen && (
-                <div className="fixed left-4 right-4 bottom-4 z-40 surface-card p-4 flex max-h-[calc(100vh-2rem)] flex-col gap-4 overflow-y-auto shadow-xl rounded-2xl border border-border sm:absolute sm:left-auto sm:right-0 sm:bottom-auto sm:top-full sm:mt-2 sm:w-[min(420px,calc(100vw-2rem))]">
-                  <div className="flex items-center justify-between text-sm text-foreground dark:text-white">
-                    <p>Filters</p>
+                <div className="fixed left-3 right-3 bottom-3 z-40 surface-card flex max-h-[min(78vh,36rem)] flex-col overflow-hidden border border-border shadow-xl sm:absolute sm:left-auto sm:right-0 sm:bottom-auto sm:top-full sm:mt-2 sm:max-h-[calc(100vh-2rem)] sm:w-[min(420px,calc(100vw-2rem))]">
+                  <div className="flex shrink-0 items-center justify-between border-b border-border/70 px-4 py-3 text-sm text-foreground dark:text-white">
+                    <p className="font-semibold">Filters</p>
                     <button
                       type="button"
                       aria-label="Close filters"
-                      className="inline-flex h-11 w-11 items-center justify-center rounded-full text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]"
+                      className="inline-flex h-10 w-10 items-center justify-center rounded-full text-[rgba(0,0,0,0.6)] transition-colors hover:bg-[var(--accent-soft)] dark:text-[rgba(255,255,255,0.8)]"
                       onClick={() => {
                         setFilterOpen(false);
                       }}
@@ -446,11 +497,11 @@ export default function PublicationsPage() {
                       ×
                     </button>
                   </div>
-                  <div className="grid grid-cols-2 gap-4 text-sm text-foreground dark:text-white">
-                    <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
+                  <div className="grid grid-cols-1 gap-5 overflow-y-auto px-4 py-4 text-sm text-foreground dark:text-white sm:grid-cols-2">
+                    <div className="space-y-2 sm:max-h-60 sm:overflow-y-auto sm:pr-1">
                       <p className="text-[11px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-foreground/70">Topic</p>
                       {topics.map((topic) => (
-                        <label key={topic} className="flex min-h-11 items-center gap-2 text-[13px] text-foreground dark:text-white">
+                        <label key={topic} className="flex min-h-10 items-center gap-2 text-[14px] leading-snug text-foreground dark:text-white">
                           <input
                             type="checkbox"
                             checked={selectedTopics.includes(topic)}
@@ -460,10 +511,10 @@ export default function PublicationsPage() {
                         </label>
                       ))}
                     </div>
-                    <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
+                    <div className="space-y-2 sm:max-h-60 sm:overflow-y-auto sm:pr-1">
                       <p className="text-[11px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-foreground/70">Year</p>
                       {years.map((year) => (
-                        <label key={year} className="flex min-h-11 items-center gap-2 text-[13px] text-foreground dark:text-white">
+                        <label key={year} className="flex min-h-10 items-center gap-2 text-[14px] leading-snug text-foreground dark:text-white">
                           <input
                             type="checkbox"
                             checked={selectedYears.includes(year)}
@@ -474,7 +525,7 @@ export default function PublicationsPage() {
                       ))}
                     </div>
                   </div>
-                  <div className="flex justify-end pt-2 text-xs text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]">
+                  <div className="flex shrink-0 justify-end border-t border-border/70 px-4 py-3 text-xs text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]">
                     <button
                       type="button"
                       className="min-h-11 px-2 underline-offset-2 hover:text-foreground dark:hover:text-white"

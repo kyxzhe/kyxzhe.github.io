@@ -189,7 +189,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
     <AnimatePresence mode="wait">
       {isOpen && (
         <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[rgba(0,0,0,0.25)] backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(0,0,0,0.25)] p-3 backdrop-blur-sm sm:p-4"
           variants={backdropVariants}
           initial="hidden"
           animate="visible"
@@ -200,7 +200,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
           }}
         >
         <motion.div
-          className="surface-card p-6 md:p-8 lg:p-12 w-full max-w-4xl max-h-[90vh] relative overflow-y-auto"
+          className="surface-card relative max-h-[calc(100dvh-1.5rem)] w-full max-w-4xl overflow-y-auto p-4 sm:max-h-[90vh] sm:p-6 md:p-8 lg:p-12"
           variants={modalVariants}
           initial="hidden"
           animate={{ scale: 1, opacity: 1 }}
@@ -211,7 +211,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                 <motion.button
                   type="button"
                   aria-label="Close contact modal"
-                  className="absolute top-5 right-5 inline-flex h-11 w-11 items-center justify-center rounded-full bg-[var(--accent-soft)] text-[var(--accent)] hover:opacity-80 transition-colors z-10"
+                  className="absolute right-4 top-4 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-[var(--accent-soft)] text-[var(--accent)] transition-colors hover:opacity-80 md:right-5 md:top-5 md:h-11 md:w-11"
                   onClick={() => {
                     onClose();
                     resetScheduler();
@@ -221,19 +221,19 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                   animate="visible"
                   whileHover="hover"
                 >
-                  <X size={24} className="text-foreground" />
+                  <X size={22} className="text-foreground" />
                 </motion.button>
 
                 <motion.div
-                  className="text-center mb-8 md:mb-12"
+                  className="mb-6 pr-10 text-center md:mb-12 md:pr-0"
                   variants={textVariants}
                   initial="hidden"
                   animate="visible"
                 >
-                  <h1 className="text-4xl md:text-6xl lg:text-7xl font-medium mb-3">
+                  <h1 className="mb-3 text-[34px] font-medium leading-none md:text-6xl lg:text-7xl">
                     {mode === "info" ? "Contact me" : "Book a time"}
                   </h1>
-                  <p className="text-lg md:text-xl text-muted-foreground">
+                  <p className="text-[15px] leading-relaxed text-muted-foreground md:text-xl">
                     {mode === "info"
                       ? "Share what you need, who is involved, and any constraints. I will outline the next steps."
                       : "Choose a time and add a short note. I will confirm by email."}
@@ -384,7 +384,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                   exit="exit"
                 >
                   <motion.div
-                    className="flex flex-col gap-6"
+                    className="flex flex-col gap-4 md:gap-6"
                     variants={textVariants}
                     initial="hidden"
                     animate="visible"
@@ -402,44 +402,47 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                           )}
                         </div>
 
-                    <div className="surface-card p-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <p className="text-xs uppercase tracking-[0.4em] text-muted-foreground">
+                    <div className="surface-card p-3 sm:p-4">
+                      <div className="mb-3 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
+                        <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">
                           Choose a date
                         </p>
                         <div className="flex gap-2">
                           <button
+                            type="button"
                             onClick={() => shiftWindow(-1)}
                             disabled={windowStart === 0}
-                            className="chip text-[10px] py-2 disabled:opacity-40"
+                            className="inline-flex h-9 items-center rounded-full border border-border bg-[var(--pill-background)] px-3 text-[12px] text-muted-foreground transition-colors hover:bg-[var(--accent-soft)] disabled:opacity-40"
                           >
                             Prev
                           </button>
                           <button
+                            type="button"
                             onClick={() => shiftWindow(1)}
                             disabled={windowStart >= maxWindowIndex}
-                            className="chip text-[10px] py-2 disabled:opacity-40"
+                            className="inline-flex h-9 items-center rounded-full border border-border bg-[var(--pill-background)] px-3 text-[12px] text-muted-foreground transition-colors hover:bg-[var(--accent-soft)] disabled:opacity-40"
                           >
                             Next
                           </button>
                         </div>
                       </div>
-                      <div className="flex flex-wrap gap-2">
+                      <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
                         {visibleDays.map((day) => {
                           const isActive = selectedDate === day.dateISO;
                           return (
                             <button
                               key={day.dateISO}
+                              type="button"
                               onClick={() => {
                                 setSelectedDate(day.dateISO);
                                 setSelectedSlotId(null);
                               }}
                               aria-pressed={isActive}
-                    className={`chip text-sm transition-colors ${
-                      isActive
-                        ? "bg-[rgba(41,151,255,0.08)] text-[var(--accent-link)] border-[var(--accent-link)]"
-                        : "hover:bg-[var(--accent-soft)]"
-                    }`}
+                              className={`inline-flex min-h-10 items-center justify-center rounded-full border px-3 text-[13px] leading-snug transition-colors ${
+                                isActive
+                                  ? "border-[var(--accent-link)] bg-[rgba(41,151,255,0.08)] text-[var(--accent-link)]"
+                                  : "border-border bg-[var(--pill-background)] text-muted-foreground hover:bg-[var(--accent-soft)]"
+                              }`}
                             >
                               <span className="flex items-center gap-2">
                                 {day.displayLabel}
@@ -461,9 +464,10 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                         return (
                           <button
                             key={slot.id}
+                            type="button"
                             disabled={slot.booked || submissionState === "loading"}
                             onClick={() => setSelectedSlotId(slot.id)}
-                            className={`surface-card px-4 py-4 text-left transition-all ${
+                            className={`surface-card px-3 py-3 text-left transition-all sm:px-4 sm:py-4 ${
                               slot.booked
                                 ? "border-border/30 text-muted-foreground cursor-not-allowed line-through opacity-60"
                                 : isSelected
@@ -524,6 +528,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                     </div>
 
                     <button
+                      type="button"
                       onClick={handleSubmitBooking}
                       disabled={
                         !selectedSlot ||
