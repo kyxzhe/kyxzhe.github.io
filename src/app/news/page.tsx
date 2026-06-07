@@ -265,16 +265,16 @@ export default function NewsPage() {
           </p>
         </section>
 
-        <div className="flex gap-5 overflow-x-auto border-b border-[rgba(0,0,0,0.08)] text-sm text-[rgba(0,0,0,0.6)] dark:border-white/20 dark:text-[rgba(255,255,255,0.72)]">
+        <div className="flex flex-wrap gap-2 text-sm text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]">
           {categories.map((category) => (
             <button
               key={category}
               type="button"
               onClick={() => setActiveCategory(category)}
-              className={`min-h-11 shrink-0 border-b py-3 transition-colors ${
+              className={`min-h-11 px-4 py-2 rounded-full border transition-colors ${
                 activeCategory === category
-                  ? "border-foreground text-foreground dark:border-white dark:text-white"
-                  : "border-transparent text-[rgba(0,0,0,0.56)] hover:text-foreground dark:text-[rgba(255,255,255,0.68)] dark:hover:text-white"
+                  ? "bg-[rgba(0,0,0,0.12)] border-transparent text-foreground dark:bg-[rgba(255,255,255,0.4)] dark:text-white"
+                  : "bg-[rgba(0,0,0,0.04)] border-transparent text-[rgba(0,0,0,0.6)] dark:bg-[rgba(255,255,255,0.12)] dark:text-[rgba(255,255,255,0.8)] hover:border-[rgba(0,0,0,0.08)]"
               }`}
             >
               {formatCategoryLabel(category)}
