@@ -355,7 +355,7 @@ export default function NewsPage() {
             <div className="flex items-center gap-2 text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]">
               <button
                 type="button"
-                className={`inline-flex h-11 w-11 items-center justify-center rounded-full transition-colors ${
+                className={`inline-flex h-10 w-10 items-center justify-center rounded-full transition-colors ${
                   viewMode === "list"
                     ? "text-foreground bg-[rgba(0,0,0,0.06)] dark:bg-white/25 dark:text-white"
                     : "hover:text-foreground dark:hover:text-white"
@@ -367,7 +367,7 @@ export default function NewsPage() {
               </button>
               <button
                 type="button"
-                className={`inline-flex h-11 w-11 items-center justify-center rounded-full transition-colors ${
+                className={`inline-flex h-10 w-10 items-center justify-center rounded-full transition-colors ${
                   viewMode === "grid"
                     ? "text-foreground bg-[rgba(0,0,0,0.06)] dark:bg-white/25 dark:text-white"
                     : "hover:text-foreground dark:hover:text-white"
@@ -407,7 +407,7 @@ export default function NewsPage() {
             ))}
           </section>
         ) : leadItem ? (
-          <section className="w-full max-w-[1360px] self-center grid gap-4 lg:grid-cols-[minmax(0,1fr)_288px] xl:grid-cols-[minmax(0,1fr)_312px] items-start pb-4 md:pb-6">
+          <section className="w-full self-center grid gap-6 lg:w-[calc(100vw-84px)] lg:max-w-[1224px] lg:grid-cols-[minmax(0,1fr)_272px] items-start">
             <div className="block lg:sticky lg:top-20 lg:self-start">
               <motion.article
                 whileHover={{ y: -3 }}
@@ -425,8 +425,9 @@ export default function NewsPage() {
                       src={leadItem.cover}
                       alt={leadItem.title}
                       fill
-                      sizes="(max-width: 1024px) 100vw, 72vw"
+                      sizes="(max-width: 1024px) 100vw, 844px"
                       className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                      priority
                     />
                   </div>
                 </div>
@@ -460,7 +461,7 @@ export default function NewsPage() {
                           src={item.cover}
                           alt={item.title}
                           fill
-                          sizes="(max-width: 1024px) 100vw, 392px"
+                          sizes="(max-width: 1024px) 100vw, 272px"
                           className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                         />
                       </div>
@@ -481,7 +482,7 @@ export default function NewsPage() {
         ) : null}
 
         {viewMode === "grid" && recentItems.length > 0 && (
-          <section className="w-full max-w-[1360px] self-center pt-10 md:pt-16">
+          <section className="w-full self-center pt-10 md:pt-16 lg:w-[calc(100vw-84px)] lg:max-w-[1224px]">
             <div className="mb-6 flex items-center justify-between gap-4">
               <h2 className="text-[22px] md:text-[28px] tracking-[-0.03em] text-foreground dark:text-white">Recent updates</h2>
               <p className="text-sm text-[rgba(0,0,0,0.45)] dark:text-white/48">Showing {sortedItems.length} items</p>

@@ -190,13 +190,12 @@ export default function Home() {
             layout
             initial={false}
             animate={{
-              height: isExpanded ? "auto" : 106,
-              boxShadow: isExpanded
-                ? "0 3px 10px rgba(0,0,0,0.07)"
-                : "0 2px 8px rgba(0,0,0,0.06)",
+              height: isExpanded ? "auto" : 104,
+              boxShadow:
+                "0 3px 6px rgba(0,0,0,0.04), 0 4px 80px 8px rgba(0,0,0,0.04), 0 0 1px rgba(0,0,0,0.62)",
             }}
             transition={{ type: "spring", stiffness: 240, damping: 30 }}
-            className="w-full font-normal rounded-[1rem] bg-white border border-[rgba(0,0,0,0.08)] px-[18px] pt-[18px] pb-[16px] flex flex-col gap-3 overflow-hidden dark:bg-[rgba(255,255,255,0.05)] dark:border-none dark:shadow-[0_3px_12px_rgba(0,0,0,0.26)]"
+            className="w-full font-normal rounded-[24px] bg-white border-0 px-4 py-4 flex flex-col gap-3 overflow-hidden dark:bg-[rgba(255,255,255,0.05)] dark:border-none dark:shadow-[0_3px_12px_rgba(0,0,0,0.26)]"
           >
             <AnimatePresence initial={false}>
               {isExpanded && (
@@ -296,7 +295,7 @@ export default function Home() {
                   type="submit"
                   aria-label="Send prompt to ChatGPT"
                   disabled={!prompt.trim() || isLoading}
-                  className="relative inline-flex h-11 w-11 items-center justify-center rounded-full p-0 transition-colors hover:opacity-70 disabled:hover:opacity-100 bg-[rgba(0,0,0,0.06)] text-[rgba(0,0,0,0.35)] dark:bg-white/15 dark:text-white/60 enabled:bg-black enabled:text-white dark:enabled:bg-white dark:enabled:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-1 disabled:focus-visible:ring-offset-0"
+                  className="relative inline-flex h-9 w-9 items-center justify-center rounded-full p-0 transition-colors hover:opacity-70 disabled:hover:opacity-100 bg-[rgba(0,0,0,0.04)] text-[rgba(0,0,0,0.44)] dark:bg-white/15 dark:text-white/60 enabled:bg-black enabled:text-white dark:enabled:bg-white dark:enabled:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-1 disabled:focus-visible:ring-offset-0"
                 >
                   <span className="sr-only">Send prompt to ChatGPT</span>
                   {isLoading ? (
@@ -311,7 +310,7 @@ export default function Home() {
                       aria-hidden="true"
                     >
                       <path
-                        d="M16 22L16 10M16 10L11 15M16 10L21 15"
+                        d="M16 22V10m0 0-5 5m5-5 5 5"
                         stroke="currentColor"
                         strokeWidth="1.7"
                         strokeLinecap="round"
