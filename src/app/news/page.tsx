@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
-import { ArrowUpDown, ArrowUpRight, Filter, LayoutGrid, List } from "lucide-react";
+import { ArrowUpRight, ChevronDown, ChevronUp, Filter, LayoutGrid, List, X } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { type NewsCategory, type NewsItem, newsItems } from "@/lib/constants/news";
@@ -282,7 +282,7 @@ export default function NewsPage() {
           ))}
         </div>
 
-        <div className="flex flex-wrap items-center justify-between gap-3 text-sm font-medium">
+        <div className="relative z-40 flex flex-wrap items-center justify-between gap-3 text-sm font-medium">
           <p className="text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]">Showing {sortedItems.length} updates</p>
 
           <div className="relative flex items-center gap-4 text-sm font-medium">
@@ -304,17 +304,21 @@ export default function NewsPage() {
                 >
                   Filter
                 </span>
-                <Filter
-                  size={16}
-                  className={
-                    selectedTopics.length > 0 || selectedYears.length > 0 || filterOpen
-                      ? "text-foreground dark:text-white"
-                      : "text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]"
-                  }
-                />
+                {filterOpen ? (
+                  <X size={16} className="text-foreground dark:text-white" />
+                ) : (
+                  <Filter
+                    size={16}
+                    className={
+                      selectedTopics.length > 0 || selectedYears.length > 0
+                        ? "text-foreground dark:text-white"
+                        : "text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]"
+                    }
+                  />
+                )}
               </button>
               {filterOpen && (
-                <div className="fixed left-4 right-4 top-[118px] z-50 flex max-h-[calc(100dvh-8rem)] flex-col overflow-hidden rounded-[8px] border border-[var(--card-border)] bg-[var(--card)]/96 text-sm shadow-[0_16px_36px_rgba(0,0,0,0.14)] backdrop-blur-md dark:bg-[#141416]/96 sm:absolute sm:bottom-auto sm:left-auto sm:right-0 sm:top-full sm:mt-2 sm:max-h-[min(34rem,calc(100vh-2rem))] sm:w-[min(420px,calc(100vw-2rem))]">
+                <div className="z-50 hidden max-h-[min(34rem,calc(100vh-2rem))] flex-col overflow-hidden rounded-[8px] border border-[var(--card-border)] bg-[var(--card)]/96 text-sm shadow-[0_16px_36px_rgba(0,0,0,0.14)] backdrop-blur-md dark:bg-[#141416]/96 lg:absolute lg:right-0 lg:top-full lg:mt-2 lg:flex lg:w-[min(420px,calc(100vw-2rem))]">
                   <div className="flex shrink-0 items-center justify-between px-4 pb-1 pt-3 text-sm text-foreground dark:text-white">
                     <p className="font-semibold">Filters</p>
                     <button
@@ -384,10 +388,10 @@ export default function NewsPage() {
                 }}
               >
                 <span>Sort</span>
-                <ArrowUpDown size={16} />
+                {sortOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
               </button>
               {sortOpen && (
-                <div className="fixed left-4 right-4 top-[118px] z-50 flex max-h-[calc(100dvh-8rem)] flex-col gap-2 overflow-y-auto rounded-[8px] border border-[var(--card-border)] bg-[var(--card)]/96 p-3 text-sm text-foreground shadow-[0_16px_36px_rgba(0,0,0,0.14)] backdrop-blur-md dark:bg-[#141416]/96 dark:text-white sm:absolute sm:bottom-auto sm:left-auto sm:right-0 sm:top-full sm:mt-2 sm:w-[min(256px,calc(100vw-2rem))]">
+                <div className="z-50 hidden flex-col gap-2 overflow-y-auto rounded-[8px] border border-[var(--card-border)] bg-[var(--card)]/96 p-3 text-sm text-foreground shadow-[0_16px_36px_rgba(0,0,0,0.14)] backdrop-blur-md dark:bg-[#141416]/96 dark:text-white lg:absolute lg:right-0 lg:top-full lg:mt-2 lg:flex lg:w-[min(256px,calc(100vw-2rem))]">
                   {sortOptions.map((option) => (
                     <label key={option.value} className="flex min-h-11 items-center gap-2 text-foreground/80 dark:text-white/80">
                       <input
@@ -431,6 +435,81 @@ export default function NewsPage() {
               </button>
             </div>
           </div>
+
+          {filterOpen && (
+            <div className="relative z-50 flex max-h-[min(70dvh,36rem)] w-full flex-col overflow-hidden rounded-[8px] border border-[var(--card-border)] bg-[var(--card)]/96 text-sm shadow-[0_16px_36px_rgba(0,0,0,0.14)] backdrop-blur-md dark:bg-[#141416]/96 lg:hidden">
+              <div className="flex shrink-0 items-center justify-between px-4 pb-1 pt-3 text-sm text-foreground dark:text-white">
+                <p className="font-semibold">Filters</p>
+                <button
+                  type="button"
+                  aria-label="Close filters"
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-full text-[rgba(0,0,0,0.6)] transition-colors hover:bg-[var(--accent-soft)] dark:text-[rgba(255,255,255,0.8)]"
+                  onClick={() => {
+                    setFilterOpen(false);
+                  }}
+                >
+                  <X size={16} />
+                </button>
+              </div>
+              <div className="grid grid-cols-[minmax(0,1fr)_78px] gap-4 overflow-y-auto px-4 py-3 text-sm text-foreground dark:text-white sm:grid-cols-2">
+                <div className="space-y-1.5 sm:max-h-60 sm:overflow-y-auto sm:pr-1">
+                  <p className="text-[11px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-foreground/70">Topic</p>
+                  {topics.map((topic) => (
+                    <label key={topic} className="flex min-h-9 items-center gap-2 text-[13px] leading-snug text-foreground dark:text-white">
+                      <input
+                        type="checkbox"
+                        checked={selectedTopics.includes(topic)}
+                        onChange={() => toggleTopic(topic)}
+                      />
+                      {topic}
+                    </label>
+                  ))}
+                </div>
+                <div className="space-y-1.5 sm:max-h-60 sm:overflow-y-auto sm:pr-1">
+                  <p className="text-[11px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-foreground/70">Year</p>
+                  {years.map((year) => (
+                    <label key={year} className="flex min-h-9 items-center gap-2 text-[13px] leading-snug text-foreground dark:text-white">
+                      <input
+                        type="checkbox"
+                        checked={selectedYears.includes(year)}
+                        onChange={() => toggleYear(year)}
+                      />
+                      {year}
+                    </label>
+                  ))}
+                </div>
+              </div>
+              <div className="flex shrink-0 justify-end px-4 pb-3 pt-1 text-xs text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]">
+                <button
+                  type="button"
+                  className="min-h-11 px-2 underline-offset-2 hover:text-foreground dark:hover:text-white"
+                  onClick={() => {
+                    setSelectedTopics([]);
+                    setSelectedYears([]);
+                  }}
+                >
+                  Clear all
+                </button>
+              </div>
+            </div>
+          )}
+
+          {sortOpen && (
+            <div className="relative z-50 flex w-full flex-col gap-2 overflow-y-auto rounded-[8px] border border-[var(--card-border)] bg-[var(--card)]/96 p-3 text-sm text-foreground shadow-[0_16px_36px_rgba(0,0,0,0.14)] backdrop-blur-md dark:bg-[#141416]/96 dark:text-white lg:hidden">
+              {sortOptions.map((option) => (
+                <label key={option.value} className="flex min-h-11 items-center gap-2 text-foreground/80 dark:text-white/80">
+                  <input
+                    type="radio"
+                    name="news-sort-mobile"
+                    value={option.value}
+                    checked={sortMode === option.value}
+                    onChange={() => setSortMode(option.value)}
+                  />
+                  {option.label}
+                </label>
+              ))}
+            </div>
+          )}
         </div>
 
         {sortedItems.length === 0 ? (
