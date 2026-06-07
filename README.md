@@ -1,53 +1,120 @@
-# Kevin Zheng — Personal Site
+# Kevin Zheng - Research Portfolio
 
-A static Next.js 15 notebook for sharing research notes, experiments, and side projects at [kyxzhe.github.io](https://kyxzhe.github.io). The site is exported via `pnpm build` and hosted on GitHub Pages.
+Personal academic website for [Yuxiang (Kevin) Zheng](https://kyxzhe.github.io), a PhD researcher in machine learning at the University of Technology Sydney. The site presents Kevin's work on information diffusion, social data science, trustworthy machine learning, and learning under noisy supervision.
 
-## Quick Start
+The project is built with Next.js App Router, React, TypeScript, Tailwind CSS, Motion, and a static export target for GitHub Pages.
 
-1. Install dependencies:
-   ```bash
-   corepack enable pnpm
-   pnpm install
-   ```
-2. Run the dev server:
-   ```bash
-   pnpm dev
-   # visit http://localhost:3000
-   ```
-3. Export a static build for GitHub Pages:
-   ```bash
-   pnpm build
-   # output appears in out/
-   ```
+## Live Site
 
-## Site Structure
+- Production: [kyxzhe.github.io](https://kyxzhe.github.io)
+- Repository: [github.com/kyxzhe/kyxzhe.github.io](https://github.com/kyxzhe/kyxzhe.github.io)
 
-- `src/app`: App Router entry points for landing, news, publications, etc.; edit the corresponding `page.tsx`/`layout.tsx` files to adjust content.
-- `src/components`, `src/hooks`, `src/lib`: Shared UI, hooks, and constants (look at `src/lib/constants/*` for curated copy such as publications, socials, and general site text).
-- `public`: Static assets like cover images and icons—replace files here when updating graphics.
-- Configuration: `.github/workflows/deploy.yml` handles the static export and Pages deployment; change it only if you want to modify the CI/CD behavior.
+## Site Experience
 
-## Content Hooks
+- **Home** (`/`): Research landing page for trustworthy machine learning, with primary calls to publications and contact plus an embedded KevinBot prompt.
+- **About** (`/about`): Biography, research focus, education timeline, teaching, and collaboration context.
+- **Publications** (`/publications`): Filterable and sortable publication index with list/grid modes, detail pages, resources, and scholarly JSON-LD.
+- **News** (`/news`): Filterable and sortable research updates, awards, teaching notes, and career milestones with static detail pages.
+- **Contact** (`/contact`): Email, profile links, collaboration topics, and a lightweight scheduling request flow.
+- **KevinBot**: Visitor-facing chatbot backed by a Cloudflare Worker and Cloudflare Workers AI.
 
-- Hero/about text: `src/lib/constants/siteContent.ts`
-- Contact panel: `src/lib/constants/contact.ts`
-- Social links: `src/lib/constants/socials.ts`
-- Publication cards: `src/lib/constants/publications.ts`
-- Console easter egg: `src/lib/utils/consoleUtil.ts`
+## Tech Stack
 
-## Chatbot Beta
+- Next.js 15 with static export (`output: "export"`)
+- React 19 and TypeScript
+- Tailwind CSS 4 with shared utility classes in `src/app/globals.css`
+- Motion for page and card transitions
+- Lucide React plus local academic profile icons
+- React Markdown, GFM, KaTeX, and syntax highlighting for chatbot responses
+- Vercel Analytics
+- GitHub Actions deployment to GitHub Pages
+- Cloudflare Worker chatbot endpoint in `cloudflare/kevin-bot/index.js`
 
-- The homepage chatbot card opens `ChatBotModal`, which POSTs to `https://kevin-bot.kyx-zhe.workers.dev/chat` by default.
-- Override the endpoint via `NEXT_PUBLIC_CHAT_API_URL` in `.env.local` if you host a different Worker.
-- Worker payload: `{ "messages": [{ "role": "user" | "assistant", "content": string }] }`
-- Worker response: Server-Sent Events (`text/event-stream`). Each `data:` line JSON-parses to `{ "response": "<chunk>" }`, streamed until `[DONE]`. Plain JSON `{ "response": "<text>" }` is still accepted for compatibility.
+## Project Map
 
-## Contributing & Deploying
+```text
+src/app/                  App Router pages, layouts, metadata, sitemap, robots, manifest
+src/components/           Shared UI, navigation, chatbot, contact modal, markdown renderer
+src/hooks/                Navigation and session-backed chatbot state
+src/lib/constants/        Site content, publications, news, contact, socials, availability
+src/lib/seo/              Site metadata and JSON-LD builders
+src/lib/api/chat.ts       Client-side KevinBot request and SSE handling
+public/                   Fonts, favicons, project images, human/LLM-readable indexes
+cloudflare/kevin-bot/     Cloudflare Worker for KevinBot
+.github/workflows/        GitHub Pages build and deploy workflow
+```
 
-- Feel free to tweak content, add experiments, or polish the layout. Run `pnpm lint` before committing.
-- Push to `main` to trigger the GitHub Actions workflow; it exports the site and publishes to GitHub Pages automatically.
-- If you want to collaborate: open an issue or PR, describe the change, and include any screenshots if UI is affected.
+## Local Development
+
+Use Node 20 and pnpm 9.12.2, matching the deployment workflow and `packageManager` field.
+
+```bash
+corepack enable pnpm
+pnpm install
+pnpm dev
+```
+
+Open [http://localhost:3000](http://localhost:3000).
+
+## Useful Commands
+
+```bash
+pnpm dev      # Start the Turbopack development server
+pnpm lint     # Run ESLint
+pnpm build    # Create the static export in out/
+pnpm start    # Serve a production Next.js build locally
+```
+
+Run `pnpm lint` before committing. Run `pnpm build` before deployment-sensitive changes because the site is exported statically for GitHub Pages.
+
+## Updating Content
+
+Most site updates should happen in constants rather than page components.
+
+| Content | File |
+| --- | --- |
+| Site metadata, SEO keywords, profile links | `src/lib/seo/config.ts` |
+| Homepage copy and legacy hero/about copy | `src/lib/constants/siteContent.ts` |
+| About page biography, focus areas, timeline, teaching | `src/lib/constants/about.ts` |
+| Publications and resource links | `src/lib/constants/publications.ts` |
+| News and milestone entries | `src/lib/constants/news.ts` |
+| Contact details and availability text | `src/lib/constants/contact.ts` |
+| Navigation labels | `src/lib/constants/navItems.ts` |
+| Social/profile URLs | `src/lib/constants/socials.ts` |
+| Scheduling slot generation | `src/lib/constants/availability.ts` |
+| LLM-readable public summary | `public/llms.txt` |
+| Human-readable colophon | `public/humans.txt` |
+
+When adding a new publication or news item, include a stable `id`, ISO `date`, `summary`, `topics`, and a valid `cover` path under `public/`. Detail pages are generated statically from those arrays.
+
+## KevinBot
+
+The homepage chatbot calls `sendChatRequest` from `src/lib/api/chat.ts`.
+
+- Default endpoint: `https://kevin-bot.kyx-zhe.workers.dev/chat`
+- Override locally with `NEXT_PUBLIC_CHAT_API_URL` in `.env.local`
+- Request body: `{ "messages": [{ "role": "user" | "assistant" | "system", "content": "..." }] }`
+- Session affinity: the client sends `X-Chat-Session` from `sessionStorage`
+- Preferred response: Server-Sent Events (`text/event-stream`) with `data:` payloads that include `{ "response": "<chunk>" }` and end with `[DONE]`
+- Compatibility response: JSON payloads with `{ "response": "<text>" }`
+
+The Worker source lives in `cloudflare/kevin-bot/index.js`. It allows production and localhost origins, adds Kevin-specific system context, searches the `kevin-rag-index` AutoRAG index, and streams normalized SSE chunks from Cloudflare Workers AI.
+
+## SEO & Static Output
+
+- Root metadata and JSON-LD are defined in `src/app/layout.tsx`.
+- Route-specific metadata lives in each route `layout.tsx` or dynamic detail page.
+- `src/app/sitemap.ts` emits static, publication, and news routes.
+- `src/app/robots.ts` points crawlers to the sitemap.
+- `src/app/opengraph-image.tsx` generates the default Open Graph image.
+- `src/app/manifest.ts` defines install metadata and shortcuts.
+
+## Deployment
+
+Pushing to `main` triggers `.github/workflows/deploy.yml`.
+
+The workflow installs dependencies with pnpm, runs `pnpm run build`, uploads the generated `out/` directory, and deploys it with GitHub Pages. Do not edit `.next/` or `out/` directly.
 
 ## License
 
-MIT © Kevin Zheng
+MIT © Yuxiang (Kevin) Zheng
