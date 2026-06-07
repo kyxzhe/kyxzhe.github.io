@@ -126,34 +126,32 @@ const ResourceRow = ({
 };
 
 const ListRow = ({ item }: { item: Publication }) => {
-  const row = (
-    <article
-      className="group relative flex cursor-pointer flex-col gap-3 border-b border-[rgba(0,0,0,0.08)] py-6 font-normal transition-colors hover:border-foreground/70 dark:border-white/20"
-    >
+  return (
+    <article className="group relative grid cursor-pointer gap-3 border-b border-[rgba(0,0,0,0.08)] py-6 font-normal transition-colors hover:border-foreground/70 dark:border-white/20 md:grid-cols-[minmax(8rem,12rem)_minmax(0,1fr)] md:gap-8 md:py-7">
       <Link
         href={publicationPath(item)}
         aria-label={`Read ${item.title}`}
         className="absolute inset-0 z-10"
       />
-          <p className="text-[12px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.44)]">{item.category}</p>
-      <div className="flex items-start justify-between gap-3">
-        <div className="space-y-2">
-          <h3 className="text-[17px] leading-snug text-foreground">
-            {item.title}
-          </h3>
-          <AuthorLine authors={item.authors} />
-          <p className="text-[14px] text-foreground/80 leading-relaxed max-w-3xl dark:text-white">{item.summary}</p>
-          <ResourceRow venue={item.venue} resources={item.resources} />
-        </div>
-          <p className="text-[14px] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.44)] whitespace-nowrap">{formatDisplayDate(item.date)}</p>
+      <div className="space-y-1.5 md:pt-0.5">
+        <p className="text-[12px] text-[rgba(0,0,0,0.62)] dark:text-[rgba(255,255,255,0.58)]">
+          {item.category}
+        </p>
+        <p className="text-[13px] text-[rgba(0,0,0,0.48)] dark:text-[rgba(255,255,255,0.44)]">
+          {formatDisplayDate(item.date)}
+        </p>
+      </div>
+      <div className="min-w-0 space-y-2">
+        <h3 className="text-[17px] leading-snug text-foreground dark:text-white md:text-[18px]">
+          {item.title}
+        </h3>
+        <AuthorLine authors={item.authors} />
+        <p className="max-w-3xl text-[14px] leading-relaxed text-foreground/80 dark:text-white/78">
+          {item.summary}
+        </p>
+        <ResourceRow venue={item.venue} resources={item.resources} />
       </div>
     </article>
-  );
-
-  return (
-    <div key={item.id} className="group block">
-      {row}
-    </div>
   );
 };
 
@@ -440,7 +438,7 @@ export default function PublicationsPage() {
       <main className="flex-1 mx-auto w-full max-w-5xl px-2 md:px-4 lg:px-0 py-6 flex flex-col gap-6">
         <section className="mt-4 space-y-2">
           <p className="text-xs uppercase tracking-[0.3em] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]">Publications</p>
-          <h1 className="text-[48px] leading-tight text-foreground">Papers &amp; Preprints</h1>
+          <h1 className="text-[42px] leading-tight text-foreground md:text-[48px]">Papers &amp; Preprints</h1>
           <p className="text-[15px] md:text-base text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)] max-w-2xl leading-relaxed">
             A curated list of my published and upcoming work, with links to code and materials.
           </p>
@@ -489,7 +487,7 @@ export default function PublicationsPage() {
                   />
               </button>
               {filterOpen && (
-                <div className="fixed bottom-3 left-3 right-3 z-40 flex max-h-[min(56vh,28rem)] flex-col overflow-hidden rounded-[18px] bg-[var(--card)]/96 shadow-[0_18px_45px_rgba(0,0,0,0.16)] backdrop-blur-md dark:bg-[#141416]/96 sm:absolute sm:bottom-auto sm:left-auto sm:right-0 sm:top-full sm:mt-2 sm:max-h-[min(34rem,calc(100vh-2rem))] sm:w-[min(420px,calc(100vw-2rem))]">
+                <div className="fixed left-4 right-4 top-[118px] z-50 flex max-h-[calc(100dvh-8rem)] flex-col overflow-hidden rounded-[8px] border border-[var(--card-border)] bg-[var(--card)]/96 shadow-[0_16px_36px_rgba(0,0,0,0.14)] backdrop-blur-md dark:bg-[#141416]/96 sm:absolute sm:bottom-auto sm:left-auto sm:right-0 sm:top-full sm:mt-2 sm:max-h-[min(34rem,calc(100vh-2rem))] sm:w-[min(420px,calc(100vw-2rem))]">
                   <div className="flex shrink-0 items-center justify-between px-4 pb-1 pt-3 text-sm text-foreground dark:text-white">
                     <p className="font-semibold">Filters</p>
                     <button
@@ -562,7 +560,7 @@ export default function PublicationsPage() {
                 <ArrowUpDown size={16} />
               </button>
               {sortOpen && (
-                <div className="fixed bottom-4 left-4 right-4 z-40 flex max-h-[calc(100vh-2rem)] flex-col gap-2 overflow-y-auto rounded-[18px] bg-[var(--card)]/96 p-3 text-sm text-foreground shadow-[0_18px_45px_rgba(0,0,0,0.16)] backdrop-blur-md dark:bg-[#141416]/96 dark:text-white sm:absolute sm:bottom-auto sm:left-auto sm:right-0 sm:top-full sm:mt-2 sm:w-[min(256px,calc(100vw-2rem))]">
+                <div className="fixed left-4 right-4 top-[118px] z-50 flex max-h-[calc(100dvh-8rem)] flex-col gap-2 overflow-y-auto rounded-[8px] border border-[var(--card-border)] bg-[var(--card)]/96 p-3 text-sm text-foreground shadow-[0_16px_36px_rgba(0,0,0,0.14)] backdrop-blur-md dark:bg-[#141416]/96 dark:text-white sm:absolute sm:bottom-auto sm:left-auto sm:right-0 sm:top-full sm:mt-2 sm:w-[min(256px,calc(100vw-2rem))]">
                   {sortOptions.map((option) => (
                     <label
                       key={option.value}

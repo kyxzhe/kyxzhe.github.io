@@ -77,37 +77,39 @@ function formatCategoryLabel(category: string) {
 
 const ListRow = ({ item }: { item: NewsItem }) => {
   return (
-    <article className="group relative flex cursor-pointer flex-col gap-3 border-b border-[rgba(0,0,0,0.08)] py-6 font-normal transition-colors hover:border-foreground/70 dark:border-white/20">
+    <article className="group relative grid cursor-pointer gap-3 border-b border-[rgba(0,0,0,0.08)] py-6 font-normal transition-colors hover:border-foreground/70 dark:border-white/20 md:grid-cols-[minmax(8rem,12rem)_minmax(0,1fr)] md:gap-8 md:py-7">
       <Link
         href={newsPath(item)}
         aria-label={`Read ${item.title}`}
         className="absolute inset-0 z-10"
       />
-      <p className="text-[12px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.44)]">
-        {item.category}
-      </p>
-      <div className="flex items-start justify-between gap-3">
-        <h3 className="text-[17px] leading-snug text-foreground dark:text-white">
-          {item.title}
-        </h3>
-        <p className="text-[14px] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.44)] whitespace-nowrap">
+      <div className="space-y-1.5 md:pt-0.5">
+        <p className="text-[12px] text-[rgba(0,0,0,0.62)] dark:text-[rgba(255,255,255,0.58)]">
+          {formatCategoryLabel(item.category)}
+        </p>
+        <p className="text-[13px] text-[rgba(0,0,0,0.48)] dark:text-[rgba(255,255,255,0.44)]">
           {formatDisplayDate(item.date)}
         </p>
       </div>
-      <p className="text-[14px] text-foreground/80 dark:text-white leading-relaxed max-w-3xl">
-        {item.summary}
-      </p>
-      {item.link && (
-        <Link
-          href={item.link}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="relative z-20 inline-flex w-fit items-center gap-1 text-[12px] uppercase tracking-[0.28em] text-foreground hover:underline underline-offset-4"
-        >
-          {item.linkLabel ?? "Related link"}
-          <ArrowUpRight size={12} />
-        </Link>
-      )}
+      <div className="min-w-0 space-y-2">
+        <h3 className="text-[17px] leading-snug text-foreground dark:text-white md:text-[18px]">
+          {item.title}
+        </h3>
+        <p className="max-w-3xl text-[14px] leading-relaxed text-foreground/80 dark:text-white/78">
+          {item.summary}
+        </p>
+        {item.link && (
+          <Link
+            href={item.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="relative z-20 inline-flex w-fit items-center gap-1 text-[12px] uppercase tracking-[0.28em] text-foreground underline-offset-4 hover:underline dark:text-white"
+          >
+            {item.linkLabel ?? "Related link"}
+            <ArrowUpRight size={12} />
+          </Link>
+        )}
+      </div>
     </article>
   );
 };
@@ -257,22 +259,22 @@ export default function NewsPage() {
       <main className="flex-1 mx-auto w-full max-w-5xl px-2 md:px-4 lg:px-0 py-6 flex flex-col gap-6">
         <section className="mt-4 space-y-2">
           <p className="text-xs uppercase tracking-[0.3em] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]">NEWS</p>
-          <h1 className="text-[48px] font-medium leading-tight text-foreground">News &amp; updates</h1>
+          <h1 className="text-[42px] font-medium leading-tight text-foreground md:text-[48px]">News &amp; updates</h1>
           <p className="text-[15px] md:text-base text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)] max-w-2xl leading-relaxed">
             Updates on new papers, awards, talks, and milestones.
           </p>
         </section>
 
-        <div className="flex flex-wrap gap-2 text-sm text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]">
+        <div className="flex gap-5 overflow-x-auto border-b border-[rgba(0,0,0,0.08)] text-sm text-[rgba(0,0,0,0.6)] dark:border-white/20 dark:text-[rgba(255,255,255,0.72)]">
           {categories.map((category) => (
             <button
               key={category}
               type="button"
               onClick={() => setActiveCategory(category)}
-              className={`min-h-11 px-4 py-2 rounded-full border transition-colors ${
+              className={`min-h-11 shrink-0 border-b py-3 transition-colors ${
                 activeCategory === category
-                  ? "bg-[rgba(0,0,0,0.12)] border-transparent text-foreground dark:bg-[rgba(255,255,255,0.4)] dark:text-white"
-                  : "bg-[rgba(0,0,0,0.04)] border-transparent text-[rgba(0,0,0,0.6)] dark:bg-[rgba(255,255,255,0.12)] dark:text-[rgba(255,255,255,0.8)] hover:border-[rgba(0,0,0,0.08)]"
+                  ? "border-foreground text-foreground dark:border-white dark:text-white"
+                  : "border-transparent text-[rgba(0,0,0,0.56)] hover:text-foreground dark:text-[rgba(255,255,255,0.68)] dark:hover:text-white"
               }`}
             >
               {formatCategoryLabel(category)}
@@ -312,7 +314,7 @@ export default function NewsPage() {
                 />
               </button>
               {filterOpen && (
-                <div className="fixed bottom-3 left-3 right-3 z-40 flex max-h-[min(56vh,28rem)] flex-col overflow-hidden rounded-[18px] bg-[var(--card)]/96 text-sm shadow-[0_18px_45px_rgba(0,0,0,0.16)] backdrop-blur-md dark:bg-[#141416]/96 sm:absolute sm:bottom-auto sm:left-auto sm:right-0 sm:top-full sm:mt-2 sm:max-h-[min(34rem,calc(100vh-2rem))] sm:w-[min(420px,calc(100vw-2rem))]">
+                <div className="fixed left-4 right-4 top-[118px] z-50 flex max-h-[calc(100dvh-8rem)] flex-col overflow-hidden rounded-[8px] border border-[var(--card-border)] bg-[var(--card)]/96 text-sm shadow-[0_16px_36px_rgba(0,0,0,0.14)] backdrop-blur-md dark:bg-[#141416]/96 sm:absolute sm:bottom-auto sm:left-auto sm:right-0 sm:top-full sm:mt-2 sm:max-h-[min(34rem,calc(100vh-2rem))] sm:w-[min(420px,calc(100vw-2rem))]">
                   <div className="flex shrink-0 items-center justify-between px-4 pb-1 pt-3 text-sm text-foreground dark:text-white">
                     <p className="font-semibold">Filters</p>
                     <button
@@ -385,7 +387,7 @@ export default function NewsPage() {
                 <ArrowUpDown size={16} />
               </button>
               {sortOpen && (
-                <div className="fixed bottom-4 left-4 right-4 z-40 flex max-h-[calc(100vh-2rem)] flex-col gap-2 overflow-y-auto rounded-[18px] bg-[var(--card)]/96 p-3 text-sm text-foreground shadow-[0_18px_45px_rgba(0,0,0,0.16)] backdrop-blur-md dark:bg-[#141416]/96 dark:text-white sm:absolute sm:bottom-auto sm:left-auto sm:right-0 sm:top-full sm:mt-2 sm:w-[min(256px,calc(100vw-2rem))]">
+                <div className="fixed left-4 right-4 top-[118px] z-50 flex max-h-[calc(100dvh-8rem)] flex-col gap-2 overflow-y-auto rounded-[8px] border border-[var(--card-border)] bg-[var(--card)]/96 p-3 text-sm text-foreground shadow-[0_16px_36px_rgba(0,0,0,0.14)] backdrop-blur-md dark:bg-[#141416]/96 dark:text-white sm:absolute sm:bottom-auto sm:left-auto sm:right-0 sm:top-full sm:mt-2 sm:w-[min(256px,calc(100vw-2rem))]">
                   {sortOptions.map((option) => (
                     <label key={option.value} className="flex min-h-11 items-center gap-2 text-foreground/80 dark:text-white/80">
                       <input
