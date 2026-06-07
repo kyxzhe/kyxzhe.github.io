@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { newsItems } from "@/lib/constants/news";
 import { publications } from "@/lib/constants/publications";
-import { absoluteUrl, siteMetadata } from "@/lib/seo/config";
+import { siteMetadata } from "@/lib/seo/config";
 
 export const dynamic = "force-static";
 export const revalidate = 3600; // 1 hour
@@ -24,35 +24,30 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: siteUpdatedAt,
       changeFrequency: "monthly",
       priority: 1,
-      images: [absoluteUrl(siteMetadata.defaultOgImage)],
     },
     {
       url: `${baseUrl}/about`,
       lastModified: siteUpdatedAt,
       changeFrequency: "monthly",
       priority: 0.8,
-      images: [absoluteUrl(siteMetadata.defaultOgImage)],
     },
     {
       url: `${baseUrl}/news`,
       lastModified: newsUpdatedAt,
       changeFrequency: "monthly",
       priority: 0.8,
-      images: [absoluteUrl(siteMetadata.defaultOgImage)],
     },
     {
       url: `${baseUrl}/publications`,
       lastModified: publicationsUpdatedAt,
       changeFrequency: "monthly",
       priority: 0.8,
-      images: [absoluteUrl(siteMetadata.defaultOgImage)],
     },
     {
       url: `${baseUrl}/contact`,
       lastModified: siteUpdatedAt,
       changeFrequency: "monthly",
       priority: 0.8,
-      images: [absoluteUrl(siteMetadata.defaultOgImage)],
     },
   ];
 
@@ -61,7 +56,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: publication.date,
     changeFrequency: "monthly",
     priority: 0.7,
-    images: [absoluteUrl(publication.cover)],
   }));
 
   const newsRoutes: MetadataRoute.Sitemap = newsItems.map((item) => ({
@@ -69,7 +63,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: item.date,
     changeFrequency: "yearly",
     priority: 0.6,
-    images: [absoluteUrl(item.cover)],
   }));
 
   return [...staticRoutes, ...publicationRoutes, ...newsRoutes];
