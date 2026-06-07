@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
@@ -128,6 +128,10 @@ export default function NewsPage() {
   const [selectedYears, setSelectedYears] = useState<number[]>([]);
   const [filterOpen, setFilterOpen] = useState(false);
   const [sortOpen, setSortOpen] = useState(false);
+  const [gridScrollSpacer, setGridScrollSpacer] = useState(0);
+  const gridSectionRef = useRef<HTMLElement | null>(null);
+  const gridLeadArticleRef = useRef<HTMLElement | null>(null);
+  const gridScrollSpacerRef = useRef<HTMLDivElement | null>(null);
 
   const toggleTopic = (topic: string) => {
     setSelectedTopics((prev) =>
@@ -176,6 +180,52 @@ export default function NewsPage() {
   const recentItems = sortedItems.slice(4);
   const leftColumnItems = recentItems.filter((_, index) => index % 2 === 0);
   const rightColumnItems = recentItems.filter((_, index) => index % 2 === 1);
+
+  useEffect(() => {
+    if (viewMode !== "grid" || !leadItem || sideRailItems.length === 0) {
+      setGridScrollSpacer(0);
+      return;
+    }
+
+    let frame = 0;
+    const measureSpacer = () => {
+      const gridSection = gridSectionRef.current;
+      const leadArticle = gridLeadArticleRef.current;
+      if (!gridSection || !leadArticle || window.innerWidth < 1024) {
+        setGridScrollSpacer(0);
+        return;
+      }
+
+      const stickyParent = leadArticle.parentElement;
+      const stickyTop = stickyParent ? parseFloat(getComputedStyle(stickyParent).top) || 0 : 0;
+      const currentSpacer = gridScrollSpacerRef.current?.getBoundingClientRect().height ?? 0;
+      const baseScrollHeight = document.documentElement.scrollHeight - currentSpacer;
+      const gridRect = gridSection.getBoundingClientRect();
+      const leadRect = leadArticle.getBoundingClientRect();
+      const gridTop = gridRect.top + window.scrollY;
+      const requiredMaxScroll = gridTop - stickyTop + gridRect.height - leadRect.height;
+      const nextSpacer = Math.max(0, Math.ceil(window.innerHeight + requiredMaxScroll - baseScrollHeight + 2));
+
+      setGridScrollSpacer((previous) => (Math.abs(previous - nextSpacer) > 1 ? nextSpacer : previous));
+    };
+
+    const scheduleMeasure = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(measureSpacer);
+    };
+
+    scheduleMeasure();
+    window.addEventListener("resize", scheduleMeasure);
+    const observer = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(scheduleMeasure);
+    if (gridSectionRef.current) observer?.observe(gridSectionRef.current);
+    if (gridLeadArticleRef.current) observer?.observe(gridLeadArticleRef.current);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("resize", scheduleMeasure);
+      observer?.disconnect();
+    };
+  }, [leadItem, sideRailItems.length, sortedItems.length, viewMode]);
 
   return (
     <div className="min-h-screen bg-white text-foreground dark:bg-[#000000] dark:text-[#f5f5f5] font-medium">
@@ -407,9 +457,13 @@ export default function NewsPage() {
             ))}
           </section>
         ) : leadItem ? (
-          <section className="w-full self-center grid gap-6 lg:w-[calc(100vw-84px)] lg:max-w-[1224px] lg:grid-cols-[minmax(0,1fr)_272px] items-start">
+          <section
+            ref={gridSectionRef}
+            className="w-full self-center grid gap-6 lg:w-[calc(100vw-84px)] lg:max-w-[1224px] lg:grid-cols-[minmax(0,1fr)_272px] items-start"
+          >
             <div className="block lg:sticky lg:top-20 lg:self-start">
               <motion.article
+                ref={gridLeadArticleRef}
                 whileHover={{ y: -3 }}
                 transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
                 className="group relative cursor-pointer"
@@ -482,7 +536,7 @@ export default function NewsPage() {
         ) : null}
 
         {viewMode === "grid" && recentItems.length > 0 && (
-          <section className="w-full self-center pt-10 md:pt-16 lg:pt-[clamp(4rem,calc(100vh-1136px),80rem)] lg:w-[calc(100vw-84px)] lg:max-w-[1224px]">
+          <section className="w-full self-center pt-10 md:pt-16 lg:w-[calc(100vw-84px)] lg:max-w-[1224px]">
             <div className="mb-6 flex items-center justify-between gap-4">
               <h2 className="text-[22px] md:text-[28px] tracking-[-0.03em] text-foreground dark:text-white">Recent updates</h2>
               <p className="text-sm text-[rgba(0,0,0,0.45)] dark:text-white/48">Showing {sortedItems.length} items</p>
@@ -534,6 +588,14 @@ export default function NewsPage() {
                 </div>
               ))}
             </div>
+            {gridScrollSpacer > 0 && (
+              <div
+                ref={gridScrollSpacerRef}
+                aria-hidden="true"
+                className="hidden lg:block"
+                style={{ height: gridScrollSpacer }}
+              />
+            )}
           </section>
         )}
       </main>
