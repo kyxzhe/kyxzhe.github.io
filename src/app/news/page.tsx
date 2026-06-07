@@ -259,8 +259,8 @@ export default function NewsPage() {
                 />
               </button>
               {filterOpen && (
-                <div className="fixed left-3 right-3 bottom-3 z-40 surface-card flex max-h-[min(78vh,36rem)] flex-col overflow-hidden border border-border text-sm shadow-xl sm:absolute sm:left-auto sm:right-0 sm:bottom-auto sm:top-full sm:mt-2 sm:max-h-[calc(100vh-2rem)] sm:w-[min(420px,calc(100vw-2rem))]">
-                  <div className="flex shrink-0 items-center justify-between border-b border-border/70 px-4 py-3 text-sm text-foreground dark:text-white">
+                <div className="fixed bottom-3 left-3 right-3 z-40 flex max-h-[min(56vh,28rem)] flex-col overflow-hidden rounded-[18px] bg-[var(--card)]/96 text-sm shadow-[0_18px_45px_rgba(0,0,0,0.16)] backdrop-blur-md dark:bg-[#141416]/96 sm:absolute sm:bottom-auto sm:left-auto sm:right-0 sm:top-full sm:mt-2 sm:max-h-[min(34rem,calc(100vh-2rem))] sm:w-[min(420px,calc(100vw-2rem))]">
+                  <div className="flex shrink-0 items-center justify-between px-4 pb-1 pt-3 text-sm text-foreground dark:text-white">
                     <p className="font-semibold">Filters</p>
                     <button
                       type="button"
@@ -273,11 +273,11 @@ export default function NewsPage() {
                       ×
                     </button>
                   </div>
-                  <div className="grid grid-cols-1 gap-5 overflow-y-auto px-4 py-4 text-sm text-foreground dark:text-white sm:grid-cols-2">
-                    <div className="space-y-2 sm:max-h-60 sm:overflow-y-auto sm:pr-1">
+                  <div className="grid grid-cols-[minmax(0,1fr)_78px] gap-4 overflow-y-auto px-4 py-3 text-sm text-foreground dark:text-white sm:grid-cols-2">
+                    <div className="space-y-1.5 sm:max-h-60 sm:overflow-y-auto sm:pr-1">
                       <p className="text-[11px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-foreground/70">Topic</p>
                       {topics.map((topic) => (
-                        <label key={topic} className="flex min-h-10 items-center gap-2 text-[14px] leading-snug text-foreground dark:text-white">
+                        <label key={topic} className="flex min-h-9 items-center gap-2 text-[13px] leading-snug text-foreground dark:text-white">
                           <input
                             type="checkbox"
                             checked={selectedTopics.includes(topic)}
@@ -287,10 +287,10 @@ export default function NewsPage() {
                         </label>
                       ))}
                     </div>
-                    <div className="space-y-2 sm:max-h-60 sm:overflow-y-auto sm:pr-1">
+                    <div className="space-y-1.5 sm:max-h-60 sm:overflow-y-auto sm:pr-1">
                       <p className="text-[11px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-foreground/70">Year</p>
                       {years.map((year) => (
-                        <label key={year} className="flex min-h-10 items-center gap-2 text-[14px] leading-snug text-foreground dark:text-white">
+                        <label key={year} className="flex min-h-9 items-center gap-2 text-[13px] leading-snug text-foreground dark:text-white">
                           <input
                             type="checkbox"
                             checked={selectedYears.includes(year)}
@@ -301,7 +301,7 @@ export default function NewsPage() {
                       ))}
                     </div>
                   </div>
-                  <div className="flex shrink-0 justify-end border-t border-border/70 px-4 py-3 text-xs text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]">
+                  <div className="flex shrink-0 justify-end px-4 pb-3 pt-1 text-xs text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]">
                     <button
                       type="button"
                       className="min-h-11 px-2 underline-offset-2 hover:text-foreground dark:hover:text-white"
@@ -332,7 +332,7 @@ export default function NewsPage() {
                 <ArrowUpDown size={16} />
               </button>
               {sortOpen && (
-                <div className="fixed left-4 right-4 bottom-4 z-40 surface-card p-3 flex max-h-[calc(100vh-2rem)] flex-col gap-2 overflow-y-auto shadow-xl rounded-2xl border border-border text-sm text-foreground dark:text-white sm:absolute sm:left-auto sm:right-0 sm:bottom-auto sm:top-full sm:mt-2 sm:w-[min(256px,calc(100vw-2rem))]">
+                <div className="fixed bottom-4 left-4 right-4 z-40 flex max-h-[calc(100vh-2rem)] flex-col gap-2 overflow-y-auto rounded-[18px] bg-[var(--card)]/96 p-3 text-sm text-foreground shadow-[0_18px_45px_rgba(0,0,0,0.16)] backdrop-blur-md dark:bg-[#141416]/96 dark:text-white sm:absolute sm:bottom-auto sm:left-auto sm:right-0 sm:top-full sm:mt-2 sm:w-[min(256px,calc(100vw-2rem))]">
                   {sortOptions.map((option) => (
                     <label key={option.value} className="flex min-h-11 items-center gap-2 text-foreground/80 dark:text-white/80">
                       <input
@@ -405,7 +405,7 @@ export default function NewsPage() {
           </section>
         ) : leadItem ? (
           <section className="w-full max-w-[1360px] self-center grid gap-4 lg:grid-cols-[minmax(0,1fr)_288px] xl:grid-cols-[minmax(0,1fr)_312px] items-start pb-4 md:pb-6">
-            <div className="block lg:self-start lg:sticky lg:top-0">
+            <div className="block lg:sticky lg:top-20 lg:self-start">
               <motion.article
                 whileHover={{ y: -3 }}
                 transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}

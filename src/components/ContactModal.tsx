@@ -402,7 +402,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                           )}
                         </div>
 
-                    <div className="surface-card p-3 sm:p-4">
+                    <div className="rounded-[18px] bg-[var(--pill-background)] p-3 sm:p-4">
                       <div className="mb-3 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
                         <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">
                           Choose a date
@@ -412,7 +412,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                             type="button"
                             onClick={() => shiftWindow(-1)}
                             disabled={windowStart === 0}
-                            className="inline-flex h-9 items-center rounded-full border border-border bg-[var(--pill-background)] px-3 text-[12px] text-muted-foreground transition-colors hover:bg-[var(--accent-soft)] disabled:opacity-40"
+                            className="inline-flex h-9 items-center rounded-full bg-white/70 px-3 text-[12px] text-muted-foreground transition-colors hover:bg-[var(--accent-soft)] disabled:opacity-40 dark:bg-white/8"
                           >
                             Prev
                           </button>
@@ -420,7 +420,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                             type="button"
                             onClick={() => shiftWindow(1)}
                             disabled={windowStart >= maxWindowIndex}
-                            className="inline-flex h-9 items-center rounded-full border border-border bg-[var(--pill-background)] px-3 text-[12px] text-muted-foreground transition-colors hover:bg-[var(--accent-soft)] disabled:opacity-40"
+                            className="inline-flex h-9 items-center rounded-full bg-white/70 px-3 text-[12px] text-muted-foreground transition-colors hover:bg-[var(--accent-soft)] disabled:opacity-40 dark:bg-white/8"
                           >
                             Next
                           </button>
@@ -438,10 +438,10 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                                 setSelectedSlotId(null);
                               }}
                               aria-pressed={isActive}
-                              className={`inline-flex min-h-10 items-center justify-center rounded-full border px-3 text-[13px] leading-snug transition-colors ${
+                              className={`inline-flex min-h-10 items-center justify-center rounded-full px-3 text-[13px] leading-snug transition-colors ${
                                 isActive
-                                  ? "border-[var(--accent-link)] bg-[rgba(41,151,255,0.08)] text-[var(--accent-link)]"
-                                  : "border-border bg-[var(--pill-background)] text-muted-foreground hover:bg-[var(--accent-soft)]"
+                                  ? "bg-[var(--accent)] text-[var(--background)]"
+                                  : "bg-white/70 text-muted-foreground hover:bg-[var(--accent-soft)] dark:bg-white/8"
                               }`}
                             >
                               <span className="flex items-center gap-2">
@@ -467,20 +467,20 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                             type="button"
                             disabled={slot.booked || submissionState === "loading"}
                             onClick={() => setSelectedSlotId(slot.id)}
-                            className={`surface-card px-3 py-3 text-left transition-all sm:px-4 sm:py-4 ${
+                            className={`rounded-[16px] px-3 py-3 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30 sm:px-4 sm:py-4 ${
                               slot.booked
-                                ? "border-border/30 text-muted-foreground cursor-not-allowed line-through opacity-60"
+                                ? "cursor-not-allowed bg-[var(--pill-background)] text-muted-foreground line-through opacity-55"
                                 : isSelected
-                                  ? "border-brand-accent bg-[rgba(41,151,255,0.12)] shadow-[0_12px_30px_-20px_rgba(0,0,0,0.8)]"
-                                  : "border-border hover:bg-[var(--accent-soft)]"
+                                  ? "bg-[var(--accent)] text-[var(--background)]"
+                                  : "bg-[var(--pill-background)] hover:bg-[var(--accent-soft)]"
                             }`}
                           >
                             <div className="flex items-center justify-between">
-                              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
+                              <p className={`text-xs uppercase tracking-[0.3em] ${isSelected ? "text-[var(--background)] opacity-70" : "text-muted-foreground"}`}>
                                 Meeting
                               </p>
                               {isSelected && (
-                                <Check size={16} className="text-brand-accent" />
+                                <Check size={16} className="text-current" />
                               )}
                             </div>
                             <p className="text-lg font-medium">{slot.label}</p>

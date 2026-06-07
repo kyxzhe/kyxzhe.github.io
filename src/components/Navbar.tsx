@@ -8,9 +8,9 @@ import MobileNav from './MobileNav';
 export default function Navbar() {
   const { menuOpen, toggleMenu, closeMenu } = useNavigation();
   return (
-    <header className="w-full mb-12 md:mb-14" role="banner">
+    <header className="sticky top-0 z-40 mb-12 w-full bg-[var(--background)]/90 backdrop-blur-md supports-[backdrop-filter]:bg-[var(--background)]/78 md:mb-14" role="banner">
       <nav
-        className="flex flex-row justify-between items-center md:flex-row md:items-center relative z-10 px-2 md:px-4"
+        className="relative z-10 flex flex-row items-center justify-between px-2 py-2 md:flex-row md:items-center md:px-4"
         aria-label="Main navigation"
       >
         <Link

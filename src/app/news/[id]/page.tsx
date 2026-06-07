@@ -156,7 +156,7 @@ export default async function NewsDetailPage({ params }: NewsPageProps) {
             )}
           </div>
 
-          <aside className="self-start overflow-hidden rounded-[4px] border border-border bg-[var(--card)] dark:bg-[#090909]">
+          <aside className="self-start overflow-hidden rounded-[4px] bg-[#090909]">
             <div className="relative aspect-[4/3] w-full sm:aspect-square lg:aspect-[4/5]">
               <Image
                 src={item.cover}

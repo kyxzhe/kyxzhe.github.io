@@ -212,29 +212,31 @@ export default function PublicationsPage() {
 
     if (sortedItems.length === 1) {
       return (
-        <section className="w-full max-w-[1080px] self-center pb-4 md:pb-6">
+        <section className="w-full max-w-[1120px] self-center pb-4 md:pb-6">
           <motion.article
             whileHover={{ y: -3 }}
             transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
-            className="group grid overflow-hidden rounded-[6px] border border-border bg-[var(--card)] dark:bg-[#0c0c0d] lg:grid-cols-[minmax(0,0.84fr)_minmax(0,1fr)]"
+            className="group grid gap-5 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1fr)] lg:items-center"
           >
             <Link
               href={publicationPath(leadItem)}
               aria-label={`Read ${leadItem.title}`}
               className="block min-w-0"
             >
-              <div className="relative aspect-[1.36/1] h-full min-h-[280px] w-full bg-[#090909] sm:aspect-[1.55/1] lg:aspect-auto">
-                <Image
-                  src={leadItem.cover}
-                  alt={leadItem.title}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 456px"
-                  className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-                  priority
-                />
+              <div className="overflow-hidden rounded-[4px] bg-[#090909]">
+                <div className="relative aspect-[1.36/1] min-h-[280px] w-full sm:aspect-[1.55/1]">
+                  <Image
+                    src={leadItem.cover}
+                    alt={leadItem.title}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 520px"
+                    className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                    priority
+                  />
+                </div>
               </div>
             </Link>
-            <div className="flex min-w-0 flex-col justify-center p-5 sm:p-6 md:p-8">
+            <div className="flex min-w-0 flex-col justify-center lg:pl-3">
               <p className="text-[11px] uppercase tracking-[0.24em] text-[rgba(0,0,0,0.5)] dark:text-white/58">
                 Featured publication
               </p>
@@ -264,7 +266,7 @@ export default function PublicationsPage() {
     return (
       <>
         <section className="w-full max-w-[1360px] self-center grid gap-4 lg:grid-cols-[minmax(0,1fr)_288px] xl:grid-cols-[minmax(0,1fr)_312px] items-start pb-4 md:pb-6">
-          <div className="block lg:self-start lg:sticky lg:top-0">
+          <div className="block lg:sticky lg:top-20 lg:self-start">
             <motion.article
               whileHover={{ y: -3 }}
               transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
@@ -483,8 +485,8 @@ export default function PublicationsPage() {
                   />
               </button>
               {filterOpen && (
-                <div className="fixed left-3 right-3 bottom-3 z-40 surface-card flex max-h-[min(78vh,36rem)] flex-col overflow-hidden border border-border shadow-xl sm:absolute sm:left-auto sm:right-0 sm:bottom-auto sm:top-full sm:mt-2 sm:max-h-[calc(100vh-2rem)] sm:w-[min(420px,calc(100vw-2rem))]">
-                  <div className="flex shrink-0 items-center justify-between border-b border-border/70 px-4 py-3 text-sm text-foreground dark:text-white">
+                <div className="fixed bottom-3 left-3 right-3 z-40 flex max-h-[min(56vh,28rem)] flex-col overflow-hidden rounded-[18px] bg-[var(--card)]/96 shadow-[0_18px_45px_rgba(0,0,0,0.16)] backdrop-blur-md dark:bg-[#141416]/96 sm:absolute sm:bottom-auto sm:left-auto sm:right-0 sm:top-full sm:mt-2 sm:max-h-[min(34rem,calc(100vh-2rem))] sm:w-[min(420px,calc(100vw-2rem))]">
+                  <div className="flex shrink-0 items-center justify-between px-4 pb-1 pt-3 text-sm text-foreground dark:text-white">
                     <p className="font-semibold">Filters</p>
                     <button
                       type="button"
@@ -497,11 +499,11 @@ export default function PublicationsPage() {
                       ×
                     </button>
                   </div>
-                  <div className="grid grid-cols-1 gap-5 overflow-y-auto px-4 py-4 text-sm text-foreground dark:text-white sm:grid-cols-2">
-                    <div className="space-y-2 sm:max-h-60 sm:overflow-y-auto sm:pr-1">
+                  <div className="grid grid-cols-[minmax(0,1fr)_78px] gap-4 overflow-y-auto px-4 py-3 text-sm text-foreground dark:text-white sm:grid-cols-2">
+                    <div className="space-y-1.5 sm:max-h-60 sm:overflow-y-auto sm:pr-1">
                       <p className="text-[11px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-foreground/70">Topic</p>
                       {topics.map((topic) => (
-                        <label key={topic} className="flex min-h-10 items-center gap-2 text-[14px] leading-snug text-foreground dark:text-white">
+                        <label key={topic} className="flex min-h-9 items-center gap-2 text-[13px] leading-snug text-foreground dark:text-white">
                           <input
                             type="checkbox"
                             checked={selectedTopics.includes(topic)}
@@ -511,10 +513,10 @@ export default function PublicationsPage() {
                         </label>
                       ))}
                     </div>
-                    <div className="space-y-2 sm:max-h-60 sm:overflow-y-auto sm:pr-1">
+                    <div className="space-y-1.5 sm:max-h-60 sm:overflow-y-auto sm:pr-1">
                       <p className="text-[11px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-foreground/70">Year</p>
                       {years.map((year) => (
-                        <label key={year} className="flex min-h-10 items-center gap-2 text-[14px] leading-snug text-foreground dark:text-white">
+                        <label key={year} className="flex min-h-9 items-center gap-2 text-[13px] leading-snug text-foreground dark:text-white">
                           <input
                             type="checkbox"
                             checked={selectedYears.includes(year)}
@@ -525,7 +527,7 @@ export default function PublicationsPage() {
                       ))}
                     </div>
                   </div>
-                  <div className="flex shrink-0 justify-end border-t border-border/70 px-4 py-3 text-xs text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]">
+                  <div className="flex shrink-0 justify-end px-4 pb-3 pt-1 text-xs text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]">
                     <button
                       type="button"
                       className="min-h-11 px-2 underline-offset-2 hover:text-foreground dark:hover:text-white"
@@ -556,7 +558,7 @@ export default function PublicationsPage() {
                 <ArrowUpDown size={16} />
               </button>
               {sortOpen && (
-                <div className="fixed left-4 right-4 bottom-4 z-40 surface-card p-3 flex max-h-[calc(100vh-2rem)] flex-col gap-2 overflow-y-auto shadow-xl rounded-2xl border border-border text-sm text-foreground dark:text-white sm:absolute sm:left-auto sm:right-0 sm:bottom-auto sm:top-full sm:mt-2 sm:w-[min(256px,calc(100vw-2rem))]">
+                <div className="fixed bottom-4 left-4 right-4 z-40 flex max-h-[calc(100vh-2rem)] flex-col gap-2 overflow-y-auto rounded-[18px] bg-[var(--card)]/96 p-3 text-sm text-foreground shadow-[0_18px_45px_rgba(0,0,0,0.16)] backdrop-blur-md dark:bg-[#141416]/96 dark:text-white sm:absolute sm:bottom-auto sm:left-auto sm:right-0 sm:top-full sm:mt-2 sm:w-[min(256px,calc(100vw-2rem))]">
                   {sortOptions.map((option) => (
                     <label
                       key={option.value}
