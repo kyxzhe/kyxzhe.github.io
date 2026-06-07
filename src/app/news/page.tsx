@@ -77,15 +77,18 @@ function formatCategoryLabel(category: string) {
 
 const ListRow = ({ item }: { item: NewsItem }) => {
   return (
-    <article className="group flex flex-col gap-3 py-6 border-b border-[rgba(0,0,0,0.08)] dark:border-white/20 transition-colors hover:border-foreground/70 font-normal">
+    <article className="group relative flex cursor-pointer flex-col gap-3 border-b border-[rgba(0,0,0,0.08)] py-6 font-normal transition-colors hover:border-foreground/70 dark:border-white/20">
+      <Link
+        href={newsPath(item)}
+        aria-label={`Read ${item.title}`}
+        className="absolute inset-0 z-10"
+      />
       <p className="text-[12px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.44)]">
         {item.category}
       </p>
       <div className="flex items-start justify-between gap-3">
         <h3 className="text-[17px] leading-snug text-foreground dark:text-white">
-          <Link href={newsPath(item)} className="hover:underline underline-offset-4">
-            {item.title}
-          </Link>
+          {item.title}
         </h3>
         <p className="text-[14px] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.44)] whitespace-nowrap">
           {formatDisplayDate(item.date)}
@@ -99,7 +102,7 @@ const ListRow = ({ item }: { item: NewsItem }) => {
           href={item.link}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex w-fit items-center gap-1 text-[12px] uppercase tracking-[0.28em] text-foreground hover:underline underline-offset-4"
+          className="relative z-20 inline-flex w-fit items-center gap-1 text-[12px] uppercase tracking-[0.28em] text-foreground hover:underline underline-offset-4"
         >
           {item.linkLabel ?? "Related link"}
           <ArrowUpRight size={12} />
@@ -409,26 +412,27 @@ export default function NewsPage() {
               <motion.article
                 whileHover={{ y: -3 }}
                 transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
-                className="group"
+                className="group relative cursor-pointer"
               >
-                <Link href={newsPath(leadItem)} aria-label={`Read ${leadItem.title}`}>
-                  <div className="overflow-hidden rounded-[4px] bg-[#090909]">
-                    <div className="relative aspect-[1.68/1] w-full">
-                      <Image
-                        src={leadItem.cover}
-                        alt={leadItem.title}
-                        fill
-                        sizes="(max-width: 1024px) 100vw, 72vw"
-                        className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-                      />
-                    </div>
+                <Link
+                  href={newsPath(leadItem)}
+                  aria-label={`Read ${leadItem.title}`}
+                  className="absolute inset-0 z-10"
+                />
+                <div className="overflow-hidden rounded-[4px] bg-[#090909]">
+                  <div className="relative aspect-[1.68/1] w-full">
+                    <Image
+                      src={leadItem.cover}
+                      alt={leadItem.title}
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 72vw"
+                      className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                    />
                   </div>
-                </Link>
+                </div>
                 <div className="pt-3">
                   <h2 className="max-w-4xl text-[30px] md:text-[44px] leading-[0.98] tracking-[-0.04em] text-foreground dark:text-white">
-                    <Link href={newsPath(leadItem)} className="hover:underline underline-offset-4">
-                      {leadItem.title}
-                    </Link>
+                    {leadItem.title}
                   </h2>
                   <div className="pt-2.5">
                     <MetaLine item={leadItem} />
@@ -443,26 +447,27 @@ export default function NewsPage() {
                   <motion.article
                     whileHover={{ y: -3 }}
                     transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
-                    className="group"
+                    className="group relative cursor-pointer"
                   >
-                    <Link href={newsPath(item)} aria-label={`Read ${item.title}`}>
-                      <div className="overflow-hidden rounded-[4px] bg-[#090909]">
-                        <div className="relative aspect-square w-full">
-                          <Image
-                            src={item.cover}
-                            alt={item.title}
-                            fill
-                            sizes="(max-width: 1024px) 100vw, 392px"
-                            className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                          />
-                        </div>
+                    <Link
+                      href={newsPath(item)}
+                      aria-label={`Read ${item.title}`}
+                      className="absolute inset-0 z-10"
+                    />
+                    <div className="overflow-hidden rounded-[4px] bg-[#090909]">
+                      <div className="relative aspect-square w-full">
+                        <Image
+                          src={item.cover}
+                          alt={item.title}
+                          fill
+                          sizes="(max-width: 1024px) 100vw, 392px"
+                          className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                        />
                       </div>
-                    </Link>
+                    </div>
                     <div className="pt-2.5">
                       <h3 className="max-w-[17rem] text-[16px] md:text-[18px] leading-[1.12] tracking-[-0.02em] text-foreground dark:text-white">
-                        <Link href={newsPath(item)} className="hover:underline underline-offset-4">
-                          {item.title}
-                        </Link>
+                        {item.title}
                       </h3>
                       <div className="pt-1.5">
                         <MetaLine item={item} />
@@ -496,26 +501,27 @@ export default function NewsPage() {
                           delay: index * 0.06,
                           ease: [0.22, 1, 0.36, 1],
                         }}
-                        className="group grid grid-cols-[96px_minmax(0,1fr)] md:grid-cols-[104px_minmax(0,1fr)] gap-4 rounded-[6px] border border-transparent p-0 transition-colors hover:border-white/10"
+                        className="group relative grid cursor-pointer grid-cols-[96px_minmax(0,1fr)] gap-4 rounded-[6px] border border-transparent p-0 transition-colors hover:border-white/10 md:grid-cols-[104px_minmax(0,1fr)]"
                       >
-                        <Link href={newsPath(item)} aria-label={`Read ${item.title}`}>
-                          <div className="overflow-hidden rounded-[4px] bg-[#090909]">
-                            <div className="relative aspect-square w-full">
-                              <Image
-                                src={item.cover}
-                                alt={item.title}
-                                fill
-                                sizes="104px"
-                                className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
-                              />
-                            </div>
+                        <Link
+                          href={newsPath(item)}
+                          aria-label={`Read ${item.title}`}
+                          className="absolute inset-0 z-10"
+                        />
+                        <div className="overflow-hidden rounded-[4px] bg-[#090909]">
+                          <div className="relative aspect-square w-full">
+                            <Image
+                              src={item.cover}
+                              alt={item.title}
+                              fill
+                              sizes="104px"
+                              className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                            />
                           </div>
-                        </Link>
+                        </div>
                         <div className="flex min-w-0 flex-col justify-center py-1">
                           <h3 className="text-[18px] md:text-[20px] leading-[1.12] tracking-[-0.025em] text-foreground dark:text-white">
-                            <Link href={newsPath(item)} className="hover:underline underline-offset-4">
-                              {item.title}
-                            </Link>
+                            {item.title}
                           </h3>
                           <div className="pt-2">
                             <MetaLine item={item} />

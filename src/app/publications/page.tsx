@@ -115,7 +115,7 @@ const ResourceRow = ({
             href={resource.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 text-foreground hover:underline underline-offset-4"
+            className="relative z-20 inline-flex items-center gap-1 text-foreground hover:underline underline-offset-4"
           >
           {resource.label}
           <ArrowUpRight size={12} />
@@ -128,15 +128,18 @@ const ResourceRow = ({
 const ListRow = ({ item }: { item: Publication }) => {
   const row = (
     <article
-      className="group flex flex-col gap-3 py-6 border-b border-[rgba(0,0,0,0.08)] dark:border-white/20 transition-colors hover:border-foreground/70 font-normal"
+      className="group relative flex cursor-pointer flex-col gap-3 border-b border-[rgba(0,0,0,0.08)] py-6 font-normal transition-colors hover:border-foreground/70 dark:border-white/20"
     >
+      <Link
+        href={publicationPath(item)}
+        aria-label={`Read ${item.title}`}
+        className="absolute inset-0 z-10"
+      />
           <p className="text-[12px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.44)]">{item.category}</p>
       <div className="flex items-start justify-between gap-3">
         <div className="space-y-2">
           <h3 className="text-[17px] leading-snug text-foreground">
-            <Link href={publicationPath(item)} className="hover:underline underline-offset-4">
-              {item.title}
-            </Link>
+            {item.title}
           </h3>
           <AuthorLine authors={item.authors} />
           <p className="text-[14px] text-foreground/80 leading-relaxed max-w-3xl dark:text-white">{item.summary}</p>
@@ -216,34 +219,31 @@ export default function PublicationsPage() {
           <motion.article
             whileHover={{ y: -3 }}
             transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
-            className="group grid gap-5 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1fr)] lg:items-center"
+            className="group relative grid cursor-pointer gap-5 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1fr)] lg:items-center"
           >
             <Link
               href={publicationPath(leadItem)}
               aria-label={`Read ${leadItem.title}`}
-              className="block min-w-0"
-            >
-              <div className="overflow-hidden rounded-[4px] bg-[#090909]">
-                <div className="relative aspect-[1.36/1] min-h-[280px] w-full sm:aspect-[1.55/1]">
-                  <Image
-                    src={leadItem.cover}
-                    alt={leadItem.title}
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 520px"
-                    className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-                    priority
-                  />
-                </div>
+              className="absolute inset-0 z-10"
+            />
+            <div className="min-w-0 overflow-hidden rounded-[4px] bg-[#090909]">
+              <div className="relative aspect-[1.36/1] min-h-[280px] w-full sm:aspect-[1.55/1]">
+                <Image
+                  src={leadItem.cover}
+                  alt={leadItem.title}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 520px"
+                  className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                  priority
+                />
               </div>
-            </Link>
+            </div>
             <div className="flex min-w-0 flex-col justify-center lg:pl-3">
               <p className="text-[11px] uppercase tracking-[0.24em] text-[rgba(0,0,0,0.5)] dark:text-white/58">
                 Featured publication
               </p>
               <h2 className="pt-3 text-[28px] leading-[1.02] tracking-[-0.035em] text-foreground dark:text-white md:text-[38px]">
-                <Link href={publicationPath(leadItem)} className="hover:underline underline-offset-4">
-                  {leadItem.title}
-                </Link>
+                {leadItem.title}
               </h2>
               <div className="pt-3">
                 <CardMetaLine item={leadItem} />
@@ -270,26 +270,27 @@ export default function PublicationsPage() {
             <motion.article
               whileHover={{ y: -3 }}
               transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
-              className="group"
+              className="group relative cursor-pointer"
             >
-              <Link href={publicationPath(leadItem)} aria-label={`Read ${leadItem.title}`}>
-                <div className="overflow-hidden rounded-[4px] bg-[#090909]">
-                  <div className="relative aspect-[1.68/1] w-full">
-                    <Image
-                      src={leadItem.cover}
-                      alt={leadItem.title}
-                      fill
-                      sizes="(max-width: 1024px) 100vw, 72vw"
-                      className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-                    />
-                  </div>
+              <Link
+                href={publicationPath(leadItem)}
+                aria-label={`Read ${leadItem.title}`}
+                className="absolute inset-0 z-10"
+              />
+              <div className="overflow-hidden rounded-[4px] bg-[#090909]">
+                <div className="relative aspect-[1.68/1] w-full">
+                  <Image
+                    src={leadItem.cover}
+                    alt={leadItem.title}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 72vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                  />
                 </div>
-              </Link>
+              </div>
               <div className="pt-3">
                 <h2 className="max-w-4xl text-[30px] md:text-[44px] leading-[0.98] tracking-[-0.04em] text-foreground dark:text-white">
-                  <Link href={publicationPath(leadItem)} className="hover:underline underline-offset-4">
-                    {leadItem.title}
-                  </Link>
+                  {leadItem.title}
                 </h2>
                 <div className="pt-2.5">
                   <CardMetaLine item={leadItem} />
@@ -314,26 +315,27 @@ export default function PublicationsPage() {
                   <motion.article
                     whileHover={{ y: -3 }}
                     transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
-                    className="group"
+                    className="group relative cursor-pointer"
                   >
-                    <Link href={publicationPath(item)} aria-label={`Read ${item.title}`}>
-                      <div className="overflow-hidden rounded-[4px] bg-[#090909]">
-                        <div className="relative aspect-square w-full">
-                          <Image
-                            src={item.cover}
-                            alt={item.title}
-                            fill
-                            sizes="(max-width: 1024px) 100vw, 312px"
-                            className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                          />
-                        </div>
+                    <Link
+                      href={publicationPath(item)}
+                      aria-label={`Read ${item.title}`}
+                      className="absolute inset-0 z-10"
+                    />
+                    <div className="overflow-hidden rounded-[4px] bg-[#090909]">
+                      <div className="relative aspect-square w-full">
+                        <Image
+                          src={item.cover}
+                          alt={item.title}
+                          fill
+                          sizes="(max-width: 1024px) 100vw, 312px"
+                          className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                        />
                       </div>
-                    </Link>
+                    </div>
                     <div className="pt-2.5">
                       <h3 className="max-w-[17rem] text-[16px] md:text-[18px] leading-[1.12] tracking-[-0.02em] text-foreground dark:text-white">
-                        <Link href={publicationPath(item)} className="hover:underline underline-offset-4">
-                          {item.title}
-                        </Link>
+                        {item.title}
                       </h3>
                       <div className="pt-1.5">
                         <CardMetaLine item={item} />
@@ -367,26 +369,27 @@ export default function PublicationsPage() {
                           delay: index * 0.06,
                           ease: [0.22, 1, 0.36, 1],
                         }}
-                        className="group grid grid-cols-[96px_minmax(0,1fr)] md:grid-cols-[104px_minmax(0,1fr)] gap-4 rounded-[6px] border border-transparent p-0 transition-colors hover:border-white/10"
+                        className="group relative grid cursor-pointer grid-cols-[96px_minmax(0,1fr)] gap-4 rounded-[6px] border border-transparent p-0 transition-colors hover:border-white/10 md:grid-cols-[104px_minmax(0,1fr)]"
                       >
-                        <Link href={publicationPath(item)} aria-label={`Read ${item.title}`}>
-                          <div className="overflow-hidden rounded-[4px] bg-[#090909]">
-                            <div className="relative aspect-square w-full">
-                              <Image
-                                src={item.cover}
-                                alt={item.title}
-                                fill
-                                sizes="104px"
-                                className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
-                              />
-                            </div>
+                        <Link
+                          href={publicationPath(item)}
+                          aria-label={`Read ${item.title}`}
+                          className="absolute inset-0 z-10"
+                        />
+                        <div className="overflow-hidden rounded-[4px] bg-[#090909]">
+                          <div className="relative aspect-square w-full">
+                            <Image
+                              src={item.cover}
+                              alt={item.title}
+                              fill
+                              sizes="104px"
+                              className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                            />
                           </div>
-                        </Link>
+                        </div>
                         <div className="flex min-w-0 flex-col justify-center py-1">
                           <h3 className="text-[18px] md:text-[20px] leading-[1.12] tracking-[-0.025em] text-foreground dark:text-white">
-                            <Link href={publicationPath(item)} className="hover:underline underline-offset-4">
-                              {item.title}
-                            </Link>
+                            {item.title}
                           </h3>
                           <div className="pt-2">
                             <CardMetaLine item={item} />

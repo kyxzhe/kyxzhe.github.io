@@ -18,7 +18,7 @@ const MobileNav = React.memo(({ open, closeMenu }: Props) => (
         exit="exit"
         variants={mobileMenuVariants}
         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-        className="absolute left-0 right-0 top-full z-50 mt-2 flex flex-col gap-1 bg-[var(--background)] px-1 pb-5 pt-3 text-foreground dark:text-white md:hidden"
+        className="fixed inset-0 z-30 flex h-screen min-h-screen flex-col gap-1 overflow-y-auto bg-white px-8 pb-8 pt-[104px] text-foreground dark:bg-black dark:text-white md:hidden"
         role="menu"
       >
         {navItems.map(({ href, label, title }) => (
