@@ -209,7 +209,9 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
         >
             <motion.div>
                 <motion.button
-                  className="absolute top-6 right-6 p-2 rounded-full bg-[var(--accent-soft)] text-[var(--accent)] hover:opacity-80 transition-colors z-10"
+                  type="button"
+                  aria-label="Close contact modal"
+                  className="absolute top-5 right-5 inline-flex h-11 w-11 items-center justify-center rounded-full bg-[var(--accent-soft)] text-[var(--accent)] hover:opacity-80 transition-colors z-10"
                   onClick={() => {
                     onClose();
                     resetScheduler();
@@ -502,7 +504,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                           onChange={(e) => setFormValues((prev) => ({ ...prev, email: e.target.value }))}
                           className="rounded-[12px] border border-border bg-transparent px-4 py-3 focus:outline-none focus:border-foreground placeholder:text-muted-foreground/70"
                           placeholder="you@example.com"
-                          aria-invalid={!emailValid}
+                          aria-invalid={formValues.email.length > 0 && !emailValid}
                         />
                         {!emailValid && formValues.email.length > 0 && (
                           <span className="text-xs text-red-400">Please enter a valid email.</span>

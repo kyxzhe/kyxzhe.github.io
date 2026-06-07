@@ -238,7 +238,8 @@ export default function ContactPage() {
               <h3 className="text-lg font-semibold">Request a call</h3>
               <button
                 type="button"
-                className="p-2 rounded-full font-medium hover:bg-[var(--accent-soft)]"
+                aria-label="Close request call dialog"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full font-medium hover:bg-[var(--accent-soft)]"
                 onClick={() => setShowCallInfo(false)}
               >
                 <X size={18} />

@@ -57,6 +57,9 @@ const consoleNotes = [
   "The hero tagline is stitched right out of the landing copy, so console fans stay aligned.",
 ];
 
+let consoleInitialized = false;
+let devToolsIntervalId: ReturnType<typeof setInterval> | undefined;
+
 export const consoleUtil = {
   asciiArt: `
 ██╗  ██╗███████╗██╗   ██╗██╗███╗   ██╗     
@@ -190,15 +193,20 @@ export const consoleUtil = {
   },
 
   init() {
+    if (consoleInitialized) return;
+    consoleInitialized = true;
+
     this.display();
     this.setupCommands();
     this.detectDevTools();
   },
 
   detectDevTools() {
+    if (devToolsIntervalId) return;
+
     const devtools = { open: false };
 
-    setInterval(() => {
+    devToolsIntervalId = setInterval(() => {
       if (
         window.outerHeight - window.innerHeight > 200 ||
         window.outerWidth - window.innerWidth > 200

@@ -7,7 +7,7 @@ interface Props {
 
 const HamburgerButton = React.memo(({ open, onClick }: Props) => (
   <button
-    className="md:hidden flex flex-col justify-center items-center w-10 h-10 focus:outline-none"
+    className="md:hidden flex flex-col justify-center items-center w-11 h-11 focus:outline-none"
     aria-label={open ? 'Close menu' : 'Open menu'}
     aria-expanded={open}
     onClick={onClick}

@@ -406,7 +406,8 @@ export default function PublicationsPage() {
           <div className="relative flex items-center gap-4 text-sm">
             <div className="relative flex items-center gap-1">
               <button
-                className="flex items-center gap-1"
+                type="button"
+                className="inline-flex min-h-11 items-center gap-1 rounded-full px-3"
                 onClick={() => {
                   setFilterOpen((prev) => !prev);
                   setSortOpen(false);
@@ -415,7 +416,7 @@ export default function PublicationsPage() {
                 <span
                   className={
                     selectedTopics.length > 0 || selectedYears.length > 0 || filterOpen
-                      ? "text-foreground"
+                      ? "text-foreground dark:text-white"
                     : "text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]"
                   }
                 >
@@ -425,18 +426,19 @@ export default function PublicationsPage() {
                     size={16}
                     className={
                       selectedTopics.length > 0 || selectedYears.length > 0 || filterOpen
-                        ? "text-foreground"
+                        ? "text-foreground dark:text-white"
                       : "text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]"
                     }
                   />
               </button>
               {filterOpen && (
-                <div className="absolute top-full mt-2 w-[min(420px,calc(100vw-2rem))] left-1 right-auto sm:left-auto sm:right-0 z-40 surface-card p-4 flex flex-col gap-4 shadow-xl rounded-2xl border border-border">
-                  <div className="flex items-center justify-between text-sm text-foreground">
+                <div className="fixed left-4 right-4 bottom-4 z-40 surface-card p-4 flex max-h-[calc(100vh-2rem)] flex-col gap-4 overflow-y-auto shadow-xl rounded-2xl border border-border sm:absolute sm:left-auto sm:right-0 sm:bottom-auto sm:top-full sm:mt-2 sm:w-[min(420px,calc(100vw-2rem))]">
+                  <div className="flex items-center justify-between text-sm text-foreground dark:text-white">
                     <p>Filters</p>
                     <button
                       type="button"
-                      className="text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]"
+                      aria-label="Close filters"
+                      className="inline-flex h-11 w-11 items-center justify-center rounded-full text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]"
                       onClick={() => {
                         setFilterOpen(false);
                       }}
@@ -444,11 +446,11 @@ export default function PublicationsPage() {
                       ×
                     </button>
                   </div>
-                  <div className="grid grid-cols-2 gap-4 text-sm text-foreground">
+                  <div className="grid grid-cols-2 gap-4 text-sm text-foreground dark:text-white">
                     <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
                       <p className="text-[11px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-foreground/70">Topic</p>
                       {topics.map((topic) => (
-                        <label key={topic} className="flex items-center gap-2 text-[13px] text-foreground">
+                        <label key={topic} className="flex min-h-11 items-center gap-2 text-[13px] text-foreground dark:text-white">
                           <input
                             type="checkbox"
                             checked={selectedTopics.includes(topic)}
@@ -461,7 +463,7 @@ export default function PublicationsPage() {
                     <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
                       <p className="text-[11px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-foreground/70">Year</p>
                       {years.map((year) => (
-                        <label key={year} className="flex items-center gap-2 text-[13px] text-foreground">
+                        <label key={year} className="flex min-h-11 items-center gap-2 text-[13px] text-foreground dark:text-white">
                           <input
                             type="checkbox"
                             checked={selectedYears.includes(year)}
@@ -475,7 +477,7 @@ export default function PublicationsPage() {
                   <div className="flex justify-end pt-2 text-xs text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]">
                     <button
                       type="button"
-                      className="underline-offset-2 hover:text-foreground"
+                      className="min-h-11 px-2 underline-offset-2 hover:text-foreground dark:hover:text-white"
                       onClick={() => {
                         setSelectedTopics([]);
                         setSelectedYears([]);
@@ -490,8 +492,9 @@ export default function PublicationsPage() {
 
             <div className="relative flex items-center gap-1">
               <button
-                  className={`flex items-center gap-1 ${
-                    sortOpen ? "text-foreground" : "text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]"
+                  type="button"
+                  className={`inline-flex min-h-11 items-center gap-1 rounded-full px-3 ${
+                    sortOpen ? "text-foreground dark:text-white" : "text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]"
                   }`}
                 onClick={() => {
                   setSortOpen((prev) => !prev);
@@ -502,11 +505,11 @@ export default function PublicationsPage() {
                 <ArrowUpDown size={16} />
               </button>
               {sortOpen && (
-                <div className="absolute top-full mt-2 w-[min(256px,calc(100vw-2rem))] left-1 sm:left-auto sm:right-0 z-40 surface-card p-3 flex flex-col gap-2 shadow-xl rounded-2xl border border-border text-sm text-foreground">
+                <div className="fixed left-4 right-4 bottom-4 z-40 surface-card p-3 flex max-h-[calc(100vh-2rem)] flex-col gap-2 overflow-y-auto shadow-xl rounded-2xl border border-border text-sm text-foreground dark:text-white sm:absolute sm:left-auto sm:right-0 sm:bottom-auto sm:top-full sm:mt-2 sm:w-[min(256px,calc(100vw-2rem))]">
                   {sortOptions.map((option) => (
                     <label
                       key={option.value}
-                      className="flex items-center gap-2 text-foreground/80"
+                      className="flex min-h-11 items-center gap-2 text-foreground/80 dark:text-white/80"
                     >
                       <input
                         type="radio"
@@ -524,7 +527,8 @@ export default function PublicationsPage() {
 
             <div className="flex items-center gap-2 text-[rgba(0,0,0,0.6)] dark:text-foreground/70">
               <button
-                className={`p-2 rounded transition-colors ${
+                type="button"
+                className={`inline-flex h-11 w-11 items-center justify-center rounded-full transition-colors ${
                   viewMode === "list"
                     ? "text-foreground bg-[rgba(0,0,0,0.06)] dark:bg-white/25 dark:text-white"
                     : "hover:text-foreground dark:hover:text-white"
@@ -535,7 +539,8 @@ export default function PublicationsPage() {
                 <List size={16} />
               </button>
               <button
-                className={`p-2 rounded transition-colors ${
+                type="button"
+                className={`inline-flex h-11 w-11 items-center justify-center rounded-full transition-colors ${
                   viewMode === "grid"
                     ? "text-foreground bg-[rgba(0,0,0,0.06)] dark:bg-white/25 dark:text-white"
                     : "hover:text-foreground dark:hover:text-white"
@@ -549,7 +554,24 @@ export default function PublicationsPage() {
           </div>
         </div>
 
-        {viewMode === "list" ? (
+        {sortedItems.length === 0 ? (
+          <section className="surface-card flex flex-col items-start gap-3 rounded-2xl border border-border p-5 text-sm">
+            <h2 className="text-[18px] font-medium text-foreground dark:text-white">No publications match these filters</h2>
+            <p className="max-w-xl leading-relaxed text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]">
+              Try clearing the selected topics or years to see the full publications list again.
+            </p>
+            <button
+              type="button"
+              className="min-h-11 rounded-full bg-foreground px-4 text-background transition-opacity hover:opacity-80"
+              onClick={() => {
+                setSelectedTopics([]);
+                setSelectedYears([]);
+              }}
+            >
+              Clear filters
+            </button>
+          </section>
+        ) : viewMode === "list" ? (
           <section className="bg-transparent">
             {sortedItems.map((item) => (
               <ListRow key={item.id} item={item} />

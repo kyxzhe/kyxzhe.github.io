@@ -6,7 +6,6 @@ import remarkMath from "remark-math";
 import remarkSupersub from "remark-supersub";
 import remarkDeflist from "remark-deflist";
 import rehypeKatex from "rehype-katex";
-import rehypeRaw from "rehype-raw";
 import { useState, type HTMLAttributes, type ReactNode } from "react";
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
 import jsx from "react-syntax-highlighter/dist/esm/languages/prism/jsx";
@@ -141,8 +140,8 @@ const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
     <div className={cn("space-y-2", className)}>
       <ReactMarkdown
         remarkPlugins={[remarkMath, remarkGfm, remarkDeflist, remarkSupersub]}
-        rehypePlugins={[rehypeRaw, rehypeKatex]}
-        skipHtml={false}
+        rehypePlugins={[rehypeKatex]}
+        skipHtml
         components={{
           h1: ({ className, ...props }) => (
             <h1 className={cn("text-[22px] font-semibold leading-[1.35] mt-2 mb-3", className)} {...props} />
