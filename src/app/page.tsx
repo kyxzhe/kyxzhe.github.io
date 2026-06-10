@@ -182,7 +182,7 @@ export default function Home() {
     title: siteMetadata.title,
     description: siteMetadata.description,
     url: siteMetadata.baseUrl,
-    dateModified: "2026-05-14",
+    dateModified: "2026-06-11",
   });
 
   return (

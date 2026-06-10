@@ -51,7 +51,7 @@ const collectionJsonLd = getCollectionPageJsonLd({
   title: "Publications | Kevin Zheng",
   description: pageDescription,
   url: pageUrl,
-  dateModified: "2026-05-14",
+  dateModified: "2026-06-11",
 });
 const itemListJsonLd = getItemListJsonLd({
   id: "publication-list",

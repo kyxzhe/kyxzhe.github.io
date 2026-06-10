@@ -7,7 +7,7 @@ export const dynamic = "force-static";
 export const revalidate = 3600; // 1 hour
 
 const baseUrl = siteMetadata.baseUrl.replace(/\/$/, "");
-const siteUpdatedAt = "2026-05-14";
+const siteUpdatedAt = "2026-06-11";
 const newsUpdatedAt = newsItems.reduce(
   (latest, item) => (item.date > latest ? item.date : latest),
   "2024-01-01"

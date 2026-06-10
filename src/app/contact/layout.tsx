@@ -10,7 +10,7 @@ const pageTitle = "Contact";
 const structuredTitle = "Contact | Kevin Zheng";
 const pageDescription =
   "Contact details for Yuxiang (Kevin) Zheng — email, scheduling preferences, and collaboration topics for information diffusion and robust ML.";
-const pageModifiedDate = "2026-05-14";
+const pageModifiedDate = "2026-06-11";
 
 export const metadata: Metadata = {
   title: pageTitle,

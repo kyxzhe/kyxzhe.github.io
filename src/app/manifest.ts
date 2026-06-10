@@ -8,11 +8,16 @@ export default function manifest(): MetadataRoute.Manifest {
     name: siteMetadata.applicationName,
     short_name: siteMetadata.siteName,
     description: siteMetadata.description,
+    id: "/",
     start_url: "/",
+    scope: "/",
     display: "standalone",
+    display_override: ["standalone", "browser"],
     background_color: "#ffffff",
     theme_color: "#ffffff",
     lang: siteMetadata.language,
+    dir: "ltr",
+    categories: ["education", "research"],
     icons: [
       {
         src: "/favicon.ico",

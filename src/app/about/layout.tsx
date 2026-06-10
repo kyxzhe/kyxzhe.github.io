@@ -11,7 +11,7 @@ const pageTitle = "About";
 const structuredTitle = "About Kevin Zheng";
 const pageDescription =
   "Background, research focus, and teaching work of Yuxiang (Kevin) Zheng, a PhD student in information diffusion and robust machine learning.";
-const pageModifiedDate = "2026-05-14";
+const pageModifiedDate = "2026-06-11";
 
 export const metadata: Metadata = {
   title: pageTitle,
