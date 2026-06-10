@@ -214,7 +214,7 @@ export default function ContactModal({ onClose }: ContactModalProps) {
               handleDismiss();
             }}
           >
-            <X size={22} className="text-foreground" />
+            <X size={22} className="text-foreground" aria-hidden="true" />
           </button>
 
           <div className="mb-6 pr-10 text-center md:mb-12 md:pr-0">
@@ -235,12 +235,12 @@ export default function ContactModal({ onClose }: ContactModalProps) {
               >
                 {submissionState === "success" && (
                   <span className="inline-flex items-center gap-1 text-xs uppercase tracking-[0.3em] text-green-500">
-                    <Check size={14} /> Confirmed
+                    <Check size={14} aria-hidden="true" /> Confirmed
                   </span>
                 )}
                 {submissionState === "error" && (
                   <span className="inline-flex items-center gap-1 text-xs uppercase tracking-[0.3em] text-red-500">
-                    <AlertCircle size={14} /> Failed
+                    <AlertCircle size={14} aria-hidden="true" /> Failed
                   </span>
                 )}
               </div>
@@ -290,7 +290,7 @@ export default function ContactModal({ onClose }: ContactModalProps) {
                         <span className="flex items-center gap-2">
                           {day.displayLabel}
                           {isActive && (
-                            <span className="text-[0.65rem] uppercase tracking-[0.2em] opacity-80">
+                            <span className="text-[0.65rem] uppercase tracking-[0.2em] opacity-80" aria-hidden="true">
                               ✓
                             </span>
                           )}
@@ -328,7 +328,7 @@ export default function ContactModal({ onClose }: ContactModalProps) {
                           Meeting
                         </p>
                         {isSelected && (
-                          <Check size={16} className="text-current" />
+                          <Check size={16} className="text-current" aria-hidden="true" />
                         )}
                       </div>
                       <p className="text-lg font-medium">{slot.label}</p>
@@ -401,12 +401,12 @@ export default function ContactModal({ onClose }: ContactModalProps) {
               >
                 {submissionState === "loading" ? (
                   <>
-                    <Loader2 size={18} className="animate-spin" />
+                    <Loader2 size={18} className="animate-spin" aria-hidden="true" />
                     Scheduling…
                   </>
                 ) : (
                   <>
-                    <SendHorizonal size={18} />
+                    <SendHorizonal size={18} aria-hidden="true" />
                     Confirm request
                   </>
                 )}
