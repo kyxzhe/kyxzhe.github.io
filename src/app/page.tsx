@@ -6,7 +6,6 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import { Loader2 } from "lucide-react";
 import { useState, useCallback, useEffect, useMemo, useRef, KeyboardEvent } from "react";
-import { AnimatePresence, motion } from "motion/react";
 import { sendChatRequest, type ChatMessage } from "@/lib/api/chat";
 import { useChatMessages } from "@/hooks/useChatMessages";
 import { siteMetadata } from "@/lib/seo/config";
@@ -221,67 +220,56 @@ export default function Home() {
         </section>
 
         <section className="w-full max-w-[48rem] flex flex-col items-center gap-4 mt-2">
-          <motion.div
-            layout
-            initial={false}
-            animate={{
-              height: isExpanded ? "auto" : 104,
+          <div
+            className={`w-full overflow-hidden rounded-[24px] border-0 bg-white px-4 py-4 font-normal transition-[box-shadow] duration-200 ease-out dark:border-none dark:bg-[rgba(255,255,255,0.05)] dark:shadow-[0_3px_12px_rgba(0,0,0,0.26)] ${
+              isExpanded ? "flex flex-col gap-3" : "flex h-[104px] flex-col gap-3"
+            }`}
+            style={{
               boxShadow:
                 "0 3px 6px rgba(0,0,0,0.04), 0 4px 80px 8px rgba(0,0,0,0.04), 0 0 1px rgba(0,0,0,0.62)",
             }}
-            transition={{ type: "spring", stiffness: 240, damping: 30 }}
-            className="w-full font-normal rounded-[24px] bg-white border-0 px-4 py-4 flex flex-col gap-3 overflow-hidden dark:bg-[rgba(255,255,255,0.05)] dark:border-none dark:shadow-[0_3px_12px_rgba(0,0,0,0.26)]"
           >
-            <AnimatePresence initial={false}>
-              {isExpanded && (
-                <motion.div
-                  key="history"
-                  initial={{ height: 0, opacity: 0, y: -6 }}
-                  animate={{ height: "auto", opacity: 1, y: 0 }}
-                  exit={{ height: 0, opacity: 0, y: -6 }}
-                  transition={{ duration: 0.32, ease: "easeInOut" }}
-                  className="w-full flex-1"
+            {isExpanded && (
+              <div className="w-full flex-1">
+                <div
+                  className="max-h-[320px] md:max-h-[360px] overflow-y-auto space-y-3 pr-[6px] pt-1"
+                  role="log"
+                  aria-live="polite"
+                  aria-relevant="additions text"
                 >
-                  <div
-                    className="max-h-[320px] md:max-h-[360px] overflow-y-auto space-y-3 pr-[6px] pt-1"
-                    role="log"
-                    aria-live="polite"
-                    aria-relevant="additions text"
-                  >
-                    {visibleMessages.length === 0 && !isLoading ? (
-                      <p className="text-[16px] leading-[1.5] text-[rgba(0,0,0,0.6)] dark:text-white/60">发送后这里会展开显示完整对话。</p>
-                    ) : (
-                      visibleMessages.map((message, index) => (
-                        <div
-                          key={`${message.role}-${index}`}
-                          className={`flex gap-2 ${message.role === "user" ? "justify-end" : "justify-start"}`}
-                        >
-                          <div
-                            className={`max-w-[85%] text-[16px] leading-relaxed text-left ${
-                              message.role === "user"
-                                ? "bg-[rgba(233,233,233,0.5)] text-foreground rounded-full px-4 py-2 dark:bg-[rgba(50,50,50,0.85)] dark:text-white"
-                                : "rounded-2xl text-foreground dark:text-white"
-                            }`}
-                          >
-                            <MarkdownMessage content={message.content} />
-                          </div>
-                        </div>
-                      ))
-                    )}
-                    {isLoading && (
+                  {visibleMessages.length === 0 && !isLoading ? (
+                    <p className="text-[16px] leading-[1.5] text-[rgba(0,0,0,0.6)] dark:text-white/60">发送后这里会展开显示完整对话。</p>
+                  ) : (
+                    visibleMessages.map((message, index) => (
                       <div
-                        className="flex items-center text-[rgba(0,0,0,0.6)] dark:text-white/60"
-                        role="status"
+                        key={`${message.role}-${index}`}
+                        className={`flex gap-2 ${message.role === "user" ? "justify-end" : "justify-start"}`}
                       >
-                        <Loader2 size={16} className="animate-spin" aria-hidden="true" />
-                        <span className="sr-only">KevinBot is responding</span>
+                        <div
+                          className={`max-w-[85%] text-[16px] leading-relaxed text-left ${
+                            message.role === "user"
+                              ? "bg-[rgba(233,233,233,0.5)] text-foreground rounded-full px-4 py-2 dark:bg-[rgba(50,50,50,0.85)] dark:text-white"
+                              : "rounded-2xl text-foreground dark:text-white"
+                          }`}
+                        >
+                          <MarkdownMessage content={message.content} />
+                        </div>
                       </div>
-                    )}
-                    <div ref={historyEndRef} />
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+                    ))
+                  )}
+                  {isLoading && (
+                    <div
+                      className="flex items-center text-[rgba(0,0,0,0.6)] dark:text-white/60"
+                      role="status"
+                    >
+                      <Loader2 size={16} className="animate-spin" aria-hidden="true" />
+                      <span className="sr-only">KevinBot is responding</span>
+                    </div>
+                  )}
+                  <div ref={historyEndRef} />
+                </div>
+              </div>
+            )}
 
             <form
               className="relative w-full"
@@ -302,40 +290,26 @@ export default function Home() {
                   onKeyDown={handleKeyDown}
                 />
                 {showCaretHint && (
-                  <AnimatePresence>
-                    <motion.div
-                      key="caret-hint"
-                      initial={{ y: 6, opacity: 0 }}
-                      animate={{ y: 0, opacity: 0.8 }}
-                      exit={{ y: -6, opacity: 0 }}
-                      transition={{ duration: 0.18, ease: "easeOut" }}
-                      className="pointer-events-none absolute left-0 top-0 text-[16px] md:text-[16px] leading-[1.4] text-[rgba(0,0,0,0.6)] dark:text-white/60"
-                      aria-hidden="true"
-                    >
-                      -&gt;
-                    </motion.div>
-                  </AnimatePresence>
+                  <div
+                    className="pointer-events-none absolute left-0 top-0 text-[16px] md:text-[16px] leading-[1.4] text-[rgba(0,0,0,0.6)] opacity-80 dark:text-white/60"
+                    aria-hidden="true"
+                  >
+                    -&gt;
+                  </div>
                 )}
                 {showPlaceholderOverlay && (
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={placeholderIndex}
-                      initial={{ y: 10, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      exit={{ y: -10, opacity: 0 }}
-                      transition={{ duration: 0.32, ease: "easeOut" }}
-                      className="pointer-events-none absolute left-0 right-[58px] top-0 px-1 text-left text-[14px] leading-[1.45] text-[rgba(0,0,0,0.6)] dark:text-white/60 sm:right-0 sm:px-4 sm:text-center sm:text-[15px] md:text-[16px]"
-                      aria-hidden="true"
-                      style={{ whiteSpace: "normal", wordBreak: "break-word" }}
-                    >
-                      <span className="hidden sm:block">
-                        {rotatingPlaceholders[placeholderIndex]}
-                      </span>
-                      <span className="block sm:hidden">
-                        {mobileRotatingPlaceholders[placeholderIndex]}
-                      </span>
-                    </motion.div>
-                  </AnimatePresence>
+                  <div
+                    className="pointer-events-none absolute left-0 right-[58px] top-0 px-1 text-left text-[14px] leading-[1.45] text-[rgba(0,0,0,0.6)] transition-opacity duration-200 dark:text-white/60 sm:right-0 sm:px-4 sm:text-center sm:text-[15px] md:text-[16px]"
+                    aria-hidden="true"
+                    style={{ whiteSpace: "normal", wordBreak: "break-word" }}
+                  >
+                    <span className="hidden sm:block">
+                      {rotatingPlaceholders[placeholderIndex]}
+                    </span>
+                    <span className="block sm:hidden">
+                      {mobileRotatingPlaceholders[placeholderIndex]}
+                    </span>
+                  </div>
                 )}
               </div>
               <div className="absolute bottom-0 right-0 mt-auto flex justify-end">
@@ -369,7 +343,7 @@ export default function Home() {
                 </button>
               </div>
             </form>
-          </motion.div>
+          </div>
           <p
             id="chatbot-disclaimer"
             className="text-xs text-[rgba(0,0,0,0.6)] dark:text-[rgb(243,243,243)] text-center w-full max-w-4xl"
