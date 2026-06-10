@@ -178,6 +178,9 @@ export default function RootLayout({
   return (
     <html lang={siteMetadata.language}>
       <body className={`${openAiSans.variable} antialiased`}>
+        <a className="skip-link" href="#main-content">
+          Skip to content
+        </a>
         <ConsoleProvider />
         <Script id="theme-favicon" strategy="beforeInteractive">
           {themeFaviconScript}

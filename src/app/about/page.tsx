@@ -22,6 +22,8 @@ export default function AboutPage() {
     <div className="flex flex-col min-h-screen font-sans font-normal pt-2 md:pt-0 lg:py-6 xl:py-0 xl:pb-6 overflow-visible">
       <Navbar />
       <motion.main
+        id="main-content"
+        tabIndex={-1}
         className="flex-1 flex flex-col items-center gap-16 px-4 md:px-16 lg:px-24 py-12"
         variants={containerVariants}
         initial="hidden"

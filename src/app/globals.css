@@ -64,6 +64,28 @@ html {
   outline-offset: 3px;
 }
 
+.skip-link {
+  position: fixed;
+  left: 1rem;
+  top: 1rem;
+  z-index: 1000;
+  transform: translateY(-160%);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-pill);
+  background: var(--background);
+  color: var(--foreground);
+  padding: 0.7rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.16);
+  transition: transform 0.16s ease;
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
 @media (min-width: 768px) {
   body {
     padding: 24px 42px;

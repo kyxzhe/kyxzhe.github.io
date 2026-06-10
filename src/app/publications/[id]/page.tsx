@@ -118,7 +118,7 @@ export default async function PublicationDetailPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: serializeJsonLd(article) }}
       />
-      <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-10 px-2 py-6 md:px-4 lg:px-0">
+      <main id="main-content" tabIndex={-1} className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-10 px-2 py-6 md:px-4 lg:px-0">
         <Link
           href="/publications"
           className="inline-flex w-fit items-center gap-2 text-[13px] uppercase tracking-[0.24em] text-[rgba(0,0,0,0.6)] hover:text-foreground dark:text-[rgba(255,255,255,0.68)] dark:hover:text-white"
