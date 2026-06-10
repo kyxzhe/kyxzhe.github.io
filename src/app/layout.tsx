@@ -39,29 +39,14 @@ const openAiSans = localFont({
       style: 'normal',
     },
     {
-      path: '../../public/fonts/OpenAISans-MediumItalic.woff2',
-      weight: '500',
-      style: 'italic',
-    },
-    {
       path: '../../public/fonts/OpenAISans-Semibold.woff2',
       weight: '600',
       style: 'normal',
     },
     {
-      path: '../../public/fonts/OpenAISans-SemiboldItalic.woff2',
-      weight: '600',
-      style: 'italic',
-    },
-    {
       path: '../../public/fonts/OpenAISans-Bold.woff2',
       weight: '700',
       style: 'normal',
-    },
-    {
-      path: '../../public/fonts/OpenAISans-BoldItalic.woff2',
-      weight: '700',
-      style: 'italic',
     },
   ],
   variable: '--font-openai-sans',
