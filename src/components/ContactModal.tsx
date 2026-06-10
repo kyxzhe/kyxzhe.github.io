@@ -98,8 +98,8 @@ export default function ContactModal({
     clearSuccessDismissTimer();
     submitAbortRef.current?.abort();
     submitAbortRef.current = null;
-    onClose();
     resetScheduler();
+    onClose();
   }, [clearSuccessDismissTimer, onClose, resetScheduler]);
 
   useEffect(() => {
@@ -199,8 +199,8 @@ export default function ContactModal({
       clearSuccessDismissTimer();
       successDismissTimerRef.current = window.setTimeout(() => {
         successDismissTimerRef.current = null;
-        onClose();
         resetScheduler();
+        onClose();
       }, SUCCESS_DISMISS_DELAY);
     } catch {
       if (submitController.signal.aborted) return;
