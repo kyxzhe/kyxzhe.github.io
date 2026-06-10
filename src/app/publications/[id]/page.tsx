@@ -123,7 +123,7 @@ export default async function PublicationDetailPage({
           href="/publications"
           className="inline-flex w-fit items-center gap-2 text-[13px] uppercase tracking-[0.24em] text-[rgba(0,0,0,0.6)] hover:text-foreground dark:text-[rgba(255,255,255,0.68)] dark:hover:text-white"
         >
-          <ArrowLeft size={14} />
+          <ArrowLeft size={14} aria-hidden="true" />
           Publications
         </Link>
 
@@ -191,7 +191,7 @@ export default async function PublicationDetailPage({
                       className="inline-flex items-center justify-between gap-3 rounded-full border border-[rgba(0,0,0,0.12)] px-4 py-2 text-[14px] font-medium transition-colors hover:border-foreground/50 dark:border-white/20"
                     >
                       {resource.label}
-                      <ArrowUpRight size={14} />
+                      <ArrowUpRight size={14} aria-hidden="true" />
                     </Link>
                   ))}
                 </div>
