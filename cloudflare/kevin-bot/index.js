@@ -120,6 +120,7 @@ const MODEL_ID = "@cf/google/gemma-4-26b-a4b-it";
 const MAX_RETRIEVAL_MESSAGES = 6;
 const MAX_CHAT_MESSAGES = 16;
 const MAX_MESSAGE_CHARS = 4000;
+const MAX_SESSION_ID_CHARS = 128;
 const CHAT_ROLES = new Set(["user", "assistant"]);
 
 function getCorsHeaders(request) {
@@ -288,6 +289,15 @@ function buildRetrievalQuery(messages, fallbackQuestion) {
   return recentTurns || fallbackQuestion;
 }
 
+function getSessionAffinity(request) {
+  const sessionId = request.headers.get("X-Chat-Session")?.trim();
+  if (!sessionId || sessionId.length > MAX_SESSION_ID_CHARS) {
+    return null;
+  }
+
+  return /^[A-Za-z0-9_-]+$/.test(sessionId) ? sessionId : null;
+}
+
 const worker = {
   async fetch(request, env) {
     const corsHeaders = getCorsHeaders(request);
@@ -385,7 +395,7 @@ const worker = {
         ...clientMessages,
       ];
 
-      const sessionAffinity = request.headers.get("X-Chat-Session")?.trim();
+      const sessionAffinity = getSessionAffinity(request);
       const aiOptions = sessionAffinity
         ? { headers: { "x-session-affinity": sessionAffinity } }
         : undefined;
