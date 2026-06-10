@@ -346,6 +346,19 @@ function getSessionAffinity(request) {
   return /^[A-Za-z0-9_-]+$/.test(sessionId) ? sessionId : null;
 }
 
+async function readJsonBody(request) {
+  const rawBody = await request.text();
+  if (new TextEncoder().encode(rawBody).byteLength > MAX_BODY_BYTES) {
+    return { error: "too_large" };
+  }
+
+  try {
+    return { body: JSON.parse(rawBody) };
+  } catch {
+    return { error: "invalid_json" };
+  }
+}
+
 const worker = {
   async fetch(request, env) {
     const corsHeaders = getCorsHeaders(request);
@@ -396,10 +409,21 @@ const worker = {
       );
     }
 
-    let body;
-    try {
-      body = await request.json();
-    } catch {
+    const parsedBody = await readJsonBody(request);
+    if (parsedBody.error === "too_large") {
+      return new Response(
+        JSON.stringify({ error: "Request body is too large" }),
+        {
+          status: 413,
+          headers: {
+            ...corsHeaders,
+            "Content-Type": "application/json",
+          },
+        },
+      );
+    }
+
+    if (parsedBody.error === "invalid_json") {
       return new Response(
         JSON.stringify({ error: "Invalid JSON body" }),
         {
@@ -412,7 +436,8 @@ const worker = {
       );
     }
 
-    const clientMessages = sanitizeClientMessages(body.messages);
+    const body = parsedBody.body;
+    const clientMessages = sanitizeClientMessages(body?.messages);
     const retrievalMessages = clientMessages.slice(-MAX_RETRIEVAL_MESSAGES);
 
     const lastUserMessage = [...clientMessages].reverse()
