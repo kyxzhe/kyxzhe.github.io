@@ -1,3 +1,7 @@
 export function getCardCoverPath(path: string) {
-  return path.replace(/\.jpg$/, "-card.jpg")
+  if (path.endsWith("-card.jpg")) {
+    return path
+  }
+
+  return path.replace(/\.jpg$/i, "-card.jpg")
 }
