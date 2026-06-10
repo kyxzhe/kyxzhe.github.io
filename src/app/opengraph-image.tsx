@@ -86,7 +86,7 @@ export default function OpenGraphImage() {
                 fontSize: 74,
                 lineHeight: 1,
                 fontWeight: 700,
-                letterSpacing: "-0.05em",
+                letterSpacing: 0,
               }}
             >
               <div>Trustworthy</div>
@@ -135,7 +135,7 @@ export default function OpenGraphImage() {
                 border: "1px solid rgba(16, 16, 16, 0.18)",
                 fontSize: 34,
                 fontWeight: 700,
-                letterSpacing: "-0.06em",
+                letterSpacing: 0,
               }}
             >
               KZ
