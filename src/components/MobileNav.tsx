@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { navItems } from "@/lib/constants/navItems";
-import React from "react";
+import React, { useRef } from "react";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 
 interface Props {
   id: string;
@@ -17,11 +18,14 @@ function isCurrentPath(pathname: string, href: string) {
 
 const MobileNav = React.memo(({ id, open, closeMenu }: Props) => {
   const pathname = usePathname();
+  const menuRef = useRef<HTMLUListElement | null>(null);
+  useFocusTrap(menuRef, open);
 
   return (
     <div id={id} className="contents">
       {open && (
         <ul
+          ref={menuRef}
           aria-label="Mobile navigation"
           className="fixed inset-0 z-30 flex h-screen min-h-screen flex-col gap-1 overflow-y-auto bg-white px-8 pb-8 pt-[104px] text-foreground dark:bg-black dark:text-white md:hidden"
         >
