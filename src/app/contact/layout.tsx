@@ -11,6 +11,22 @@ const structuredTitle = "Contact | Kevin Zheng";
 const pageDescription =
   "Contact details for Yuxiang (Kevin) Zheng — email, scheduling preferences, and collaboration topics for information diffusion and robust ML.";
 const pageModifiedDate = "2026-06-11";
+const pageUrl = `${siteMetadata.baseUrl}/contact`;
+const serializedBreadcrumbJsonLd = serializeJsonLd(
+  getBreadcrumbJsonLd([
+    { name: "Home", url: siteMetadata.baseUrl },
+    { name: "Contact", url: pageUrl },
+  ])
+);
+const serializedContactPageJsonLd = serializeJsonLd(
+  getWebPageJsonLd({
+    title: structuredTitle,
+    description: pageDescription,
+    url: pageUrl,
+    type: "ContactPage",
+    dateModified: pageModifiedDate,
+  })
+);
 
 export const metadata: Metadata = {
   title: pageTitle,
@@ -36,30 +52,17 @@ export const metadata: Metadata = {
 };
 
 export default function ContactLayout({ children }: { children: React.ReactNode }) {
-  const pageUrl = `${siteMetadata.baseUrl}/contact`;
-  const breadcrumb = getBreadcrumbJsonLd([
-    { name: "Home", url: siteMetadata.baseUrl },
-    { name: "Contact", url: pageUrl },
-  ]);
-  const contactPage = getWebPageJsonLd({
-    title: structuredTitle,
-    description: pageDescription,
-    url: pageUrl,
-    type: "ContactPage",
-    dateModified: pageModifiedDate,
-  });
-
   return (
     <>
       <script
         id="ld-breadcrumb-contact"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: serializeJsonLd(breadcrumb) }}
+        dangerouslySetInnerHTML={{ __html: serializedBreadcrumbJsonLd }}
       />
       <script
         id="ld-contact-page"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: serializeJsonLd(contactPage) }}
+        dangerouslySetInnerHTML={{ __html: serializedContactPageJsonLd }}
       />
       {children}
     </>

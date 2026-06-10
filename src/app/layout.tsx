@@ -53,6 +53,8 @@ const openAiSans = localFont({
   display: 'swap',
   preload: false,
 });
+const serializedWebsiteJsonLd = serializeJsonLd(getWebsiteJsonLd());
+const serializedPersonJsonLd = serializeJsonLd(getPersonJsonLd());
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -127,9 +129,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const websiteJsonLd = getWebsiteJsonLd();
-  const personJsonLd = getPersonJsonLd();
-
   return (
     <html lang={siteMetadata.language}>
       <body className={`${openAiSans.variable} antialiased`}>
@@ -140,12 +139,12 @@ export default function RootLayout({
         <script
           id="ld-website"
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: serializeJsonLd(websiteJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: serializedWebsiteJsonLd }}
         />
         <script
           id="ld-person"
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: serializeJsonLd(personJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: serializedPersonJsonLd }}
         />
         {children}
         <Analytics />

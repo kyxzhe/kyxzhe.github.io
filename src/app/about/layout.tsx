@@ -12,6 +12,29 @@ const structuredTitle = "About Kevin Zheng";
 const pageDescription =
   "Background, research focus, and teaching work of Yuxiang (Kevin) Zheng, a PhD student in information diffusion and robust machine learning.";
 const pageModifiedDate = "2026-06-11";
+const pageUrl = `${siteMetadata.baseUrl}/about`;
+const serializedBreadcrumbJsonLd = serializeJsonLd(
+  getBreadcrumbJsonLd([
+    { name: "Home", url: siteMetadata.baseUrl },
+    { name: "About", url: pageUrl },
+  ])
+);
+const serializedProfilePageJsonLd = serializeJsonLd(
+  getProfilePageJsonLd({
+    url: pageUrl,
+    description: pageDescription,
+    dateModified: pageModifiedDate,
+  })
+);
+const serializedWebPageJsonLd = serializeJsonLd(
+  getWebPageJsonLd({
+    title: structuredTitle,
+    description: pageDescription,
+    url: pageUrl,
+    type: "AboutPage",
+    dateModified: pageModifiedDate,
+  })
+);
 
 export const metadata: Metadata = {
   title: pageTitle,
@@ -37,40 +60,22 @@ export const metadata: Metadata = {
 };
 
 export default function AboutLayout({ children }: { children: React.ReactNode }) {
-  const pageUrl = `${siteMetadata.baseUrl}/about`;
-  const breadcrumb = getBreadcrumbJsonLd([
-    { name: "Home", url: siteMetadata.baseUrl },
-    { name: "About", url: pageUrl },
-  ]);
-  const profilePage = getProfilePageJsonLd({
-    url: pageUrl,
-    description: pageDescription,
-    dateModified: pageModifiedDate,
-  });
-  const webPage = getWebPageJsonLd({
-    title: structuredTitle,
-    description: pageDescription,
-    url: pageUrl,
-    type: "AboutPage",
-    dateModified: pageModifiedDate,
-  });
-
   return (
     <>
       <script
         id="ld-breadcrumb-about"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: serializeJsonLd(breadcrumb) }}
+        dangerouslySetInnerHTML={{ __html: serializedBreadcrumbJsonLd }}
       />
       <script
         id="ld-profile-about"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: serializeJsonLd(profilePage) }}
+        dangerouslySetInnerHTML={{ __html: serializedProfilePageJsonLd }}
       />
       <script
         id="ld-webpage-about"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: serializeJsonLd(webPage) }}
+        dangerouslySetInnerHTML={{ __html: serializedWebPageJsonLd }}
       />
       {children}
     </>
