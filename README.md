@@ -35,11 +35,12 @@ The project is built with Next.js App Router, React, TypeScript, Tailwind CSS, l
 ```text
 src/app/                  App Router pages, layouts, metadata, sitemap, robots, manifest
 src/components/           Shared UI, navigation, contact modal, markdown renderer
+src/assets/fonts/         Local OpenAI Sans font sources for next/font
 src/hooks/                Navigation and session-backed chatbot state
 src/lib/constants/        Site content, publications, news, contact, socials, availability
 src/lib/seo/              Site metadata and JSON-LD builders
 src/lib/api/chat.ts       Client-side KevinBot request and SSE handling
-public/                   Fonts, favicons, project images, human/LLM-readable indexes
+public/                   Favicons, project images, human/LLM-readable indexes
 cloudflare/kevin-bot/     Cloudflare Worker for KevinBot
 .github/workflows/        GitHub Pages build and deploy workflow
 ```

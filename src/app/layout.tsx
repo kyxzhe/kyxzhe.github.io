@@ -14,37 +14,37 @@ import {
 const openAiSans = localFont({
   src: [
     {
-      path: '../../public/fonts/OpenAISans-Light.woff2',
+      path: '../assets/fonts/OpenAISans-Light.woff2',
       weight: '300',
       style: 'normal',
     },
     {
-      path: '../../public/fonts/OpenAISans-LightItalic.woff2',
+      path: '../assets/fonts/OpenAISans-LightItalic.woff2',
       weight: '300',
       style: 'italic',
     },
     {
-      path: '../../public/fonts/OpenAISans-Regular.woff2',
+      path: '../assets/fonts/OpenAISans-Regular.woff2',
       weight: '400',
       style: 'normal',
     },
     {
-      path: '../../public/fonts/OpenAISans-RegularItalic.woff2',
+      path: '../assets/fonts/OpenAISans-RegularItalic.woff2',
       weight: '400',
       style: 'italic',
     },
     {
-      path: '../../public/fonts/OpenAISans-Medium.woff2',
+      path: '../assets/fonts/OpenAISans-Medium.woff2',
       weight: '500',
       style: 'normal',
     },
     {
-      path: '../../public/fonts/OpenAISans-Semibold.woff2',
+      path: '../assets/fonts/OpenAISans-Semibold.woff2',
       weight: '600',
       style: 'normal',
     },
     {
-      path: '../../public/fonts/OpenAISans-Bold.woff2',
+      path: '../assets/fonts/OpenAISans-Bold.woff2',
       weight: '700',
       style: 'normal',
     },
