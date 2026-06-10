@@ -32,7 +32,6 @@
     --toggle-selected-bg: rgba(255, 255, 255, 0.14);
     color-scheme: dark;
   }
-
 }
 
 @theme inline {
@@ -102,6 +101,17 @@ html {
   ::selection {
     background: #d9d9dd;
     color: #0b0b0d;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
   }
 }
 
