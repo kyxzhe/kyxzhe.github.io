@@ -12,10 +12,14 @@ import { useFocusTrap } from "@/hooks/useFocusTrap";
 import { generateAvailability } from "@/lib/constants/availability";
 
 interface ContactModalProps {
+  dialogId?: string;
   onClose: () => void;
 }
 
-export default function ContactModal({ onClose }: ContactModalProps) {
+export default function ContactModal({
+  dialogId = "contact-booking-dialog",
+  onClose,
+}: ContactModalProps) {
   const availability = useMemo(() => generateAvailability(new Date(), 30), []);
   const dialogRef = useRef<HTMLDivElement | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
@@ -216,6 +220,7 @@ export default function ContactModal({ onClose }: ContactModalProps) {
       }}
     >
       <div
+        id={dialogId}
         ref={dialogRef}
         className="contact-modal-panel surface-card relative max-h-[calc(100dvh-3rem)] w-full max-w-4xl overflow-y-auto p-4 sm:max-h-[90vh] sm:p-6 md:p-8 lg:p-12"
         role="dialog"

@@ -15,6 +15,7 @@ export function ContactPhoneRequest() {
   const triggerButtonRef = useRef<HTMLButtonElement | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
   const dialogRef = useRef<HTMLDivElement | null>(null);
+  const callDialogId = "call-request-dialog";
   useFocusTrap(dialogRef, showCallInfo);
 
   const closeCallInfo = useCallback(() => {
@@ -52,6 +53,9 @@ export function ContactPhoneRequest() {
       <button
         ref={triggerButtonRef}
         type="button"
+        aria-haspopup="dialog"
+        aria-expanded={showCallInfo}
+        aria-controls={showCallInfo ? callDialogId : undefined}
         onClick={() => setShowCallInfo(true)}
         className="w-full text-left font-medium hover:text-foreground transition-colors"
       >
@@ -73,6 +77,7 @@ export function ContactPhoneRequest() {
           onClick={closeCallInfo}
         >
           <div
+            id={callDialogId}
             ref={dialogRef}
             className="surface-card max-w-md w-full p-6 rounded-2xl shadow-lg"
             role="dialog"
@@ -107,6 +112,7 @@ export function ContactPhoneRequest() {
 export function ContactBookingControl() {
   const [hasLoadedContactModal, setHasLoadedContactModal] = useState(false);
   const triggerButtonRef = useRef<HTMLButtonElement | null>(null);
+  const bookingDialogId = "contact-booking-dialog";
 
   const openContactModal = () => {
     setHasLoadedContactModal(true);
@@ -122,6 +128,9 @@ export function ContactBookingControl() {
       <button
         ref={triggerButtonRef}
         type="button"
+        aria-haspopup="dialog"
+        aria-expanded={hasLoadedContactModal}
+        aria-controls={hasLoadedContactModal ? bookingDialogId : undefined}
         onClick={openContactModal}
         className="w-full inline-flex items-center justify-center gap-2 rounded-full border text-[15px] font-medium border-[rgba(0,0,0,0.12)] bg-white text-foreground dark:border-none dark:bg-[rgba(255,255,255,0.12)] dark:text-white py-3 transition-colors duration-150 hover:border-foreground/50"
       >
@@ -131,6 +140,7 @@ export function ContactBookingControl() {
 
       {hasLoadedContactModal && (
         <ContactModal
+          dialogId={bookingDialogId}
           onClose={closeContactModal}
         />
       )}
