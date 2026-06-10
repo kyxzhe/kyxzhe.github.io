@@ -314,7 +314,6 @@ export default function ContactPage() {
         <ContactModal
           isOpen={isModalOpen}
           onClose={closeContactModal}
-          startInSchedule
         />
       )}
     </div>
