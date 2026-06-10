@@ -1,14 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { Mail, Phone, MapPin, CalendarDays, X } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { contactInfo } from "@/lib/constants/contact";
 import { socials } from "@/lib/constants/socials";
 import { GoogleScholarIcon, OrcidIcon } from "@/components/icons/AcademicIcons";
-import ContactModal from "@/components/ContactModal";
+
+const ContactModal = dynamic(() => import("@/components/ContactModal"), {
+  ssr: false,
+  loading: () => null,
+});
 
 const replyNotes = [
   "What is the topic and who is involved?",
@@ -63,7 +68,9 @@ function GitHubMonoIcon({ className }: { className?: string }) {
 
 export default function ContactPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [hasLoadedContactModal, setHasLoadedContactModal] = useState(false);
   const [showCallInfo, setShowCallInfo] = useState(false);
+  const unloadContactModalTimerRef = useRef<number | null>(null);
   const directLines = [
     {
       label: "Email",
@@ -102,6 +109,34 @@ export default function ContactPage() {
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [showCallInfo]);
+
+  useEffect(() => {
+    return () => {
+      if (unloadContactModalTimerRef.current !== null) {
+        window.clearTimeout(unloadContactModalTimerRef.current);
+      }
+    };
+  }, []);
+
+  const openContactModal = () => {
+    if (unloadContactModalTimerRef.current !== null) {
+      window.clearTimeout(unloadContactModalTimerRef.current);
+      unloadContactModalTimerRef.current = null;
+    }
+    setHasLoadedContactModal(true);
+    setIsModalOpen(true);
+  };
+
+  const closeContactModal = () => {
+    setIsModalOpen(false);
+    if (unloadContactModalTimerRef.current !== null) {
+      window.clearTimeout(unloadContactModalTimerRef.current);
+    }
+    unloadContactModalTimerRef.current = window.setTimeout(() => {
+      setHasLoadedContactModal(false);
+      unloadContactModalTimerRef.current = null;
+    }, 450);
+  };
 
   return (
     <div className="min-h-screen bg-white text-foreground dark:bg-[#000000] dark:text-[#f5f5f5] font-normal">
@@ -192,7 +227,7 @@ export default function ContactPage() {
               </ul>
               <button
                 type="button"
-                onClick={() => setIsModalOpen(true)}
+                onClick={openContactModal}
                 className="w-full inline-flex items-center justify-center gap-2 rounded-full border text-[15px] font-medium border-[rgba(0,0,0,0.12)] bg-white text-foreground dark:border-none dark:bg-[rgba(255,255,255,0.12)] dark:text-white py-3 transition-colors duration-150 hover:border-foreground/50"
               >
                 <CalendarDays size={16} />
@@ -267,11 +302,13 @@ export default function ContactPage() {
           </div>
         </div>
       )}
-      <ContactModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        startInSchedule
-      />
+      {hasLoadedContactModal && (
+        <ContactModal
+          isOpen={isModalOpen}
+          onClose={closeContactModal}
+          startInSchedule
+        />
+      )}
     </div>
   );
 }

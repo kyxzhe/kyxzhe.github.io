@@ -234,7 +234,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
           aria-describedby="contact-modal-description"
           variants={modalVariants}
           initial="hidden"
-          animate={{ scale: 1, opacity: 1 }}
+          animate="visible"
           exit="exit"
           onClick={(e) => e.stopPropagation()}
         >
