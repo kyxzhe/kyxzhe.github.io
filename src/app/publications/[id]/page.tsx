@@ -42,7 +42,7 @@ export async function generateMetadata({
   const image = {
     url: absoluteUrl(publication.cover),
     width: 1200,
-    height: 630,
+    height: 1800,
     alt: publication.title,
   };
 
