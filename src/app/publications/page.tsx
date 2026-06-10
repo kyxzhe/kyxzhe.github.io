@@ -553,7 +553,7 @@ export default function PublicationsPage() {
                       className="inline-flex h-10 w-10 items-center justify-center rounded-full text-[rgba(0,0,0,0.6)] transition-colors hover:bg-[var(--accent-soft)] dark:text-[rgba(255,255,255,0.8)]"
                       onClick={closeFilterAndRestoreFocus}
                     >
-                      <span aria-hidden="true">×</span>
+                      <X size={16} aria-hidden="true" />
                     </button>
                   </div>
                   <div className="grid grid-cols-[minmax(0,1fr)_78px] gap-4 overflow-y-auto px-4 py-3 text-sm text-foreground dark:text-white sm:grid-cols-2">
