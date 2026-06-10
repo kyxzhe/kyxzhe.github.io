@@ -630,7 +630,7 @@ export default function NewsPage() {
                           width={560}
                           height={840}
                           decoding="async"
-                          loading="eager"
+                          loading="lazy"
                           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                         />
                       </div>
