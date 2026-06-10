@@ -89,36 +89,14 @@ export function ContactPhoneRequest() {
 }
 
 export function ContactBookingControl() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [hasLoadedContactModal, setHasLoadedContactModal] = useState(false);
-  const unloadContactModalTimerRef = useRef<number | null>(null);
-
-  useEffect(() => {
-    return () => {
-      if (unloadContactModalTimerRef.current !== null) {
-        window.clearTimeout(unloadContactModalTimerRef.current);
-      }
-    };
-  }, []);
 
   const openContactModal = () => {
-    if (unloadContactModalTimerRef.current !== null) {
-      window.clearTimeout(unloadContactModalTimerRef.current);
-      unloadContactModalTimerRef.current = null;
-    }
     setHasLoadedContactModal(true);
-    setIsModalOpen(true);
   };
 
   const closeContactModal = () => {
-    setIsModalOpen(false);
-    if (unloadContactModalTimerRef.current !== null) {
-      window.clearTimeout(unloadContactModalTimerRef.current);
-    }
-    unloadContactModalTimerRef.current = window.setTimeout(() => {
-      setHasLoadedContactModal(false);
-      unloadContactModalTimerRef.current = null;
-    }, 450);
+    setHasLoadedContactModal(false);
   };
 
   return (
@@ -134,7 +112,6 @@ export function ContactBookingControl() {
 
       {hasLoadedContactModal && (
         <ContactModal
-          isOpen={isModalOpen}
           onClose={closeContactModal}
         />
       )}

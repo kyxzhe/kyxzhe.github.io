@@ -225,6 +225,36 @@ html {
   .text-muted-foreground {
     color: var(--muted-foreground);
   }
+
+  .contact-modal-backdrop {
+    animation: contact-modal-backdrop-in 0.16s ease-out;
+  }
+
+  .contact-modal-panel {
+    animation: contact-modal-panel-in 0.2s ease-out;
+  }
+}
+
+@keyframes contact-modal-backdrop-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes contact-modal-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

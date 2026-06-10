@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { motion, AnimatePresence, type Variants } from "motion/react";
 import {
   X,
   SendHorizonal,
@@ -9,34 +8,13 @@ import {
   Loader2,
   AlertCircle,
 } from "lucide-react";
-import {
-  modalVariants,
-  backdropVariants,
-  textVariants,
-  iconVariants,
-} from "@/lib/animation/variants";
 import { generateAvailability } from "@/lib/constants/availability";
 
 interface ContactModalProps {
-  isOpen: boolean;
   onClose: () => void;
 }
 
-const innerSwapVariants: Variants = {
-  enter: { opacity: 0, x: 40 },
-  center: {
-    opacity: 1,
-    x: 0,
-    transition: { duration: 0.4, ease: [0.4, 0, 0.2, 1] as const },
-  },
-  exit: {
-    opacity: 0,
-    x: -40,
-    transition: { duration: 0.3, ease: [0.4, 0, 0.2, 1] as const },
-  },
-};
-
-export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
+export default function ContactModal({ onClose }: ContactModalProps) {
   const availability = useMemo(() => generateAvailability(new Date(), 30), []);
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
   const WINDOW_SIZE = 5;
@@ -103,8 +81,6 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
   }, [onClose, resetScheduler]);
 
   useEffect(() => {
-    if (!isOpen) return;
-
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     const focusTimer = window.setTimeout(() => closeButtonRef.current?.focus(), 0);
@@ -122,7 +98,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
       window.clearTimeout(focusTimer);
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [handleDismiss, isOpen]);
+  }, [handleDismiss]);
 
   useEffect(() => {
     if (!availability.find((day) => day.dateISO === selectedDate)) {
@@ -200,250 +176,218 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
   };
 
   return (
-    <AnimatePresence mode="wait">
-      {isOpen && (
-        <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(0,0,0,0.25)] p-3 backdrop-blur-sm sm:p-4"
-          variants={backdropVariants}
-          initial="hidden"
-          animate="visible"
-          exit="exit"
-          onClick={() => {
-            handleDismiss();
-          }}
-        >
-        <motion.div
-          className="surface-card relative max-h-[calc(100dvh-1.5rem)] w-full max-w-4xl overflow-y-auto p-4 sm:max-h-[90vh] sm:p-6 md:p-8 lg:p-12"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="contact-modal-title"
-          aria-describedby="contact-modal-description"
-          variants={modalVariants}
-          initial="hidden"
-          animate="visible"
-          exit="exit"
-          onClick={(e) => e.stopPropagation()}
-        >
-            <motion.div>
-                <motion.button
-                  ref={closeButtonRef}
-                  type="button"
-                  aria-label="Close contact modal"
-                  className="absolute right-4 top-4 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-[var(--accent-soft)] text-[var(--accent)] transition-colors hover:opacity-80 md:right-5 md:top-5 md:h-11 md:w-11"
-                  onClick={() => {
-                    handleDismiss();
-                  }}
-                  variants={iconVariants}
-                  initial="hidden"
-                  animate="visible"
-                  whileHover="hover"
-                >
-                  <X size={22} className="text-foreground" />
-                </motion.button>
+    <div
+      className="contact-modal-backdrop fixed inset-0 z-50 flex items-center justify-center bg-[rgba(0,0,0,0.25)] p-3 backdrop-blur-sm sm:p-4"
+      onClick={() => {
+        handleDismiss();
+      }}
+    >
+      <div
+        className="contact-modal-panel surface-card relative max-h-[calc(100dvh-1.5rem)] w-full max-w-4xl overflow-y-auto p-4 sm:max-h-[90vh] sm:p-6 md:p-8 lg:p-12"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="contact-modal-title"
+        aria-describedby="contact-modal-description"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div>
+          <button
+            ref={closeButtonRef}
+            type="button"
+            aria-label="Close contact modal"
+            className="absolute right-4 top-4 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-[var(--accent-soft)] text-[var(--accent)] transition-colors hover:opacity-80 md:right-5 md:top-5 md:h-11 md:w-11"
+            onClick={() => {
+              handleDismiss();
+            }}
+          >
+            <X size={22} className="text-foreground" />
+          </button>
 
-                <motion.div
-                  className="mb-6 pr-10 text-center md:mb-12 md:pr-0"
-                  variants={textVariants}
-                  initial="hidden"
-                  animate="visible"
-                >
-                  <h1 id="contact-modal-title" className="mb-3 text-[34px] font-medium leading-none md:text-6xl lg:text-7xl">
-                    Book a time
-                  </h1>
-                  <p id="contact-modal-description" className="text-[15px] leading-relaxed text-muted-foreground md:text-xl">
-                    Choose a time and add a short note. I will confirm by email.
+          <div className="mb-6 pr-10 text-center md:mb-12 md:pr-0">
+            <h1 id="contact-modal-title" className="mb-3 text-[34px] font-medium leading-none md:text-6xl lg:text-7xl">
+              Book a time
+            </h1>
+            <p id="contact-modal-description" className="text-[15px] leading-relaxed text-muted-foreground md:text-xl">
+              Choose a time and add a short note. I will confirm by email.
+            </p>
+          </div>
+
+          <div>
+            <div className="flex flex-col gap-4 md:gap-6">
+              <div
+                className="flex flex-wrap gap-3 items-center justify-end"
+                role="status"
+                aria-live="polite"
+              >
+                {submissionState === "success" && (
+                  <span className="inline-flex items-center gap-1 text-xs uppercase tracking-[0.3em] text-green-500">
+                    <Check size={14} /> Confirmed
+                  </span>
+                )}
+                {submissionState === "error" && (
+                  <span className="inline-flex items-center gap-1 text-xs uppercase tracking-[0.3em] text-red-500">
+                    <AlertCircle size={14} /> Failed
+                  </span>
+                )}
+              </div>
+
+              <div className="rounded-[18px] bg-[var(--pill-background)] p-3 sm:p-4">
+                <div className="mb-3 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">
+                    Choose a date
                   </p>
-                </motion.div>
-
-                <motion.div
-                  key="schedule"
-                  variants={innerSwapVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                >
-                  <motion.div
-                    className="flex flex-col gap-4 md:gap-6"
-                    variants={textVariants}
-                    initial="hidden"
-                    animate="visible"
-                  >
-                    <div
-                      className="flex flex-wrap gap-3 items-center justify-end"
-                      role="status"
-                      aria-live="polite"
-                    >
-                      {submissionState === "success" && (
-                        <span className="inline-flex items-center gap-1 text-xs uppercase tracking-[0.3em] text-green-500">
-                          <Check size={14} /> Confirmed
-                        </span>
-                      )}
-                      {submissionState === "error" && (
-                        <span className="inline-flex items-center gap-1 text-xs uppercase tracking-[0.3em] text-red-500">
-                          <AlertCircle size={14} /> Failed
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="rounded-[18px] bg-[var(--pill-background)] p-3 sm:p-4">
-                      <div className="mb-3 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
-                        <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">
-                          Choose a date
-                        </p>
-                        <div className="flex gap-2">
-                          <button
-                            type="button"
-                            onClick={() => shiftWindow(-1)}
-                            disabled={windowStart === 0}
-                            className="inline-flex h-9 items-center rounded-full bg-white/70 px-3 text-[12px] text-muted-foreground transition-colors hover:bg-[var(--accent-soft)] disabled:opacity-40 dark:bg-white/8"
-                          >
-                            Prev
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => shiftWindow(1)}
-                            disabled={windowStart >= maxWindowIndex}
-                            className="inline-flex h-9 items-center rounded-full bg-white/70 px-3 text-[12px] text-muted-foreground transition-colors hover:bg-[var(--accent-soft)] disabled:opacity-40 dark:bg-white/8"
-                          >
-                            Next
-                          </button>
-                        </div>
-                      </div>
-                      <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
-                        {visibleDays.map((day) => {
-                          const isActive = selectedDate === day.dateISO;
-                          return (
-                            <button
-                              key={day.dateISO}
-                              type="button"
-                              onClick={() => {
-                                setSelectedDate(day.dateISO);
-                                setSelectedSlotId(null);
-                              }}
-                              aria-pressed={isActive}
-                              className={`inline-flex min-h-10 items-center justify-center rounded-full px-3 text-[13px] leading-snug transition-colors ${
-                                isActive
-                                  ? "bg-[var(--accent)] text-[var(--background)]"
-                                  : "bg-white/70 text-muted-foreground hover:bg-[var(--accent-soft)] dark:bg-white/8"
-                              }`}
-                            >
-                              <span className="flex items-center gap-2">
-                                {day.displayLabel}
-                                {isActive && (
-                                  <span className="text-[0.65rem] uppercase tracking-[0.2em] opacity-80">
-                                    ✓
-                                  </span>
-                                )}
-                              </span>
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
-
-                    <motion.div className="grid grid-cols-1 md:grid-cols-2 gap-3" layout>
-                      {slotsForDate.map((slot) => {
-                        const isSelected = selectedSlotId === slot.id;
-                        return (
-                          <button
-                            key={slot.id}
-                            type="button"
-                            disabled={slot.booked || submissionState === "loading"}
-                            onClick={() => setSelectedSlotId(slot.id)}
-                            className={`rounded-[16px] px-3 py-3 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30 sm:px-4 sm:py-4 ${
-                              slot.booked
-                                ? "cursor-not-allowed bg-[var(--pill-background)] text-muted-foreground line-through opacity-55"
-                                : isSelected
-                                  ? "bg-[var(--accent)] text-[var(--background)]"
-                                  : "bg-[var(--pill-background)] hover:bg-[var(--accent-soft)]"
-                            }`}
-                          >
-                            <div className="flex items-center justify-between">
-                              <p className={`text-xs uppercase tracking-[0.3em] ${isSelected ? "text-[var(--background)] opacity-70" : "text-muted-foreground"}`}>
-                                Meeting
-                              </p>
-                              {isSelected && (
-                                <Check size={16} className="text-current" />
-                              )}
-                            </div>
-                            <p className="text-lg font-medium">{slot.label}</p>
-                          </button>
-                        );
-                      })}
-                    </motion.div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="flex flex-col gap-2">
-                        <label htmlFor={nameInputId} className="text-sm text-muted-foreground">Your name</label>
-                        <input
-                          id={nameInputId}
-                          type="text"
-                          value={formValues.name}
-                          onChange={(e) => setFormValues((prev) => ({ ...prev, name: e.target.value }))}
-                          className="rounded-[12px] border border-border bg-transparent px-4 py-3 focus:outline-none focus:border-foreground placeholder:text-muted-foreground/70"
-                          placeholder="Ada Lovelace"
-                        />
-                      </div>
-                      <div className="flex flex-col gap-2">
-                        <label htmlFor={emailInputId} className="text-sm text-muted-foreground">Contact email</label>
-                        <input
-                          id={emailInputId}
-                          type="email"
-                          value={formValues.email}
-                          onChange={(e) => setFormValues((prev) => ({ ...prev, email: e.target.value }))}
-                          className="rounded-[12px] border border-border bg-transparent px-4 py-3 focus:outline-none focus:border-foreground placeholder:text-muted-foreground/70"
-                          placeholder="you@example.com"
-                          aria-invalid={emailHasError}
-                          aria-describedby={emailHasError ? emailErrorId : undefined}
-                        />
-                        {emailHasError && (
-                          <span id={emailErrorId} className="text-xs text-red-400">Please enter a valid email.</span>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col gap-2">
-                      <label htmlFor={noteInputId} className="text-sm text-muted-foreground">Notes (optional)</label>
-                      <textarea
-                        id={noteInputId}
-                        value={formValues.note}
-                        onChange={(e) => setFormValues((prev) => ({ ...prev, note: e.target.value }))}
-                        rows={3}
-                        className="rounded-[12px] border border-border bg-transparent px-4 py-3 focus:outline-none focus:border-foreground placeholder:text-muted-foreground/70"
-                        placeholder="Context, collaborators, or agenda."
-                      />
-                    </div>
-
+                  <div className="flex gap-2">
                     <button
                       type="button"
-                      onClick={handleSubmitBooking}
-                      disabled={
-                        !selectedSlot ||
-                        !formValues.name ||
-                        !formValues.email ||
-                        !emailValid ||
-                        submissionState === "loading"
-                      }
-                      className="btn-primary inline-flex items-center justify-center gap-2 disabled:opacity-50"
+                      onClick={() => shiftWindow(-1)}
+                      disabled={windowStart === 0}
+                      className="inline-flex h-9 items-center rounded-full bg-white/70 px-3 text-[12px] text-muted-foreground transition-colors hover:bg-[var(--accent-soft)] disabled:opacity-40 dark:bg-white/8"
                     >
-                      {submissionState === "loading" ? (
-                        <>
-                          <Loader2 size={18} className="animate-spin" />
-                          Scheduling…
-                        </>
-                      ) : (
-                        <>
-                          <SendHorizonal size={18} />
-                          Confirm request
-                        </>
-                      )}
+                      Prev
                     </button>
-                  </motion.div>
-                </motion.div>
-            </motion.div>
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+                    <button
+                      type="button"
+                      onClick={() => shiftWindow(1)}
+                      disabled={windowStart >= maxWindowIndex}
+                      className="inline-flex h-9 items-center rounded-full bg-white/70 px-3 text-[12px] text-muted-foreground transition-colors hover:bg-[var(--accent-soft)] disabled:opacity-40 dark:bg-white/8"
+                    >
+                      Next
+                    </button>
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
+                  {visibleDays.map((day) => {
+                    const isActive = selectedDate === day.dateISO;
+                    return (
+                      <button
+                        key={day.dateISO}
+                        type="button"
+                        onClick={() => {
+                          setSelectedDate(day.dateISO);
+                          setSelectedSlotId(null);
+                        }}
+                        aria-pressed={isActive}
+                        className={`inline-flex min-h-10 items-center justify-center rounded-full px-3 text-[13px] leading-snug transition-colors ${
+                          isActive
+                            ? "bg-[var(--accent)] text-[var(--background)]"
+                            : "bg-white/70 text-muted-foreground hover:bg-[var(--accent-soft)] dark:bg-white/8"
+                        }`}
+                      >
+                        <span className="flex items-center gap-2">
+                          {day.displayLabel}
+                          {isActive && (
+                            <span className="text-[0.65rem] uppercase tracking-[0.2em] opacity-80">
+                              ✓
+                            </span>
+                          )}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {slotsForDate.map((slot) => {
+                  const isSelected = selectedSlotId === slot.id;
+                  return (
+                    <button
+                      key={slot.id}
+                      type="button"
+                      disabled={slot.booked || submissionState === "loading"}
+                      onClick={() => setSelectedSlotId(slot.id)}
+                      className={`rounded-[16px] px-3 py-3 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30 sm:px-4 sm:py-4 ${
+                        slot.booked
+                          ? "cursor-not-allowed bg-[var(--pill-background)] text-muted-foreground line-through opacity-55"
+                          : isSelected
+                            ? "bg-[var(--accent)] text-[var(--background)]"
+                            : "bg-[var(--pill-background)] hover:bg-[var(--accent-soft)]"
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <p className={`text-xs uppercase tracking-[0.3em] ${isSelected ? "text-[var(--background)] opacity-70" : "text-muted-foreground"}`}>
+                          Meeting
+                        </p>
+                        {isSelected && (
+                          <Check size={16} className="text-current" />
+                        )}
+                      </div>
+                      <p className="text-lg font-medium">{slot.label}</p>
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="flex flex-col gap-2">
+                  <label htmlFor={nameInputId} className="text-sm text-muted-foreground">Your name</label>
+                  <input
+                    id={nameInputId}
+                    type="text"
+                    value={formValues.name}
+                    onChange={(e) => setFormValues((prev) => ({ ...prev, name: e.target.value }))}
+                    className="rounded-[12px] border border-border bg-transparent px-4 py-3 focus:outline-none focus:border-foreground placeholder:text-muted-foreground/70"
+                    placeholder="Ada Lovelace"
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <label htmlFor={emailInputId} className="text-sm text-muted-foreground">Contact email</label>
+                  <input
+                    id={emailInputId}
+                    type="email"
+                    value={formValues.email}
+                    onChange={(e) => setFormValues((prev) => ({ ...prev, email: e.target.value }))}
+                    className="rounded-[12px] border border-border bg-transparent px-4 py-3 focus:outline-none focus:border-foreground placeholder:text-muted-foreground/70"
+                    placeholder="you@example.com"
+                    aria-invalid={emailHasError}
+                    aria-describedby={emailHasError ? emailErrorId : undefined}
+                  />
+                  {emailHasError && (
+                    <span id={emailErrorId} className="text-xs text-red-400">Please enter a valid email.</span>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <label htmlFor={noteInputId} className="text-sm text-muted-foreground">Notes (optional)</label>
+                <textarea
+                  id={noteInputId}
+                  value={formValues.note}
+                  onChange={(e) => setFormValues((prev) => ({ ...prev, note: e.target.value }))}
+                  rows={3}
+                  className="rounded-[12px] border border-border bg-transparent px-4 py-3 focus:outline-none focus:border-foreground placeholder:text-muted-foreground/70"
+                  placeholder="Context, collaborators, or agenda."
+                />
+              </div>
+
+              <button
+                type="button"
+                onClick={handleSubmitBooking}
+                disabled={
+                  !selectedSlot ||
+                  !formValues.name ||
+                  !formValues.email ||
+                  !emailValid ||
+                  submissionState === "loading"
+                }
+                className="btn-primary inline-flex items-center justify-center gap-2 disabled:opacity-50"
+              >
+                {submissionState === "loading" ? (
+                  <>
+                    <Loader2 size={18} className="animate-spin" />
+                    Scheduling…
+                  </>
+                ) : (
+                  <>
+                    <SendHorizonal size={18} />
+                    Confirm request
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
