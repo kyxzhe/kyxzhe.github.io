@@ -119,6 +119,8 @@ const MODEL_ID = "@cf/google/gemma-4-26b-a4b-it";
 const MAX_RETRIEVAL_MESSAGES = 6;
 const MAX_CHAT_MESSAGES = 16;
 const MAX_MESSAGE_CHARS = 4000;
+const MAX_CONTEXT_CHARS = 12000;
+const CONTEXT_SEPARATOR = "\n\n---\n\n";
 const MAX_SESSION_ID_CHARS = 128;
 const CHAT_ROLES = new Set(["user", "assistant"]);
 
@@ -173,6 +175,36 @@ function sanitizeClientMessages(messages) {
     }))
     .filter((message) => message.content.length > 0)
     .slice(-MAX_CHAT_MESSAGES);
+}
+
+function buildRetrievedContext(docs) {
+  if (!Array.isArray(docs)) {
+    return "";
+  }
+
+  const chunks = [];
+  let remainingChars = MAX_CONTEXT_CHARS;
+
+  for (const doc of docs) {
+    const content = typeof doc?.content === "string" ? doc.content.trim() : "";
+    if (!content) continue;
+
+    const separatorChars = chunks.length > 0 ? CONTEXT_SEPARATOR.length : 0;
+    const availableChars = remainingChars - separatorChars;
+    if (availableChars <= 0) break;
+
+    if (content.length <= availableChars) {
+      chunks.push(content);
+      remainingChars -= separatorChars + content.length;
+    } else {
+      chunks.push(content.slice(0, availableChars).trimEnd());
+      remainingChars = 0;
+    }
+
+    if (remainingChars <= 0) break;
+  }
+
+  return chunks.join(CONTEXT_SEPARATOR);
 }
 
 function extractChunkText(payload) {
@@ -393,14 +425,7 @@ const worker = {
         .autorag("kevin-rag-index")
         .search(searchRequest);
 
-      const docs = Array.isArray(searchResult.data)
-        ? searchResult.data
-        : [];
-
-      const context = docs
-        .map((doc) => doc.content || "")
-        .filter(Boolean)
-        .join("\n\n---\n\n");
+      const context = buildRetrievedContext(searchResult.data);
 
       const systemWithContext = context
         ? `${SYSTEM_PROMPT}\n\n[Additional context about Kevin]\n${context}`
