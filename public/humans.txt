@@ -10,7 +10,6 @@ Location: Sydney, Australia
 
 Next.js Team: For the amazing React framework
 Tailwind CSS: For the utility-first CSS framework
-Motion: For smooth animations
 Lucide React: For beautiful icons
 Vercel: For privacy-minded analytics
 GitHub Pages: For static hosting
@@ -23,7 +22,7 @@ Language: English
 Doctype: HTML5
 Components: React, TypeScript, Next.js 15
 Styling: Tailwind CSS 4, shared utility classes
-Animations: Motion
+Animations: CSS transitions
 Icons: Lucide React
 Fonts: OpenAI Sans
 Hosting: GitHub Pages
