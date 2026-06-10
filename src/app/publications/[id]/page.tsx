@@ -171,6 +171,7 @@ export default async function PublicationDetailPage({
                   width={560}
                   height={840}
                   decoding="async"
+                  fetchPriority="high"
                   className="h-full w-full object-cover object-center"
                   loading="eager"
                 />
