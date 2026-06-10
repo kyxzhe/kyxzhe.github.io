@@ -63,6 +63,9 @@ const itemListJsonLd = getItemListJsonLd({
   ),
 });
 
+const filterPanelIds = "news-filter-panel-desktop news-filter-panel-mobile";
+const sortPanelIds = "news-sort-panel-desktop news-sort-panel-mobile";
+
 const categoryLabelMap: Record<NewsCategory, string> = {
   RESEARCH: "Research",
   AWARD: "Award",
@@ -229,6 +232,23 @@ export default function NewsPage() {
     };
   }, [leadItem, sideRailItems.length, sortedItems.length, viewMode]);
 
+  useEffect(() => {
+    if (!filterOpen && !sortOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setFilterOpen(false);
+        setSortOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [filterOpen, sortOpen]);
+
   return (
     <div className="min-h-screen bg-white text-foreground dark:bg-[#000000] dark:text-[#f5f5f5] font-medium">
       <script
@@ -271,6 +291,7 @@ export default function NewsPage() {
               key={category}
               type="button"
               onClick={() => setActiveCategory(category)}
+              aria-pressed={activeCategory === category}
               className={`min-h-11 px-4 py-2 rounded-full border transition-colors ${
                 activeCategory === category
                   ? "bg-[rgba(0,0,0,0.12)] border-transparent text-foreground dark:bg-[rgba(255,255,255,0.4)] dark:text-white"
@@ -294,6 +315,8 @@ export default function NewsPage() {
                   setFilterOpen((prev) => !prev);
                   setSortOpen(false);
                 }}
+                aria-expanded={filterOpen}
+                aria-controls={filterPanelIds}
               >
                 <span
                   className={
@@ -318,7 +341,10 @@ export default function NewsPage() {
                 )}
               </button>
               {filterOpen && (
-                <div className="z-50 hidden max-h-[min(34rem,calc(100vh-2rem))] flex-col overflow-hidden rounded-[8px] border border-[var(--card-border)] bg-[var(--card)]/96 text-sm shadow-[0_16px_36px_rgba(0,0,0,0.14)] backdrop-blur-md dark:bg-[#141416]/96 lg:absolute lg:right-0 lg:top-full lg:mt-2 lg:flex lg:w-[min(420px,calc(100vw-2rem))]">
+                <div
+                  id="news-filter-panel-desktop"
+                  className="z-50 hidden max-h-[min(34rem,calc(100vh-2rem))] flex-col overflow-hidden rounded-[8px] border border-[var(--card-border)] bg-[var(--card)]/96 text-sm shadow-[0_16px_36px_rgba(0,0,0,0.14)] backdrop-blur-md dark:bg-[#141416]/96 lg:absolute lg:right-0 lg:top-full lg:mt-2 lg:flex lg:w-[min(420px,calc(100vw-2rem))]"
+                >
                   <div className="flex shrink-0 items-center justify-between px-4 pb-1 pt-3 text-sm text-foreground dark:text-white">
                     <p className="font-semibold">Filters</p>
                     <button
@@ -386,12 +412,19 @@ export default function NewsPage() {
                   setSortOpen((prev) => !prev);
                   setFilterOpen(false);
                 }}
+                aria-expanded={sortOpen}
+                aria-controls={sortPanelIds}
               >
                 <span>Sort</span>
                 {sortOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
               </button>
               {sortOpen && (
-                <div className="z-50 hidden flex-col gap-2 overflow-y-auto rounded-[8px] border border-[var(--card-border)] bg-[var(--card)]/96 p-3 text-sm text-foreground shadow-[0_16px_36px_rgba(0,0,0,0.14)] backdrop-blur-md dark:bg-[#141416]/96 dark:text-white lg:absolute lg:right-0 lg:top-full lg:mt-2 lg:flex lg:w-[min(256px,calc(100vw-2rem))]">
+                <div
+                  id="news-sort-panel-desktop"
+                  role="radiogroup"
+                  aria-label="Sort news"
+                  className="z-50 hidden flex-col gap-2 overflow-y-auto rounded-[8px] border border-[var(--card-border)] bg-[var(--card)]/96 p-3 text-sm text-foreground shadow-[0_16px_36px_rgba(0,0,0,0.14)] backdrop-blur-md dark:bg-[#141416]/96 dark:text-white lg:absolute lg:right-0 lg:top-full lg:mt-2 lg:flex lg:w-[min(256px,calc(100vw-2rem))]"
+                >
                   {sortOptions.map((option) => (
                     <label key={option.value} className="flex min-h-11 items-center gap-2 text-foreground/80 dark:text-white/80">
                       <input
@@ -418,6 +451,7 @@ export default function NewsPage() {
                 }`}
                 onClick={() => setViewMode("list")}
                 aria-label="List view"
+                aria-pressed={viewMode === "list"}
               >
                 <List size={16} />
               </button>
@@ -430,6 +464,7 @@ export default function NewsPage() {
                 }`}
                 onClick={() => setViewMode("grid")}
                 aria-label="Grid view"
+                aria-pressed={viewMode === "grid"}
               >
                 <LayoutGrid size={16} />
               </button>
@@ -437,7 +472,10 @@ export default function NewsPage() {
           </div>
 
           {filterOpen && (
-            <div className="relative z-50 flex max-h-[min(70dvh,36rem)] w-full flex-col overflow-hidden rounded-[8px] border border-[var(--card-border)] bg-[var(--card)]/96 text-sm shadow-[0_16px_36px_rgba(0,0,0,0.14)] backdrop-blur-md dark:bg-[#141416]/96 lg:hidden">
+            <div
+              id="news-filter-panel-mobile"
+              className="relative z-50 flex max-h-[min(70dvh,36rem)] w-full flex-col overflow-hidden rounded-[8px] border border-[var(--card-border)] bg-[var(--card)]/96 text-sm shadow-[0_16px_36px_rgba(0,0,0,0.14)] backdrop-blur-md dark:bg-[#141416]/96 lg:hidden"
+            >
               <div className="flex shrink-0 items-center justify-between px-4 pb-1 pt-3 text-sm text-foreground dark:text-white">
                 <p className="font-semibold">Filters</p>
                 <button
@@ -495,7 +533,12 @@ export default function NewsPage() {
           )}
 
           {sortOpen && (
-            <div className="relative z-50 flex w-full flex-col gap-2 overflow-y-auto rounded-[8px] border border-[var(--card-border)] bg-[var(--card)]/96 p-3 text-sm text-foreground shadow-[0_16px_36px_rgba(0,0,0,0.14)] backdrop-blur-md dark:bg-[#141416]/96 dark:text-white lg:hidden">
+            <div
+              id="news-sort-panel-mobile"
+              role="radiogroup"
+              aria-label="Sort news"
+              className="relative z-50 flex w-full flex-col gap-2 overflow-y-auto rounded-[8px] border border-[var(--card-border)] bg-[var(--card)]/96 p-3 text-sm text-foreground shadow-[0_16px_36px_rgba(0,0,0,0.14)] backdrop-blur-md dark:bg-[#141416]/96 dark:text-white lg:hidden"
+            >
               {sortOptions.map((option) => (
                 <label key={option.value} className="flex min-h-11 items-center gap-2 text-foreground/80 dark:text-white/80">
                   <input

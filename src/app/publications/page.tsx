@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
@@ -71,6 +71,9 @@ const itemListJsonLd = getItemListJsonLd({
     })
   ),
 });
+
+const filterPanelIds = "publications-filter-panel-desktop publications-filter-panel-mobile";
+const sortPanelIds = "publications-sort-panel-desktop publications-sort-panel-mobile";
 
 const AuthorLine = ({ authors }: { authors: string[] }) => (
   <p className="text-sm text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.44)]">
@@ -201,6 +204,23 @@ export default function PublicationsPage() {
     });
     return sorted;
   }, [filteredItems, sortMode]);
+
+  useEffect(() => {
+    if (!filterOpen && !sortOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setFilterOpen(false);
+        setSortOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [filterOpen, sortOpen]);
 
   const renderGrid = () => {
     const leadItem = sortedItems[0];
@@ -467,6 +487,8 @@ export default function PublicationsPage() {
                   setFilterOpen((prev) => !prev);
                   setSortOpen(false);
                 }}
+                aria-expanded={filterOpen}
+                aria-controls={filterPanelIds}
               >
                 <span
                   className={
@@ -491,7 +513,10 @@ export default function PublicationsPage() {
                   )}
               </button>
               {filterOpen && (
-                <div className="z-50 hidden max-h-[min(34rem,calc(100vh-2rem))] flex-col overflow-hidden rounded-[8px] border border-[var(--card-border)] bg-[var(--card)]/96 shadow-[0_16px_36px_rgba(0,0,0,0.14)] backdrop-blur-md dark:bg-[#141416]/96 lg:absolute lg:right-0 lg:top-full lg:mt-2 lg:flex lg:w-[min(420px,calc(100vw-2rem))]">
+                <div
+                  id="publications-filter-panel-desktop"
+                  className="z-50 hidden max-h-[min(34rem,calc(100vh-2rem))] flex-col overflow-hidden rounded-[8px] border border-[var(--card-border)] bg-[var(--card)]/96 shadow-[0_16px_36px_rgba(0,0,0,0.14)] backdrop-blur-md dark:bg-[#141416]/96 lg:absolute lg:right-0 lg:top-full lg:mt-2 lg:flex lg:w-[min(420px,calc(100vw-2rem))]"
+                >
                   <div className="flex shrink-0 items-center justify-between px-4 pb-1 pt-3 text-sm text-foreground dark:text-white">
                     <p className="font-semibold">Filters</p>
                     <button
@@ -559,12 +584,19 @@ export default function PublicationsPage() {
                   setSortOpen((prev) => !prev);
                   setFilterOpen(false);
                 }}
+                aria-expanded={sortOpen}
+                aria-controls={sortPanelIds}
               >
                 <span>Sort</span>
                 {sortOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
               </button>
               {sortOpen && (
-                <div className="z-50 hidden flex-col gap-2 overflow-y-auto rounded-[8px] border border-[var(--card-border)] bg-[var(--card)]/96 p-3 text-sm text-foreground shadow-[0_16px_36px_rgba(0,0,0,0.14)] backdrop-blur-md dark:bg-[#141416]/96 dark:text-white lg:absolute lg:right-0 lg:top-full lg:mt-2 lg:flex lg:w-[min(256px,calc(100vw-2rem))]">
+                <div
+                  id="publications-sort-panel-desktop"
+                  role="radiogroup"
+                  aria-label="Sort publications"
+                  className="z-50 hidden flex-col gap-2 overflow-y-auto rounded-[8px] border border-[var(--card-border)] bg-[var(--card)]/96 p-3 text-sm text-foreground shadow-[0_16px_36px_rgba(0,0,0,0.14)] backdrop-blur-md dark:bg-[#141416]/96 dark:text-white lg:absolute lg:right-0 lg:top-full lg:mt-2 lg:flex lg:w-[min(256px,calc(100vw-2rem))]"
+                >
                   {sortOptions.map((option) => (
                     <label
                       key={option.value}
@@ -594,6 +626,7 @@ export default function PublicationsPage() {
                 }`}
                 onClick={() => setViewMode("list")}
                 aria-label="List view"
+                aria-pressed={viewMode === "list"}
               >
                 <List size={16} />
               </button>
@@ -606,6 +639,7 @@ export default function PublicationsPage() {
                 }`}
                 onClick={() => setViewMode("grid")}
                 aria-label="Grid view"
+                aria-pressed={viewMode === "grid"}
               >
                 <LayoutGrid size={16} />
               </button>
@@ -613,7 +647,10 @@ export default function PublicationsPage() {
           </div>
 
           {filterOpen && (
-            <div className="relative z-50 flex max-h-[min(70dvh,36rem)] w-full flex-col overflow-hidden rounded-[8px] border border-[var(--card-border)] bg-[var(--card)]/96 shadow-[0_16px_36px_rgba(0,0,0,0.14)] backdrop-blur-md dark:bg-[#141416]/96 lg:hidden">
+            <div
+              id="publications-filter-panel-mobile"
+              className="relative z-50 flex max-h-[min(70dvh,36rem)] w-full flex-col overflow-hidden rounded-[8px] border border-[var(--card-border)] bg-[var(--card)]/96 shadow-[0_16px_36px_rgba(0,0,0,0.14)] backdrop-blur-md dark:bg-[#141416]/96 lg:hidden"
+            >
               <div className="flex shrink-0 items-center justify-between px-4 pb-1 pt-3 text-sm text-foreground dark:text-white">
                 <p className="font-semibold">Filters</p>
                 <button
@@ -671,7 +708,12 @@ export default function PublicationsPage() {
           )}
 
           {sortOpen && (
-            <div className="relative z-50 flex w-full flex-col gap-2 overflow-y-auto rounded-[8px] border border-[var(--card-border)] bg-[var(--card)]/96 p-3 text-sm text-foreground shadow-[0_16px_36px_rgba(0,0,0,0.14)] backdrop-blur-md dark:bg-[#141416]/96 dark:text-white lg:hidden">
+            <div
+              id="publications-sort-panel-mobile"
+              role="radiogroup"
+              aria-label="Sort publications"
+              className="relative z-50 flex w-full flex-col gap-2 overflow-y-auto rounded-[8px] border border-[var(--card-border)] bg-[var(--card)]/96 p-3 text-sm text-foreground shadow-[0_16px_36px_rgba(0,0,0,0.14)] backdrop-blur-md dark:bg-[#141416]/96 dark:text-white lg:hidden"
+            >
               {sortOptions.map((option) => (
                 <label
                   key={option.value}
