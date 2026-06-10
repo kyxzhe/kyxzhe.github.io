@@ -7,6 +7,8 @@ import {
   Check,
   Loader2,
   AlertCircle,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { useFocusTrap } from "@/hooks/useFocusTrap";
 import { generateAvailability } from "@/lib/constants/availability";
@@ -288,18 +290,18 @@ export default function ContactModal({
                       aria-label="Show previous dates"
                       onClick={() => shiftWindow(-1)}
                       disabled={windowStart === 0}
-                      className="inline-flex h-11 items-center rounded-full bg-white/70 px-4 text-[12px] text-muted-foreground transition-colors hover:bg-[var(--accent-soft)] disabled:opacity-40 dark:bg-white/8"
+                      className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/70 text-muted-foreground transition-colors hover:bg-[var(--accent-soft)] disabled:opacity-40 dark:bg-white/8"
                     >
-                      Prev
+                      <ChevronLeft size={16} aria-hidden="true" />
                     </button>
                     <button
                       type="button"
                       aria-label="Show next dates"
                       onClick={() => shiftWindow(1)}
                       disabled={windowStart >= maxWindowIndex}
-                      className="inline-flex h-11 items-center rounded-full bg-white/70 px-4 text-[12px] text-muted-foreground transition-colors hover:bg-[var(--accent-soft)] disabled:opacity-40 dark:bg-white/8"
+                      className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/70 text-muted-foreground transition-colors hover:bg-[var(--accent-soft)] disabled:opacity-40 dark:bg-white/8"
                     >
-                      Next
+                      <ChevronRight size={16} aria-hidden="true" />
                     </button>
                   </div>
                 </div>
