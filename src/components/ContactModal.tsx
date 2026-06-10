@@ -233,7 +233,13 @@ export default function ContactModal({ onClose }: ContactModalProps) {
           </div>
 
           <div>
-            <div className="flex flex-col gap-4 md:gap-6">
+            <form
+              className="flex flex-col gap-4 md:gap-6"
+              onSubmit={(event) => {
+                event.preventDefault();
+                void handleSubmitBooking();
+              }}
+            >
               <div
                 className="flex flex-wrap gap-3 items-center justify-end"
                 role="status"
@@ -394,8 +400,7 @@ export default function ContactModal({ onClose }: ContactModalProps) {
               </div>
 
               <button
-                type="button"
-                onClick={handleSubmitBooking}
+                type="submit"
                 disabled={
                   !selectedSlot ||
                   !trimmedName ||
@@ -417,7 +422,7 @@ export default function ContactModal({ onClose }: ContactModalProps) {
                   </>
                 )}
               </button>
-            </div>
+            </form>
           </div>
         </div>
       </div>
