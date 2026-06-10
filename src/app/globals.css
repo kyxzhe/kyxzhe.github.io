@@ -38,8 +38,10 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-card: var(--card);
+  --color-border: var(--card-border);
   --font-sans: var(--font-openai-sans);
   --font-mono: var(--font-mono-stack);
 }
