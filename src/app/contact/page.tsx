@@ -186,7 +186,7 @@ export default function ContactPage() {
                   target="_blank"
                   rel="noopener noreferrer"
                   referrerPolicy="no-referrer"
-                  className="flex items-center justify-between gap-3 px-4 py-2 border border-[rgba(0,0,0,0.12)] dark:border-white/20 rounded-full text-[17px] font-medium transition-colors duration-150 hover:border-foreground/50"
+                  className="flex min-h-11 items-center justify-between gap-3 px-4 py-2 border border-[rgba(0,0,0,0.12)] dark:border-white/20 rounded-full text-[17px] font-medium transition-colors duration-150 hover:border-foreground/50"
                 >
                   <span className="text-[15px] dark:text-white">{label}</span>
                   <span className="text-[rgba(0,0,0,0.6)] dark:text-white">{icon}</span>
