@@ -80,10 +80,10 @@ const AuthorLine = ({ authors }: { authors: string[] }) => (
     {authors.map((author, index) => {
       const highlight = author.toLowerCase().includes("yuxiang zheng");
       return (
-          <span
-            key={`${author}-${index}`}
-            className={highlight ? "text-foreground" : ""}
-          >
+        <span
+          key={`${author}-${index}`}
+          className={highlight ? "text-foreground" : ""}
+        >
           {author}
           {index < authors.length - 1 && ", "}
         </span>
@@ -109,17 +109,17 @@ const ResourceRow = ({
   const showDot = visibleResources.length > 0;
 
   return (
-      <div className="flex flex-wrap items-center gap-2 text-[12px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.44)]">
+    <div className="flex flex-wrap items-center gap-2 text-[12px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.44)]">
       <span>{venue}</span>
       {showDot && <span>·</span>}
       {visibleResources.map((resource) => (
-          <Link
-            key={`${resource.type}-${resource.url}`}
-            href={resource.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="relative z-20 inline-flex items-center gap-1 text-foreground hover:underline underline-offset-4"
-          >
+        <Link
+          key={`${resource.type}-${resource.url}`}
+          href={resource.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="relative z-20 inline-flex items-center gap-1 text-foreground hover:underline underline-offset-4"
+        >
           {resource.label}
           <ArrowUpRight size={12} />
         </Link>
@@ -180,8 +180,12 @@ export default function PublicationsPage() {
 
   const filteredItems = useMemo(() => {
     return publications.filter((item) => {
-      const topicsMatch = selectedTopics.length === 0 || selectedTopics.every((topic) => item.topics.includes(topic));
-      const yearsMatch = selectedYears.length === 0 || selectedYears.includes(new Date(item.date).getFullYear());
+      const topicsMatch =
+        selectedTopics.length === 0 ||
+        selectedTopics.every((topic) => item.topics.includes(topic));
+      const yearsMatch =
+        selectedYears.length === 0 ||
+        selectedYears.includes(new Date(item.date).getFullYear());
       return topicsMatch && yearsMatch;
     });
   }, [selectedTopics, selectedYears]);
@@ -204,6 +208,7 @@ export default function PublicationsPage() {
     });
     return sorted;
   }, [filteredItems, sortMode]);
+  const hasActiveFilters = selectedTopics.length > 0 || selectedYears.length > 0;
 
   useEffect(() => {
     if (!filterOpen && !sortOpen) return;
@@ -492,25 +497,25 @@ export default function PublicationsPage() {
               >
                 <span
                   className={
-                    selectedTopics.length > 0 || selectedYears.length > 0 || filterOpen
+                    hasActiveFilters || filterOpen
                       ? "text-foreground dark:text-white"
-                    : "text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]"
+                      : "text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]"
                   }
                 >
                   Filter
                 </span>
-                  {filterOpen ? (
-                    <X size={16} className="text-foreground dark:text-white" />
-                  ) : (
-                    <Filter
-                      size={16}
-                      className={
-                        selectedTopics.length > 0 || selectedYears.length > 0
-                          ? "text-foreground dark:text-white"
+                {filterOpen ? (
+                  <X size={16} className="text-foreground dark:text-white" />
+                ) : (
+                  <Filter
+                    size={16}
+                    className={
+                      hasActiveFilters
+                        ? "text-foreground dark:text-white"
                         : "text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]"
-                      }
-                    />
-                  )}
+                    }
+                  />
+                )}
               </button>
               {filterOpen && (
                 <div
@@ -576,10 +581,10 @@ export default function PublicationsPage() {
 
             <div className="relative flex items-center gap-1">
               <button
-                  type="button"
-                  className={`inline-flex min-h-11 items-center gap-1 rounded-full px-3 ${
-                    sortOpen ? "text-foreground dark:text-white" : "text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]"
-                  }`}
+                type="button"
+                className={`inline-flex min-h-11 items-center gap-1 rounded-full px-3 ${
+                  sortOpen ? "text-foreground dark:text-white" : "text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]"
+                }`}
                 onClick={() => {
                   setSortOpen((prev) => !prev);
                   setFilterOpen(false);
