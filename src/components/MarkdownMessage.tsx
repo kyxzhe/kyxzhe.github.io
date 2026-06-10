@@ -125,7 +125,7 @@ const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
             <dt className={cn("font-semibold leading-[1.5]", className)} {...props} />
           ),
           dd: ({ className, ...props }) => (
-            <dd className={cn("pl-4 leading-[1.5] text-[rgba(255,255,255,0.88)] dark:text-white", className)} {...props} />
+            <dd className={cn("pl-4 leading-[1.5] text-foreground/80 dark:text-white/88", className)} {...props} />
           ),
           a: ({ className, ...props }) => (
             <a
@@ -184,7 +184,7 @@ const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
             <u className={cn("underline underline-offset-2", className)} {...props} />
           ),
           hr: ({ className, ...props }) => (
-            <hr className={cn("my-3 border-t border-[rgba(255,255,255,0.3)] dark:border-white/40", className)} {...props} />
+            <hr className={cn("my-3 border-t border-[rgba(0,0,0,0.18)] dark:border-white/40", className)} {...props} />
           ),
         }}
       >
