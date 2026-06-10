@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
-import Script from "next/script";
 import "./globals.css";
 import ConsoleProvider from "@/components/Console";
 import { Analytics } from "@vercel/analytics/next";
@@ -35,7 +34,7 @@ const openAiSans = localFont({
       style: 'italic',
     },
     {
-      path: '../../public/fonts/OpenAISans-Medium.woff2',    
+      path: '../../public/fonts/OpenAISans-Medium.woff2',
       weight: '500',
       style: 'normal',
     },
@@ -90,9 +89,13 @@ export const metadata: Metadata = {
   description: siteMetadata.description,
   icons: {
     icon: [
-      { url: '/favicon.ico?v7', sizes: 'any', type: 'image/x-icon' },
+      { url: '/favicon.ico?v7', sizes: 'any', type: 'image/x-icon', media: '(prefers-color-scheme: light)' },
+      { url: '/favicon-dark.ico?v7', sizes: 'any', type: 'image/x-icon', media: '(prefers-color-scheme: dark)' },
     ],
-    shortcut: '/favicon.ico?v7',
+    shortcut: [
+      { url: '/favicon.ico?v7', sizes: 'any', type: 'image/x-icon', media: '(prefers-color-scheme: light)' },
+      { url: '/favicon-dark.ico?v7', sizes: 'any', type: 'image/x-icon', media: '(prefers-color-scheme: dark)' },
+    ],
     apple: '/apple-icon.png',
   },
   authors: [{ name: siteMetadata.author.name }],
@@ -133,40 +136,6 @@ export const metadata: Metadata = {
   },
 };
 
-const themeFaviconScript = `
-(() => {
-  const version = 'v7';
-  const media = window.matchMedia('(prefers-color-scheme: dark)');
-
-  const upsertLink = (id, rel, href) => {
-    let link = document.getElementById(id);
-    if (!(link instanceof HTMLLinkElement)) {
-      link = document.createElement('link');
-      link.id = id;
-      link.rel = rel;
-      link.type = 'image/x-icon';
-      document.head.appendChild(link);
-    }
-    link.href = href;
-  };
-
-  const applyTheme = (isDark) => {
-    const href = isDark ? '/favicon-dark.ico?' + version : '/favicon.ico?' + version;
-    upsertLink('theme-favicon-icon', 'icon', href);
-    upsertLink('theme-favicon-shortcut', 'shortcut icon', href);
-  };
-
-  applyTheme(media.matches);
-
-  const handleChange = (event) => applyTheme(event.matches);
-  if (typeof media.addEventListener === 'function') {
-    media.addEventListener('change', handleChange);
-  } else if (typeof media.addListener === 'function') {
-    media.addListener(handleChange);
-  }
-})();
-`;
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -182,9 +151,6 @@ export default function RootLayout({
           Skip to content
         </a>
         <ConsoleProvider />
-        <Script id="theme-favicon" strategy="beforeInteractive">
-          {themeFaviconScript}
-        </Script>
         <script
           id="ld-website"
           type="application/ld+json"
