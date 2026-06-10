@@ -5,6 +5,10 @@ export type ChatMessage = {
   role: ChatRole;
   content: string;
 };
+type ChatChoice = {
+  delta?: { content?: string; text?: string };
+  text?: string;
+};
 
 const DEFAULT_CHAT_API_URL = "https://kevin-bot.kyx-zhe.workers.dev/chat";
 const CHAT_API_URL = process.env.NEXT_PUBLIC_CHAT_API_URL ?? DEFAULT_CHAT_API_URL;
@@ -72,13 +76,13 @@ export async function sendChatRequest(
     );
   }
 
-  // 优先走 SSE 流
+  // Prefer streaming SSE responses.
   const contentType = (response.headers.get("content-type") || "").toLowerCase();
   if (contentType.includes("text/event-stream") && response.body) {
     return readSseStream(response.body, options?.onChunk, options?.chunkThrottleMs);
   }
 
-  // 兼容旧的 JSON 一次性返回
+  // Support the older one-shot JSON response shape.
   const data = (await response.json().catch(() => null)) as { response?: string } | null;
   if (data?.response) {
     return data.response.trim();
@@ -103,29 +107,20 @@ function extractText(payload: unknown): string | null {
     const v = (payload as Record<string, unknown>)[key];
     return typeof v === "string" ? v : null;
   };
+  const choice = (payload as { choices?: ChatChoice[] }).choices?.find(
+    (item) =>
+      typeof item?.delta?.content === "string" ||
+      typeof item?.delta?.text === "string" ||
+      typeof item?.text === "string"
+  );
 
   return (
     val("response") ??
     val("content") ??
     val("text") ??
-    (payload as { choices?: Array<{ delta?: { content?: string; text?: string }; text?: string }> }).choices?.find(
-      (choice) =>
-        typeof choice?.delta?.content === "string" ||
-        typeof choice?.delta?.text === "string" ||
-        typeof choice?.text === "string"
-    )?.delta?.content ??
-    (payload as { choices?: Array<{ delta?: { content?: string; text?: string }; text?: string }> }).choices?.find(
-      (choice) =>
-        typeof choice?.delta?.content === "string" ||
-        typeof choice?.delta?.text === "string" ||
-        typeof choice?.text === "string"
-    )?.delta?.text ??
-    (payload as { choices?: Array<{ delta?: { content?: string; text?: string }; text?: string }> }).choices?.find(
-      (choice) =>
-        typeof choice?.delta?.content === "string" ||
-        typeof choice?.delta?.text === "string" ||
-        typeof choice?.text === "string"
-    )?.text ??
+    choice?.delta?.content ??
+    choice?.delta?.text ??
+    choice?.text ??
     (payload as { delta?: { content?: string; text?: string } }).delta?.content ??
     (payload as { delta?: { content?: string; text?: string } }).delta?.text ??
     null
@@ -197,7 +192,7 @@ async function readSseStream(
         }
       }
       if (streamDone) {
-        // flush remaining buffer
+        // Flush the remaining buffer.
         buffer += decoder.decode();
         if (buffer.trim()) {
           handleEvent(buffer);
