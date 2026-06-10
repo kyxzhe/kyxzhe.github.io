@@ -7,11 +7,17 @@ interface UseChatMessagesOptions {
   storageKey: string;
   assistantGreeting?: string;
   maxMessages?: number;
+  maxMessageChars?: number;
   persistDebounceMs?: number;
 }
 
-function createBaseHistory(assistantGreeting?: string): ChatMessage[] {
-  return assistantGreeting ? [{ role: "assistant", content: assistantGreeting }] : [];
+function createBaseHistory(
+  assistantGreeting: string | undefined,
+  maxMessageChars: number
+): ChatMessage[] {
+  return assistantGreeting
+    ? [{ role: "assistant", content: assistantGreeting.slice(0, maxMessageChars) }]
+    : [];
 }
 
 function isChatMessage(item: unknown): item is ChatMessage {
@@ -25,14 +31,22 @@ function isChatMessage(item: unknown): item is ChatMessage {
   );
 }
 
-function trimMessages(messages: ChatMessage[], maxMessages: number) {
-  if (messages.length <= maxMessages) {
-    return messages;
-  }
-
+function trimMessages(
+  messages: ChatMessage[],
+  maxMessages: number,
+  maxMessageChars: number
+) {
   const systemMessages = messages.filter((message) => message.role === "system");
   const conversationalMessages = messages.filter((message) => message.role !== "system");
-  return [...systemMessages, ...conversationalMessages.slice(-maxMessages)];
+  const nextMessages =
+    messages.length <= maxMessages
+      ? messages
+      : [...systemMessages, ...conversationalMessages.slice(-maxMessages)];
+
+  return nextMessages.map((message) => ({
+    ...message,
+    content: message.content.slice(0, maxMessageChars),
+  }));
 }
 
 export function useChatMessages(options: UseChatMessagesOptions) {
@@ -40,11 +54,12 @@ export function useChatMessages(options: UseChatMessagesOptions) {
     storageKey,
     assistantGreeting,
     maxMessages = 16,
+    maxMessageChars = 4000,
     persistDebounceMs = 180,
   } = options;
 
   const getInitialMessages = () => {
-    const emptyHistory = createBaseHistory(assistantGreeting);
+    const emptyHistory = createBaseHistory(assistantGreeting, maxMessageChars);
     if (typeof window === "undefined") {
       return emptyHistory;
     }
@@ -65,7 +80,7 @@ export function useChatMessages(options: UseChatMessagesOptions) {
         return emptyHistory;
       }
 
-      return trimMessages(validChats, maxMessages);
+      return trimMessages(validChats, maxMessages, maxMessageChars);
     } catch {
       return emptyHistory;
     }
@@ -76,7 +91,7 @@ export function useChatMessages(options: UseChatMessagesOptions) {
   useEffect(() => {
     if (typeof window === "undefined") return;
     const hasHistory = messages.some((msg) => msg.role !== "system");
-    const payload = trimMessages(messages, maxMessages);
+    const payload = trimMessages(messages, maxMessages, maxMessageChars);
     let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
     try {
@@ -100,7 +115,7 @@ export function useChatMessages(options: UseChatMessagesOptions) {
         clearTimeout(timeoutId);
       }
     };
-  }, [maxMessages, messages, persistDebounceMs, storageKey]);
+  }, [maxMessageChars, maxMessages, messages, persistDebounceMs, storageKey]);
 
   return [messages, setMessages] as const;
 }
