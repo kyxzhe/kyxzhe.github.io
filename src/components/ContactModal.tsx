@@ -19,6 +19,7 @@ export default function ContactModal({ onClose }: ContactModalProps) {
   const availability = useMemo(() => generateAvailability(new Date(), 30), []);
   const dialogRef = useRef<HTMLDivElement | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
+  const submitAbortRef = useRef<AbortController | null>(null);
   const successDismissTimerRef = useRef<number | null>(null);
   const WINDOW_SIZE = 5;
   const SUCCESS_DISMISS_DELAY = 1400; // short pause to show "Confirmed" badge
@@ -91,6 +92,8 @@ export default function ContactModal({ onClose }: ContactModalProps) {
 
   const handleDismiss = useCallback(() => {
     clearSuccessDismissTimer();
+    submitAbortRef.current?.abort();
+    submitAbortRef.current = null;
     onClose();
     resetScheduler();
   }, [clearSuccessDismissTimer, onClose, resetScheduler]);
@@ -113,6 +116,8 @@ export default function ContactModal({ onClose }: ContactModalProps) {
       window.clearTimeout(focusTimer);
       window.removeEventListener("keydown", handleKeyDown);
       clearSuccessDismissTimer();
+      submitAbortRef.current?.abort();
+      submitAbortRef.current = null;
     };
   }, [clearSuccessDismissTimer, handleDismiss]);
 
@@ -158,10 +163,15 @@ export default function ContactModal({ onClose }: ContactModalProps) {
       .join("\n");
 
     setSubmissionState("loading");
+    submitAbortRef.current?.abort();
+    const submitController = new AbortController();
+    submitAbortRef.current = submitController;
+
     try {
       const response = await fetch("https://formsubmit.co/ajax/kevin.zheng@student.uts.edu.au", {
         method: "POST",
         referrerPolicy: "no-referrer",
+        signal: submitController.signal,
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
@@ -189,7 +199,12 @@ export default function ContactModal({ onClose }: ContactModalProps) {
         resetScheduler();
       }, SUCCESS_DISMISS_DELAY);
     } catch {
+      if (submitController.signal.aborted) return;
       setSubmissionState("error");
+    } finally {
+      if (submitAbortRef.current === submitController) {
+        submitAbortRef.current = null;
+      }
     }
   };
 
