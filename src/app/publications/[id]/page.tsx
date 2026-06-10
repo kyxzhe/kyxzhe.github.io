@@ -13,6 +13,7 @@ import {
   serializeJsonLd,
 } from "@/lib/seo/schema";
 import { formatDisplayDate } from "@/lib/utils/date";
+import { getCardCoverPath } from "@/lib/utils/images";
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
@@ -165,7 +166,7 @@ export default async function PublicationDetailPage({
             <div className="overflow-hidden rounded-[4px] bg-[#090909]">
               <div className="relative aspect-[4/3] w-full sm:aspect-square lg:aspect-[4/5]">
                 <Image
-                  src={publication.cover}
+                  src={getCardCoverPath(publication.cover)}
                   alt={publication.title}
                   fill
                   sizes="(max-width: 1024px) 100vw, 280px"

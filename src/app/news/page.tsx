@@ -17,6 +17,7 @@ import {
   serializeJsonLd,
 } from "@/lib/seo/schema";
 import { formatDisplayDate } from "@/lib/utils/date";
+import { getCardCoverPath } from "@/lib/utils/images";
 
 type ViewMode = "list" | "grid";
 type SortMode = "newest" | "oldest" | "az" | "za";
@@ -632,7 +633,7 @@ export default function NewsPage() {
                     <div className="overflow-hidden rounded-[4px] bg-[#090909]">
                       <div className="relative aspect-square w-full">
                         <Image
-                          src={item.cover}
+                          src={getCardCoverPath(item.cover)}
                           alt={item.title}
                           fill
                           sizes="(max-width: 1024px) 100vw, 272px"
@@ -686,7 +687,7 @@ export default function NewsPage() {
                         <div className="overflow-hidden rounded-[4px] bg-[#090909]">
                           <div className="relative aspect-square w-full">
                             <Image
-                              src={item.cover}
+                              src={getCardCoverPath(item.cover)}
                               alt={item.title}
                               fill
                               sizes="104px"
