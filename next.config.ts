@@ -4,11 +4,6 @@ const nextConfig: NextConfig = {
   output: "export",
   images: {
     unoptimized: true,
-    remotePatterns: [
-      {
-        hostname: "images.unsplash.com",
-      },
-    ],
   },
 };
 
