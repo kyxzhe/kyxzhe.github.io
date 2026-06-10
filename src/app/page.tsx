@@ -4,7 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { Loader2 } from "lucide-react";
+import { ArrowUp, Loader2 } from "lucide-react";
 import { useState, useCallback, useEffect, useMemo, useRef, KeyboardEvent } from "react";
 import { sendChatRequest, type ChatMessage } from "@/lib/api/chat";
 import { useChatMessages } from "@/hooks/useChatMessages";
@@ -329,22 +329,7 @@ export default function Home() {
                   {isLoading ? (
                     <Loader2 size={16} className="animate-spin" aria-hidden="true" />
                   ) : (
-                    <svg
-                      width="36"
-                      height="36"
-                      viewBox="0 0 32 32"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      aria-hidden="true"
-                    >
-                      <path
-                        d="M16 22V10m0 0-5 5m5-5 5 5"
-                        stroke="currentColor"
-                        strokeWidth="1.7"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
+                    <ArrowUp size={18} aria-hidden="true" />
                   )}
                 </button>
               </div>
