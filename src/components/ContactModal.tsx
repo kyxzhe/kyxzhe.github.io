@@ -288,7 +288,7 @@ export default function ContactModal({
                       aria-label="Show previous dates"
                       onClick={() => shiftWindow(-1)}
                       disabled={windowStart === 0}
-                      className="inline-flex h-9 items-center rounded-full bg-white/70 px-3 text-[12px] text-muted-foreground transition-colors hover:bg-[var(--accent-soft)] disabled:opacity-40 dark:bg-white/8"
+                      className="inline-flex h-11 items-center rounded-full bg-white/70 px-4 text-[12px] text-muted-foreground transition-colors hover:bg-[var(--accent-soft)] disabled:opacity-40 dark:bg-white/8"
                     >
                       Prev
                     </button>
@@ -297,7 +297,7 @@ export default function ContactModal({
                       aria-label="Show next dates"
                       onClick={() => shiftWindow(1)}
                       disabled={windowStart >= maxWindowIndex}
-                      className="inline-flex h-9 items-center rounded-full bg-white/70 px-3 text-[12px] text-muted-foreground transition-colors hover:bg-[var(--accent-soft)] disabled:opacity-40 dark:bg-white/8"
+                      className="inline-flex h-11 items-center rounded-full bg-white/70 px-4 text-[12px] text-muted-foreground transition-colors hover:bg-[var(--accent-soft)] disabled:opacity-40 dark:bg-white/8"
                     >
                       Next
                     </button>
@@ -319,7 +319,7 @@ export default function ContactModal({
                           setSelectedSlotId(null);
                         }}
                         aria-pressed={isActive}
-                        className={`inline-flex min-h-10 items-center justify-center rounded-full px-3 text-[13px] leading-snug transition-colors ${
+                        className={`inline-flex min-h-11 items-center justify-center rounded-full px-3 text-[13px] leading-snug transition-colors ${
                           isActive
                             ? "bg-[var(--accent)] text-[var(--background)]"
                             : "bg-white/70 text-muted-foreground hover:bg-[var(--accent-soft)] dark:bg-white/8"
