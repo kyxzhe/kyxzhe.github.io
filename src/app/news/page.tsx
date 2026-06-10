@@ -349,7 +349,7 @@ export default function NewsPage() {
                         setFilterOpen(false);
                       }}
                     >
-                      ×
+                      <span aria-hidden="true">×</span>
                     </button>
                   </div>
                   <div className="grid grid-cols-[minmax(0,1fr)_78px] gap-4 overflow-y-auto px-4 py-3 text-sm text-foreground dark:text-white sm:grid-cols-2">

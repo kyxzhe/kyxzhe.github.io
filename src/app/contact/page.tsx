@@ -110,7 +110,7 @@ export default function ContactPage() {
                     } ${href ? "cursor-pointer" : ""}`}
                   >
                     <div className="flex items-center gap-2 text-[12px] uppercase tracking-[0.26em] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.6)]">
-                      {Icon && <Icon size={14} />}
+                      {Icon && <Icon size={14} aria-hidden="true" />}
                       <span>{label}</span>
                     </div>
                     <p className="text-[17px] font-medium text-foreground">{value}</p>
