@@ -39,38 +39,38 @@ function PlainCodeBlock({
   );
 }
 
-const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
-  const CodeBlock = ({
-    children,
-    className,
-    ...props
-  }: { children?: ReactNode; className?: string } & HTMLAttributes<HTMLElement>) => {
-    const language =
-      (className?.match(/language-([\w-]+)/)?.[1] as string | undefined) || undefined;
+function CodeBlock({
+  children,
+  className,
+  ...props
+}: { children?: ReactNode; className?: string } & HTMLAttributes<HTMLElement>) {
+  const language =
+    (className?.match(/language-([\w-]+)/)?.[1] as string | undefined) || undefined;
 
-    if (!language) {
-      return (
+  if (!language) {
+    return (
+      <PlainCodeBlock className={className} {...props}>
+        {children}
+      </PlainCodeBlock>
+    );
+  }
+
+  return (
+    <Suspense
+      fallback={
         <PlainCodeBlock className={className} {...props}>
           {children}
         </PlainCodeBlock>
-      );
-    }
+      }
+    >
+      <MarkdownCodeBlock className={className} {...props}>
+        {children}
+      </MarkdownCodeBlock>
+    </Suspense>
+  );
+}
 
-    return (
-      <Suspense
-        fallback={
-          <PlainCodeBlock className={className} {...props}>
-            {children}
-          </PlainCodeBlock>
-        }
-      >
-        <MarkdownCodeBlock className={className} {...props}>
-          {children}
-        </MarkdownCodeBlock>
-      </Suspense>
-    );
-  };
-
+const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
   return (
     <div className={cn("space-y-2", className)}>
       <ReactMarkdown
