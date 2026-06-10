@@ -47,6 +47,8 @@ const mobileRotatingPlaceholders = [
   "Спросите об исследованиях или проектах.",
 ];
 
+const MAX_PROMPT_CHARS = 4000;
+
 export default function Home() {
   const [prompt, setPrompt] = useState("");
   const [messages, setMessages] = useChatMessages({
@@ -71,7 +73,7 @@ export default function Home() {
   }, []);
 
   const handleSend = useCallback(async () => {
-    const nextPrompt = prompt.trim();
+    const nextPrompt = prompt.trim().slice(0, MAX_PROMPT_CHARS);
     if (!nextPrompt || isLoading) return;
     setIsLoading(true);
     setError(null);
@@ -286,6 +288,7 @@ export default function Home() {
                   aria-label="Ask a question"
                   aria-describedby="chatbot-disclaimer"
                   required
+                  maxLength={MAX_PROMPT_CHARS}
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
                   onKeyDown={handleKeyDown}
