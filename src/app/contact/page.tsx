@@ -48,8 +48,8 @@ function LinkedInMonoIcon({ className }: { className?: string }) {
   return (
     <svg
       viewBox="0 0 24 24"
-      role="img"
-      aria-label="LinkedIn"
+      aria-hidden="true"
+      focusable="false"
       className={classes}
     >
       <rect x="1" y="1" width="22" height="22" rx="4.5" fill="currentColor" stroke="currentColor" />
@@ -65,8 +65,8 @@ function GitHubMonoIcon({ className }: { className?: string }) {
   return (
     <svg
       viewBox="0 0 24 24"
-      role="img"
-      aria-label="GitHub"
+      aria-hidden="true"
+      focusable="false"
       className={className}
       fill="currentColor"
     >
