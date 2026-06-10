@@ -12,6 +12,18 @@ export type NewsItem = {
   linkLabel?: string;
 };
 
+const categoryLabelMap: Record<NewsCategory, string> = {
+  RESEARCH: "Research",
+  AWARD: "Award",
+  MILESTONE: "Milestone",
+  TALK: "Talk",
+  TEACHING: "Teaching",
+};
+
+export function formatNewsCategoryLabel(category: NewsCategory | "All" | string) {
+  return category === "All" ? "All" : categoryLabelMap[category as NewsCategory] ?? category;
+}
+
 export const newsItems: NewsItem[] = [
   {
     id: "phd-start",

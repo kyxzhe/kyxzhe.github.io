@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { newsItems } from "@/lib/constants/news";
+import { formatNewsCategoryLabel, newsItems } from "@/lib/constants/news";
 import { absoluteUrl, siteMetadata } from "@/lib/seo/config";
 import {
   getArticleJsonLd,
@@ -126,7 +126,7 @@ export default async function NewsDetailPage({ params }: NewsPageProps) {
         <article className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_280px]">
           <div className="space-y-6">
             <p className="text-[12px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.6)]">
-              {item.category} · {formatDisplayDate(item.date)}
+              {formatNewsCategoryLabel(item.category)} · {formatDisplayDate(item.date)}
             </p>
             <div className="space-y-4">
               <h1 className="text-[40px] leading-[1.02] md:text-[58px] dark:text-white">

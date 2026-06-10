@@ -6,7 +6,7 @@ import Link from "next/link";
 import { ArrowUpRight, ChevronDown, ChevronUp, Filter, LayoutGrid, List, X } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { type NewsCategory, type NewsItem, newsItems } from "@/lib/constants/news";
+import { type NewsItem, formatNewsCategoryLabel, newsItems } from "@/lib/constants/news";
 import { absoluteUrl, siteMetadata } from "@/lib/seo/config";
 import {
   getArticleJsonLd,
@@ -66,18 +66,6 @@ const itemListJsonLd = getItemListJsonLd({
 const filterPanelIds = "news-filter-panel-desktop news-filter-panel-mobile";
 const sortPanelIds = "news-sort-panel-desktop news-sort-panel-mobile";
 
-const categoryLabelMap: Record<NewsCategory, string> = {
-  RESEARCH: "Research",
-  AWARD: "Award",
-  MILESTONE: "Milestone",
-  TALK: "Talk",
-  TEACHING: "Teaching",
-};
-
-function formatCategoryLabel(category: string) {
-  return category === "All" ? "All" : categoryLabelMap[category as NewsCategory] ?? category;
-}
-
 const ListRow = ({ item }: { item: NewsItem }) => {
   return (
     <article className="group relative grid cursor-pointer gap-3 border-b border-[rgba(0,0,0,0.08)] py-6 font-normal transition-colors hover:border-foreground/70 dark:border-white/20 md:grid-cols-[minmax(8rem,12rem)_minmax(0,1fr)] md:gap-8 md:py-7">
@@ -88,7 +76,7 @@ const ListRow = ({ item }: { item: NewsItem }) => {
       />
       <div className="space-y-1.5 md:pt-0.5">
         <p className="text-[12px] text-[rgba(0,0,0,0.62)] dark:text-[rgba(255,255,255,0.58)]">
-          {formatCategoryLabel(item.category)}
+          {formatNewsCategoryLabel(item.category)}
         </p>
         <p className="text-[13px] text-[rgba(0,0,0,0.48)] dark:text-[rgba(255,255,255,0.44)]">
           {formatDisplayDate(item.date)}
@@ -120,7 +108,7 @@ const ListRow = ({ item }: { item: NewsItem }) => {
 function MetaLine({ item }: { item: NewsItem }) {
   return (
     <p className="text-[11px] uppercase tracking-[0.18em] text-[rgba(0,0,0,0.5)] dark:text-white/58">
-      {formatCategoryLabel(item.category)} <span className="mx-1.5">·</span> {formatDisplayDate(item.date)}
+      {formatNewsCategoryLabel(item.category)} <span className="mx-1.5">·</span> {formatDisplayDate(item.date)}
     </p>
   );
 }
@@ -302,7 +290,7 @@ export default function NewsPage() {
                   : "bg-[rgba(0,0,0,0.04)] border-transparent text-[rgba(0,0,0,0.6)] dark:bg-[rgba(255,255,255,0.12)] dark:text-[rgba(255,255,255,0.8)] hover:border-[rgba(0,0,0,0.08)]"
               }`}
             >
-              {formatCategoryLabel(category)}
+              {formatNewsCategoryLabel(category)}
             </button>
           ))}
         </div>
