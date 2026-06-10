@@ -28,7 +28,8 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "node scripts/serve-static.mjs",
-    "lint": "eslint"
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@vercel/analytics": "^1.5.0",
