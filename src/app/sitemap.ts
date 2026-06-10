@@ -8,14 +8,16 @@ export const revalidate = 3600; // 1 hour
 
 const baseUrl = siteMetadata.baseUrl.replace(/\/$/, "");
 const siteUpdatedAt = "2026-06-11";
-const newsUpdatedAt = newsItems.reduce(
-  (latest, item) => (item.date > latest ? item.date : latest),
-  "2024-01-01"
-);
-const publicationsUpdatedAt = publications.reduce(
-  (latest, item) => (item.date > latest ? item.date : latest),
-  "2024-01-01"
-);
+const latestIsoDate = (dates: string[]) =>
+  dates.reduce((latest, date) => (date > latest ? date : latest), "1970-01-01");
+const newsUpdatedAt = latestIsoDate([
+  siteUpdatedAt,
+  ...newsItems.map((item) => item.date),
+]);
+const publicationsUpdatedAt = latestIsoDate([
+  siteUpdatedAt,
+  ...publications.map((publication) => publication.date),
+]);
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes: MetadataRoute.Sitemap = [
