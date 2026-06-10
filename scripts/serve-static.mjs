@@ -151,13 +151,17 @@ async function resolveAssetPath(pathname) {
 }
 
 function candidatePaths(requestedPath) {
-  const extension = path.extname(requestedPath);
+  const normalizedPath =
+    requestedPath !== '/' && requestedPath.endsWith('/')
+      ? requestedPath.slice(0, -1)
+      : requestedPath;
+  const extension = path.extname(normalizedPath);
 
   if (extension) {
-    return [requestedPath];
+    return [normalizedPath];
   }
 
-  return [`${requestedPath}.html`, path.join(requestedPath, 'index.html')];
+  return [`${normalizedPath}.html`, path.join(normalizedPath, 'index.html')];
 }
 
 async function resolveFilePath(resolvedPath) {
