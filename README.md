@@ -97,7 +97,7 @@ The homepage chatbot calls `sendChatRequest` from `src/lib/api/chat.ts`.
 - Request body: `{ "messages": [{ "role": "user" | "assistant" | "system", "content": "..." }] }`
 - Session affinity: the client sends `X-Chat-Session` from `sessionStorage`
 - Preferred response: Server-Sent Events (`text/event-stream`) with `data:` payloads that include `{ "response": "<chunk>" }` and end with `[DONE]`
-- Compatibility response: JSON payloads with `{ "response": "<text>" }`
+- Compatibility response: JSON payloads with `{ "response": "<text>" }`, `{ "content": "<text>" }`, `{ "text": "<text>" }`, or OpenAI-style `choices`
 
 The Worker source lives in `cloudflare/kevin-bot/index.js`. It allows production and localhost origins, adds Kevin-specific system context, searches the `kevin-rag-index` AutoRAG index, and streams normalized SSE chunks from Cloudflare Workers AI.
 
