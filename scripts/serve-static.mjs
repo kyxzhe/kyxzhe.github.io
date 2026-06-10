@@ -17,6 +17,7 @@ const contentTypes = new Map([
   ['.jpg', 'image/jpeg'],
   ['.js', 'text/javascript; charset=utf-8'],
   ['.json', 'application/json; charset=utf-8'],
+  ['.map', 'application/json; charset=utf-8'],
   ['.png', 'image/png'],
   ['.svg', 'image/svg+xml; charset=utf-8'],
   ['.txt', 'text/plain; charset=utf-8'],
@@ -28,10 +29,20 @@ const contentTypes = new Map([
 ]);
 
 const server = createServer(async (request, response) => {
+  const method = request.method ?? 'GET';
+  const isHeadRequest = method === 'HEAD';
+
+  if (method !== 'GET' && method !== 'HEAD') {
+    sendStatus(response, 405, isHeadRequest, {
+      Allow: 'GET, HEAD',
+    });
+    return;
+  }
+
   const pathname = getPathname(request);
 
   if (pathname === null) {
-    sendStatus(response, 400);
+    sendStatus(response, 400, isHeadRequest);
     return;
   }
 
@@ -45,11 +56,16 @@ const server = createServer(async (request, response) => {
       response.writeHead(404, {
         'Content-Type': contentTypes.get('.html'),
       });
+      if (isHeadRequest) {
+        response.end();
+        return;
+      }
+
       createReadStream(fallbackPath).pipe(response);
       return;
     }
 
-    sendStatus(response, 404);
+    sendStatus(response, 404, isHeadRequest);
     return;
   }
 
@@ -57,6 +73,11 @@ const server = createServer(async (request, response) => {
     'Cache-Control': cacheControlFor(assetPath),
     'Content-Type': contentTypeFor(assetPath),
   });
+  if (isHeadRequest) {
+    response.end();
+    return;
+  }
+
   createReadStream(assetPath).pipe(response);
 });
 
@@ -178,9 +199,15 @@ async function fileExists(filePath) {
   }
 }
 
-function sendStatus(response, statusCode) {
+function sendStatus(response, statusCode, headOnly = false, headers = {}) {
   response.writeHead(statusCode, {
     'Content-Type': 'text/plain; charset=utf-8',
+    ...headers,
   });
+  if (headOnly) {
+    response.end();
+    return;
+  }
+
   response.end(`${statusCode}\n`);
 }
