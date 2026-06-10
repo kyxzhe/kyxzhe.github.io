@@ -44,6 +44,12 @@
   --font-mono: var(--font-mono-stack);
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
