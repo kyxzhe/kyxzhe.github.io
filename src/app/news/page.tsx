@@ -1,7 +1,7 @@
 "use client";
 
+/* eslint-disable @next/next/no-img-element */
 import { useEffect, useMemo, useRef, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, ChevronDown, ChevronUp, Filter, LayoutGrid, List, X } from "lucide-react";
 import Navbar from "@/components/Navbar";
@@ -601,13 +601,14 @@ export default function NewsPage() {
                 />
                 <div className="overflow-hidden rounded-[4px] bg-[#090909]">
                   <div className="relative aspect-[1.68/1] w-full">
-                    <Image
+                    <img
                       src={leadItem.cover}
                       alt={leadItem.title}
-                      fill
-                      sizes="(max-width: 1024px) 100vw, 844px"
-                      className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-                      priority
+                      width={1200}
+                      height={1800}
+                      decoding="async"
+                      loading="eager"
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
                     />
                   </div>
                 </div>
@@ -635,12 +636,14 @@ export default function NewsPage() {
                     />
                     <div className="overflow-hidden rounded-[4px] bg-[#090909]">
                       <div className="relative aspect-square w-full">
-                        <Image
+                        <img
                           src={getCardCoverPath(item.cover)}
                           alt={item.title}
-                          fill
-                          sizes="(max-width: 1024px) 100vw, 272px"
-                          className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                          width={560}
+                          height={840}
+                          decoding="async"
+                          loading="eager"
+                          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                         />
                       </div>
                     </div>
@@ -681,12 +684,14 @@ export default function NewsPage() {
                         />
                         <div className="overflow-hidden rounded-[4px] bg-[#090909]">
                           <div className="relative aspect-square w-full">
-                            <Image
+                            <img
                               src={getCardCoverPath(item.cover)}
                               alt={item.title}
-                              fill
-                              sizes="104px"
-                              className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                              width={560}
+                              height={840}
+                              decoding="async"
+                              loading="lazy"
+                              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
                             />
                           </div>
                         </div>
