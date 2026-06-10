@@ -118,7 +118,7 @@ export default async function NewsDetailPage({ params }: NewsPageProps) {
       <main id="main-content" tabIndex={-1} className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-10 px-2 py-6 md:px-4 lg:px-0">
         <Link
           href="/news"
-          className="inline-flex w-fit items-center gap-2 text-[13px] uppercase tracking-[0.24em] text-[rgba(0,0,0,0.6)] hover:text-foreground dark:text-[rgba(255,255,255,0.68)] dark:hover:text-white"
+          className="inline-flex min-h-11 w-fit items-center gap-2 text-[13px] uppercase tracking-[0.24em] text-[rgba(0,0,0,0.6)] hover:text-foreground dark:text-[rgba(255,255,255,0.68)] dark:hover:text-white"
         >
           <ArrowLeft size={14} aria-hidden="true" />
           News
@@ -150,7 +150,7 @@ export default async function NewsDetailPage({ params }: NewsPageProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 referrerPolicy="no-referrer"
-                className="inline-flex items-center gap-2 rounded-full border border-[rgba(0,0,0,0.12)] px-5 py-2.5 text-[14px] font-medium transition-colors hover:border-foreground/50 dark:border-white/20"
+                className="inline-flex min-h-11 items-center gap-2 rounded-full border border-[rgba(0,0,0,0.12)] px-5 py-2.5 text-[14px] font-medium transition-colors hover:border-foreground/50 dark:border-white/20"
               >
                 {item.linkLabel ?? "Related link"}
                 <ArrowUpRight size={14} aria-hidden="true" />

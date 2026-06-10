@@ -122,7 +122,7 @@ export default async function PublicationDetailPage({
       <main id="main-content" tabIndex={-1} className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-10 px-2 py-6 md:px-4 lg:px-0">
         <Link
           href="/publications"
-          className="inline-flex w-fit items-center gap-2 text-[13px] uppercase tracking-[0.24em] text-[rgba(0,0,0,0.6)] hover:text-foreground dark:text-[rgba(255,255,255,0.68)] dark:hover:text-white"
+          className="inline-flex min-h-11 w-fit items-center gap-2 text-[13px] uppercase tracking-[0.24em] text-[rgba(0,0,0,0.6)] hover:text-foreground dark:text-[rgba(255,255,255,0.68)] dark:hover:text-white"
         >
           <ArrowLeft size={14} aria-hidden="true" />
           Publications
@@ -191,7 +191,7 @@ export default async function PublicationDetailPage({
                       target="_blank"
                       rel="noopener noreferrer"
                       referrerPolicy="no-referrer"
-                      className="inline-flex items-center justify-between gap-3 rounded-full border border-[rgba(0,0,0,0.12)] px-4 py-2 text-[14px] font-medium transition-colors hover:border-foreground/50 dark:border-white/20"
+                      className="inline-flex min-h-11 items-center justify-between gap-3 rounded-full border border-[rgba(0,0,0,0.12)] px-4 py-2 text-[14px] font-medium transition-colors hover:border-foreground/50 dark:border-white/20"
                     >
                       {resource.label}
                       <ArrowUpRight size={14} aria-hidden="true" />
