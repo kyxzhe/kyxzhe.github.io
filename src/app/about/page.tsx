@@ -1,7 +1,4 @@
-"use client";
-
 import Link from "next/link";
-import { motion } from "motion/react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { contactInfo } from "@/lib/constants/contact";
@@ -12,28 +9,18 @@ import {
   researchFocus,
   timeline,
 } from "@/lib/constants/about";
-import {
-  cardVariants,
-  containerVariants,
-} from "@/lib/animation/variants";
 
 export default function AboutPage() {
   return (
     <div className="flex flex-col min-h-screen font-sans font-normal pt-2 md:pt-0 lg:py-6 xl:py-0 xl:pb-6 overflow-visible">
       <Navbar />
-      <motion.main
+      <main
         id="main-content"
         tabIndex={-1}
         className="flex-1 flex flex-col items-center gap-16 px-4 md:px-16 lg:px-24 py-12"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
       >
-        <motion.section
+        <section
           className="max-w-4xl w-full flex flex-col gap-12"
-          variants={cardVariants}
-          initial="hidden"
-          animate="visible"
         >
           <div className="flex flex-col gap-6">
             <p className="text-xs uppercase tracking-[0.3em] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]">About Kevin</p>
@@ -75,7 +62,7 @@ export default function AboutPage() {
               </div>
             </div>
           </div>
-        </motion.section>
+        </section>
 
         <section className="w-full max-w-4xl mx-auto space-y-20">
           <div className="space-y-10">
@@ -132,7 +119,7 @@ export default function AboutPage() {
             </div>
           </div>
         </section>
-      </motion.main>
+      </main>
       <Footer className="mb-4" />
     </div>
   );
