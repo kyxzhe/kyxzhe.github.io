@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "Kevin Zheng's personal research portfolio built with Next.js and TailwindCSS",
   "private": false,
+  "type": "module",
   "author": {
     "name": "Yuxiang (Kevin) Zheng",
     "email": "kevin.zheng@student.uts.edu.au",
