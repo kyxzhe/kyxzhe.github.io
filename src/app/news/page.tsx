@@ -313,6 +313,11 @@ export default function NewsPage() {
               key={category}
               type="button"
               onClick={() => setActiveCategory(category)}
+              aria-label={
+                category === "All"
+                  ? "Show all news"
+                  : `Show ${formatNewsCategoryLabel(category)} news`
+              }
               aria-pressed={activeCategory === category}
               className={`min-h-11 px-4 py-2 rounded-full border transition-colors ${
                 activeCategory === category
