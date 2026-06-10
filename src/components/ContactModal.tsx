@@ -246,7 +246,7 @@ export default function ContactModal({
           </button>
 
           <div className="mb-6 pr-10 text-center md:mb-12 md:pr-0">
-            <h1 id="contact-modal-title" className="mb-3 text-[34px] font-medium leading-none md:text-6xl lg:text-7xl">
+            <h1 id="contact-modal-title" className="mb-3 text-balance text-[34px] font-medium leading-none md:text-6xl lg:text-7xl">
               Book a time
             </h1>
             <p id="contact-modal-description" className="text-[15px] leading-relaxed text-muted-foreground md:text-xl">

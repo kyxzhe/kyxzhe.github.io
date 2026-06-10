@@ -297,7 +297,7 @@ export default function NewsPage() {
       <main id="main-content" tabIndex={-1} className="flex-1 mx-auto w-full max-w-5xl px-2 md:px-4 lg:px-0 py-6 flex flex-col gap-6">
         <section className="mt-4 space-y-2">
           <p className="text-xs uppercase tracking-[0.3em] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]">NEWS</p>
-          <h1 className="text-[42px] font-medium leading-tight text-foreground md:text-[48px]">News &amp; updates</h1>
+          <h1 className="text-balance text-[42px] font-medium leading-tight text-foreground md:text-[48px]">News &amp; updates</h1>
           <p className="text-[15px] md:text-base text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)] max-w-2xl leading-relaxed">
             Updates on new papers, awards, talks, and milestones.
           </p>

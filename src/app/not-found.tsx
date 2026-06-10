@@ -28,7 +28,7 @@ export default function NotFound() {
             404
           </p>
           <div className="space-y-4">
-            <h1 className="text-[42px] font-medium leading-tight text-foreground md:text-[56px]">
+            <h1 className="text-balance text-[42px] font-medium leading-tight text-foreground md:text-[56px]">
               Page not found
             </h1>
             <p className="max-w-2xl text-[17px] leading-relaxed text-[rgba(0,0,0,0.62)] dark:text-[rgba(255,255,255,0.78)]">
