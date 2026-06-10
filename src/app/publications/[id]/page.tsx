@@ -171,7 +171,6 @@ export default async function PublicationDetailPage({
                   fill
                   sizes="(max-width: 1024px) 100vw, 280px"
                   className="object-cover object-center"
-                  priority
                 />
               </div>
             </div>

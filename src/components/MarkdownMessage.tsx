@@ -167,6 +167,7 @@ const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
             // eslint-disable-next-line @next/next/no-img-element
             <img
               className="max-w-full rounded-md border border-[rgba(0,0,0,0.06)] bg-white dark:border-white/10"
+              decoding="async"
               loading="lazy"
               referrerPolicy="no-referrer"
               alt={typeof alt === "string" && alt.length > 0 ? alt : "markdown image"}

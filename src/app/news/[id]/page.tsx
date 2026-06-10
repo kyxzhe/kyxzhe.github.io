@@ -165,7 +165,6 @@ export default async function NewsDetailPage({ params }: NewsPageProps) {
                 fill
                 sizes="(max-width: 1024px) 100vw, 280px"
                 className="object-cover object-center"
-                priority
               />
             </div>
           </aside>
