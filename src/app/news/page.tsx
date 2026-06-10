@@ -15,7 +15,7 @@ import {
   getItemListJsonLd,
   serializeJsonLd,
 } from "@/lib/seo/schema";
-import { formatDisplayDate } from "@/lib/utils/date";
+import { formatDisplayDate, getIsoYear } from "@/lib/utils/date";
 import { getCardCoverPath } from "@/lib/utils/images";
 
 type ViewMode = "list" | "grid";
@@ -23,7 +23,13 @@ type SortMode = "newest" | "oldest" | "az" | "za";
 
 const categories = ["All", ...Array.from(new Set(newsItems.map((item) => item.category)))];
 const topics = Array.from(new Set(newsItems.flatMap((item) => item.topics))).sort();
-const years = Array.from(new Set(newsItems.map((item) => new Date(item.date).getFullYear()))).sort((a, b) => b - a);
+const years = Array.from(
+  new Set(
+    newsItems
+      .map((item) => getIsoYear(item.date))
+      .filter((year): year is number => year !== null)
+  )
+).sort((a, b) => b - a);
 const sortOptions: { label: string; value: SortMode }[] = [
   { label: "Newest → Oldest", value: "newest" },
   { label: "Oldest → Newest", value: "oldest" },
@@ -151,8 +157,10 @@ export default function NewsPage() {
       const categoryMatch = activeCategory === "All" || item.category === activeCategory;
       const topicsMatch =
         selectedTopics.length === 0 || selectedTopics.every((topic) => item.topics.includes(topic));
+      const itemYear = getIsoYear(item.date);
       const yearsMatch =
-        selectedYears.length === 0 || selectedYears.includes(new Date(item.date).getFullYear());
+        selectedYears.length === 0 ||
+        (itemYear !== null && selectedYears.includes(itemYear));
       return categoryMatch && topicsMatch && yearsMatch;
     });
   }, [activeCategory, selectedTopics, selectedYears]);
@@ -162,9 +170,9 @@ export default function NewsPage() {
     sorted.sort((a, b) => {
       switch (sortMode) {
         case "newest":
-          return new Date(b.date).getTime() - new Date(a.date).getTime();
+          return b.date.localeCompare(a.date);
         case "oldest":
-          return new Date(a.date).getTime() - new Date(b.date).getTime();
+          return a.date.localeCompare(b.date);
         case "az":
           return a.title.localeCompare(b.title);
         case "za":

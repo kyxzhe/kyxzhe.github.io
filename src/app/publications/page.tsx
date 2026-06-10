@@ -15,7 +15,7 @@ import {
   getItemListJsonLd,
   serializeJsonLd,
 } from "@/lib/seo/schema";
-import { formatDisplayDate } from "@/lib/utils/date";
+import { formatDisplayDate, getIsoYear } from "@/lib/utils/date";
 import { getCardCoverPath } from "@/lib/utils/images";
 
 type ViewMode = "list" | "grid";
@@ -23,7 +23,11 @@ type SortMode = "newest" | "oldest" | "az" | "za";
 
 const topics = Array.from(new Set(publications.flatMap((item) => item.topics))).sort();
 const years = Array.from(
-  new Set(publications.map((item) => new Date(item.date).getFullYear()))
+  new Set(
+    publications
+      .map((item) => getIsoYear(item.date))
+      .filter((year): year is number => year !== null)
+  )
 ).sort((a, b) => b - a);
 
 const metrics = [
@@ -191,9 +195,10 @@ export default function PublicationsPage() {
       const topicsMatch =
         selectedTopics.length === 0 ||
         selectedTopics.every((topic) => item.topics.includes(topic));
+      const itemYear = getIsoYear(item.date);
       const yearsMatch =
         selectedYears.length === 0 ||
-        selectedYears.includes(new Date(item.date).getFullYear());
+        (itemYear !== null && selectedYears.includes(itemYear));
       return topicsMatch && yearsMatch;
     });
   }, [selectedTopics, selectedYears]);
@@ -203,9 +208,9 @@ export default function PublicationsPage() {
     sorted.sort((a, b) => {
       switch (sortMode) {
         case "newest":
-          return new Date(b.date).getTime() - new Date(a.date).getTime();
+          return b.date.localeCompare(a.date);
         case "oldest":
-          return new Date(a.date).getTime() - new Date(b.date).getTime();
+          return a.date.localeCompare(b.date);
         case "az":
           return a.title.localeCompare(b.title);
         case "za":
