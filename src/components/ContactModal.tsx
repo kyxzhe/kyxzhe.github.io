@@ -301,7 +301,11 @@ export default function ContactModal({ onClose }: ContactModalProps) {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div
+                className="grid grid-cols-1 md:grid-cols-2 gap-3"
+                role="group"
+                aria-label="Available meeting times"
+              >
                 {slotsForDate.map((slot) => {
                   const isSelected = selectedSlotId === slot.id;
                   return (
@@ -309,6 +313,7 @@ export default function ContactModal({ onClose }: ContactModalProps) {
                       key={slot.id}
                       type="button"
                       disabled={slot.booked || submissionState === "loading"}
+                      aria-pressed={isSelected}
                       onClick={() => setSelectedSlotId(slot.id)}
                       className={`rounded-[16px] px-3 py-3 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30 sm:px-4 sm:py-4 ${
                         slot.booked
