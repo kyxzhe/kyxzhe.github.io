@@ -83,9 +83,10 @@ export async function sendChatRequest(
   }
 
   // Support the older one-shot JSON response shape.
-  const data = (await response.json().catch(() => null)) as { response?: string } | null;
-  if (data?.response) {
-    return data.response.trim();
+  const data = await response.json().catch(() => null);
+  const reply = extractText(data);
+  if (reply) {
+    return reply.trim();
   }
 
   throw new Error("Chat service did not return a valid response.");
