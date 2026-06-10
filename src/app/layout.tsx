@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import ConsoleProvider from "@/components/Console";
-import { Analytics } from "@vercel/analytics/next";
 import { defaultSeoImage, siteMetadata } from "@/lib/seo/config";
 import {
   getPersonJsonLd,
@@ -147,7 +146,6 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: serializedPersonJsonLd }}
         />
         {children}
-        <Analytics />
       </body>
     </html>
   );

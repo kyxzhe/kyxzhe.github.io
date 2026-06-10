@@ -26,7 +26,6 @@ The project is built with Next.js App Router, React, TypeScript, Tailwind CSS, l
 - CSS transitions for lightweight page and card interactions
 - Lucide React plus local academic profile icons
 - React Markdown, GFM, KaTeX, and syntax highlighting for chatbot responses
-- Vercel Analytics
 - GitHub Actions deployment to GitHub Pages
 - Cloudflare Worker chatbot endpoint in `cloudflare/kevin-bot/index.js`
 

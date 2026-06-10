@@ -11,7 +11,6 @@ Location: Sydney, Australia
 Next.js Team: For the amazing React framework
 Tailwind CSS: For the utility-first CSS framework
 Lucide React: For beautiful icons
-Vercel: For privacy-minded analytics
 GitHub Pages: For static hosting
 Cloudflare: For the KevinBot Worker runtime
 
@@ -26,7 +25,6 @@ Animations: CSS transitions
 Icons: Lucide React
 Fonts: OpenAI Sans
 Hosting: GitHub Pages
-Analytics: Vercel Analytics
 AI: Cloudflare Workers AI
 
 /* INTERACTIONS */
