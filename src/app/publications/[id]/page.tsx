@@ -188,6 +188,7 @@ export default async function PublicationDetailPage({
                       href={resource.url}
                       target="_blank"
                       rel="noopener noreferrer"
+                      referrerPolicy="no-referrer"
                       className="inline-flex items-center justify-between gap-3 rounded-full border border-[rgba(0,0,0,0.12)] px-4 py-2 text-[14px] font-medium transition-colors hover:border-foreground/50 dark:border-white/20"
                     >
                       {resource.label}

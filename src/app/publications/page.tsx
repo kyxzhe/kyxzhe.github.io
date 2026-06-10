@@ -118,6 +118,7 @@ const ResourceRow = ({
           href={resource.url}
           target="_blank"
           rel="noopener noreferrer"
+          referrerPolicy="no-referrer"
           className="relative z-20 inline-flex items-center gap-1 text-foreground hover:underline underline-offset-4"
         >
           {resource.label}

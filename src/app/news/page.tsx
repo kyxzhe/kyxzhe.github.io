@@ -94,6 +94,7 @@ const ListRow = ({ item }: { item: NewsItem }) => {
             href={item.link}
             target="_blank"
             rel="noopener noreferrer"
+            referrerPolicy="no-referrer"
             className="relative z-20 inline-flex w-fit items-center gap-1 text-[12px] uppercase tracking-[0.28em] text-foreground underline-offset-4 hover:underline dark:text-white"
           >
             {item.linkLabel ?? "Related link"}

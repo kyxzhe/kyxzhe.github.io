@@ -148,6 +148,7 @@ export default async function NewsDetailPage({ params }: NewsPageProps) {
                 href={item.link}
                 target="_blank"
                 rel="noopener noreferrer"
+                referrerPolicy="no-referrer"
                 className="inline-flex items-center gap-2 rounded-full border border-[rgba(0,0,0,0.12)] px-5 py-2.5 text-[14px] font-medium transition-colors hover:border-foreground/50 dark:border-white/20"
               >
                 {item.linkLabel ?? "Related link"}
