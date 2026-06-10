@@ -1,13 +1,21 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import { motion } from "motion/react";
 import { AlertTriangle, Sparkles } from "lucide-react";
 import { cardVariants } from "@/lib/animation/variants";
 import { type ChatMessage, sendChatRequest } from "@/lib/api/chat";
 import ChatInputBar from "@/components/ChatInputBar";
 import { useChatMessages } from "@/hooks/useChatMessages";
-import MarkdownMessage from "@/components/MarkdownMessage";
+
+const MarkdownMessage = dynamic(() => import("@/components/MarkdownMessage"), {
+  ssr: false,
+});
+
+const prefersReducedMotion = () =>
+  typeof window !== "undefined" &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 export default function ChatIntroPanel() {
   const [messages, setMessages] = useChatMessages({
@@ -80,7 +88,10 @@ export default function ChatIntroPanel() {
 
   useEffect(() => {
     if (scrollRef.current) {
-      scrollRef.current.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
+      scrollRef.current.scrollTo({
+        top: scrollRef.current.scrollHeight,
+        behavior: prefersReducedMotion() ? "auto" : "smooth",
+      });
     }
   }, [visibleMessages]);
 
@@ -116,6 +127,9 @@ export default function ChatIntroPanel() {
           <div
             ref={scrollRef}
             className="flex-1 min-h-0 space-y-3 text-[16px] leading-[1.5] overflow-y-auto pr-2"
+            role="log"
+            aria-live="polite"
+            aria-relevant="additions text"
           >
             {visibleMessages.map((msg, idx) => (
               <div

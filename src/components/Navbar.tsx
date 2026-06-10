@@ -8,6 +8,7 @@ import MobileNav from './MobileNav';
 
 export default function Navbar() {
   const { menuOpen, toggleMenu, closeMenu } = useNavigation();
+  const mobileMenuId = 'mobile-navigation';
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -15,10 +16,19 @@ export default function Navbar() {
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
 
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        closeMenu();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
     return () => {
       document.body.style.overflow = originalOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [menuOpen]);
+  }, [closeMenu, menuOpen]);
 
   return (
     <>
@@ -35,7 +45,7 @@ export default function Navbar() {
             <span className="text-[17px] uppercase font-light italic tracking-[0.1em]">Kevin</span>
             <span className="text-[17px] uppercase font-semibold tracking-[0.1em]">Zheng</span>
           </Link>
-          <HamburgerButton open={menuOpen} onClick={toggleMenu} />
+          <HamburgerButton open={menuOpen} onClick={toggleMenu} controlsId={mobileMenuId} />
           <ul className="hidden md:flex flex-row gap-11 lg:gap-14 list-none m-0 items-center text-[17px] uppercase tracking-[0.13em] text-foreground font-light dark:text-white/80">
             {navItems.map(({ href, label, title }) => (
               <li key={href}>
@@ -50,7 +60,7 @@ export default function Navbar() {
               </li>
             ))}
           </ul>
-          <MobileNav open={menuOpen} closeMenu={closeMenu} />
+          <MobileNav id={mobileMenuId} open={menuOpen} closeMenu={closeMenu} />
         </nav>
       </header>
       <div className="h-[108px] md:h-[98px]" aria-hidden="true" />

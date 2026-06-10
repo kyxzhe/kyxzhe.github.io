@@ -3,14 +3,22 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { Loader2 } from "lucide-react";
 import { useState, useCallback, useEffect, useMemo, useRef, KeyboardEvent } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { sendChatRequest, type ChatMessage } from "@/lib/api/chat";
-import MarkdownMessage from "@/components/MarkdownMessage";
 import { useChatMessages } from "@/hooks/useChatMessages";
 import { siteMetadata } from "@/lib/seo/config";
 import { getWebPageJsonLd, serializeJsonLd } from "@/lib/seo/schema";
+
+const MarkdownMessage = dynamic(() => import("@/components/MarkdownMessage"), {
+  ssr: false,
+});
+
+const prefersReducedMotion = () =>
+  typeof window !== "undefined" &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 const rotatingPlaceholders = [
   "Interested in my research, teaching, or projects? Feel free to ask here.",
@@ -53,6 +61,8 @@ export default function Home() {
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
 
   useEffect(() => {
+    if (prefersReducedMotion()) return;
+
     const rotate = () => {
       setPlaceholderIndex((prev) => (prev + 1) % rotatingPlaceholders.length);
     };
@@ -138,7 +148,10 @@ export default function Home() {
   const historyEndRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    historyEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+    historyEndRef.current?.scrollIntoView({
+      behavior: prefersReducedMotion() ? "auto" : "smooth",
+      block: "end",
+    });
   }, [visibleMessages, isLoading]);
 
   const showPlaceholderOverlay = isHydrated && !prompt.trim() && visibleMessages.length === 0;
@@ -207,7 +220,12 @@ export default function Home() {
                   transition={{ duration: 0.32, ease: "easeInOut" }}
                   className="w-full flex-1"
                 >
-                    <div className="max-h-[320px] md:max-h-[360px] overflow-y-auto space-y-3 pr-[6px] pt-1">
+                    <div
+                      className="max-h-[320px] md:max-h-[360px] overflow-y-auto space-y-3 pr-[6px] pt-1"
+                      role="log"
+                      aria-live="polite"
+                      aria-relevant="additions text"
+                    >
                       {visibleMessages.length === 0 && !isLoading ? (
                         <p className="text-[16px] leading-[1.5] text-[rgba(0,0,0,0.6)] dark:text-white/60">发送后这里会展开显示完整对话。</p>
                       ) : (
@@ -241,6 +259,7 @@ export default function Home() {
 
             <form
               className="relative w-full"
+              aria-busy={isLoading}
               onSubmit={(event) => {
                 event.preventDefault();
                 handleSend();
@@ -251,6 +270,7 @@ export default function Home() {
                   placeholder=""
                   className="w-full min-h-[64px] resize-none bg-transparent pr-[58px] text-[16px] leading-[1.4] text-foreground focus:outline-none dark:text-white md:min-h-[72px] md:pr-[52px]"
                   aria-label="Ask a question"
+                  aria-describedby="chatbot-disclaimer"
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
                   onKeyDown={handleKeyDown}
@@ -293,11 +313,11 @@ export default function Home() {
               <div className="absolute bottom-0 right-0 mt-auto flex justify-end">
                 <button
                   type="submit"
-                  aria-label="Send prompt to ChatGPT"
+                  aria-label="Send message to KevinBot"
                   disabled={!prompt.trim() || isLoading}
                   className="relative inline-flex h-9 w-9 items-center justify-center rounded-full p-0 transition-colors hover:opacity-70 disabled:hover:opacity-100 bg-[rgba(0,0,0,0.04)] text-[rgba(0,0,0,0.44)] dark:bg-white/15 dark:text-white/60 enabled:bg-black enabled:text-white dark:enabled:bg-white dark:enabled:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-1 disabled:focus-visible:ring-offset-0"
                 >
-                  <span className="sr-only">Send prompt to ChatGPT</span>
+                  <span className="sr-only">Send message to KevinBot</span>
                   {isLoading ? (
                     <Loader2 size={16} className="animate-spin" aria-hidden="true" />
                   ) : (
@@ -322,11 +342,14 @@ export default function Home() {
               </div>
             </form>
           </motion.div>
-          <p className="text-xs text-[rgba(0,0,0,0.6)] dark:text-[rgb(243,243,243)] text-center w-full max-w-4xl">
+          <p
+            id="chatbot-disclaimer"
+            className="text-xs text-[rgba(0,0,0,0.6)] dark:text-[rgb(243,243,243)] text-center w-full max-w-4xl"
+          >
             ChatBot can make mistakes. Check important info.
           </p>
           {error && (
-            <p className="text-sm text-red-500 text-left w-full max-w-4xl">
+            <p role="alert" className="text-sm text-red-500 text-left w-full max-w-4xl">
               {error}
             </p>
           )}

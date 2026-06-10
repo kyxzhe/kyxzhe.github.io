@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Mail, Phone, MapPin, CalendarDays, X } from "lucide-react";
 import Navbar from "@/components/Navbar";
@@ -86,6 +86,22 @@ export default function ContactPage() {
       icon: MapPin,
     },
   ];
+
+  useEffect(() => {
+    if (!showCallInfo) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setShowCallInfo(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [showCallInfo]);
 
   return (
     <div className="min-h-screen bg-white text-foreground dark:bg-[#000000] dark:text-[#f5f5f5] font-normal">
@@ -228,14 +244,14 @@ export default function ContactPage() {
           onClick={() => setShowCallInfo(false)}
           role="dialog"
           aria-modal="true"
-          aria-label="Call request info"
+          aria-labelledby="call-request-title"
         >
           <div
             className="surface-card max-w-md w-full p-6 rounded-2xl shadow-lg"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold">Request a call</h3>
+              <h3 id="call-request-title" className="text-lg font-semibold">Request a call</h3>
               <button
                 type="button"
                 aria-label="Close request call dialog"

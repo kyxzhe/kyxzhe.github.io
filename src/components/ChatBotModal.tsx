@@ -1,12 +1,20 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import { AnimatePresence, motion } from "motion/react";
 import { AlertTriangle, MessagesSquare, Sparkles, X } from "lucide-react";
 import ChatInputBar from "@/components/ChatInputBar";
 import { type ChatMessage, sendChatRequest } from "@/lib/api/chat";
 import { useChatMessages } from "@/hooks/useChatMessages";
-import MarkdownMessage from "@/components/MarkdownMessage";
+
+const MarkdownMessage = dynamic(() => import("@/components/MarkdownMessage"), {
+  ssr: false,
+});
+
+const prefersReducedMotion = () =>
+  typeof window !== "undefined" &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 interface ChatBotModalProps {
   open: boolean;
@@ -26,6 +34,26 @@ export default function ChatBotModal({ open, onClose }: ChatBotModalProps) {
   const canSend = input.trim().length > 0 && !isLoading;
 
   useEffect(() => {
+    if (!open) return;
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [onClose, open]);
+
+  useEffect(() => {
     if (open) {
       setTimeout(() => inputRef.current?.focus(), 150);
     }
@@ -38,7 +66,10 @@ export default function ChatBotModal({ open, onClose }: ChatBotModalProps) {
 
   useEffect(() => {
     if (scrollRef.current) {
-      scrollRef.current.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
+      scrollRef.current.scrollTo({
+        top: scrollRef.current.scrollHeight,
+        behavior: prefersReducedMotion() ? "auto" : "smooth",
+      });
     }
   }, [visibleMessages]);
 
@@ -109,6 +140,10 @@ export default function ChatBotModal({ open, onClose }: ChatBotModalProps) {
         >
           <motion.div
             className="surface-card w-full max-w-3xl max-h-[90vh] flex flex-col p-6 relative overflow-hidden"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="kevinbot-title"
+            aria-describedby="kevinbot-description"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 30 }}
@@ -130,13 +165,19 @@ export default function ChatBotModal({ open, onClose }: ChatBotModalProps) {
               <span className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Beta</span>
             </div>
             <h2 className="text-2xl font-semibold mb-1 flex items-center gap-2">
-              KevinBot
+              <span id="kevinbot-title">KevinBot</span>
               <MessagesSquare size={18} className="text-brand-accent" />
             </h2>
-            <p className="text-[16px] leading-[1.5] text-muted-foreground mb-4">
+            <p id="kevinbot-description" className="text-[16px] leading-[1.5] text-muted-foreground mb-4">
               Powered by Cloudflare Workers AI. Treat responses as friendly context, not formal advice.
             </p>
-            <div ref={scrollRef} className="flex-1 overflow-y-auto space-y-3 pr-1 mb-4">
+            <div
+              ref={scrollRef}
+              className="flex-1 overflow-y-auto space-y-3 pr-1 mb-4"
+              role="log"
+              aria-live="polite"
+              aria-relevant="additions text"
+            >
               {latestMessages.map((message, index) => (
                 <div
                   key={`${message.role}-${index}-${message.content.slice(0, 8)}`}

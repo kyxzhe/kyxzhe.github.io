@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence, type Variants } from "motion/react";
 import {
@@ -50,6 +50,7 @@ const innerSwapVariants: Variants = {
 export default function ContactModal({ isOpen, onClose, startInSchedule }: ContactModalProps) {
   const [mode, setMode] = useState<"info" | "schedule">(startInSchedule ? "schedule" : "info");
   const availability = useMemo(() => generateAvailability(new Date(), 30), []);
+  const closeButtonRef = useRef<HTMLButtonElement | null>(null);
   const WINDOW_SIZE = 5;
   const SUCCESS_DISMISS_DELAY = 1400; // short pause to show "Confirmed" badge
   const [windowStart, setWindowStart] = useState(0);
@@ -95,20 +96,47 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
 
   const selectedSlot = slotsForDate.find((slot) => slot.id === selectedSlotId);
 
-  const resetScheduler = () => {
+  const resetScheduler = useCallback(() => {
     setMode(startInSchedule ? "schedule" : "info");
     setWindowStart(0);
     setSelectedDate(availability[0]?.dateISO ?? "");
     setSelectedSlotId(null);
     setFormValues({ name: "", email: "", note: "" });
     setSubmissionState("idle");
-  };
+  }, [availability, startInSchedule]);
+
+  const handleDismiss = useCallback(() => {
+    onClose();
+    resetScheduler();
+  }, [onClose, resetScheduler]);
 
   useEffect(() => {
     if (isOpen && startInSchedule) {
       setMode("schedule");
     }
   }, [isOpen, startInSchedule]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const focusTimer = window.setTimeout(() => closeButtonRef.current?.focus(), 0);
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        handleDismiss();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      window.clearTimeout(focusTimer);
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [handleDismiss, isOpen]);
 
   useEffect(() => {
     if (!availability.find((day) => day.dateISO === selectedDate)) {
@@ -195,12 +223,15 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
           animate="visible"
           exit="exit"
           onClick={() => {
-            onClose();
-            resetScheduler();
+            handleDismiss();
           }}
         >
         <motion.div
           className="surface-card relative max-h-[calc(100dvh-1.5rem)] w-full max-w-4xl overflow-y-auto p-4 sm:max-h-[90vh] sm:p-6 md:p-8 lg:p-12"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="contact-modal-title"
+          aria-describedby="contact-modal-description"
           variants={modalVariants}
           initial="hidden"
           animate={{ scale: 1, opacity: 1 }}
@@ -209,12 +240,12 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
         >
             <motion.div>
                 <motion.button
+                  ref={closeButtonRef}
                   type="button"
                   aria-label="Close contact modal"
                   className="absolute right-4 top-4 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-[var(--accent-soft)] text-[var(--accent)] transition-colors hover:opacity-80 md:right-5 md:top-5 md:h-11 md:w-11"
                   onClick={() => {
-                    onClose();
-                    resetScheduler();
+                    handleDismiss();
                   }}
                   variants={iconVariants}
                   initial="hidden"
@@ -230,10 +261,10 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                   initial="hidden"
                   animate="visible"
                 >
-                  <h1 className="mb-3 text-[34px] font-medium leading-none md:text-6xl lg:text-7xl">
+                  <h1 id="contact-modal-title" className="mb-3 text-[34px] font-medium leading-none md:text-6xl lg:text-7xl">
                     {mode === "info" ? "Contact me" : "Book a time"}
                   </h1>
-                  <p className="text-[15px] leading-relaxed text-muted-foreground md:text-xl">
+                  <p id="contact-modal-description" className="text-[15px] leading-relaxed text-muted-foreground md:text-xl">
                     {mode === "info"
                       ? "Share what you need, who is involved, and any constraints. I will outline the next steps."
                       : "Choose a time and add a short note. I will confirm by email."}

@@ -54,6 +54,16 @@ body {
   overflow-x: hidden;
 }
 
+html {
+  scroll-padding-top: 120px;
+  text-size-adjust: 100%;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
 @media (min-width: 768px) {
   body {
     padding: 24px 42px;
@@ -192,5 +202,16 @@ body {
 
   .text-muted-foreground {
     color: var(--muted-foreground);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
   }
 }

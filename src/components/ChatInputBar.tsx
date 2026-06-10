@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, type KeyboardEvent } from "react";
+import { forwardRef, type FormEvent, type KeyboardEvent } from "react";
 import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils/util";
 
@@ -27,6 +27,13 @@ const ChatInputBar = forwardRef<HTMLInputElement, ChatInputBarProps>(
     },
     ref
   ) => {
+    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      if (!disabled) {
+        onSubmit();
+      }
+    };
+
     const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
       if (event.key === "Enter" && !event.shiftKey) {
         event.preventDefault();
@@ -37,7 +44,9 @@ const ChatInputBar = forwardRef<HTMLInputElement, ChatInputBarProps>(
     };
 
     return (
-      <div
+      <form
+        onSubmit={handleSubmit}
+        aria-busy={isLoading}
         className={cn(
           "relative flex items-center rounded-full border border-[rgba(60,60,67,0.18)] bg-white/90 px-3 py-3 pr-[52px] pe-[52px] shadow-[0px_1px_3px_rgba(15,17,21,0.05)] backdrop-blur-sm transition focus-within:shadow-[0px_2px_6px_rgba(15,17,21,0.08)] dark:border-white/10 dark:bg-white/5 min-h-[60px]",
           disabled && "opacity-80",
@@ -52,19 +61,17 @@ const ChatInputBar = forwardRef<HTMLInputElement, ChatInputBarProps>(
           onChange={(event) => onChange(event.target.value)}
           onKeyDown={handleKeyDown}
           className="flex-1 bg-transparent px-1 py-1 text-[16px] leading-[1.4] text-foreground placeholder:text-muted-foreground/70 focus:outline-none"
-          aria-label={placeholder}
+          aria-label="Chat prompt"
+          autoComplete="off"
         />
-        <div className="ie-3 absolute bottom-4 right-4 mt-auto flex justify-end">
+        <div className="absolute bottom-4 right-4 mt-auto flex justify-end">
           <button
             type="submit"
-            onClick={() => {
-              if (!disabled) onSubmit();
-            }}
-            aria-label="Send prompt to ChatGPT"
+            aria-label="Send message to KevinBot"
             disabled={disabled}
             className="relative flex h-9 w-9 items-center justify-center rounded-full p-0 transition-colors hover:opacity-70 disabled:hover:opacity-100 bg-[rgba(0,0,0,0.06)] text-[rgba(0,0,0,0.35)] dark:bg-white/15 dark:text-white/60 enabled:bg-black enabled:text-white dark:enabled:bg-white dark:enabled:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-1 disabled:focus-visible:ring-offset-0"
           >
-            <span className="sr-only">Send prompt to ChatGPT</span>
+            <span className="sr-only">Send message to KevinBot</span>
             {isLoading ? (
               <Loader2 size={16} className="animate-spin" aria-hidden="true" />
             ) : (
@@ -87,7 +94,7 @@ const ChatInputBar = forwardRef<HTMLInputElement, ChatInputBarProps>(
             )}
           </button>
         </div>
-      </div>
+      </form>
     );
   }
 );
