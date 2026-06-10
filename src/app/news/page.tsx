@@ -68,6 +68,9 @@ const itemListJsonLd = getItemListJsonLd({
     })
   ),
 });
+const serializedBreadcrumbJsonLd = serializeJsonLd(breadcrumbJsonLd);
+const serializedCollectionJsonLd = serializeJsonLd(collectionJsonLd);
+const serializedItemListJsonLd = serializeJsonLd(itemListJsonLd);
 
 const filterPanelIds = "news-filter-panel-desktop news-filter-panel-mobile";
 const sortPanelIds = "news-sort-panel-desktop news-sort-panel-mobile";
@@ -269,17 +272,17 @@ export default function NewsPage() {
       <script
         id="ld-breadcrumb-news"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: serializeJsonLd(breadcrumbJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: serializedBreadcrumbJsonLd }}
       />
       <script
         id="ld-collection-news"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: serializeJsonLd(collectionJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: serializedCollectionJsonLd }}
       />
       <script
         id="ld-item-list-news"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: serializeJsonLd(itemListJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: serializedItemListJsonLd }}
       />
       <Navbar />
       {(filterOpen || sortOpen) && (

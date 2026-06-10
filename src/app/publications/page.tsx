@@ -75,6 +75,9 @@ const itemListJsonLd = getItemListJsonLd({
     })
   ),
 });
+const serializedBreadcrumbJsonLd = serializeJsonLd(breadcrumbJsonLd);
+const serializedCollectionJsonLd = serializeJsonLd(collectionJsonLd);
+const serializedItemListJsonLd = serializeJsonLd(itemListJsonLd);
 
 const filterPanelIds = "publications-filter-panel-desktop publications-filter-panel-mobile";
 const sortPanelIds = "publications-sort-panel-desktop publications-sort-panel-mobile";
@@ -454,17 +457,17 @@ export default function PublicationsPage() {
       <script
         id="ld-breadcrumb-publications"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: serializeJsonLd(breadcrumbJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: serializedBreadcrumbJsonLd }}
       />
       <script
         id="ld-collection-publications"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: serializeJsonLd(collectionJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: serializedCollectionJsonLd }}
       />
       <script
         id="ld-item-list-publications"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: serializeJsonLd(itemListJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: serializedItemListJsonLd }}
       />
       <Navbar />
 
