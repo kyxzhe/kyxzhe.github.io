@@ -8,6 +8,7 @@ import {
   Loader2,
   AlertCircle,
 } from "lucide-react";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 import { generateAvailability } from "@/lib/constants/availability";
 
 interface ContactModalProps {
@@ -16,6 +17,7 @@ interface ContactModalProps {
 
 export default function ContactModal({ onClose }: ContactModalProps) {
   const availability = useMemo(() => generateAvailability(new Date(), 30), []);
+  const dialogRef = useRef<HTMLDivElement | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
   const successDismissTimerRef = useRef<number | null>(null);
   const WINDOW_SIZE = 5;
@@ -70,6 +72,7 @@ export default function ContactModal({ onClose }: ContactModalProps) {
   const emailErrorId = "booking-email-error";
   const noteInputId = "booking-note";
   const emailHasError = trimmedEmail.length > 0 && !emailValid;
+  useFocusTrap(dialogRef);
 
   const resetScheduler = useCallback(() => {
     setWindowStart(0);
@@ -198,11 +201,13 @@ export default function ContactModal({ onClose }: ContactModalProps) {
       }}
     >
       <div
+        ref={dialogRef}
         className="contact-modal-panel surface-card relative max-h-[calc(100dvh-3rem)] w-full max-w-4xl overflow-y-auto p-4 sm:max-h-[90vh] sm:p-6 md:p-8 lg:p-12"
         role="dialog"
         aria-modal="true"
         aria-labelledby="contact-modal-title"
         aria-describedby="contact-modal-description"
+        tabIndex={-1}
         onClick={(e) => e.stopPropagation()}
       >
         <div>

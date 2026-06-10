@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { CalendarDays, Phone, X } from "lucide-react";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 
 const ContactModal = dynamic(() => import("@/components/ContactModal"), {
   ssr: false,
@@ -13,6 +14,8 @@ export function ContactPhoneRequest() {
   const [showCallInfo, setShowCallInfo] = useState(false);
   const triggerButtonRef = useRef<HTMLButtonElement | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
+  const dialogRef = useRef<HTMLDivElement | null>(null);
+  useFocusTrap(dialogRef, showCallInfo);
 
   const closeCallInfo = useCallback(() => {
     setShowCallInfo(false);
@@ -70,11 +73,13 @@ export function ContactPhoneRequest() {
           onClick={closeCallInfo}
         >
           <div
+            ref={dialogRef}
             className="surface-card max-w-md w-full p-6 rounded-2xl shadow-lg"
             role="dialog"
             aria-modal="true"
             aria-labelledby="call-request-title"
             aria-describedby="call-request-description"
+            tabIndex={-1}
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between mb-4">
