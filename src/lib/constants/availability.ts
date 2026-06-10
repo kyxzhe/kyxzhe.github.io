@@ -2,11 +2,11 @@ export const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday",
 export type Weekday = (typeof weekdays)[number];
 
 const SLOT_BLUEPRINTS = [
-  { key: "slot-10", label: "10:00 – 10:45 AEDT" },
-  { key: "slot-11", label: "11:00 – 11:45 AEDT" },
-  { key: "slot-14", label: "14:00 – 14:45 AEDT" },
-  { key: "slot-15", label: "15:00 – 15:45 AEDT" },
-  { key: "slot-16", label: "16:00 – 16:45 AEDT" },
+  { key: "slot-10", label: "10:00 – 10:45 Sydney time" },
+  { key: "slot-11", label: "11:00 – 11:45 Sydney time" },
+  { key: "slot-14", label: "14:00 – 14:45 Sydney time" },
+  { key: "slot-15", label: "15:00 – 15:45 Sydney time" },
+  { key: "slot-16", label: "16:00 – 16:45 Sydney time" },
 ] as const;
 
 const BOOKED_SLOT_IDS = new Set<string>([
