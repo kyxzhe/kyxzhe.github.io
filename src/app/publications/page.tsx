@@ -517,11 +517,11 @@ export default function PublicationsPage() {
                   />
                 )}
               </button>
-              {filterOpen && (
-                <div
-                  id="publications-filter-panel-desktop"
-                  className="z-50 hidden max-h-[min(34rem,calc(100vh-2rem))] flex-col overflow-hidden rounded-[8px] border border-[var(--card-border)] bg-[var(--card)]/96 shadow-[0_16px_36px_rgba(0,0,0,0.14)] backdrop-blur-md dark:bg-[#141416]/96 lg:absolute lg:right-0 lg:top-full lg:mt-2 lg:flex lg:w-[min(420px,calc(100vw-2rem))]"
-                >
+              <div
+                id="publications-filter-panel-desktop"
+                hidden={!filterOpen}
+                className="z-50 hidden max-h-[min(34rem,calc(100vh-2rem))] flex-col overflow-hidden rounded-[8px] border border-[var(--card-border)] bg-[var(--card)]/96 shadow-[0_16px_36px_rgba(0,0,0,0.14)] backdrop-blur-md dark:bg-[#141416]/96 lg:absolute lg:right-0 lg:top-full lg:mt-2 lg:flex lg:w-[min(420px,calc(100vw-2rem))]"
+              >
                   <div className="flex shrink-0 items-center justify-between px-4 pb-1 pt-3 text-sm text-foreground dark:text-white">
                     <p className="font-semibold">Filters</p>
                     <button
@@ -575,8 +575,7 @@ export default function PublicationsPage() {
                       Clear all
                     </button>
                   </div>
-                </div>
-              )}
+              </div>
             </div>
 
             <div className="relative flex items-center gap-1">
@@ -595,13 +594,13 @@ export default function PublicationsPage() {
                 <span>Sort</span>
                 {sortOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
               </button>
-              {sortOpen && (
-                <div
-                  id="publications-sort-panel-desktop"
-                  role="radiogroup"
-                  aria-label="Sort publications"
-                  className="z-50 hidden flex-col gap-2 overflow-y-auto rounded-[8px] border border-[var(--card-border)] bg-[var(--card)]/96 p-3 text-sm text-foreground shadow-[0_16px_36px_rgba(0,0,0,0.14)] backdrop-blur-md dark:bg-[#141416]/96 dark:text-white lg:absolute lg:right-0 lg:top-full lg:mt-2 lg:flex lg:w-[min(256px,calc(100vw-2rem))]"
-                >
+              <div
+                id="publications-sort-panel-desktop"
+                role="radiogroup"
+                aria-label="Sort publications"
+                hidden={!sortOpen}
+                className="z-50 hidden flex-col gap-2 overflow-y-auto rounded-[8px] border border-[var(--card-border)] bg-[var(--card)]/96 p-3 text-sm text-foreground shadow-[0_16px_36px_rgba(0,0,0,0.14)] backdrop-blur-md dark:bg-[#141416]/96 dark:text-white lg:absolute lg:right-0 lg:top-full lg:mt-2 lg:flex lg:w-[min(256px,calc(100vw-2rem))]"
+              >
                   {sortOptions.map((option) => (
                     <label
                       key={option.value}
@@ -617,8 +616,7 @@ export default function PublicationsPage() {
                       {option.label}
                     </label>
                   ))}
-                </div>
-              )}
+              </div>
             </div>
 
             <div className="flex items-center gap-2 text-[rgba(0,0,0,0.6)] dark:text-foreground/70">
@@ -651,11 +649,11 @@ export default function PublicationsPage() {
             </div>
           </div>
 
-          {filterOpen && (
-            <div
-              id="publications-filter-panel-mobile"
-              className="relative z-50 flex max-h-[min(70dvh,36rem)] w-full flex-col overflow-hidden rounded-[8px] border border-[var(--card-border)] bg-[var(--card)]/96 shadow-[0_16px_36px_rgba(0,0,0,0.14)] backdrop-blur-md dark:bg-[#141416]/96 lg:hidden"
-            >
+          <div
+            id="publications-filter-panel-mobile"
+            hidden={!filterOpen}
+            className="relative z-50 flex max-h-[min(70dvh,36rem)] w-full flex-col overflow-hidden rounded-[8px] border border-[var(--card-border)] bg-[var(--card)]/96 shadow-[0_16px_36px_rgba(0,0,0,0.14)] backdrop-blur-md dark:bg-[#141416]/96 lg:hidden"
+          >
               <div className="flex shrink-0 items-center justify-between px-4 pb-1 pt-3 text-sm text-foreground dark:text-white">
                 <p className="font-semibold">Filters</p>
                 <button
@@ -709,16 +707,15 @@ export default function PublicationsPage() {
                   Clear all
                 </button>
               </div>
-            </div>
-          )}
+          </div>
 
-          {sortOpen && (
-            <div
-              id="publications-sort-panel-mobile"
-              role="radiogroup"
-              aria-label="Sort publications"
-              className="relative z-50 flex w-full flex-col gap-2 overflow-y-auto rounded-[8px] border border-[var(--card-border)] bg-[var(--card)]/96 p-3 text-sm text-foreground shadow-[0_16px_36px_rgba(0,0,0,0.14)] backdrop-blur-md dark:bg-[#141416]/96 dark:text-white lg:hidden"
-            >
+          <div
+            id="publications-sort-panel-mobile"
+            role="radiogroup"
+            aria-label="Sort publications"
+            hidden={!sortOpen}
+            className="relative z-50 flex w-full flex-col gap-2 overflow-y-auto rounded-[8px] border border-[var(--card-border)] bg-[var(--card)]/96 p-3 text-sm text-foreground shadow-[0_16px_36px_rgba(0,0,0,0.14)] backdrop-blur-md dark:bg-[#141416]/96 dark:text-white lg:hidden"
+          >
               {sortOptions.map((option) => (
                 <label
                   key={option.value}
@@ -734,8 +731,7 @@ export default function PublicationsPage() {
                   {option.label}
                 </label>
               ))}
-            </div>
-          )}
+          </div>
         </div>
 
         {sortedItems.length === 0 ? (
