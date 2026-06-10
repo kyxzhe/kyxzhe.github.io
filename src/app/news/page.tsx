@@ -337,7 +337,6 @@ export default function NewsPage() {
                 }}
                 aria-expanded={filterOpen}
                 aria-controls={filterPanelIds}
-                aria-haspopup="true"
               >
                 <span
                   className={
@@ -434,7 +433,6 @@ export default function NewsPage() {
                 }}
                 aria-expanded={sortOpen}
                 aria-controls={sortPanelIds}
-                aria-haspopup="true"
               >
                 <span>Sort</span>
                 {sortOpen ? <ChevronUp size={16} aria-hidden="true" /> : <ChevronDown size={16} aria-hidden="true" />}
