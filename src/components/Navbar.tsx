@@ -1,6 +1,6 @@
-import Link from 'next/link';
-import { navItems } from '@/lib/constants/navItems';
-import MobileMenu from './MobileMenu';
+import Link from "next/link";
+import DesktopNav from "./DesktopNav";
+import MobileMenu from "./MobileMenu";
 
 export default function Navbar() {
   return (
@@ -18,20 +18,7 @@ export default function Navbar() {
             <span className="text-[17px] uppercase font-light italic tracking-[0.1em]">Kevin</span>
             <span className="text-[17px] uppercase font-semibold tracking-[0.1em]">Zheng</span>
           </Link>
-          <ul className="hidden md:flex flex-row gap-11 lg:gap-14 list-none m-0 items-center text-[17px] uppercase tracking-[0.13em] text-foreground font-light dark:text-white/80">
-            {navItems.map(({ href, label, title }) => (
-              <li key={href}>
-                <Link
-                  href={href}
-                  className="hover:text-foreground transition-colors"
-                  aria-label={label}
-                  prefetch={true}
-                >
-                  {title}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <DesktopNav />
           <MobileMenu />
         </nav>
       </header>
