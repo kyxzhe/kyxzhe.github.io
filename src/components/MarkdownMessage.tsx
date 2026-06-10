@@ -196,7 +196,7 @@ const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
             <a
               className={cn("underline decoration-from-font underline-offset-2 text-[var(--accent)]", className)}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               {...props}
             />
           ),
