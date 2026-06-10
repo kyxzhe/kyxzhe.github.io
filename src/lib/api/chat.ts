@@ -69,11 +69,9 @@ export async function sendChatRequest(
   });
 
   if (!response.ok) {
-    const errorText = await response.text().catch(() => "");
+    const errorText = await readErrorText(response);
     throw new Error(
-      `Chat service returned ${response.status}. ${
-        errorText ? `Details: ${errorText}` : ""
-      }`
+      `Chat service returned ${response.status}.${errorText ? ` ${errorText}` : ""}`
     );
   }
 
@@ -91,6 +89,21 @@ export async function sendChatRequest(
   }
 
   throw new Error("Chat service did not return a valid response.");
+}
+
+async function readErrorText(response: Response) {
+  const text = await response.text().catch(() => "");
+  if (!text) return "";
+
+  try {
+    const payload = JSON.parse(text) as unknown;
+    if (!payload || typeof payload !== "object") return text;
+    const record = payload as Record<string, unknown>;
+    const message = record.error ?? record.message ?? record.detail;
+    return typeof message === "string" ? message : text;
+  } catch {
+    return text;
+  }
 }
 
 function extractText(payload: unknown): string | null {
