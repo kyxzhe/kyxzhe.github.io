@@ -52,13 +52,14 @@ const socialEntries = (Object.keys(socials) as Array<keyof typeof socials>).map(
 );
 
 const consoleNotes = [
-  "This studio console waits ~1s to pop open with ASCII vibes so the page can hydrate first.",
-  "Devtools detection pulses every 500ms to spot the extra-sized viewport explorers.",
+  "This studio console waits for browser idle time so the page can hydrate first.",
+  "Devtools detection checks periodically and pauses while the tab is hidden.",
   "The hero tagline is stitched right out of the landing copy, so console fans stay aligned.",
 ];
 
 let consoleInitialized = false;
 let devToolsIntervalId: ReturnType<typeof setInterval> | undefined;
+const DEVTOOLS_CHECK_INTERVAL_MS = 1500;
 
 export const consoleUtil = {
   asciiArt: `
@@ -206,6 +207,8 @@ export const consoleUtil = {
     const devtools = { open: false };
 
     devToolsIntervalId = setInterval(() => {
+      if (document.visibilityState === "hidden") return;
+
       if (
         window.outerHeight - window.innerHeight > 200 ||
         window.outerWidth - window.innerWidth > 200
@@ -221,6 +224,6 @@ export const consoleUtil = {
       } else {
         devtools.open = false;
       }
-    }, 500);
+    }, DEVTOOLS_CHECK_INTERVAL_MS);
   },
 };
