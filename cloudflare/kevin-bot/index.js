@@ -113,8 +113,6 @@ Be concise but not cryptic:
 
 const ALLOWED_ORIGINS = [
   "https://kyxzhe.github.io",
-  "http://localhost:3000",
-  "http://127.0.0.1:3000",
 ];
 const MODEL_ID = "@cf/google/gemma-4-26b-a4b-it";
 const MAX_RETRIEVAL_MESSAGES = 6;
@@ -123,9 +121,25 @@ const MAX_MESSAGE_CHARS = 4000;
 const MAX_SESSION_ID_CHARS = 128;
 const CHAT_ROLES = new Set(["user", "assistant"]);
 
+function isAllowedOrigin(origin) {
+  if (ALLOWED_ORIGINS.includes(origin)) {
+    return true;
+  }
+
+  try {
+    const url = new URL(origin);
+    return (
+      url.protocol === "http:" &&
+      (url.hostname === "localhost" || url.hostname === "127.0.0.1")
+    );
+  } catch {
+    return false;
+  }
+}
+
 function getCorsHeaders(request) {
   const origin = request.headers.get("Origin") || "";
-  const allowOrigin = ALLOWED_ORIGINS.includes(origin)
+  const allowOrigin = isAllowedOrigin(origin)
     ? origin
     : ALLOWED_ORIGINS[0];
 
