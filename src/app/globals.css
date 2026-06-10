@@ -128,6 +128,10 @@ html {
   }
 
   .btn-primary {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    justify-content: center;
     background: var(--accent);
     color: #f7f7f7;
     border-radius: var(--radius-pill);

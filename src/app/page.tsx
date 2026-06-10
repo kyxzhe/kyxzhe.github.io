@@ -210,13 +210,13 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row items-center gap-3 mt-4">
             <Link
               href="/publications"
-              className="px-6 md:px-7 py-3 rounded-full text-[15px] font-medium shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition duration-200 hover:-translate-y-[2px] bg-[#141414] text-white dark:bg-[#ffffff] dark:text-[#000000]"
+              className="inline-flex min-h-11 items-center justify-center rounded-full px-6 py-3 text-[15px] font-medium shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition duration-200 hover:-translate-y-[2px] bg-[#141414] text-white dark:bg-[#ffffff] dark:text-[#000000] md:px-7"
             >
               View publications
             </Link>
             <Link
               href="/contact"
-              className="px-6 md:px-7 py-3 rounded-full border text-[15px] font-medium transition duration-200 hover:-translate-y-[1px] border-[rgba(0,0,0,0.12)] bg-white text-foreground shadow-[0_1px_6px_rgba(0,0,0,0.05)] dark:border-[#666] dark:bg-[#000000] dark:text-[rgba(255,255,255,1)] dark:shadow-[0_2px_8px_rgba(0,0,0,0.24)]"
+              className="inline-flex min-h-11 items-center justify-center rounded-full border px-6 py-3 text-[15px] font-medium transition duration-200 hover:-translate-y-[1px] border-[rgba(0,0,0,0.12)] bg-white text-foreground shadow-[0_1px_6px_rgba(0,0,0,0.05)] dark:border-[#666] dark:bg-[#000000] dark:text-[rgba(255,255,255,1)] dark:shadow-[0_2px_8px_rgba(0,0,0,0.24)] md:px-7"
             >
               Contact
             </Link>

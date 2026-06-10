@@ -121,7 +121,7 @@ export default function AboutPage() {
                 </Link>
                 <Link
                   href="/"
-                  className="text-foreground/60 text-center underline underline-offset-4 hover:text-foreground transition-colors"
+                  className="inline-flex min-h-11 items-center justify-center text-center text-foreground/60 underline underline-offset-4 transition-colors hover:text-foreground"
                 >
                   Back to home
                 </Link>
