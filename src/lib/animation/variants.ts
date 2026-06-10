@@ -1,42 +1,4 @@
-import { Variants } from "motion/react";
-
-// Container animations
-export const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2
-    }
-  }
-};
-
-// Card animations
-export const cardVariants: Variants = {
-  hidden: { 
-    opacity: 0, 
-    y: 30,
-    scale: 0.95
-  },
-  visible: { 
-    opacity: 1, 
-    y: 0,
-    scale: 1,
-    transition: {
-      duration: 0.6,
-      ease: [0.4, 0, 0.2, 1]
-    }
-  },
-  hover: {
-    y: -3,
-    scale: 1.01,
-    transition: {
-      duration: 0.35,
-      ease: [0.33, 1, 0.68, 1]
-    }
-  }
-};
+import type { Variants } from "motion/react";
 
 // Text animations
 export const textVariants: Variants = {
