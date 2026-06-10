@@ -48,6 +48,14 @@ const mobileRotatingPlaceholders = [
 ];
 
 const MAX_PROMPT_CHARS = 4000;
+const serializedHomePageJsonLd = serializeJsonLd(
+  getWebPageJsonLd({
+    title: siteMetadata.title,
+    description: siteMetadata.description,
+    url: siteMetadata.baseUrl,
+    dateModified: "2026-06-11",
+  })
+);
 
 export default function Home() {
   const [prompt, setPrompt] = useState("");
@@ -179,19 +187,13 @@ export default function Home() {
 
   const showPlaceholderOverlay = isHydrated && !prompt.trim() && visibleMessages.length === 0;
   const showCaretHint = isHydrated && !prompt.trim() && visibleMessages.length > 0;
-  const homePageJsonLd = getWebPageJsonLd({
-    title: siteMetadata.title,
-    description: siteMetadata.description,
-    url: siteMetadata.baseUrl,
-    dateModified: "2026-06-11",
-  });
 
   return (
     <div className="flex flex-col min-h-screen font-sans font-medium">
       <script
         id="ld-homepage"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: serializeJsonLd(homePageJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: serializedHomePageJsonLd }}
       />
       <Navbar />
       <main id="main-content" tabIndex={-1} className="flex-1 w-full flex flex-col items-center justify-center text-center px-6 md:px-12 lg:px-16 pb-16 gap-10 md:gap-14">
