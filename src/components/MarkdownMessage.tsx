@@ -97,7 +97,7 @@ const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
             <p className={cn("text-[14px] font-semibold leading-[1.35] mt-2 mb-2", className)} {...props} />
           ),
           p: ({ className, ...props }) => (
-            <div className={cn("whitespace-pre-line leading-[1.5]", className)} {...props} />
+            <p className={cn("whitespace-pre-line leading-[1.5]", className)} {...props} />
           ),
           ol: ({ className, children, ...props }) => (
             <ol
