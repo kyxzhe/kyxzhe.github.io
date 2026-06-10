@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
@@ -165,12 +164,15 @@ export default async function PublicationDetailPage({
           <aside className="self-start space-y-5">
             <div className="overflow-hidden rounded-[4px] bg-[#090909]">
               <div className="relative aspect-[4/3] w-full sm:aspect-square lg:aspect-[4/5]">
-                <Image
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                   src={getCardCoverPath(publication.cover)}
                   alt={publication.title}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 280px"
-                  className="object-cover object-center"
+                  width={560}
+                  height={840}
+                  decoding="async"
+                  className="h-full w-full object-cover object-center"
+                  loading="eager"
                 />
               </div>
             </div>
