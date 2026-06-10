@@ -334,7 +334,9 @@ export default function ContactModal({ onClose }: ContactModalProps) {
                   <label htmlFor={nameInputId} className="text-sm text-muted-foreground">Your name</label>
                   <input
                     id={nameInputId}
+                    name="name"
                     type="text"
+                    autoComplete="name"
                     value={formValues.name}
                     onChange={(e) => setFormValues((prev) => ({ ...prev, name: e.target.value }))}
                     className="rounded-[12px] border border-border bg-transparent px-4 py-3 focus:outline-none focus:border-foreground placeholder:text-muted-foreground/70"
@@ -345,7 +347,9 @@ export default function ContactModal({ onClose }: ContactModalProps) {
                   <label htmlFor={emailInputId} className="text-sm text-muted-foreground">Contact email</label>
                   <input
                     id={emailInputId}
+                    name="email"
                     type="email"
+                    autoComplete="email"
                     value={formValues.email}
                     onChange={(e) => setFormValues((prev) => ({ ...prev, email: e.target.value }))}
                     className="rounded-[12px] border border-border bg-transparent px-4 py-3 focus:outline-none focus:border-foreground placeholder:text-muted-foreground/70"
@@ -363,6 +367,8 @@ export default function ContactModal({ onClose }: ContactModalProps) {
                 <label htmlFor={noteInputId} className="text-sm text-muted-foreground">Notes (optional)</label>
                 <textarea
                   id={noteInputId}
+                  name="message"
+                  autoComplete="off"
                   value={formValues.note}
                   onChange={(e) => setFormValues((prev) => ({ ...prev, note: e.target.value }))}
                   rows={3}
