@@ -59,6 +59,7 @@ export async function sendChatRequest(
   const sessionId = getChatSessionId();
   const response = await fetch(CHAT_API_URL, {
     method: "POST",
+    referrerPolicy: "no-referrer",
     headers: {
       "Content-Type": "application/json",
       ...(sessionId ? { "X-Chat-Session": sessionId } : {}),
