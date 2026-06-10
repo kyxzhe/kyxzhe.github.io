@@ -181,8 +181,7 @@ export default function ContactModal({ onClose }: ContactModalProps) {
         onClose();
         resetScheduler();
       }, SUCCESS_DISMISS_DELAY);
-    } catch (error) {
-      console.error(error);
+    } catch {
       setSubmissionState("error");
     }
   };
