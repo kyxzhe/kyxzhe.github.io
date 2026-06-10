@@ -126,7 +126,7 @@ const ResourceRow = ({
           target="_blank"
           rel="noopener noreferrer"
           referrerPolicy="no-referrer"
-          className="relative z-20 inline-flex items-center gap-1 text-foreground hover:underline underline-offset-4"
+          className="relative z-20 -mx-1 inline-flex min-h-11 items-center gap-1 px-1 text-foreground underline-offset-4 hover:underline"
         >
           {resource.label}
           <ArrowUpRight size={12} aria-hidden="true" />
