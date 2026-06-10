@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type HTMLAttributes, type ReactNode } from "react";
+import { useEffect, useRef, useState, type HTMLAttributes, type ReactNode } from "react";
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
 import jsx from "react-syntax-highlighter/dist/esm/languages/prism/jsx";
 import tsx from "react-syntax-highlighter/dist/esm/languages/prism/tsx";
@@ -10,10 +10,7 @@ import python from "react-syntax-highlighter/dist/esm/languages/prism/python";
 import bash from "react-syntax-highlighter/dist/esm/languages/prism/bash";
 import json from "react-syntax-highlighter/dist/esm/languages/prism/json";
 import markdown from "react-syntax-highlighter/dist/esm/languages/prism/markdown";
-import java from "react-syntax-highlighter/dist/esm/languages/prism/java";
 import sql from "react-syntax-highlighter/dist/esm/languages/prism/sql";
-import c from "react-syntax-highlighter/dist/esm/languages/prism/c";
-import cpp from "react-syntax-highlighter/dist/esm/languages/prism/cpp";
 import oneDark from "react-syntax-highlighter/dist/esm/styles/prism/one-dark";
 import { cn } from "@/lib/utils/util";
 
@@ -29,11 +26,23 @@ SyntaxHighlighter.registerLanguage("bash", bash);
 SyntaxHighlighter.registerLanguage("shell", bash);
 SyntaxHighlighter.registerLanguage("json", json);
 SyntaxHighlighter.registerLanguage("markdown", markdown);
-SyntaxHighlighter.registerLanguage("java", java);
 SyntaxHighlighter.registerLanguage("sql", sql);
-SyntaxHighlighter.registerLanguage("c", c);
-SyntaxHighlighter.registerLanguage("cpp", cpp);
-SyntaxHighlighter.registerLanguage("c++", cpp);
+
+const highlightedLanguages = new Set([
+  "jsx",
+  "tsx",
+  "ts",
+  "typescript",
+  "javascript",
+  "js",
+  "py",
+  "python",
+  "bash",
+  "shell",
+  "json",
+  "markdown",
+  "sql",
+]);
 
 interface MarkdownCodeBlockProps extends HTMLAttributes<HTMLElement> {
   children?: ReactNode;
@@ -76,21 +85,38 @@ export default function MarkdownCodeBlock({
   ...props
 }: MarkdownCodeBlockProps) {
   const [copied, setCopied] = useState(false);
+  const copyResetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const text = getCodeText(children);
   const language =
     (className?.match(/language-([\w-]+)/)?.[1] as string | undefined) || undefined;
+  const normalizedLanguage = language?.toLowerCase();
+  const canHighlight = normalizedLanguage ? highlightedLanguages.has(normalizedLanguage) : false;
   const codeBackground = "var(--pill-background)";
-  const codeLabel = (language ?? "text").toLowerCase();
+  const codeLabel = normalizedLanguage ?? "text";
 
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
-      setTimeout(() => setCopied(false), 1400);
+      if (copyResetTimerRef.current) {
+        clearTimeout(copyResetTimerRef.current);
+      }
+      copyResetTimerRef.current = setTimeout(() => {
+        setCopied(false);
+        copyResetTimerRef.current = null;
+      }, 1400);
     } catch {
       // ignore clipboard errors
     }
   };
+
+  useEffect(() => {
+    return () => {
+      if (copyResetTimerRef.current) {
+        clearTimeout(copyResetTimerRef.current);
+      }
+    };
+  }, []);
 
   if (!language) {
     return <PlainCodeBlock className={className} {...props}>{children}</PlainCodeBlock>;
@@ -123,23 +149,31 @@ export default function MarkdownCodeBlock({
         </button>
       </div>
       <div className="max-h-[420px] overflow-auto">
-        <SyntaxHighlighter
-          language={language}
-          style={oneDark}
-          PreTag="div"
-          customStyle={{
-            margin: 0,
-            borderRadius: "0 0 10px 10px",
-            background: codeBackground,
-            padding: "12px 16px",
-          }}
-          codeTagProps={{
-            className: "text-[0.95em] leading-[1.6] font-mono",
-          }}
-          wrapLongLines={false}
-        >
-          {text}
-        </SyntaxHighlighter>
+        {canHighlight ? (
+          <SyntaxHighlighter
+            language={normalizedLanguage}
+            style={oneDark}
+            PreTag="div"
+            customStyle={{
+              margin: 0,
+              borderRadius: "0 0 10px 10px",
+              background: codeBackground,
+              padding: "12px 16px",
+            }}
+            codeTagProps={{
+              className: "text-[0.95em] leading-[1.6] font-mono",
+            }}
+            wrapLongLines={false}
+          >
+            {text}
+          </SyntaxHighlighter>
+        ) : (
+          <pre className="overflow-x-auto px-4 py-3 text-[var(--foreground)]" style={{ background: codeBackground }}>
+            <code className="block text-[0.95em] leading-[1.6] font-mono text-inherit">
+              {text}
+            </code>
+          </pre>
+        )}
       </div>
     </div>
   );
