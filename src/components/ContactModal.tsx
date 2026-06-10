@@ -95,6 +95,11 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
   }, [availability, bookedSlots, selectedDate]);
 
   const selectedSlot = slotsForDate.find((slot) => slot.id === selectedSlotId);
+  const nameInputId = "booking-name";
+  const emailInputId = "booking-email";
+  const emailErrorId = "booking-email-error";
+  const noteInputId = "booking-note";
+  const emailHasError = formValues.email.length > 0 && !emailValid;
 
   const resetScheduler = useCallback(() => {
     setMode(startInSchedule ? "schedule" : "info");
@@ -287,10 +292,10 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                     initial="hidden"
                     animate="visible"
                   >
-                    <motion.div
-                      className="card-row hoverable flex-col sm:flex-row items-start sm:items-center cursor-pointer"
+                    <motion.a
+                      href={`mailto:${contactInfo.email}`}
+                      className="card-row hoverable flex-col sm:flex-row items-start sm:items-center"
                       whileHover={{ scale: 1.02 }}
-                      onClick={() => window.open(`mailto:${contactInfo.email}`)}
                     >
                       <motion.div variants={iconVariants} initial="hidden" animate="visible">
                         <Mail size={24} className="text-brand-accent" />
@@ -299,11 +304,11 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                         <h3 className="font-medium text-lg">Email</h3>
                         <p className="text-muted-foreground break-all">{contactInfo.email}</p>
                       </div>
-                    </motion.div>
-                    <motion.div
-                      className="card-row hoverable flex-col sm:flex-row items-start sm:items-center cursor-pointer"
+                    </motion.a>
+                    <motion.a
+                      href={`tel:${contactInfo.phoneRaw}`}
+                      className="card-row hoverable flex-col sm:flex-row items-start sm:items-center"
                       whileHover={{ scale: 1.02 }}
-                      onClick={() => window.open(`tel:${contactInfo.phoneRaw}`)}
                     >
                       <motion.div variants={iconVariants} initial="hidden" animate="visible">
                         <Phone size={24} className="text-brand-accent" />
@@ -312,7 +317,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                         <h3 className="font-medium text-lg">Phone</h3>
                         <p className="text-muted-foreground">{contactInfo.phone}</p>
                       </div>
-                    </motion.div>
+                    </motion.a>
 
                     <motion.div
                       className="card-row flex-col sm:flex-row items-start sm:items-center"
@@ -329,8 +334,9 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                       </div>
                     </motion.div>
 
-                    <motion.div
-                      className="card-row hoverable flex-col sm:flex-row items-start sm:items-center cursor-pointer"
+                    <motion.button
+                      type="button"
+                      className="card-row hoverable flex-col items-start text-left sm:flex-row sm:items-center"
                       variants={textVariants}
                       initial="hidden"
                       animate="visible"
@@ -346,7 +352,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                           {contactInfo.availability} · Tap to reserve
                         </p>
                       </div>
-                    </motion.div>
+                    </motion.button>
                   </motion.div>
 
                   <motion.div
@@ -420,18 +426,22 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                     initial="hidden"
                     animate="visible"
                   >
-                        <div className="flex flex-wrap gap-3 items-center justify-end">
-                          {submissionState === "success" && (
-                            <span className="inline-flex items-center gap-1 text-xs uppercase tracking-[0.3em] text-green-500">
-                              <Check size={14} /> Confirmed
-                            </span>
-                          )}
-                          {submissionState === "error" && (
-                            <span className="inline-flex items-center gap-1 text-xs uppercase tracking-[0.3em] text-red-500">
-                              <AlertCircle size={14} /> Failed
-                            </span>
-                          )}
-                        </div>
+                    <div
+                      className="flex flex-wrap gap-3 items-center justify-end"
+                      role="status"
+                      aria-live="polite"
+                    >
+                      {submissionState === "success" && (
+                        <span className="inline-flex items-center gap-1 text-xs uppercase tracking-[0.3em] text-green-500">
+                          <Check size={14} /> Confirmed
+                        </span>
+                      )}
+                      {submissionState === "error" && (
+                        <span className="inline-flex items-center gap-1 text-xs uppercase tracking-[0.3em] text-red-500">
+                          <AlertCircle size={14} /> Failed
+                        </span>
+                      )}
+                    </div>
 
                     <div className="rounded-[18px] bg-[var(--pill-background)] p-3 sm:p-4">
                       <div className="mb-3 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -522,8 +532,9 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="flex flex-col gap-2">
-                        <label className="text-sm text-muted-foreground">Your name</label>
+                        <label htmlFor={nameInputId} className="text-sm text-muted-foreground">Your name</label>
                         <input
+                          id={nameInputId}
                           type="text"
                           value={formValues.name}
                           onChange={(e) => setFormValues((prev) => ({ ...prev, name: e.target.value }))}
@@ -532,24 +543,27 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                         />
                       </div>
                       <div className="flex flex-col gap-2">
-                        <label className="text-sm text-muted-foreground">Contact email</label>
+                        <label htmlFor={emailInputId} className="text-sm text-muted-foreground">Contact email</label>
                         <input
+                          id={emailInputId}
                           type="email"
                           value={formValues.email}
                           onChange={(e) => setFormValues((prev) => ({ ...prev, email: e.target.value }))}
                           className="rounded-[12px] border border-border bg-transparent px-4 py-3 focus:outline-none focus:border-foreground placeholder:text-muted-foreground/70"
                           placeholder="you@example.com"
-                          aria-invalid={formValues.email.length > 0 && !emailValid}
+                          aria-invalid={emailHasError}
+                          aria-describedby={emailHasError ? emailErrorId : undefined}
                         />
-                        {!emailValid && formValues.email.length > 0 && (
-                          <span className="text-xs text-red-400">Please enter a valid email.</span>
+                        {emailHasError && (
+                          <span id={emailErrorId} className="text-xs text-red-400">Please enter a valid email.</span>
                         )}
                       </div>
                     </div>
 
                     <div className="flex flex-col gap-2">
-                      <label className="text-sm text-muted-foreground">Notes (optional)</label>
+                      <label htmlFor={noteInputId} className="text-sm text-muted-foreground">Notes (optional)</label>
                       <textarea
+                        id={noteInputId}
                         value={formValues.note}
                         onChange={(e) => setFormValues((prev) => ({ ...prev, note: e.target.value }))}
                         rows={3}
