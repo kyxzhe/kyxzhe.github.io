@@ -62,7 +62,7 @@ Open [http://localhost:3000](http://localhost:3000).
 pnpm dev      # Start the Turbopack development server
 pnpm lint     # Run ESLint
 pnpm build    # Create the static export in out/
-pnpm start    # Serve a production Next.js build locally
+pnpm start    # Serve the exported out/ directory locally
 ```
 
 Run `pnpm lint` before committing. Run `pnpm build` before deployment-sensitive changes because the site is exported statically for GitHub Pages.
