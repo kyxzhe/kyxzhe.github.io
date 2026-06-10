@@ -560,7 +560,7 @@ export default function PublicationsPage() {
                     <fieldset className="min-w-0 space-y-1.5 border-0 p-0 sm:max-h-60 sm:overflow-y-auto sm:pr-1">
                       <legend className="text-[11px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-foreground/70">Topic</legend>
                       {topics.map((topic) => (
-                        <label key={topic} className="flex min-h-9 items-center gap-2 text-[13px] leading-snug text-foreground dark:text-white">
+                        <label key={topic} className="flex min-h-10 items-center gap-2 text-[13px] leading-snug text-foreground dark:text-white">
                           <input
                             type="checkbox"
                             checked={selectedTopics.includes(topic)}
@@ -573,7 +573,7 @@ export default function PublicationsPage() {
                     <fieldset className="min-w-0 space-y-1.5 border-0 p-0 sm:max-h-60 sm:overflow-y-auto sm:pr-1">
                       <legend className="text-[11px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-foreground/70">Year</legend>
                       {years.map((year) => (
-                        <label key={year} className="flex min-h-9 items-center gap-2 text-[13px] leading-snug text-foreground dark:text-white">
+                        <label key={year} className="flex min-h-10 items-center gap-2 text-[13px] leading-snug text-foreground dark:text-white">
                           <input
                             type="checkbox"
                             checked={selectedYears.includes(year)}
@@ -695,7 +695,7 @@ export default function PublicationsPage() {
                 <fieldset className="min-w-0 space-y-1.5 border-0 p-0 sm:max-h-60 sm:overflow-y-auto sm:pr-1">
                   <legend className="text-[11px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-foreground/70">Topic</legend>
                   {topics.map((topic) => (
-                    <label key={topic} className="flex min-h-9 items-center gap-2 text-[13px] leading-snug text-foreground dark:text-white">
+                    <label key={topic} className="flex min-h-10 items-center gap-2 text-[13px] leading-snug text-foreground dark:text-white">
                       <input
                         type="checkbox"
                         checked={selectedTopics.includes(topic)}
@@ -708,7 +708,7 @@ export default function PublicationsPage() {
                 <fieldset className="min-w-0 space-y-1.5 border-0 p-0 sm:max-h-60 sm:overflow-y-auto sm:pr-1">
                   <legend className="text-[11px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-foreground/70">Year</legend>
                   {years.map((year) => (
-                    <label key={year} className="flex min-h-9 items-center gap-2 text-[13px] leading-snug text-foreground dark:text-white">
+                    <label key={year} className="flex min-h-10 items-center gap-2 text-[13px] leading-snug text-foreground dark:text-white">
                       <input
                         type="checkbox"
                         checked={selectedYears.includes(year)}
