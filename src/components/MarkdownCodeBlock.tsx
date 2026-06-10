@@ -135,7 +135,7 @@ export default function MarkdownCodeBlock({
         <button
           type="button"
           onClick={handleCopy}
-          className="inline-flex items-center gap-1 bg-transparent px-1.5 py-[4px] text-[12px] text-[rgb(93,93,93)] transition hover:opacity-80 dark:text-[rgb(243,243,243)]"
+          className="inline-flex min-h-8 items-center gap-1 rounded-full bg-transparent px-2 text-[12px] text-[rgb(93,93,93)] transition hover:opacity-80 dark:text-[rgb(243,243,243)]"
           aria-label={copied ? "Code copied" : "Copy code"}
         >
           {copied ? (
