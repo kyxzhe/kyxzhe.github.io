@@ -49,12 +49,12 @@ export function useChatMessages(options: UseChatMessagesOptions) {
       return emptyHistory;
     }
 
-    const raw = sessionStorage.getItem(storageKey);
-    if (!raw) {
-      return emptyHistory;
-    }
-
     try {
+      const raw = sessionStorage.getItem(storageKey);
+      if (!raw) {
+        return emptyHistory;
+      }
+
       const parsed = JSON.parse(raw);
       if (!Array.isArray(parsed)) {
         return emptyHistory;
