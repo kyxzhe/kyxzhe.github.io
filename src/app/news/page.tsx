@@ -97,7 +97,7 @@ const ListRow = ({ item }: { item: NewsItem }) => {
             className="relative z-20 inline-flex w-fit items-center gap-1 text-[12px] uppercase tracking-[0.28em] text-foreground underline-offset-4 hover:underline dark:text-white"
           >
             {item.linkLabel ?? "Related link"}
-            <ArrowUpRight size={12} />
+            <ArrowUpRight size={12} aria-hidden="true" />
           </Link>
         )}
       </div>
@@ -320,10 +320,11 @@ export default function NewsPage() {
                   Filter
                 </span>
                 {filterOpen ? (
-                  <X size={16} className="text-foreground dark:text-white" />
+                  <X size={16} className="text-foreground dark:text-white" aria-hidden="true" />
                 ) : (
                   <Filter
                     size={16}
+                    aria-hidden="true"
                     className={
                       selectedTopics.length > 0 || selectedYears.length > 0
                         ? "text-foreground dark:text-white"
@@ -407,7 +408,7 @@ export default function NewsPage() {
                 aria-controls={sortPanelIds}
               >
                 <span>Sort</span>
-                {sortOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                {sortOpen ? <ChevronUp size={16} aria-hidden="true" /> : <ChevronDown size={16} aria-hidden="true" />}
               </button>
               <div
                 id="news-sort-panel-desktop"
@@ -447,7 +448,7 @@ export default function NewsPage() {
                 aria-label="List view"
                 aria-pressed={viewMode === "list"}
               >
-                <List size={16} />
+                <List size={16} aria-hidden="true" />
               </button>
               <button
                 type="button"
@@ -460,7 +461,7 @@ export default function NewsPage() {
                 aria-label="Grid view"
                 aria-pressed={viewMode === "grid"}
               >
-                <LayoutGrid size={16} />
+                <LayoutGrid size={16} aria-hidden="true" />
               </button>
             </div>
           </div>
@@ -480,7 +481,7 @@ export default function NewsPage() {
                     setFilterOpen(false);
                   }}
                 >
-                  <X size={16} />
+                  <X size={16} aria-hidden="true" />
                 </button>
               </div>
               <div className="grid grid-cols-[minmax(0,1fr)_78px] gap-4 overflow-y-auto px-4 py-3 text-sm text-foreground dark:text-white sm:grid-cols-2">
