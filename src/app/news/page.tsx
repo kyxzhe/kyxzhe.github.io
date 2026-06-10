@@ -581,12 +581,13 @@ export default function NewsPage() {
             <div className="flex max-w-2xl flex-col items-start gap-3">
               <h2 className="text-[18px] font-medium text-foreground dark:text-white">No updates match these filters</h2>
               <p className="max-w-xl leading-relaxed text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]">
-                Try clearing the selected topics or years to see the full news list again.
+                Try clearing the selected category, topics, or years to see the full news list again.
               </p>
               <button
                 type="button"
                 className="inline-flex min-h-11 items-center text-[12px] uppercase tracking-[0.28em] text-foreground underline-offset-4 hover:underline dark:text-white"
                 onClick={() => {
+                  setActiveCategory("All");
                   setSelectedTopics([]);
                   setSelectedYears([]);
                 }}
