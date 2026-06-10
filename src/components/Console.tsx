@@ -1,14 +1,19 @@
 "use client";
 
 import { useEffect } from "react";
-import { consoleUtil } from "@/lib/utils/consoleUtil";
 
 export default function ConsoleProvider() {
   useEffect(() => {
-    // Initialize console easter egg when component mounts
-    consoleUtil.init();
+    const timeoutId = window.setTimeout(() => {
+      void import("@/lib/utils/consoleUtil").then(({ consoleUtil }) => {
+        consoleUtil.init();
+      });
+    }, 1000);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
   }, []);
 
-  // This component doesn't render anything visible
   return null;
 }

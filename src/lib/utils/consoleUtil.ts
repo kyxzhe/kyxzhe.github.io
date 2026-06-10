@@ -98,7 +98,6 @@ export const consoleUtil = {
   },
 
   display() {
-    console.clear();
     console.log(`%c${this.asciiArt}`, this.styles.ascii);
 
     console.log(`%c${heroContent.line1}`, this.styles.title);
@@ -196,8 +195,8 @@ export const consoleUtil = {
     if (consoleInitialized) return;
     consoleInitialized = true;
 
-    this.display();
     this.setupCommands();
+    this.display();
     this.detectDevTools();
   },
 
@@ -225,9 +224,3 @@ export const consoleUtil = {
     }, 500);
   },
 };
-
-if (typeof window !== "undefined") {
-  setTimeout(() => {
-    consoleUtil.init();
-  }, 1000);
-}
