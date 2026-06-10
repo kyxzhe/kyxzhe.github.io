@@ -114,6 +114,7 @@ Be concise but not cryptic:
 const ALLOWED_ORIGINS = [
   "https://kyxzhe.github.io",
 ];
+const ALLOWED_METHODS = "POST, OPTIONS";
 const MODEL_ID = "@cf/google/gemma-4-26b-a4b-it";
 const MAX_RETRIEVAL_MESSAGES = 6;
 const MAX_CHAT_MESSAGES = 16;
@@ -145,7 +146,7 @@ function getCorsHeaders(request) {
 
   return {
     "Access-Control-Allow-Origin": allowOrigin,
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Methods": ALLOWED_METHODS,
     "Access-Control-Allow-Headers": "Content-Type, X-Chat-Session",
     "Access-Control-Max-Age": "86400",
     "Vary": "Origin",
@@ -327,6 +328,7 @@ const worker = {
           status: 405,
           headers: {
             ...corsHeaders,
+            Allow: ALLOWED_METHODS,
             "Content-Type": "application/json",
           },
         },
