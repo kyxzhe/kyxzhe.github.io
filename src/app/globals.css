@@ -11,6 +11,7 @@
   --accent-link: #0f0f11;
   --accent-soft: rgba(15, 15, 17, 0.12);
   --font-openai-sans: 'OpenAI Sans', system-ui, -apple-system, sans-serif;
+  --font-mono-stack: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
   --radius-card: 20px;
   --radius-card-tight: 18px;
   --radius-pill: 999px;
@@ -40,7 +41,7 @@
   --color-accent: var(--accent);
   --color-card: var(--card);
   --font-sans: var(--font-openai-sans);
-  --font-mono: var(--font-openai-sans);
+  --font-mono: var(--font-mono-stack);
 }
 
 body {
