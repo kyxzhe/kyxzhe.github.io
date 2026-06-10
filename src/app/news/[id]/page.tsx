@@ -50,6 +50,7 @@ export async function generateMetadata({
       absolute: `${item.title} | Kevin Zheng`,
     },
     description: item.summary,
+    keywords: item.topics,
     alternates: {
       canonical: pageUrl,
     },
