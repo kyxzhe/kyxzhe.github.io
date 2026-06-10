@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "motion/react";
 import { ArrowUpRight, ChevronDown, ChevronUp, Filter, LayoutGrid, List, X } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -591,11 +590,9 @@ export default function NewsPage() {
             className="w-full self-center grid gap-6 lg:w-[calc(100vw-84px)] lg:max-w-[1224px] lg:grid-cols-[minmax(0,1fr)_272px] items-start"
           >
             <div className="block lg:sticky lg:top-20 lg:self-start">
-              <motion.article
+              <article
                 ref={gridLeadArticleRef}
-                whileHover={{ y: -3 }}
-                transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
-                className="group relative cursor-pointer"
+                className="group relative cursor-pointer transition-transform duration-200 ease-out hover:-translate-y-[3px]"
               >
                 <Link
                   href={newsPath(leadItem)}
@@ -622,16 +619,14 @@ export default function NewsPage() {
                     <MetaLine item={leadItem} />
                   </div>
                 </div>
-              </motion.article>
+              </article>
             </div>
 
             <div className="flex flex-col gap-6">
               {sideRailItems.map((item) => (
                 <div key={item.id} className="block">
-                  <motion.article
-                    whileHover={{ y: -3 }}
-                    transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
-                    className="group relative cursor-pointer"
+                  <article
+                    className="group relative cursor-pointer transition-transform duration-200 ease-out hover:-translate-y-[3px]"
                   >
                     <Link
                       href={newsPath(item)}
@@ -657,7 +652,7 @@ export default function NewsPage() {
                         <MetaLine item={item} />
                       </div>
                     </div>
-                  </motion.article>
+                  </article>
                 </div>
               ))}
             </div>
@@ -674,17 +669,9 @@ export default function NewsPage() {
             <div className="grid gap-x-16 gap-y-8 md:grid-cols-2">
               {[leftColumnItems, rightColumnItems].map((column, columnIndex) => (
                 <div key={columnIndex} className="flex flex-col gap-4">
-                  {column.map((item, index) => (
+                  {column.map((item) => (
                     <div key={item.id} className="block">
-                      <motion.article
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, amount: 0.25 }}
-                        transition={{
-                          duration: 0.45,
-                          delay: index * 0.06,
-                          ease: [0.22, 1, 0.36, 1],
-                        }}
+                      <article
                         className="group relative grid cursor-pointer grid-cols-[96px_minmax(0,1fr)] gap-4 rounded-[6px] border border-transparent p-0 transition-colors hover:border-white/10 md:grid-cols-[104px_minmax(0,1fr)]"
                       >
                         <Link
@@ -711,7 +698,7 @@ export default function NewsPage() {
                             <MetaLine item={item} />
                           </div>
                         </div>
-                      </motion.article>
+                      </article>
                     </div>
                   ))}
                 </div>
