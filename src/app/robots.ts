@@ -2,7 +2,6 @@ import type { MetadataRoute } from "next";
 import { siteMetadata } from "@/lib/seo/config";
 
 export const dynamic = "force-static";
-export const revalidate = 3600; // 1 hour
 
 export default function robots(): MetadataRoute.Robots {
   const host = new URL(siteMetadata.baseUrl).host;
