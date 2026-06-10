@@ -154,7 +154,7 @@ export default function Home() {
   }, [prompt, isLoading, messages, setMessages]);
 
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
-    if (event.key === "Enter" && !event.shiftKey) {
+    if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) {
       event.preventDefault();
       handleSend();
     }
