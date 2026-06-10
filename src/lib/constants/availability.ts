@@ -15,7 +15,22 @@ const BOOKED_SLOT_IDS = new Set<string>([
   "2025-01-24-slot-16",
 ]);
 
+const SYDNEY_TIME_ZONE = "Australia/Sydney";
+
+const dateKeyFormatter = new Intl.DateTimeFormat("en-AU", {
+  timeZone: SYDNEY_TIME_ZONE,
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+});
+
+const weekdayFormatter = new Intl.DateTimeFormat("en-AU", {
+  timeZone: SYDNEY_TIME_ZONE,
+  weekday: "long",
+});
+
 const dateFormatter = new Intl.DateTimeFormat("en-AU", {
+  timeZone: SYDNEY_TIME_ZONE,
   weekday: "short",
   day: "numeric",
   month: "short",
@@ -34,15 +49,33 @@ export type DailyAvailability = {
   slots: SlotInstance[];
 };
 
+function getSydneyDateKey(date: Date) {
+  const parts = Object.fromEntries(
+    dateKeyFormatter
+      .formatToParts(date)
+      .filter((part) => part.type !== "literal")
+      .map((part) => [part.type, part.value])
+  );
+
+  return `${parts.year}-${parts.month}-${parts.day}`;
+}
+
+function getSydneyWeekday(date: Date): Weekday {
+  return weekdayFormatter.format(date) as Weekday;
+}
+
+function createSydneyDateCursor(date: Date) {
+  return new Date(`${getSydneyDateKey(date)}T12:00:00.000Z`);
+}
+
 export function generateAvailability(startDate = new Date(), workdays = 30): DailyAvailability[] {
   const result: DailyAvailability[] = [];
-  const cursor = new Date(startDate);
-  cursor.setHours(0, 0, 0, 0);
+  const cursor = createSydneyDateCursor(startDate);
 
   while (result.length < workdays) {
-    const weekday = weekdays[cursor.getDay()];
+    const weekday = getSydneyWeekday(cursor);
     if (weekday !== "Saturday" && weekday !== "Sunday") {
-      const iso = cursor.toISOString().split("T")[0];
+      const iso = getSydneyDateKey(cursor);
       result.push({
         dateISO: iso,
         weekday,
@@ -57,7 +90,7 @@ export function generateAvailability(startDate = new Date(), workdays = 30): Dai
         }),
       });
     }
-    cursor.setDate(cursor.getDate() + 1);
+    cursor.setUTCDate(cursor.getUTCDate() + 1);
   }
 
   return result;
