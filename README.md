@@ -34,7 +34,7 @@ The project is built with Next.js App Router, React, TypeScript, Tailwind CSS, M
 
 ```text
 src/app/                  App Router pages, layouts, metadata, sitemap, robots, manifest
-src/components/           Shared UI, navigation, chatbot, contact modal, markdown renderer
+src/components/           Shared UI, navigation, contact modal, markdown renderer
 src/hooks/                Navigation and session-backed chatbot state
 src/lib/constants/        Site content, publications, news, contact, socials, availability
 src/lib/seo/              Site metadata and JSON-LD builders
@@ -74,7 +74,7 @@ Most site updates should happen in constants rather than page components.
 | Content | File |
 | --- | --- |
 | Site metadata, SEO keywords, profile links | `src/lib/seo/config.ts` |
-| Homepage copy and legacy hero/about copy | `src/lib/constants/siteContent.ts` |
+| Homepage and console intro copy | `src/lib/constants/siteContent.ts` |
 | About page biography, focus areas, timeline, teaching | `src/lib/constants/about.ts` |
 | Publications and resource links | `src/lib/constants/publications.ts` |
 | News and milestone entries | `src/lib/constants/news.ts` |
