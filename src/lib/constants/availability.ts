@@ -1,5 +1,11 @@
-export const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"] as const;
-export type Weekday = (typeof weekdays)[number];
+export type Weekday =
+  | "Sunday"
+  | "Monday"
+  | "Tuesday"
+  | "Wednesday"
+  | "Thursday"
+  | "Friday"
+  | "Saturday";
 
 const SLOT_BLUEPRINTS = [
   { key: "slot-10", label: "10:00 – 10:45 Sydney time" },
