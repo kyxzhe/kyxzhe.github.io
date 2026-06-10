@@ -266,7 +266,7 @@ export default function PublicationsPage() {
               <p className="text-[11px] uppercase tracking-[0.24em] text-[rgba(0,0,0,0.5)] dark:text-white/58">
                 Featured publication
               </p>
-              <h2 className="pt-3 text-[28px] leading-[1.02] tracking-[-0.035em] text-foreground dark:text-white md:text-[38px]">
+              <h2 className="pt-3 text-[28px] leading-[1.02] text-foreground dark:text-white md:text-[38px]">
                 {leadItem.title}
               </h2>
               <div className="pt-3">
@@ -314,7 +314,7 @@ export default function PublicationsPage() {
                 </div>
               </div>
               <div className="pt-3">
-                <h2 className="max-w-4xl text-[30px] md:text-[clamp(30px,2.95vw,36px)] leading-[1.02] tracking-[-0.035em] text-foreground dark:text-white">
+                <h2 className="max-w-4xl text-[30px] md:text-[clamp(30px,2.95vw,36px)] leading-[1.02] text-foreground dark:text-white">
                   {leadItem.title}
                 </h2>
                 <div className="pt-2.5">
@@ -359,7 +359,7 @@ export default function PublicationsPage() {
                       </div>
                     </div>
                     <div className="pt-2.5">
-                      <h3 className="max-w-[17rem] text-[16px] md:text-[18px] leading-[1.12] tracking-[-0.02em] text-foreground dark:text-white">
+                      <h3 className="max-w-[17rem] text-[16px] md:text-[18px] leading-[1.12] text-foreground dark:text-white">
                         {item.title}
                       </h3>
                       <div className="pt-1.5">
@@ -376,7 +376,7 @@ export default function PublicationsPage() {
         {recentItems.length > 0 && (
           <section className="w-full self-center pt-10 md:pt-16 lg:w-[calc(100vw-84px)] lg:max-w-[1224px]">
             <div className="mb-6 flex items-center justify-between gap-4">
-              <h2 className="text-[22px] md:text-[28px] tracking-[-0.03em] text-foreground dark:text-white">Recent publications</h2>
+              <h2 className="text-[22px] md:text-[28px] text-foreground dark:text-white">Recent publications</h2>
               <p className="text-sm text-[rgba(0,0,0,0.45)] dark:text-white/48">Showing {sortedItems.length} items</p>
             </div>
 
@@ -413,7 +413,7 @@ export default function PublicationsPage() {
                           </div>
                         </div>
                         <div className="flex min-w-0 flex-col justify-center py-1">
-                          <h3 className="text-[18px] md:text-[20px] leading-[1.12] tracking-[-0.025em] text-foreground dark:text-white">
+                          <h3 className="text-[18px] md:text-[20px] leading-[1.12] text-foreground dark:text-white">
                             {item.title}
                           </h3>
                           <div className="pt-2">

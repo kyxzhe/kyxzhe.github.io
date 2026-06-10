@@ -134,7 +134,7 @@ export default async function PublicationDetailPage({
               {publication.category} · {formatDisplayDate(publication.date)}
             </p>
             <div className="space-y-4">
-              <h1 className="text-[40px] leading-[1.02] tracking-[-0.035em] md:text-[58px] dark:text-white">
+              <h1 className="text-[40px] leading-[1.02] md:text-[58px] dark:text-white">
                 {publication.title}
               </h1>
               <p className="max-w-3xl text-[17px] leading-relaxed text-foreground/76 dark:text-white/76">
