@@ -1,35 +1,8 @@
-'use client'
-import { useEffect } from 'react';
 import Link from 'next/link';
 import { navItems } from '@/lib/constants/navItems';
-import { useNavigation } from '@/hooks/useNavigation';
-import HamburgerButton from './HamburgerButton';
-import MobileNav from './MobileNav';
+import MobileMenu from './MobileMenu';
 
 export default function Navbar() {
-  const { menuOpen, toggleMenu, closeMenu } = useNavigation();
-  const mobileMenuId = 'mobile-navigation';
-
-  useEffect(() => {
-    if (!menuOpen) return;
-
-    const originalOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        closeMenu();
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      document.body.style.overflow = originalOverflow;
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [closeMenu, menuOpen]);
-
   return (
     <>
       <header className="fixed left-0 right-0 top-0 z-40 w-full bg-[var(--background)]/90 px-6 pb-2 pt-[18px] backdrop-blur-md supports-[backdrop-filter]:bg-[var(--background)]/78 md:px-[42px] md:pt-6" role="banner">
@@ -45,7 +18,6 @@ export default function Navbar() {
             <span className="text-[17px] uppercase font-light italic tracking-[0.1em]">Kevin</span>
             <span className="text-[17px] uppercase font-semibold tracking-[0.1em]">Zheng</span>
           </Link>
-          <HamburgerButton open={menuOpen} onClick={toggleMenu} controlsId={mobileMenuId} />
           <ul className="hidden md:flex flex-row gap-11 lg:gap-14 list-none m-0 items-center text-[17px] uppercase tracking-[0.13em] text-foreground font-light dark:text-white/80">
             {navItems.map(({ href, label, title }) => (
               <li key={href}>
@@ -60,7 +32,7 @@ export default function Navbar() {
               </li>
             ))}
           </ul>
-          <MobileNav id={mobileMenuId} open={menuOpen} closeMenu={closeMenu} />
+          <MobileMenu />
         </nav>
       </header>
       <div className="h-[108px] md:h-[98px]" aria-hidden="true" />
