@@ -73,7 +73,6 @@ export default function AboutPage() {
                   <p className="text-xs uppercase tracking-[0.3em] text-[rgba(0,0,0,0.6)] mt-3 dark:text-[rgba(255,255,255,0.8)]">Manuscripts</p>
                 </div>
               </div>
-              <div className="text-sm text-foreground/70 leading-relaxed" />
             </div>
           </div>
         </motion.section>
