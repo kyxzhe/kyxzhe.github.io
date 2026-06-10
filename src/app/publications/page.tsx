@@ -76,7 +76,7 @@ const filterPanelIds = "publications-filter-panel-desktop publications-filter-pa
 const sortPanelIds = "publications-sort-panel-desktop publications-sort-panel-mobile";
 
 const AuthorLine = ({ authors }: { authors: string[] }) => (
-  <p className="text-sm text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.44)]">
+  <p className="text-sm text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.6)]">
     {authors.map((author, index) => {
       const highlight = author.toLowerCase().includes("yuxiang zheng");
       return (
@@ -109,7 +109,7 @@ const ResourceRow = ({
   const showDot = visibleResources.length > 0;
 
   return (
-    <div className="flex flex-wrap items-center gap-2 text-[12px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.44)]">
+    <div className="flex flex-wrap items-center gap-2 text-[12px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.6)]">
       <span>{venue}</span>
       {showDot && <span>·</span>}
       {visibleResources.map((resource) => (
@@ -141,7 +141,7 @@ const ListRow = ({ item }: { item: Publication }) => {
         <p className="text-[12px] text-[rgba(0,0,0,0.62)] dark:text-[rgba(255,255,255,0.58)]">
           {item.category}
         </p>
-        <p className="text-[13px] text-[rgba(0,0,0,0.48)] dark:text-[rgba(255,255,255,0.44)]">
+        <p className="text-[13px] text-[rgba(0,0,0,0.48)] dark:text-[rgba(255,255,255,0.58)]">
           {formatDisplayDate(item.date)}
         </p>
       </div>

@@ -78,7 +78,7 @@ const ListRow = ({ item }: { item: NewsItem }) => {
         <p className="text-[12px] text-[rgba(0,0,0,0.62)] dark:text-[rgba(255,255,255,0.58)]">
           {formatNewsCategoryLabel(item.category)}
         </p>
-        <p className="text-[13px] text-[rgba(0,0,0,0.48)] dark:text-[rgba(255,255,255,0.44)]">
+        <p className="text-[13px] text-[rgba(0,0,0,0.48)] dark:text-[rgba(255,255,255,0.58)]">
           {formatDisplayDate(item.date)}
         </p>
       </div>
