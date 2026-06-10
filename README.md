@@ -2,7 +2,7 @@
 
 Personal academic website for [Yuxiang (Kevin) Zheng](https://kyxzhe.github.io), a PhD researcher in machine learning at the University of Technology Sydney. The site presents Kevin's work on information diffusion, social data science, trustworthy machine learning, and learning under noisy supervision.
 
-The project is built with Next.js App Router, React, TypeScript, Tailwind CSS, Motion, and a static export target for GitHub Pages.
+The project is built with Next.js App Router, React, TypeScript, Tailwind CSS, lightweight CSS transitions, and a static export target for GitHub Pages.
 
 ## Live Site
 
@@ -23,7 +23,7 @@ The project is built with Next.js App Router, React, TypeScript, Tailwind CSS, M
 - Next.js 15 with static export (`output: "export"`)
 - React 19 and TypeScript
 - Tailwind CSS 4 with shared utility classes in `src/app/globals.css`
-- Motion for page and card transitions
+- CSS transitions for lightweight page and card interactions
 - Lucide React plus local academic profile icons
 - React Markdown, GFM, KaTeX, and syntax highlighting for chatbot responses
 - Vercel Analytics
