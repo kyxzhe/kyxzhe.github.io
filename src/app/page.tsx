@@ -285,6 +285,7 @@ export default function Home() {
                   className="w-full min-h-[64px] resize-none bg-transparent pr-[58px] text-[16px] leading-[1.4] text-foreground focus:outline-none dark:text-white md:min-h-[72px] md:pr-[52px]"
                   aria-label="Ask a question"
                   aria-describedby="chatbot-disclaimer"
+                  required
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
                   onKeyDown={handleKeyDown}
