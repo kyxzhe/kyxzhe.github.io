@@ -268,12 +268,12 @@ export default function ContactModal({
                 aria-live="polite"
               >
                 {submissionState === "success" && (
-                  <span className="inline-flex items-center gap-1 text-xs uppercase tracking-[0.3em] text-green-500">
+                  <span className="inline-flex items-center gap-1 text-xs uppercase tracking-[0.3em] text-green-700 dark:text-green-400">
                     <Check size={14} aria-hidden="true" /> Confirmed
                   </span>
                 )}
                 {submissionState === "error" && (
-                  <span className="inline-flex items-center gap-1 text-xs uppercase tracking-[0.3em] text-red-500">
+                  <span className="inline-flex items-center gap-1 text-xs uppercase tracking-[0.3em] text-red-600 dark:text-red-400">
                     <AlertCircle size={14} aria-hidden="true" /> Failed
                   </span>
                 )}
@@ -409,7 +409,7 @@ export default function ContactModal({
                     aria-describedby={emailHasError ? emailErrorId : undefined}
                   />
                   {emailHasError && (
-                    <span id={emailErrorId} className="text-xs text-red-400">Please enter a valid email.</span>
+                    <span id={emailErrorId} className="text-xs text-red-600 dark:text-red-400">Please enter a valid email.</span>
                   )}
                 </div>
               </div>

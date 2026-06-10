@@ -342,7 +342,7 @@ export default function Home() {
             ChatBot can make mistakes. Check important info.
           </p>
           {error && (
-            <p role="alert" className="text-sm text-red-500 text-left w-full max-w-4xl">
+            <p role="alert" className="text-sm text-red-600 text-left w-full max-w-4xl dark:text-red-400">
               {error}
             </p>
           )}
