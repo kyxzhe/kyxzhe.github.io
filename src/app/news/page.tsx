@@ -628,7 +628,7 @@ export default function NewsPage() {
                   </div>
                 </div>
                 <div className="pt-3">
-                  <h2 className="max-w-4xl text-[30px] md:text-[clamp(30px,2.95vw,36px)] leading-[1.02] text-foreground dark:text-white">
+                  <h2 className="max-w-4xl text-[30px] leading-[1.02] text-foreground dark:text-white md:text-[32px] xl:text-[36px]">
                     {leadItem.title}
                   </h2>
                   <div className="pt-2.5">
