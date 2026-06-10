@@ -119,6 +119,7 @@ const MODEL_ID = "@cf/google/gemma-4-26b-a4b-it";
 const MAX_RETRIEVAL_MESSAGES = 6;
 const MAX_CHAT_MESSAGES = 16;
 const MAX_MESSAGE_CHARS = 4000;
+const MAX_BODY_BYTES = 100000;
 const MAX_CONTEXT_CHARS = 12000;
 const CONTEXT_SEPARATOR = "\n\n---\n\n";
 const MAX_SESSION_ID_CHARS = 128;
@@ -361,6 +362,34 @@ const worker = {
           headers: {
             ...corsHeaders,
             Allow: ALLOWED_METHODS,
+            "Content-Type": "application/json",
+          },
+        },
+      );
+    }
+
+    const contentType = request.headers.get("Content-Type") || "";
+    if (!contentType.toLowerCase().includes("application/json")) {
+      return new Response(
+        JSON.stringify({ error: "Content-Type must be application/json" }),
+        {
+          status: 415,
+          headers: {
+            ...corsHeaders,
+            "Content-Type": "application/json",
+          },
+        },
+      );
+    }
+
+    const contentLength = Number(request.headers.get("Content-Length") || 0);
+    if (Number.isFinite(contentLength) && contentLength > MAX_BODY_BYTES) {
+      return new Response(
+        JSON.stringify({ error: "Request body is too large" }),
+        {
+          status: 413,
+          headers: {
+            ...corsHeaders,
             "Content-Type": "application/json",
           },
         },
