@@ -340,6 +340,7 @@ export default function ContactModal({ onClose }: ContactModalProps) {
                     name="name"
                     type="text"
                     autoComplete="name"
+                    required
                     value={formValues.name}
                     onChange={(e) => setFormValues((prev) => ({ ...prev, name: e.target.value }))}
                     className="rounded-[12px] border border-border bg-transparent px-4 py-3 focus:outline-none focus:border-foreground placeholder:text-muted-foreground/70"
@@ -353,6 +354,7 @@ export default function ContactModal({ onClose }: ContactModalProps) {
                     name="email"
                     type="email"
                     autoComplete="email"
+                    required
                     value={formValues.email}
                     onChange={(e) => setFormValues((prev) => ({ ...prev, email: e.target.value }))}
                     className="rounded-[12px] border border-border bg-transparent px-4 py-3 focus:outline-none focus:border-foreground placeholder:text-muted-foreground/70"
