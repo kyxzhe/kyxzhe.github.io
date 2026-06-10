@@ -16,6 +16,9 @@ export function ContactPhoneRequest() {
   useEffect(() => {
     if (!showCallInfo) return;
 
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
     const focusTimer = window.setTimeout(() => {
       closeButtonRef.current?.focus();
     }, 0);
@@ -29,6 +32,7 @@ export function ContactPhoneRequest() {
     window.addEventListener("keydown", handleKeyDown);
 
     return () => {
+      document.body.style.overflow = originalOverflow;
       window.clearTimeout(focusTimer);
       window.removeEventListener("keydown", handleKeyDown);
     };
@@ -57,13 +61,13 @@ export function ContactPhoneRequest() {
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4"
           onClick={() => setShowCallInfo(false)}
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="call-request-title"
-          aria-describedby="call-request-description"
         >
           <div
             className="surface-card max-w-md w-full p-6 rounded-2xl shadow-lg"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="call-request-title"
+            aria-describedby="call-request-description"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between mb-4">
