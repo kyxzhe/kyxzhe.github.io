@@ -10,29 +10,30 @@ Location: Sydney, Australia
 
 Next.js Team: For the amazing React framework
 Tailwind CSS: For the utility-first CSS framework
-Framer Motion: For smooth animations
+Motion: For smooth animations
 Lucide React: For beautiful icons
-Vercel: For hosting and deployment
+Vercel: For privacy-minded analytics
+GitHub Pages: For static hosting
+Cloudflare: For the KevinBot Worker runtime
 
 /* SITE */
 
-Last update: 2026/05/14
+Last update: 2026/06/11
 Language: English
 Doctype: HTML5
-IDE: Visual Studio Code, Trae AI
 Components: React, TypeScript, Next.js 15
-Styling: Tailwind CSS, CSS Modules
+Styling: Tailwind CSS 4, shared utility classes
 Animations: Motion
 Icons: Lucide React
 Fonts: OpenAI Sans
 Hosting: GitHub Pages
+Analytics: Vercel Analytics
+AI: Cloudflare Workers AI
 
-/* EASTER EGGS */
+/* INTERACTIONS */
 
-🎮 Try the Konami Code: ↑↑↓↓←→←→BA
-🖥️ Check the browser console for surprises
-🐭 Hover over the footer for developer info
-🔍 Look for hidden interactive elements
+Console: window.kevinZheng exposes info(), links(), ascii(), collab(), notes(), ack(), and heart().
+Chat: KevinBot answers site questions from the homepage.
 
 /* PHILOSOPHY */
 
