@@ -12,7 +12,7 @@ export default function Navbar() {
         >
           <Link
             href="/"
-            className="relative z-50 flex flex-row gap-2 items-center"
+            className="relative z-50 flex min-h-11 flex-row items-center gap-2"
             aria-label="Go to homepage"
           >
             <span className="text-[17px] uppercase font-light italic tracking-[0.1em]">Kevin</span>

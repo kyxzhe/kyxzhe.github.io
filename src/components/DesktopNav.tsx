@@ -20,7 +20,7 @@ export default function DesktopNav() {
           <li key={href}>
             <Link
               href={href}
-              className={`transition-colors hover:text-foreground dark:hover:text-white ${
+              className={`inline-flex min-h-11 items-center transition-colors hover:text-foreground dark:hover:text-white ${
                 isCurrent ? "text-foreground dark:text-white" : ""
               }`}
               aria-label={label}
