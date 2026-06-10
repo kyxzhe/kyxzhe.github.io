@@ -93,7 +93,7 @@ const AuthorLine = ({ authors }: { authors: string[] }) => (
 );
 
 const CardMetaLine = ({ item }: { item: Publication }) => (
-  <p className="text-[11px] uppercase tracking-[0.18em] text-[rgba(0,0,0,0.5)] dark:text-white/58">
+  <p className="text-[11px] uppercase tracking-[0.18em] text-[rgba(0,0,0,0.62)] dark:text-white/58">
     {item.category} <span className="mx-1.5">·</span> {formatDisplayDate(item.date)}
   </p>
 );
@@ -141,7 +141,7 @@ const ListRow = ({ item }: { item: Publication }) => {
         <p className="text-[12px] text-[rgba(0,0,0,0.62)] dark:text-[rgba(255,255,255,0.58)]">
           {item.category}
         </p>
-        <p className="text-[13px] text-[rgba(0,0,0,0.48)] dark:text-[rgba(255,255,255,0.58)]">
+        <p className="text-[13px] text-[rgba(0,0,0,0.62)] dark:text-[rgba(255,255,255,0.58)]">
           {formatDisplayDate(item.date)}
         </p>
       </div>
@@ -281,7 +281,7 @@ export default function PublicationsPage() {
               </div>
             </div>
             <div className="flex min-w-0 flex-col justify-center lg:pl-3">
-              <p className="text-[11px] uppercase tracking-[0.24em] text-[rgba(0,0,0,0.5)] dark:text-white/58">
+              <p className="text-[11px] uppercase tracking-[0.24em] text-[rgba(0,0,0,0.62)] dark:text-white/58">
                 Featured publication
               </p>
               <h2 className="pt-3 text-[28px] leading-[1.02] text-foreground dark:text-white md:text-[38px]">
@@ -395,7 +395,7 @@ export default function PublicationsPage() {
           <section className="w-full self-center pt-10 md:pt-16 lg:w-[calc(100vw-84px)] lg:max-w-[1224px]">
             <div className="mb-6 flex items-center justify-between gap-4">
               <h2 className="text-[22px] md:text-[28px] text-foreground dark:text-white">Recent publications</h2>
-              <p className="text-sm text-[rgba(0,0,0,0.45)] dark:text-white/48">Showing {sortedItems.length} items</p>
+              <p className="text-sm text-[rgba(0,0,0,0.62)] dark:text-white/60">Showing {sortedItems.length} items</p>
             </div>
 
             <div className="grid gap-x-16 gap-y-8 md:grid-cols-2">

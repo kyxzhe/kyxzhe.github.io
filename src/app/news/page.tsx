@@ -78,7 +78,7 @@ const ListRow = ({ item }: { item: NewsItem }) => {
         <p className="text-[12px] text-[rgba(0,0,0,0.62)] dark:text-[rgba(255,255,255,0.58)]">
           {formatNewsCategoryLabel(item.category)}
         </p>
-        <p className="text-[13px] text-[rgba(0,0,0,0.48)] dark:text-[rgba(255,255,255,0.58)]">
+        <p className="text-[13px] text-[rgba(0,0,0,0.62)] dark:text-[rgba(255,255,255,0.58)]">
           {formatDisplayDate(item.date)}
         </p>
       </div>
@@ -108,7 +108,7 @@ const ListRow = ({ item }: { item: NewsItem }) => {
 
 function MetaLine({ item }: { item: NewsItem }) {
   return (
-    <p className="text-[11px] uppercase tracking-[0.18em] text-[rgba(0,0,0,0.5)] dark:text-white/58">
+    <p className="text-[11px] uppercase tracking-[0.18em] text-[rgba(0,0,0,0.62)] dark:text-white/58">
       {formatNewsCategoryLabel(item.category)} <span className="mx-1.5">·</span> {formatDisplayDate(item.date)}
     </p>
   );
@@ -675,7 +675,7 @@ export default function NewsPage() {
           <section className="w-full self-center pt-10 md:pt-16 lg:w-[calc(100vw-84px)] lg:max-w-[1224px]">
             <div className="mb-6 flex items-center justify-between gap-4">
               <h2 className="text-[22px] md:text-[28px] text-foreground dark:text-white">Recent updates</h2>
-              <p className="text-sm text-[rgba(0,0,0,0.45)] dark:text-white/48">Showing {sortedItems.length} items</p>
+              <p className="text-sm text-[rgba(0,0,0,0.62)] dark:text-white/60">Showing {sortedItems.length} items</p>
             </div>
 
             <div className="grid gap-x-16 gap-y-8 md:grid-cols-2">
