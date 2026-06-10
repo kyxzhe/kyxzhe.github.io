@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Building2, GraduationCap, MapPin } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { contactInfo } from "@/lib/constants/contact";
@@ -9,6 +10,12 @@ import {
   researchFocus,
   timeline,
 } from "@/lib/constants/about";
+
+const quickFacts = [
+  { label: "Sydney based", icon: MapPin },
+  { label: "Behavioural Data Science Lab @ UTS", icon: Building2 },
+  { label: "Teaching ML + Data Science @ USYD", icon: GraduationCap },
+];
 
 export default function AboutPage() {
   return (
@@ -30,9 +37,12 @@ export default function AboutPage() {
             </div>
             <div className="flex flex-col gap-4 text-sm text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]">
               <div className="flex flex-wrap gap-x-8 gap-y-2">
-                <span className="dark:text-[rgba(255,255,255,0.8)]">📍 Sydney based</span>
-                <span className="dark:text-[rgba(255,255,255,0.8)]">🏛 Behavioural Data Science Lab @ UTS</span>
-                <span className="dark:text-[rgba(255,255,255,0.8)]">🧑‍🏫 Teaching ML + Data Science @ USYD</span>
+                {quickFacts.map(({ label, icon: Icon }) => (
+                  <span key={label} className="inline-flex items-center gap-2 dark:text-[rgba(255,255,255,0.8)]">
+                    <Icon size={15} aria-hidden="true" />
+                    {label}
+                  </span>
+                ))}
               </div>
             </div>
           </div>
