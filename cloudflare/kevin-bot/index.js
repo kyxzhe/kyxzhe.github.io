@@ -118,6 +118,9 @@ const ALLOWED_ORIGINS = [
 ];
 const MODEL_ID = "@cf/google/gemma-4-26b-a4b-it";
 const MAX_RETRIEVAL_MESSAGES = 6;
+const MAX_CHAT_MESSAGES = 16;
+const MAX_MESSAGE_CHARS = 4000;
+const CHAT_ROLES = new Set(["user", "assistant"]);
 
 function getCorsHeaders(request) {
   const origin = request.headers.get("Origin") || "";
@@ -129,7 +132,31 @@ function getCorsHeaders(request) {
     "Access-Control-Allow-Origin": allowOrigin,
     "Access-Control-Allow-Methods": "POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type, X-Chat-Session",
+    "Access-Control-Max-Age": "86400",
+    "Vary": "Origin",
+    "X-Content-Type-Options": "nosniff",
   };
+}
+
+function sanitizeClientMessages(messages) {
+  if (!Array.isArray(messages)) {
+    return [];
+  }
+
+  return messages
+    .filter(
+      (message) =>
+        message &&
+        typeof message === "object" &&
+        CHAT_ROLES.has(message.role) &&
+        typeof message.content === "string",
+    )
+    .map((message) => ({
+      role: message.role,
+      content: message.content.trim().slice(0, MAX_MESSAGE_CHARS),
+    }))
+    .filter((message) => message.content.length > 0)
+    .slice(-MAX_CHAT_MESSAGES);
 }
 
 function extractChunkText(payload) {
@@ -298,25 +325,8 @@ const worker = {
       );
     }
 
-    const clientMessages = Array.isArray(body.messages)
-      ? body.messages
-      : [];
-    const historyWithoutSystem = clientMessages.filter(
-      (message) => message && message.role !== "system",
-    );
-    const retrievalMessages = historyWithoutSystem
-      .filter(
-        (message) =>
-          message &&
-          (message.role === "user" || message.role === "assistant") &&
-          typeof message.content === "string" &&
-          message.content.trim().length > 0,
-      )
-      .slice(-MAX_RETRIEVAL_MESSAGES)
-      .map((message) => ({
-        role: message.role,
-        content: message.content.trim(),
-      }));
+    const clientMessages = sanitizeClientMessages(body.messages);
+    const retrievalMessages = clientMessages.slice(-MAX_RETRIEVAL_MESSAGES);
 
     const lastUserMessage = [...clientMessages].reverse()
       .find(
@@ -372,7 +382,7 @@ const worker = {
 
       const chatMessages = [
         { role: "system", content: systemWithContext },
-        ...historyWithoutSystem,
+        ...clientMessages,
       ];
 
       const sessionAffinity = request.headers.get("X-Chat-Session")?.trim();
