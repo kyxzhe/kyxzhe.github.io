@@ -8,12 +8,10 @@
   --card-border: #e5e5e8;
   --pill-background: #f1f1f3;
   --accent: #0f0f11;
-  --accent-link: #0f0f11;
   --accent-soft: rgba(15, 15, 17, 0.12);
   --font-openai-sans: 'OpenAI Sans', system-ui, -apple-system, sans-serif;
   --font-mono-stack: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
   --radius-card: 20px;
-  --radius-card-tight: 18px;
   --radius-pill: 999px;
   --toggle-selected-bg: rgba(0, 0, 0, 0.06);
   color-scheme: light;
@@ -28,7 +26,6 @@
     --card-border: rgba(255, 255, 255, 0.1);
     --pill-background: rgba(255, 255, 255, 0.06);
     --accent: #f5f5f5;
-    --accent-link: #f5f5f5;
     --accent-soft: rgba(255, 255, 255, 0.16);
     --toggle-selected-bg: rgba(255, 255, 255, 0.14);
     color-scheme: dark;
@@ -125,28 +122,11 @@ html {
 }
 
 @layer utilities {
-  .glass-panel {
-    border-radius: var(--radius-card);
-    background: var(--card);
-    border: 1px solid var(--card-border);
-    box-shadow: none;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
-
   .surface-card {
     background: var(--card);
     border: 1px solid var(--card-border);
     border-radius: var(--radius-card);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
-  }
-
-  .surface-card-dark {
-    background: #101016;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: var(--radius-card-tight);
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
-    color: #f5f5f7;
   }
 
   .btn-primary {
@@ -165,16 +145,6 @@ html {
     }
   }
 
-  .badge-soft {
-    background: var(--accent-soft);
-    color: var(--accent);
-    border-radius: var(--radius-pill);
-    padding: 0.35rem 0.75rem;
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-  }
-
   .chip {
     border-radius: var(--radius-pill);
     border: 1px solid var(--card-border);
@@ -184,62 +154,6 @@ html {
     text-transform: uppercase;
     color: var(--muted-foreground);
     background: var(--pill-background);
-  }
-
-  .chip-relaxed {
-    text-transform: none;
-    letter-spacing: 0.05em;
-    color: var(--foreground);
-    font-size: 0.8rem;
-    line-height: 1.4;
-    text-align: left;
-  }
-
-  .card-row {
-    border-radius: 16px;
-    border: 1px solid var(--card-border);
-    background: var(--pill-background);
-    padding: 0.85rem 1rem;
-    display: flex;
-    gap: 0.75rem;
-    align-items: center;
-  }
-
-  .card-row.hoverable:hover {
-    border-color: #bfbfc6;
-    background: #f5f5f5;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
-  }
-
-  .card-pill {
-    border-radius: var(--radius-pill);
-    border: 1px solid var(--card-border);
-    background: var(--pill-background);
-    padding: 0.75rem 1rem;
-    color: var(--foreground);
-    font-size: 0.85rem;
-  }
-
-  .bubble-muted {
-    border-radius: 18px;
-    background: var(--pill-background);
-    color: var(--foreground);
-  }
-
-  .pill {
-    border-radius: var(--radius-pill);
-  }
-
-  .text-brand-accent {
-    color: var(--accent-link);
-  }
-
-  .border-brand-accent {
-    border-color: var(--accent-link);
-  }
-
-  .bg-brand-accent {
-    background-color: var(--accent);
   }
 
   .text-muted-foreground {
