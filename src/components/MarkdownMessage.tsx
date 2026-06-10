@@ -79,16 +79,22 @@ const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
         skipHtml
         components={{
           h1: ({ className, ...props }) => (
-            <h1 className={cn("text-[22px] font-semibold leading-[1.35] mt-2 mb-3", className)} {...props} />
+            <h2 className={cn("text-[22px] font-semibold leading-[1.35] mt-2 mb-3", className)} {...props} />
           ),
           h2: ({ className, ...props }) => (
-            <h2 className={cn("text-[20px] font-semibold leading-[1.35] mt-2 mb-3", className)} {...props} />
+            <h3 className={cn("text-[20px] font-semibold leading-[1.35] mt-2 mb-3", className)} {...props} />
           ),
           h3: ({ className, ...props }) => (
-            <h3 className={cn("text-[18px] font-semibold leading-[1.35] mt-2 mb-2", className)} {...props} />
+            <h4 className={cn("text-[18px] font-semibold leading-[1.35] mt-2 mb-2", className)} {...props} />
           ),
           h4: ({ className, ...props }) => (
-            <h4 className={cn("text-[16px] font-semibold leading-[1.35] mt-2 mb-2", className)} {...props} />
+            <h5 className={cn("text-[16px] font-semibold leading-[1.35] mt-2 mb-2", className)} {...props} />
+          ),
+          h5: ({ className, ...props }) => (
+            <h6 className={cn("text-[15px] font-semibold leading-[1.35] mt-2 mb-2", className)} {...props} />
+          ),
+          h6: ({ className, ...props }) => (
+            <p className={cn("text-[14px] font-semibold leading-[1.35] mt-2 mb-2", className)} {...props} />
           ),
           p: ({ className, ...props }) => (
             <div className={cn("whitespace-pre-line leading-[1.5]", className)} {...props} />
