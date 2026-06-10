@@ -67,6 +67,7 @@ const openAiSans = localFont({
   ],
   variable: '--font-openai-sans',
   display: 'swap',
+  preload: false,
 });
 
 export const viewport: Viewport = {
