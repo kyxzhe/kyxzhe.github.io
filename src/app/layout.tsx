@@ -72,16 +72,17 @@ export const metadata: Metadata = {
     template: siteMetadata.titleTemplate,
   },
   description: siteMetadata.description,
+  keywords: siteMetadata.keywords,
   icons: {
     icon: [
-      { url: '/favicon.ico?v7', sizes: 'any', type: 'image/x-icon', media: '(prefers-color-scheme: light)' },
-      { url: '/favicon-dark.ico?v7', sizes: 'any', type: 'image/x-icon', media: '(prefers-color-scheme: dark)' },
+      { url: "/favicon.ico?v7", sizes: "any", type: "image/x-icon", media: "(prefers-color-scheme: light)" },
+      { url: "/favicon-dark.ico?v7", sizes: "any", type: "image/x-icon", media: "(prefers-color-scheme: dark)" },
     ],
     shortcut: [
-      { url: '/favicon.ico?v7', sizes: 'any', type: 'image/x-icon', media: '(prefers-color-scheme: light)' },
-      { url: '/favicon-dark.ico?v7', sizes: 'any', type: 'image/x-icon', media: '(prefers-color-scheme: dark)' },
+      { url: "/favicon.ico?v7", sizes: "any", type: "image/x-icon", media: "(prefers-color-scheme: light)" },
+      { url: "/favicon-dark.ico?v7", sizes: "any", type: "image/x-icon", media: "(prefers-color-scheme: dark)" },
     ],
-    apple: '/apple-icon.png',
+    apple: "/apple-icon.png",
   },
   authors: [{ name: siteMetadata.author.name }],
   creator: siteMetadata.author.name,
