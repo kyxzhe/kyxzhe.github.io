@@ -17,6 +17,7 @@ interface ContactModalProps {
 export default function ContactModal({ onClose }: ContactModalProps) {
   const availability = useMemo(() => generateAvailability(new Date(), 30), []);
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
+  const successDismissTimerRef = useRef<number | null>(null);
   const WINDOW_SIZE = 5;
   const SUCCESS_DISMISS_DELAY = 1400; // short pause to show "Confirmed" badge
   const [windowStart, setWindowStart] = useState(0);
@@ -75,10 +76,18 @@ export default function ContactModal({ onClose }: ContactModalProps) {
     setSubmissionState("idle");
   }, [availability]);
 
+  const clearSuccessDismissTimer = useCallback(() => {
+    if (successDismissTimerRef.current === null) return;
+
+    window.clearTimeout(successDismissTimerRef.current);
+    successDismissTimerRef.current = null;
+  }, []);
+
   const handleDismiss = useCallback(() => {
+    clearSuccessDismissTimer();
     onClose();
     resetScheduler();
-  }, [onClose, resetScheduler]);
+  }, [clearSuccessDismissTimer, onClose, resetScheduler]);
 
   useEffect(() => {
     const originalOverflow = document.body.style.overflow;
@@ -97,8 +106,9 @@ export default function ContactModal({ onClose }: ContactModalProps) {
       document.body.style.overflow = originalOverflow;
       window.clearTimeout(focusTimer);
       window.removeEventListener("keydown", handleKeyDown);
+      clearSuccessDismissTimer();
     };
-  }, [handleDismiss]);
+  }, [clearSuccessDismissTimer, handleDismiss]);
 
   useEffect(() => {
     if (!availability.find((day) => day.dateISO === selectedDate)) {
@@ -165,7 +175,9 @@ export default function ContactModal({ onClose }: ContactModalProps) {
         ...prev,
         [selectedSlot.id]: true,
       }));
-      setTimeout(() => {
+      clearSuccessDismissTimer();
+      successDismissTimerRef.current = window.setTimeout(() => {
+        successDismissTimerRef.current = null;
         onClose();
         resetScheduler();
       }, SUCCESS_DISMISS_DELAY);
@@ -177,13 +189,13 @@ export default function ContactModal({ onClose }: ContactModalProps) {
 
   return (
     <div
-      className="contact-modal-backdrop fixed inset-0 z-50 flex items-center justify-center bg-[rgba(0,0,0,0.25)] p-3 backdrop-blur-sm sm:p-4"
+      className="contact-modal-backdrop fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-[rgba(0,0,0,0.25)] p-3 backdrop-blur-sm sm:items-center sm:p-4"
       onClick={() => {
         handleDismiss();
       }}
     >
       <div
-        className="contact-modal-panel surface-card relative max-h-[calc(100dvh-1.5rem)] w-full max-w-4xl overflow-y-auto p-4 sm:max-h-[90vh] sm:p-6 md:p-8 lg:p-12"
+        className="contact-modal-panel surface-card relative max-h-[calc(100dvh-3rem)] w-full max-w-4xl overflow-y-auto p-4 sm:max-h-[90vh] sm:p-6 md:p-8 lg:p-12"
         role="dialog"
         aria-modal="true"
         aria-labelledby="contact-modal-title"
