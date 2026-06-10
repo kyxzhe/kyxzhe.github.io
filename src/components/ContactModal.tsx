@@ -279,12 +279,13 @@ export default function ContactModal({
 
               <div className="rounded-[18px] bg-[var(--pill-background)] p-3 sm:p-4">
                 <div className="mb-3 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
-                  <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">
+                  <p id="booking-date-label" className="text-xs uppercase tracking-[0.28em] text-muted-foreground">
                     Choose a date
                   </p>
                   <div className="flex gap-2">
                     <button
                       type="button"
+                      aria-label="Show previous dates"
                       onClick={() => shiftWindow(-1)}
                       disabled={windowStart === 0}
                       className="inline-flex h-9 items-center rounded-full bg-white/70 px-3 text-[12px] text-muted-foreground transition-colors hover:bg-[var(--accent-soft)] disabled:opacity-40 dark:bg-white/8"
@@ -293,6 +294,7 @@ export default function ContactModal({
                     </button>
                     <button
                       type="button"
+                      aria-label="Show next dates"
                       onClick={() => shiftWindow(1)}
                       disabled={windowStart >= maxWindowIndex}
                       className="inline-flex h-9 items-center rounded-full bg-white/70 px-3 text-[12px] text-muted-foreground transition-colors hover:bg-[var(--accent-soft)] disabled:opacity-40 dark:bg-white/8"
@@ -301,7 +303,11 @@ export default function ContactModal({
                     </button>
                   </div>
                 </div>
-                <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
+                <div
+                  className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap"
+                  role="group"
+                  aria-labelledby="booking-date-label"
+                >
                   {visibleDays.map((day) => {
                     const isActive = selectedDate === day.dateISO;
                     return (
@@ -346,6 +352,7 @@ export default function ContactModal({
                       type="button"
                       disabled={slot.booked || submissionState === "loading"}
                       aria-pressed={isSelected}
+                      aria-label={`${slot.label} ${slot.booked ? "booked" : isSelected ? "selected" : "available"}`}
                       onClick={() => setSelectedSlotId(slot.id)}
                       className={`rounded-[16px] px-3 py-3 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30 sm:px-4 sm:py-4 ${
                         slot.booked
