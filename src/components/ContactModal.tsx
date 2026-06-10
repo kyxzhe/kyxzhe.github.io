@@ -30,9 +30,12 @@ export default function ContactModal({ onClose }: ContactModalProps) {
     email: "",
     note: "",
   });
+  const trimmedName = formValues.name.trim();
+  const trimmedEmail = formValues.email.trim();
+  const trimmedNote = formValues.note.trim();
   const emailValid = useMemo(
-    () => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formValues.email),
-    [formValues.email]
+    () => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail),
+    [trimmedEmail]
   );
   const [submissionState, setSubmissionState] = useState<
     "idle" | "loading" | "success" | "error"
@@ -66,7 +69,7 @@ export default function ContactModal({ onClose }: ContactModalProps) {
   const emailInputId = "booking-email";
   const emailErrorId = "booking-email-error";
   const noteInputId = "booking-note";
-  const emailHasError = formValues.email.length > 0 && !emailValid;
+  const emailHasError = trimmedEmail.length > 0 && !emailValid;
 
   const resetScheduler = useCallback(() => {
     setWindowStart(0);
@@ -131,7 +134,7 @@ export default function ContactModal({ onClose }: ContactModalProps) {
   };
 
   const handleSubmitBooking = async () => {
-    if (!selectedSlot || !formValues.name || !formValues.email || !selectedDate) return;
+    if (!selectedSlot || !trimmedName || !trimmedEmail || !emailValid || !selectedDate) return;
     const dayMeta = availability.find((d) => d.dateISO === selectedDate);
     if (!dayMeta) return;
 
@@ -141,12 +144,12 @@ export default function ContactModal({ onClose }: ContactModalProps) {
       ``,
       `I'd like to reserve ${dayMeta.displayLabel} at ${selectedSlot.label}.`,
       ``,
-      `Name: ${formValues.name}`,
-      `Email: ${formValues.email}`,
-      formValues.note ? `Context: ${formValues.note}` : ``,
+      `Name: ${trimmedName}`,
+      `Email: ${trimmedEmail}`,
+      trimmedNote ? `Context: ${trimmedNote}` : ``,
       ``,
       `Best,`,
-      formValues.name,
+      trimmedName,
     ]
       .filter(Boolean)
       .join("\n");
@@ -161,8 +164,8 @@ export default function ContactModal({ onClose }: ContactModalProps) {
         },
         body: JSON.stringify({
           _subject: subject,
-          name: formValues.name,
-          email: formValues.email,
+          name: trimmedName,
+          email: trimmedEmail,
           message: body,
           slot: `${dayMeta.displayLabel} · ${selectedSlot.label}`,
         }),
@@ -382,8 +385,8 @@ export default function ContactModal({ onClose }: ContactModalProps) {
                 onClick={handleSubmitBooking}
                 disabled={
                   !selectedSlot ||
-                  !formValues.name ||
-                  !formValues.email ||
+                  !trimmedName ||
+                  !trimmedEmail ||
                   !emailValid ||
                   submissionState === "loading"
                 }
