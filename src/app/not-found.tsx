@@ -5,6 +5,9 @@ import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Page not found",
+  alternates: {
+    canonical: "/404",
+  },
   robots: {
     index: false,
     follow: false,
