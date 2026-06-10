@@ -286,7 +286,7 @@ export default function Home() {
               <div className="relative w-full">
                 <textarea
                   placeholder=""
-                  className="w-full min-h-[64px] resize-none bg-transparent pr-[58px] text-[16px] leading-[1.4] text-foreground focus:outline-none dark:text-white md:min-h-[72px] md:pr-[52px]"
+                  className="w-full min-h-[64px] resize-none bg-transparent pr-16 text-[16px] leading-[1.4] text-foreground focus:outline-none dark:text-white md:min-h-[72px] md:pr-14"
                   aria-label="Ask a question"
                   aria-describedby="chatbot-disclaimer"
                   required
@@ -305,7 +305,7 @@ export default function Home() {
                 )}
                 {showPlaceholderOverlay && (
                   <div
-                    className="pointer-events-none absolute left-0 right-[58px] top-0 px-1 text-left text-[14px] leading-[1.45] text-[rgba(0,0,0,0.6)] transition-opacity duration-200 dark:text-white/60 sm:right-0 sm:px-4 sm:text-center sm:text-[15px] md:text-[16px]"
+                    className="pointer-events-none absolute left-0 right-16 top-0 px-1 text-left text-[14px] leading-[1.45] text-[rgba(0,0,0,0.6)] transition-opacity duration-200 dark:text-white/60 sm:right-0 sm:px-4 sm:text-center sm:text-[15px] md:text-[16px]"
                     aria-hidden="true"
                     style={{ whiteSpace: "normal", wordBreak: "break-word" }}
                   >
@@ -323,7 +323,7 @@ export default function Home() {
                   type="submit"
                   aria-label="Send message to KevinBot"
                   disabled={!prompt.trim() || isLoading}
-                  className="relative inline-flex h-10 w-10 items-center justify-center rounded-full p-0 transition-colors hover:opacity-70 disabled:hover:opacity-100 bg-[rgba(0,0,0,0.04)] text-[rgba(0,0,0,0.44)] dark:bg-white/15 dark:text-white/60 enabled:bg-black enabled:text-white dark:enabled:bg-white dark:enabled:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-1 disabled:focus-visible:ring-offset-0"
+                  className="relative inline-flex h-11 w-11 items-center justify-center rounded-full p-0 transition-colors hover:opacity-70 disabled:hover:opacity-100 bg-[rgba(0,0,0,0.04)] text-[rgba(0,0,0,0.44)] dark:bg-white/15 dark:text-white/60 enabled:bg-black enabled:text-white dark:enabled:bg-white dark:enabled:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-1 disabled:focus-visible:ring-offset-0"
                 >
                   <span className="sr-only">Send message to KevinBot</span>
                   {isLoading ? (
