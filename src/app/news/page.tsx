@@ -286,7 +286,11 @@ export default function NewsPage() {
           </p>
         </section>
 
-        <div className="flex flex-wrap gap-2 text-sm text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]">
+        <div
+          className="flex flex-wrap gap-2 text-sm text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]"
+          role="group"
+          aria-label="News categories"
+        >
           {categories.map((category) => (
             <button
               key={category}
@@ -360,8 +364,8 @@ export default function NewsPage() {
                     </button>
                   </div>
                   <div className="grid grid-cols-[minmax(0,1fr)_78px] gap-4 overflow-y-auto px-4 py-3 text-sm text-foreground dark:text-white sm:grid-cols-2">
-                    <div className="space-y-1.5 sm:max-h-60 sm:overflow-y-auto sm:pr-1">
-                      <p className="text-[11px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-foreground/70">Topic</p>
+                    <fieldset className="min-w-0 space-y-1.5 border-0 p-0 sm:max-h-60 sm:overflow-y-auto sm:pr-1">
+                      <legend className="text-[11px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-foreground/70">Topic</legend>
                       {topics.map((topic) => (
                         <label key={topic} className="flex min-h-9 items-center gap-2 text-[13px] leading-snug text-foreground dark:text-white">
                           <input
@@ -372,9 +376,9 @@ export default function NewsPage() {
                           {topic}
                         </label>
                       ))}
-                    </div>
-                    <div className="space-y-1.5 sm:max-h-60 sm:overflow-y-auto sm:pr-1">
-                      <p className="text-[11px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-foreground/70">Year</p>
+                    </fieldset>
+                    <fieldset className="min-w-0 space-y-1.5 border-0 p-0 sm:max-h-60 sm:overflow-y-auto sm:pr-1">
+                      <legend className="text-[11px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-foreground/70">Year</legend>
                       {years.map((year) => (
                         <label key={year} className="flex min-h-9 items-center gap-2 text-[13px] leading-snug text-foreground dark:text-white">
                           <input
@@ -385,7 +389,7 @@ export default function NewsPage() {
                           {year}
                         </label>
                       ))}
-                    </div>
+                    </fieldset>
                   </div>
                   <div className="flex shrink-0 justify-end px-4 pb-3 pt-1 text-xs text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]">
                     <button
@@ -440,7 +444,11 @@ export default function NewsPage() {
               </div>
             </div>
 
-            <div className="flex items-center gap-2 text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]">
+            <div
+              className="flex items-center gap-2 text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]"
+              role="group"
+              aria-label="News view mode"
+            >
               <button
                 type="button"
                 className={`inline-flex h-10 w-10 items-center justify-center rounded-full transition-colors ${
@@ -489,8 +497,8 @@ export default function NewsPage() {
                 </button>
               </div>
               <div className="grid grid-cols-[minmax(0,1fr)_78px] gap-4 overflow-y-auto px-4 py-3 text-sm text-foreground dark:text-white sm:grid-cols-2">
-                <div className="space-y-1.5 sm:max-h-60 sm:overflow-y-auto sm:pr-1">
-                  <p className="text-[11px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-foreground/70">Topic</p>
+                <fieldset className="min-w-0 space-y-1.5 border-0 p-0 sm:max-h-60 sm:overflow-y-auto sm:pr-1">
+                  <legend className="text-[11px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-foreground/70">Topic</legend>
                   {topics.map((topic) => (
                     <label key={topic} className="flex min-h-9 items-center gap-2 text-[13px] leading-snug text-foreground dark:text-white">
                       <input
@@ -501,9 +509,9 @@ export default function NewsPage() {
                       {topic}
                     </label>
                   ))}
-                </div>
-                <div className="space-y-1.5 sm:max-h-60 sm:overflow-y-auto sm:pr-1">
-                  <p className="text-[11px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-foreground/70">Year</p>
+                </fieldset>
+                <fieldset className="min-w-0 space-y-1.5 border-0 p-0 sm:max-h-60 sm:overflow-y-auto sm:pr-1">
+                  <legend className="text-[11px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-foreground/70">Year</legend>
                   {years.map((year) => (
                     <label key={year} className="flex min-h-9 items-center gap-2 text-[13px] leading-snug text-foreground dark:text-white">
                       <input
@@ -514,7 +522,7 @@ export default function NewsPage() {
                       {year}
                     </label>
                   ))}
-                </div>
+                </fieldset>
               </div>
               <div className="flex shrink-0 justify-end px-4 pb-3 pt-1 text-xs text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]">
                 <button
