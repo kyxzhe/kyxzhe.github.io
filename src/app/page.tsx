@@ -59,6 +59,7 @@ export default function Home() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
+  const activeRequestRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
     if (prefersReducedMotion()) return;
@@ -76,6 +77,10 @@ export default function Home() {
     setIsLoading(true);
     setError(null);
     setPrompt("");
+    activeRequestRef.current?.abort();
+
+    const controller = new AbortController();
+    activeRequestRef.current = controller;
 
     const userMessage: ChatMessage = { role: "user", content: nextPrompt };
     const requestMessages: ChatMessage[] = [...messages, userMessage];
@@ -85,7 +90,7 @@ export default function Home() {
       setIsExpanded(true);
 
       const appendChunk = (chunk: string) => {
-        if (!chunk) return;
+        if (!chunk || controller.signal.aborted) return;
         setMessages((prev) => {
           if (!prev.length) return prev;
           const updated = [...prev];
@@ -101,7 +106,10 @@ export default function Home() {
         });
       };
 
-      const reply = await sendChatRequest(requestMessages, { onChunk: appendChunk });
+      const reply = await sendChatRequest(requestMessages, {
+        onChunk: appendChunk,
+        signal: controller.signal,
+      });
       setMessages((prev) => {
         if (!prev.length) return prev;
         const updated = [...prev];
@@ -113,7 +121,9 @@ export default function Home() {
         return updated;
       });
     } catch (err) {
-      console.error(err);
+      if (controller.signal.aborted) {
+        return;
+      }
       setMessages((prev) => {
         if (!prev.length) return prev;
         const last = prev[prev.length - 1];
@@ -124,7 +134,13 @@ export default function Home() {
       });
       setError(err instanceof Error ? err.message : "Something went wrong.");
     } finally {
-      setIsLoading(false);
+      if (activeRequestRef.current === controller) {
+        activeRequestRef.current = null;
+      }
+
+      if (!controller.signal.aborted) {
+        setIsLoading(false);
+      }
     }
   }, [prompt, isLoading, messages, setMessages]);
 
@@ -143,6 +159,12 @@ export default function Home() {
 
   useEffect(() => {
     setIsHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      activeRequestRef.current?.abort();
+    };
   }, []);
 
   const historyEndRef = useRef<HTMLDivElement | null>(null);
@@ -191,7 +213,7 @@ export default function Home() {
             </Link>
             <Link
               href="/contact"
-            className="px-6 md:px-7 py-3 rounded-full border text-[15px] font-medium transition duration-200 hover:-translate-y-[1px] border-[rgba(0,0,0,0.12)] bg-white text-foreground shadow-[0_1px_6px_rgba(0,0,0,0.05)] dark:border-[#666] dark:bg-[#000000] dark:text-[rgba(255,255,255,1)] dark:shadow-[0_2px_8px_rgba(0,0,0,0.24)]"
+              className="px-6 md:px-7 py-3 rounded-full border text-[15px] font-medium transition duration-200 hover:-translate-y-[1px] border-[rgba(0,0,0,0.12)] bg-white text-foreground shadow-[0_1px_6px_rgba(0,0,0,0.05)] dark:border-[#666] dark:bg-[#000000] dark:text-[rgba(255,255,255,1)] dark:shadow-[0_2px_8px_rgba(0,0,0,0.24)]"
             >
               Contact
             </Link>
@@ -220,39 +242,43 @@ export default function Home() {
                   transition={{ duration: 0.32, ease: "easeInOut" }}
                   className="w-full flex-1"
                 >
-                    <div
-                      className="max-h-[320px] md:max-h-[360px] overflow-y-auto space-y-3 pr-[6px] pt-1"
-                      role="log"
-                      aria-live="polite"
-                      aria-relevant="additions text"
-                    >
-                      {visibleMessages.length === 0 && !isLoading ? (
-                        <p className="text-[16px] leading-[1.5] text-[rgba(0,0,0,0.6)] dark:text-white/60">发送后这里会展开显示完整对话。</p>
-                      ) : (
-                        visibleMessages.map((message, index) => (
+                  <div
+                    className="max-h-[320px] md:max-h-[360px] overflow-y-auto space-y-3 pr-[6px] pt-1"
+                    role="log"
+                    aria-live="polite"
+                    aria-relevant="additions text"
+                  >
+                    {visibleMessages.length === 0 && !isLoading ? (
+                      <p className="text-[16px] leading-[1.5] text-[rgba(0,0,0,0.6)] dark:text-white/60">发送后这里会展开显示完整对话。</p>
+                    ) : (
+                      visibleMessages.map((message, index) => (
+                        <div
+                          key={`${message.role}-${index}`}
+                          className={`flex gap-2 ${message.role === "user" ? "justify-end" : "justify-start"}`}
+                        >
                           <div
-                            key={`${message.role}-${index}`}
-                            className={`flex gap-2 ${message.role === "user" ? "justify-end" : "justify-start"}`}
-                          >
-                            <div
                             className={`max-w-[85%] text-[16px] leading-relaxed text-left ${
                               message.role === "user"
                                 ? "bg-[rgba(233,233,233,0.5)] text-foreground rounded-full px-4 py-2 dark:bg-[rgba(50,50,50,0.85)] dark:text-white"
                                 : "rounded-2xl text-foreground dark:text-white"
                             }`}
-                            >
-                              <MarkdownMessage content={message.content} />
-                            </div>
+                          >
+                            <MarkdownMessage content={message.content} />
                           </div>
-                        ))
-                      )}
-                      {isLoading && (
-                        <div className="flex items-center text-[rgba(0,0,0,0.6)] dark:text-white/60">
-                          <Loader2 size={16} className="animate-spin" />
                         </div>
-                      )}
-                      <div ref={historyEndRef} />
-                    </div>
+                      ))
+                    )}
+                    {isLoading && (
+                      <div
+                        className="flex items-center text-[rgba(0,0,0,0.6)] dark:text-white/60"
+                        role="status"
+                      >
+                        <Loader2 size={16} className="animate-spin" aria-hidden="true" />
+                        <span className="sr-only">KevinBot is responding</span>
+                      </div>
+                    )}
+                    <div ref={historyEndRef} />
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -284,6 +310,7 @@ export default function Home() {
                       exit={{ y: -6, opacity: 0 }}
                       transition={{ duration: 0.18, ease: "easeOut" }}
                       className="pointer-events-none absolute left-0 top-0 text-[16px] md:text-[16px] leading-[1.4] text-[rgba(0,0,0,0.6)] dark:text-white/60"
+                      aria-hidden="true"
                     >
                       -&gt;
                     </motion.div>
@@ -298,6 +325,7 @@ export default function Home() {
                       exit={{ y: -10, opacity: 0 }}
                       transition={{ duration: 0.32, ease: "easeOut" }}
                       className="pointer-events-none absolute left-0 right-[58px] top-0 px-1 text-left text-[14px] leading-[1.45] text-[rgba(0,0,0,0.6)] dark:text-white/60 sm:right-0 sm:px-4 sm:text-center sm:text-[15px] md:text-[16px]"
+                      aria-hidden="true"
                       style={{ whiteSpace: "normal", wordBreak: "break-word" }}
                     >
                       <span className="hidden sm:block">
