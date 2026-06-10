@@ -71,6 +71,7 @@ export default function ContactPage() {
   const [hasLoadedContactModal, setHasLoadedContactModal] = useState(false);
   const [showCallInfo, setShowCallInfo] = useState(false);
   const unloadContactModalTimerRef = useRef<number | null>(null);
+  const callDialogCloseButtonRef = useRef<HTMLButtonElement | null>(null);
   const directLines = [
     {
       label: "Email",
@@ -97,6 +98,10 @@ export default function ContactPage() {
   useEffect(() => {
     if (!showCallInfo) return;
 
+    const focusTimer = window.setTimeout(() => {
+      callDialogCloseButtonRef.current?.focus();
+    }, 0);
+
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setShowCallInfo(false);
@@ -106,6 +111,7 @@ export default function ContactPage() {
     window.addEventListener("keydown", handleKeyDown);
 
     return () => {
+      window.clearTimeout(focusTimer);
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [showCallInfo]);
@@ -190,12 +196,12 @@ export default function ContactPage() {
                 }
                 if (onClick) {
                   return (
-                  <button
-                    key={label}
-                    type="button"
-                    onClick={onClick}
-                    className="w-full text-left font-medium hover:text-foreground transition-colors"
-                  >
+                    <button
+                      key={label}
+                      type="button"
+                      onClick={onClick}
+                      className="w-full text-left font-medium hover:text-foreground transition-colors"
+                    >
                       {Row}
                     </button>
                   );
@@ -219,7 +225,7 @@ export default function ContactPage() {
               </div>
               <ul className="space-y-3 text-[17px] leading-relaxed">
                 {replyNotes.map((note) => (
-                <li key={note} className="flex gap-2 text-black dark:text-white">
+                  <li key={note} className="flex gap-2 text-black dark:text-white">
                     <span className="text-[var(--accent)]">•</span>
                     <span>{note}</span>
                   </li>
@@ -256,16 +262,16 @@ export default function ContactPage() {
             <h2 className="text-[30px] font-medium text-foreground">Find me elsewhere</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {socialLinks.map(({ label, href, icon }) => (
-              <Link
-                key={label}
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-between gap-3 px-4 py-2 border border-[rgba(0,0,0,0.12)] dark:border-white/20 rounded-full text-[17px] font-medium transition-colors duration-150 hover:border-foreground/50"
-              >
-                <span className="text-[15px] dark:text-white">{label}</span>
-                <span className="text-[rgba(0,0,0,0.6)] dark:text-white">{icon}</span>
-              </Link>
+                <Link
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between gap-3 px-4 py-2 border border-[rgba(0,0,0,0.12)] dark:border-white/20 rounded-full text-[17px] font-medium transition-colors duration-150 hover:border-foreground/50"
+                >
+                  <span className="text-[15px] dark:text-white">{label}</span>
+                  <span className="text-[rgba(0,0,0,0.6)] dark:text-white">{icon}</span>
+                </Link>
               ))}
             </div>
           </div>
@@ -280,6 +286,7 @@ export default function ContactPage() {
           role="dialog"
           aria-modal="true"
           aria-labelledby="call-request-title"
+          aria-describedby="call-request-description"
         >
           <div
             className="surface-card max-w-md w-full p-6 rounded-2xl shadow-lg"
@@ -288,6 +295,7 @@ export default function ContactPage() {
             <div className="flex items-center justify-between mb-4">
               <h3 id="call-request-title" className="text-lg font-semibold">Request a call</h3>
               <button
+                ref={callDialogCloseButtonRef}
                 type="button"
                 aria-label="Close request call dialog"
                 className="inline-flex h-11 w-11 items-center justify-center rounded-full font-medium hover:bg-[var(--accent-soft)]"
@@ -296,7 +304,7 @@ export default function ContactPage() {
                 <X size={18} />
               </button>
             </div>
-            <p className="text-[17px] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)] leading-relaxed">
+            <p id="call-request-description" className="text-[17px] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)] leading-relaxed">
               Share your number and preferred time in the booking note. I will text first and call if it helps.
             </p>
           </div>
