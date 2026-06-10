@@ -60,13 +60,14 @@ Open [http://localhost:3000](http://localhost:3000).
 ## Useful Commands
 
 ```bash
-pnpm dev      # Start the Turbopack development server
-pnpm lint     # Run ESLint
-pnpm build    # Create the static export in out/
-pnpm start    # Serve the exported out/ directory locally
+pnpm dev       # Start the Turbopack development server
+pnpm lint      # Run ESLint
+pnpm typecheck # Run TypeScript without emitting files
+pnpm build     # Create the static export in out/
+pnpm start     # Serve the exported out/ directory locally
 ```
 
-Run `pnpm lint` before committing. Run `pnpm build` before deployment-sensitive changes because the site is exported statically for GitHub Pages.
+Run `pnpm lint` and `pnpm typecheck` before committing. Run `pnpm build` before deployment-sensitive changes because the site is exported statically for GitHub Pages.
 
 ## Updating Content
 
@@ -94,7 +95,9 @@ The homepage chatbot calls `sendChatRequest` from `src/lib/api/chat.ts`.
 
 - Default endpoint: `https://kevin-bot.kyx-zhe.workers.dev/chat`
 - Override locally with `NEXT_PUBLIC_CHAT_API_URL` in `.env.local`
-- Request body: `{ "messages": [{ "role": "user" | "assistant" | "system", "content": "..." }] }`
+- Request headers: `Content-Type: application/json`
+- Request body: `{ "messages": [{ "role": "user" | "assistant", "content": "..." }] }`
+- Body size limit: 100 KB before the Worker rejects the request
 - Session affinity: the client sends `X-Chat-Session` from `sessionStorage`
 - Preferred response: Server-Sent Events (`text/event-stream`) with `data:` payloads that include `{ "response": "<chunk>" }` and end with `[DONE]`
 - Compatibility response: JSON payloads with `{ "response": "<text>" }`, `{ "content": "<text>" }`, `{ "text": "<text>" }`, or OpenAI-style `choices`
@@ -114,7 +117,7 @@ The Worker source lives in `cloudflare/kevin-bot/index.js`. It allows production
 
 Pushing to `main` triggers `.github/workflows/deploy.yml`.
 
-The workflow installs dependencies with pnpm, runs `pnpm run build`, uploads the generated `out/` directory, and deploys it with GitHub Pages. Do not edit `.next/` or `out/` directly.
+The workflow installs dependencies with pnpm, runs lint, typecheck, and build, uploads the generated `out/` directory, and deploys it with GitHub Pages. Do not edit `.next/` or `out/` directly.
 
 ## License
 
