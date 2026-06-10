@@ -1,7 +1,7 @@
 "use client";
 
 /* eslint-disable @next/next/no-img-element */
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowUpRight, ChevronDown, ChevronUp, Filter, LayoutGrid, List, X } from "lucide-react";
 import Navbar from "@/components/Navbar";
@@ -166,6 +166,13 @@ export default function PublicationsPage() {
   const [selectedYears, setSelectedYears] = useState<number[]>([]);
   const [filterOpen, setFilterOpen] = useState(false);
   const [sortOpen, setSortOpen] = useState(false);
+  const filterButtonRef = useRef<HTMLButtonElement | null>(null);
+  const sortButtonRef = useRef<HTMLButtonElement | null>(null);
+
+  const closeFilterAndRestoreFocus = () => {
+    setFilterOpen(false);
+    window.setTimeout(() => filterButtonRef.current?.focus(), 0);
+  };
 
   const toggleTopic = (topic: string) => {
     setSelectedTopics((prev) =>
@@ -216,8 +223,19 @@ export default function PublicationsPage() {
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
+        const filterWasOpen = filterOpen;
+        const sortWasOpen = sortOpen;
         setFilterOpen(false);
         setSortOpen(false);
+        window.setTimeout(() => {
+          if (filterWasOpen) {
+            filterButtonRef.current?.focus();
+            return;
+          }
+          if (sortWasOpen) {
+            sortButtonRef.current?.focus();
+          }
+        }, 0);
       }
     };
 
@@ -479,6 +497,7 @@ export default function PublicationsPage() {
           <div className="relative flex items-center gap-4 text-sm">
             <div className="relative flex items-center gap-1">
               <button
+                ref={filterButtonRef}
                 type="button"
                 className="inline-flex min-h-11 items-center gap-1 rounded-full px-3"
                 onClick={() => {
@@ -523,9 +542,7 @@ export default function PublicationsPage() {
                       type="button"
                       aria-label="Close filters"
                       className="inline-flex h-10 w-10 items-center justify-center rounded-full text-[rgba(0,0,0,0.6)] transition-colors hover:bg-[var(--accent-soft)] dark:text-[rgba(255,255,255,0.8)]"
-                      onClick={() => {
-                        setFilterOpen(false);
-                      }}
+                      onClick={closeFilterAndRestoreFocus}
                     >
                       <span aria-hidden="true">×</span>
                     </button>
@@ -575,6 +592,7 @@ export default function PublicationsPage() {
 
             <div className="relative flex items-center gap-1">
               <button
+                ref={sortButtonRef}
                 type="button"
                 className={`inline-flex min-h-11 items-center gap-1 rounded-full px-3 ${
                   sortOpen ? "text-foreground dark:text-white" : "text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]"
@@ -660,9 +678,7 @@ export default function PublicationsPage() {
                   type="button"
                   aria-label="Close filters"
                   className="inline-flex h-10 w-10 items-center justify-center rounded-full text-[rgba(0,0,0,0.6)] transition-colors hover:bg-[var(--accent-soft)] dark:text-[rgba(255,255,255,0.8)]"
-                  onClick={() => {
-                    setFilterOpen(false);
-                  }}
+                  onClick={closeFilterAndRestoreFocus}
                 >
                   <X size={16} aria-hidden="true" />
                 </button>
