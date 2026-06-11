@@ -155,18 +155,25 @@ export default function NewsPage() {
     );
   };
 
+  const selectedTopicSet = useMemo(() => new Set(selectedTopics), [selectedTopics]);
+  const selectedTopicList = useMemo(() => Array.from(selectedTopicSet), [selectedTopicSet]);
+  const selectedYearSet = useMemo(() => new Set(selectedYears), [selectedYears]);
+  const hasActiveFilters = selectedTopicSet.size > 0 || selectedYearSet.size > 0;
+
   const filteredItems = useMemo(() => {
     return newsItems.filter((item) => {
       const categoryMatch = activeCategory === "All" || item.category === activeCategory;
+      const itemTopicSet = new Set(item.topics);
       const topicsMatch =
-        selectedTopics.length === 0 || selectedTopics.every((topic) => item.topics.includes(topic));
+        selectedTopicList.length === 0 ||
+        selectedTopicList.every((topic) => itemTopicSet.has(topic));
       const itemYear = getIsoYear(item.date);
       const yearsMatch =
-        selectedYears.length === 0 ||
-        (itemYear !== null && selectedYears.includes(itemYear));
+        selectedYearSet.size === 0 ||
+        (itemYear !== null && selectedYearSet.has(itemYear));
       return categoryMatch && topicsMatch && yearsMatch;
     });
-  }, [activeCategory, selectedTopics, selectedYears]);
+  }, [activeCategory, selectedTopicList, selectedYearSet]);
 
   const sortedItems = useMemo(() => {
     const sorted = [...filteredItems];
@@ -348,7 +355,7 @@ export default function NewsPage() {
               >
                 <span
                   className={
-                    selectedTopics.length > 0 || selectedYears.length > 0 || filterOpen
+                    hasActiveFilters || filterOpen
                       ? "text-foreground dark:text-white"
                       : "text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]"
                   }
@@ -362,7 +369,7 @@ export default function NewsPage() {
                     size={16}
                     aria-hidden="true"
                     className={
-                      selectedTopics.length > 0 || selectedYears.length > 0
+                      hasActiveFilters
                         ? "text-foreground dark:text-white"
                         : "text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]"
                     }
@@ -392,7 +399,7 @@ export default function NewsPage() {
                         <label key={topic} className="flex min-h-11 items-center gap-2 text-[13px] leading-snug text-foreground dark:text-white">
                           <input
                             type="checkbox"
-                            checked={selectedTopics.includes(topic)}
+                            checked={selectedTopicSet.has(topic)}
                             onChange={() => toggleTopic(topic)}
                           />
                           {topic}
@@ -405,7 +412,7 @@ export default function NewsPage() {
                         <label key={year} className="flex min-h-11 items-center gap-2 text-[13px] leading-snug text-foreground dark:text-white">
                           <input
                             type="checkbox"
-                            checked={selectedYears.includes(year)}
+                            checked={selectedYearSet.has(year)}
                             onChange={() => toggleYear(year)}
                           />
                           {year}
@@ -524,7 +531,7 @@ export default function NewsPage() {
                     <label key={topic} className="flex min-h-11 items-center gap-2 text-[13px] leading-snug text-foreground dark:text-white">
                       <input
                         type="checkbox"
-                        checked={selectedTopics.includes(topic)}
+                        checked={selectedTopicSet.has(topic)}
                         onChange={() => toggleTopic(topic)}
                       />
                       {topic}
@@ -537,7 +544,7 @@ export default function NewsPage() {
                     <label key={year} className="flex min-h-11 items-center gap-2 text-[13px] leading-snug text-foreground dark:text-white">
                       <input
                         type="checkbox"
-                        checked={selectedYears.includes(year)}
+                        checked={selectedYearSet.has(year)}
                         onChange={() => toggleYear(year)}
                       />
                       {year}

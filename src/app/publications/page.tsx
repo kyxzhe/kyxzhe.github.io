@@ -193,18 +193,24 @@ export default function PublicationsPage() {
     );
   };
 
+  const selectedTopicSet = useMemo(() => new Set(selectedTopics), [selectedTopics]);
+  const selectedTopicList = useMemo(() => Array.from(selectedTopicSet), [selectedTopicSet]);
+  const selectedYearSet = useMemo(() => new Set(selectedYears), [selectedYears]);
+  const hasActiveFilters = selectedTopicSet.size > 0 || selectedYearSet.size > 0;
+
   const filteredItems = useMemo(() => {
     return publications.filter((item) => {
+      const itemTopicSet = new Set(item.topics);
       const topicsMatch =
-        selectedTopics.length === 0 ||
-        selectedTopics.every((topic) => item.topics.includes(topic));
+        selectedTopicList.length === 0 ||
+        selectedTopicList.every((topic) => itemTopicSet.has(topic));
       const itemYear = getIsoYear(item.date);
       const yearsMatch =
-        selectedYears.length === 0 ||
-        (itemYear !== null && selectedYears.includes(itemYear));
+        selectedYearSet.size === 0 ||
+        (itemYear !== null && selectedYearSet.has(itemYear));
       return topicsMatch && yearsMatch;
     });
-  }, [selectedTopics, selectedYears]);
+  }, [selectedTopicList, selectedYearSet]);
 
   const sortedItems = useMemo(() => {
     const sorted = [...filteredItems];
@@ -224,8 +230,6 @@ export default function PublicationsPage() {
     });
     return sorted;
   }, [filteredItems, sortMode]);
-  const hasActiveFilters = selectedTopics.length > 0 || selectedYears.length > 0;
-
   useEffect(() => {
     if (!filterOpen && !sortOpen) return;
 
@@ -563,7 +567,7 @@ export default function PublicationsPage() {
                         <label key={topic} className="flex min-h-11 items-center gap-2 text-[13px] leading-snug text-foreground dark:text-white">
                           <input
                             type="checkbox"
-                            checked={selectedTopics.includes(topic)}
+                            checked={selectedTopicSet.has(topic)}
                             onChange={() => toggleTopic(topic)}
                           />
                           {topic}
@@ -576,7 +580,7 @@ export default function PublicationsPage() {
                         <label key={year} className="flex min-h-11 items-center gap-2 text-[13px] leading-snug text-foreground dark:text-white">
                           <input
                             type="checkbox"
-                            checked={selectedYears.includes(year)}
+                            checked={selectedYearSet.has(year)}
                             onChange={() => toggleYear(year)}
                           />
                           {year}
@@ -698,7 +702,7 @@ export default function PublicationsPage() {
                     <label key={topic} className="flex min-h-11 items-center gap-2 text-[13px] leading-snug text-foreground dark:text-white">
                       <input
                         type="checkbox"
-                        checked={selectedTopics.includes(topic)}
+                        checked={selectedTopicSet.has(topic)}
                         onChange={() => toggleTopic(topic)}
                       />
                       {topic}
@@ -711,7 +715,7 @@ export default function PublicationsPage() {
                     <label key={year} className="flex min-h-11 items-center gap-2 text-[13px] leading-snug text-foreground dark:text-white">
                       <input
                         type="checkbox"
-                        checked={selectedYears.includes(year)}
+                        checked={selectedYearSet.has(year)}
                         onChange={() => toggleYear(year)}
                       />
                       {year}
