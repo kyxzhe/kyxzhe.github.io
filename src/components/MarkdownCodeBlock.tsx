@@ -1,32 +1,32 @@
 "use client";
 
-import { useEffect, useRef, useState, type HTMLAttributes, type ReactNode } from "react";
-import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
-import jsx from "react-syntax-highlighter/dist/esm/languages/prism/jsx";
-import tsx from "react-syntax-highlighter/dist/esm/languages/prism/tsx";
-import typescript from "react-syntax-highlighter/dist/esm/languages/prism/typescript";
-import javascript from "react-syntax-highlighter/dist/esm/languages/prism/javascript";
-import python from "react-syntax-highlighter/dist/esm/languages/prism/python";
-import bash from "react-syntax-highlighter/dist/esm/languages/prism/bash";
-import json from "react-syntax-highlighter/dist/esm/languages/prism/json";
-import markdown from "react-syntax-highlighter/dist/esm/languages/prism/markdown";
-import sql from "react-syntax-highlighter/dist/esm/languages/prism/sql";
-import oneDark from "react-syntax-highlighter/dist/esm/styles/prism/one-dark";
+import { useEffect, useRef, useState, type ComponentType, type HTMLAttributes, type ReactNode } from "react";
 import { cn } from "@/lib/utils/util";
 
-SyntaxHighlighter.registerLanguage("jsx", jsx);
-SyntaxHighlighter.registerLanguage("tsx", tsx);
-SyntaxHighlighter.registerLanguage("ts", typescript);
-SyntaxHighlighter.registerLanguage("typescript", typescript);
-SyntaxHighlighter.registerLanguage("javascript", javascript);
-SyntaxHighlighter.registerLanguage("js", javascript);
-SyntaxHighlighter.registerLanguage("py", python);
-SyntaxHighlighter.registerLanguage("python", python);
-SyntaxHighlighter.registerLanguage("bash", bash);
-SyntaxHighlighter.registerLanguage("shell", bash);
-SyntaxHighlighter.registerLanguage("json", json);
-SyntaxHighlighter.registerLanguage("markdown", markdown);
-SyntaxHighlighter.registerLanguage("sql", sql);
+type SyntaxHighlighterComponent = ComponentType<{
+  children: string;
+  language?: string;
+  style: Record<string, unknown>;
+  PreTag: "div";
+  customStyle: Record<string, string | number>;
+  codeTagProps: {
+    className: string;
+  };
+  wrapLongLines: boolean;
+}> & {
+  registerLanguage: (name: string, grammar: unknown) => void;
+};
+
+interface SyntaxBundle {
+  SyntaxHighlighter: SyntaxHighlighterComponent;
+  oneDark: Record<string, unknown>;
+}
+
+type DefaultExportModule = {
+  default: unknown;
+};
+
+let syntaxBundlePromise: Promise<SyntaxBundle> | null = null;
 
 const highlightedLanguages = new Set([
   "jsx",
@@ -47,6 +47,62 @@ const highlightedLanguages = new Set([
 interface MarkdownCodeBlockProps extends HTMLAttributes<HTMLElement> {
   children?: ReactNode;
   className?: string;
+}
+
+function loadSyntaxBundle() {
+  syntaxBundlePromise ??= Promise.all([
+    import("react-syntax-highlighter/dist/esm/prism-light"),
+    import("react-syntax-highlighter/dist/esm/languages/prism/jsx"),
+    import("react-syntax-highlighter/dist/esm/languages/prism/tsx"),
+    import("react-syntax-highlighter/dist/esm/languages/prism/typescript"),
+    import("react-syntax-highlighter/dist/esm/languages/prism/javascript"),
+    import("react-syntax-highlighter/dist/esm/languages/prism/python"),
+    import("react-syntax-highlighter/dist/esm/languages/prism/bash"),
+    import("react-syntax-highlighter/dist/esm/languages/prism/json"),
+    import("react-syntax-highlighter/dist/esm/languages/prism/markdown"),
+    import("react-syntax-highlighter/dist/esm/languages/prism/sql"),
+    import("react-syntax-highlighter/dist/esm/styles/prism/one-dark"),
+  ])
+    .then(([
+      highlighterModule,
+      jsxModule,
+      tsxModule,
+      typescriptModule,
+      javascriptModule,
+      pythonModule,
+      bashModule,
+      jsonModule,
+      markdownModule,
+      sqlModule,
+      oneDarkModule,
+    ]) => {
+      const SyntaxHighlighter = (highlighterModule as DefaultExportModule).default as SyntaxHighlighterComponent;
+
+      SyntaxHighlighter.registerLanguage("jsx", (jsxModule as DefaultExportModule).default);
+      SyntaxHighlighter.registerLanguage("tsx", (tsxModule as DefaultExportModule).default);
+      SyntaxHighlighter.registerLanguage("ts", (typescriptModule as DefaultExportModule).default);
+      SyntaxHighlighter.registerLanguage("typescript", (typescriptModule as DefaultExportModule).default);
+      SyntaxHighlighter.registerLanguage("javascript", (javascriptModule as DefaultExportModule).default);
+      SyntaxHighlighter.registerLanguage("js", (javascriptModule as DefaultExportModule).default);
+      SyntaxHighlighter.registerLanguage("py", (pythonModule as DefaultExportModule).default);
+      SyntaxHighlighter.registerLanguage("python", (pythonModule as DefaultExportModule).default);
+      SyntaxHighlighter.registerLanguage("bash", (bashModule as DefaultExportModule).default);
+      SyntaxHighlighter.registerLanguage("shell", (bashModule as DefaultExportModule).default);
+      SyntaxHighlighter.registerLanguage("json", (jsonModule as DefaultExportModule).default);
+      SyntaxHighlighter.registerLanguage("markdown", (markdownModule as DefaultExportModule).default);
+      SyntaxHighlighter.registerLanguage("sql", (sqlModule as DefaultExportModule).default);
+
+      return {
+        SyntaxHighlighter,
+        oneDark: (oneDarkModule as DefaultExportModule).default as Record<string, unknown>,
+      };
+    })
+    .catch((error: unknown) => {
+      syntaxBundlePromise = null;
+      throw error;
+    });
+
+  return syntaxBundlePromise;
 }
 
 function getCodeText(children: ReactNode) {
@@ -85,12 +141,15 @@ export default function MarkdownCodeBlock({
   ...props
 }: MarkdownCodeBlockProps) {
   const [copied, setCopied] = useState(false);
+  const [syntaxBundle, setSyntaxBundle] = useState<SyntaxBundle | null>(null);
   const copyResetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const text = getCodeText(children);
   const language =
     (className?.match(/language-([\w-]+)/)?.[1] as string | undefined) || undefined;
   const normalizedLanguage = language?.toLowerCase();
   const canHighlight = normalizedLanguage ? highlightedLanguages.has(normalizedLanguage) : false;
+  const LazySyntaxHighlighter = syntaxBundle?.SyntaxHighlighter ?? null;
+  const syntaxStyle = syntaxBundle?.oneDark ?? null;
   const codeBackground = "var(--pill-background)";
   const codeLabel = normalizedLanguage ?? "text";
 
@@ -117,6 +176,30 @@ export default function MarkdownCodeBlock({
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (!canHighlight) {
+      return;
+    }
+
+    let isMounted = true;
+
+    loadSyntaxBundle()
+      .then((bundle) => {
+        if (isMounted) {
+          setSyntaxBundle(bundle);
+        }
+      })
+      .catch(() => {
+        if (isMounted) {
+          setSyntaxBundle(null);
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [canHighlight]);
 
   if (!language) {
     return <PlainCodeBlock className={className} {...props}>{children}</PlainCodeBlock>;
@@ -149,10 +232,10 @@ export default function MarkdownCodeBlock({
         </button>
       </div>
       <div className="max-h-[420px] overflow-auto">
-        {canHighlight ? (
-          <SyntaxHighlighter
+        {canHighlight && LazySyntaxHighlighter && syntaxStyle ? (
+          <LazySyntaxHighlighter
             language={normalizedLanguage}
-            style={oneDark}
+            style={syntaxStyle}
             PreTag="div"
             customStyle={{
               margin: 0,
@@ -166,7 +249,7 @@ export default function MarkdownCodeBlock({
             wrapLongLines={false}
           >
             {text}
-          </SyntaxHighlighter>
+          </LazySyntaxHighlighter>
         ) : (
           <pre className="overflow-x-auto px-4 py-3 text-[var(--foreground)]" style={{ background: codeBackground }}>
             <code className="block text-[0.95em] leading-[1.6] font-mono text-inherit">
