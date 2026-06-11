@@ -3,5 +3,9 @@ interface FooterProps {
 }
 
 export default function Footer({ className = "" }: FooterProps) {
-  return <div className={`h-12 ${className}`} aria-hidden="true" />;
+  return (
+    <footer className={`py-4 ${className}`} aria-hidden="true">
+      <div className="h-4" />
+    </footer>
+  );
 }

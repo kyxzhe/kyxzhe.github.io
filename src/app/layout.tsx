@@ -1,7 +1,9 @@
-import type { Metadata, Viewport } from "next";
+import type { Metadata } from "next";
 import localFont from "next/font/local";
+import Script from "next/script";
 import "./globals.css";
 import ConsoleProvider from "@/components/Console";
+import { Analytics } from "@vercel/analytics/next";
 import { defaultSeoImage, siteMetadata } from "@/lib/seo/config";
 import {
   getPersonJsonLd,
@@ -13,58 +15,59 @@ import {
 const openAiSans = localFont({
   src: [
     {
-      path: '../assets/fonts/OpenAISans-Light.woff2',
+      path: '../../public/fonts/OpenAISans-Light.woff2',
       weight: '300',
       style: 'normal',
     },
     {
-      path: '../assets/fonts/OpenAISans-LightItalic.woff2',
+      path: '../../public/fonts/OpenAISans-LightItalic.woff2',
       weight: '300',
       style: 'italic',
     },
     {
-      path: '../assets/fonts/OpenAISans-Regular.woff2',
+      path: '../../public/fonts/OpenAISans-Regular.woff2',
       weight: '400',
       style: 'normal',
     },
     {
-      path: '../assets/fonts/OpenAISans-RegularItalic.woff2',
+      path: '../../public/fonts/OpenAISans-RegularItalic.woff2',
       weight: '400',
       style: 'italic',
     },
     {
-      path: '../assets/fonts/OpenAISans-Medium.woff2',
+      path: '../../public/fonts/OpenAISans-Medium.woff2',    
       weight: '500',
       style: 'normal',
     },
     {
-      path: '../assets/fonts/OpenAISans-Semibold.woff2',
+      path: '../../public/fonts/OpenAISans-MediumItalic.woff2',
+      weight: '500',
+      style: 'italic',
+    },
+    {
+      path: '../../public/fonts/OpenAISans-Semibold.woff2',
       weight: '600',
       style: 'normal',
     },
     {
-      path: '../assets/fonts/OpenAISans-Bold.woff2',
+      path: '../../public/fonts/OpenAISans-SemiboldItalic.woff2',
+      weight: '600',
+      style: 'italic',
+    },
+    {
+      path: '../../public/fonts/OpenAISans-Bold.woff2',
       weight: '700',
       style: 'normal',
+    },
+    {
+      path: '../../public/fonts/OpenAISans-BoldItalic.woff2',
+      weight: '700',
+      style: 'italic',
     },
   ],
   variable: '--font-openai-sans',
   display: 'swap',
-  preload: false,
 });
-const serializedWebsiteJsonLd = serializeJsonLd(getWebsiteJsonLd());
-const serializedPersonJsonLd = serializeJsonLd(getPersonJsonLd());
-
-export const viewport: Viewport = {
-  width: "device-width",
-  initialScale: 1,
-  colorScheme: "light dark",
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#000000" },
-  ],
-};
-
 export const metadata: Metadata = {
   metadataBase: new URL(siteMetadata.baseUrl),
   applicationName: siteMetadata.applicationName,
@@ -73,17 +76,12 @@ export const metadata: Metadata = {
     template: siteMetadata.titleTemplate,
   },
   description: siteMetadata.description,
-  keywords: siteMetadata.keywords,
   icons: {
     icon: [
-      { url: "/favicon.ico?v7", sizes: "any", type: "image/x-icon", media: "(prefers-color-scheme: light)" },
-      { url: "/favicon-dark.ico?v7", sizes: "any", type: "image/x-icon", media: "(prefers-color-scheme: dark)" },
+      { url: '/favicon.ico?v7', sizes: 'any', type: 'image/x-icon' },
     ],
-    shortcut: [
-      { url: "/favicon.ico?v7", sizes: "any", type: "image/x-icon", media: "(prefers-color-scheme: light)" },
-      { url: "/favicon-dark.ico?v7", sizes: "any", type: "image/x-icon", media: "(prefers-color-scheme: dark)" },
-    ],
-    apple: "/apple-icon.png",
+    shortcut: '/favicon.ico?v7',
+    apple: '/apple-icon.png',
   },
   authors: [{ name: siteMetadata.author.name }],
   creator: siteMetadata.author.name,
@@ -123,29 +121,67 @@ export const metadata: Metadata = {
   },
 };
 
+const themeFaviconScript = `
+(() => {
+  const version = 'v7';
+  const media = window.matchMedia('(prefers-color-scheme: dark)');
+
+  const upsertLink = (id, rel, href) => {
+    let link = document.getElementById(id);
+    if (!(link instanceof HTMLLinkElement)) {
+      link = document.createElement('link');
+      link.id = id;
+      link.rel = rel;
+      link.type = 'image/x-icon';
+      document.head.appendChild(link);
+    }
+    link.href = href;
+  };
+
+  const applyTheme = (isDark) => {
+    const href = isDark ? '/favicon-dark.ico?' + version : '/favicon.ico?' + version;
+    upsertLink('theme-favicon-icon', 'icon', href);
+    upsertLink('theme-favicon-shortcut', 'shortcut icon', href);
+  };
+
+  applyTheme(media.matches);
+
+  const handleChange = (event) => applyTheme(event.matches);
+  if (typeof media.addEventListener === 'function') {
+    media.addEventListener('change', handleChange);
+  } else if (typeof media.addListener === 'function') {
+    media.addListener(handleChange);
+  }
+})();
+`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const websiteJsonLd = getWebsiteJsonLd();
+  const personJsonLd = getPersonJsonLd();
+
   return (
     <html lang={siteMetadata.language}>
       <body className={`${openAiSans.variable} antialiased`}>
-        <a className="skip-link" href="#main-content">
-          Skip to content
-        </a>
         <ConsoleProvider />
+        <Script id="theme-favicon" strategy="beforeInteractive">
+          {themeFaviconScript}
+        </Script>
         <script
           id="ld-website"
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: serializedWebsiteJsonLd }}
+          dangerouslySetInnerHTML={{ __html: serializeJsonLd(websiteJsonLd) }}
         />
         <script
           id="ld-person"
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: serializedPersonJsonLd }}
+          dangerouslySetInnerHTML={{ __html: serializeJsonLd(personJsonLd) }}
         />
         {children}
+        <Analytics />
       </body>
     </html>
   );

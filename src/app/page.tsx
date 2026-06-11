@@ -3,21 +3,14 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Link from "next/link";
-import dynamic from "next/dynamic";
-import { ArrowUp, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useState, useCallback, useEffect, useMemo, useRef, KeyboardEvent } from "react";
+import { AnimatePresence, motion } from "motion/react";
 import { sendChatRequest, type ChatMessage } from "@/lib/api/chat";
+import MarkdownMessage from "@/components/MarkdownMessage";
 import { useChatMessages } from "@/hooks/useChatMessages";
 import { siteMetadata } from "@/lib/seo/config";
 import { getWebPageJsonLd, serializeJsonLd } from "@/lib/seo/schema";
-
-const MarkdownMessage = dynamic(() => import("@/components/MarkdownMessage"), {
-  ssr: false,
-});
-
-const prefersReducedMotion = () =>
-  typeof window !== "undefined" &&
-  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 const rotatingPlaceholders = [
   "Interested in my research, teaching, or projects? Feel free to ask here.",
@@ -48,14 +41,6 @@ const mobileRotatingPlaceholders = [
 ];
 
 const MAX_PROMPT_CHARS = 4000;
-const serializedHomePageJsonLd = serializeJsonLd(
-  getWebPageJsonLd({
-    title: siteMetadata.title,
-    description: siteMetadata.description,
-    url: siteMetadata.baseUrl,
-    dateModified: "2026-06-11",
-  })
-);
 
 const getChatErrorMessage = (err: unknown) => {
   const message = err instanceof Error ? err.message : "";
@@ -85,8 +70,6 @@ export default function Home() {
   const activeRequestRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
-    if (prefersReducedMotion()) return;
-
     const rotate = () => {
       setPlaceholderIndex((prev) => (prev + 1) % rotatingPlaceholders.length);
     };
@@ -193,29 +176,32 @@ export default function Home() {
   const historyEndRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    historyEndRef.current?.scrollIntoView({
-      behavior: prefersReducedMotion() ? "auto" : "smooth",
-      block: "end",
-    });
+    historyEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [visibleMessages, isLoading]);
 
   const showPlaceholderOverlay = isHydrated && !prompt.trim() && visibleMessages.length === 0;
   const showCaretHint = isHydrated && !prompt.trim() && visibleMessages.length > 0;
+  const homePageJsonLd = getWebPageJsonLd({
+    title: siteMetadata.title,
+    description: siteMetadata.description,
+    url: siteMetadata.baseUrl,
+    dateModified: "2026-05-14",
+  });
 
   return (
     <div className="flex flex-col min-h-screen font-sans font-medium">
       <script
         id="ld-homepage"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: serializedHomePageJsonLd }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(homePageJsonLd) }}
       />
       <Navbar />
-      <main id="main-content" tabIndex={-1} className="flex-1 w-full flex flex-col items-center justify-center text-center px-6 md:px-12 lg:px-16 pb-16 gap-10 md:gap-14">
+      <main className="flex-1 w-full flex flex-col items-center justify-center text-center px-6 md:px-12 lg:px-16 pb-16 gap-10 md:gap-14">
         <section className="w-full max-w-3xl flex flex-col items-center gap-5 md:gap-6">
           <p className="text-[12px] tracking-[0.34em] uppercase text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.6)]">
             KEVIN ZHENG · MACHINE LEARNING & DATA
           </p>
-          <h1 className="text-balance text-[42px] font-semibold leading-tight text-foreground sm:text-[48px] md:text-[64px] lg:whitespace-nowrap">
+          <h1 className="text-[48px] md:text-[64px] font-semibold text-foreground leading-tight lg:whitespace-nowrap">
             Trustworthy Machine Learning
           </h1>
           <p className="text-[17px] md:text-[17px] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.6)] max-w-2xl leading-relaxed">
@@ -224,13 +210,13 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row items-center gap-3 mt-4">
             <Link
               href="/publications"
-              className="inline-flex min-h-11 items-center justify-center rounded-full px-6 py-3 text-[15px] font-medium shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition duration-200 hover:-translate-y-[2px] bg-[#141414] text-white dark:bg-[#ffffff] dark:text-[#000000] md:px-7"
+              className="px-6 md:px-7 py-3 rounded-full text-[15px] font-medium shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition duration-200 hover:-translate-y-[2px] bg-[#141414] text-white dark:bg-[#ffffff] dark:text-[#000000]"
             >
               View publications
             </Link>
             <Link
               href="/contact"
-              className="inline-flex min-h-11 items-center justify-center rounded-full border px-6 py-3 text-[15px] font-medium transition duration-200 hover:-translate-y-[1px] border-[rgba(0,0,0,0.12)] bg-white text-foreground shadow-[0_1px_6px_rgba(0,0,0,0.05)] dark:border-[#666] dark:bg-[#000000] dark:text-[rgba(255,255,255,1)] dark:shadow-[0_2px_8px_rgba(0,0,0,0.24)] md:px-7"
+            className="px-6 md:px-7 py-3 rounded-full border text-[15px] font-medium transition duration-200 hover:-translate-y-[1px] border-[rgba(0,0,0,0.12)] bg-white text-foreground shadow-[0_1px_6px_rgba(0,0,0,0.05)] dark:border-[#666] dark:bg-[#000000] dark:text-[rgba(255,255,255,1)] dark:shadow-[0_2px_8px_rgba(0,0,0,0.24)]"
             >
               Contact
             </Link>
@@ -238,60 +224,61 @@ export default function Home() {
         </section>
 
         <section className="w-full max-w-[48rem] flex flex-col items-center gap-4 mt-2">
-          <div
-            className={`w-full overflow-hidden rounded-[24px] border-0 bg-white px-4 py-4 font-normal transition-[box-shadow] duration-200 ease-out dark:border-none dark:bg-[rgba(255,255,255,0.05)] dark:shadow-[0_3px_12px_rgba(0,0,0,0.26)] ${
-              isExpanded ? "flex flex-col gap-3" : "flex h-[104px] flex-col gap-3"
-            }`}
-            style={{
+          <motion.div
+            layout
+            initial={false}
+            animate={{
+              height: isExpanded ? "auto" : 104,
               boxShadow:
                 "0 3px 6px rgba(0,0,0,0.04), 0 4px 80px 8px rgba(0,0,0,0.04), 0 0 1px rgba(0,0,0,0.62)",
             }}
+            transition={{ type: "spring", stiffness: 240, damping: 30 }}
+            className="w-full font-normal rounded-[24px] bg-white border-0 px-4 py-4 flex flex-col gap-3 overflow-hidden dark:bg-[rgba(255,255,255,0.05)] dark:border-none dark:shadow-[0_3px_12px_rgba(0,0,0,0.26)]"
           >
-            {isExpanded && (
-              <div className="w-full flex-1">
-                <div
-                  className="max-h-[320px] md:max-h-[360px] overflow-y-auto space-y-3 pr-[6px] pt-1"
-                  role="log"
-                  aria-live="polite"
-                  aria-relevant="additions text"
+            <AnimatePresence initial={false}>
+              {isExpanded && (
+                <motion.div
+                  key="history"
+                  initial={{ height: 0, opacity: 0, y: -6 }}
+                  animate={{ height: "auto", opacity: 1, y: 0 }}
+                  exit={{ height: 0, opacity: 0, y: -6 }}
+                  transition={{ duration: 0.32, ease: "easeInOut" }}
+                  className="w-full flex-1"
                 >
-                  {visibleMessages.length === 0 && !isLoading ? (
-                    <p className="text-[16px] leading-[1.5] text-[rgba(0,0,0,0.6)] dark:text-white/60">发送后这里会展开显示完整对话。</p>
-                  ) : (
-                    visibleMessages.map((message, index) => (
-                      <div
-                        key={`${message.role}-${index}`}
-                        className={`flex gap-2 ${message.role === "user" ? "justify-end" : "justify-start"}`}
-                      >
-                        <div
-                          className={`max-w-[85%] text-[16px] leading-relaxed text-left ${
-                            message.role === "user"
-                              ? "bg-[rgba(233,233,233,0.5)] text-foreground rounded-full px-4 py-2 dark:bg-[rgba(50,50,50,0.85)] dark:text-white"
-                              : "rounded-2xl text-foreground dark:text-white"
-                          }`}
-                        >
-                          <MarkdownMessage content={message.content} />
+                    <div className="max-h-[320px] md:max-h-[360px] overflow-y-auto space-y-3 pr-[6px] pt-1">
+                      {visibleMessages.length === 0 && !isLoading ? (
+                        <p className="text-[16px] leading-[1.5] text-[rgba(0,0,0,0.6)] dark:text-white/60">发送后这里会展开显示完整对话。</p>
+                      ) : (
+                        visibleMessages.map((message, index) => (
+                          <div
+                            key={`${message.role}-${index}`}
+                            className={`flex gap-2 ${message.role === "user" ? "justify-end" : "justify-start"}`}
+                          >
+                            <div
+                            className={`max-w-[85%] text-[16px] leading-relaxed text-left ${
+                              message.role === "user"
+                                ? "bg-[rgba(233,233,233,0.5)] text-foreground rounded-full px-4 py-2 dark:bg-[rgba(50,50,50,0.85)] dark:text-white"
+                                : "rounded-2xl text-foreground dark:text-white"
+                            }`}
+                            >
+                              <MarkdownMessage content={message.content} />
+                            </div>
+                          </div>
+                        ))
+                      )}
+                      {isLoading && (
+                        <div className="flex items-center text-[rgba(0,0,0,0.6)] dark:text-white/60">
+                          <Loader2 size={16} className="animate-spin" />
                         </div>
-                      </div>
-                    ))
-                  )}
-                  {isLoading && (
-                    <div
-                      className="flex items-center text-[rgba(0,0,0,0.6)] dark:text-white/60"
-                      role="status"
-                    >
-                      <Loader2 size={16} className="animate-spin" aria-hidden="true" />
-                      <span className="sr-only">KevinBot is responding</span>
+                      )}
+                      <div ref={historyEndRef} />
                     </div>
-                  )}
-                  <div ref={historyEndRef} />
-                </div>
-              </div>
-            )}
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             <form
               className="relative w-full"
-              aria-busy={isLoading}
               onSubmit={(event) => {
                 event.preventDefault();
                 handleSend();
@@ -300,63 +287,84 @@ export default function Home() {
               <div className="relative w-full">
                 <textarea
                   placeholder=""
-                  className="chat-input w-full min-h-[64px] resize-none appearance-none border-0 bg-transparent pr-16 text-[16px] leading-[1.4] text-foreground shadow-none outline-none focus:border-0 focus:outline-none focus:ring-0 focus-visible:outline-none dark:text-white md:min-h-[72px] md:pr-14"
+                  className="w-full min-h-[64px] resize-none bg-transparent pr-[58px] text-[16px] leading-[1.4] text-foreground focus:outline-none dark:text-white md:min-h-[72px] md:pr-[52px]"
                   aria-label="Ask a question"
-                  aria-describedby="chatbot-disclaimer"
-                  required
-                  maxLength={MAX_PROMPT_CHARS}
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
                   onKeyDown={handleKeyDown}
                 />
                 {showCaretHint && (
-                  <div
-                    className="pointer-events-none absolute left-0 top-0 text-[16px] md:text-[16px] leading-[1.4] text-[rgba(0,0,0,0.6)] opacity-80 dark:text-white/60"
-                    aria-hidden="true"
-                  >
-                    -&gt;
-                  </div>
+                  <AnimatePresence>
+                    <motion.div
+                      key="caret-hint"
+                      initial={{ y: 6, opacity: 0 }}
+                      animate={{ y: 0, opacity: 0.8 }}
+                      exit={{ y: -6, opacity: 0 }}
+                      transition={{ duration: 0.18, ease: "easeOut" }}
+                      className="pointer-events-none absolute left-0 top-0 text-[16px] md:text-[16px] leading-[1.4] text-[rgba(0,0,0,0.6)] dark:text-white/60"
+                    >
+                      -&gt;
+                    </motion.div>
+                  </AnimatePresence>
                 )}
                 {showPlaceholderOverlay && (
-                  <div
-                    className="pointer-events-none absolute left-0 right-16 top-0 px-1 text-left text-[14px] leading-[1.45] text-[rgba(0,0,0,0.6)] transition-opacity duration-200 dark:text-white/60 sm:right-0 sm:px-4 sm:text-center sm:text-[15px] md:text-[16px]"
-                    aria-hidden="true"
-                    style={{ whiteSpace: "normal", wordBreak: "break-word" }}
-                  >
-                    <span className="hidden sm:block">
-                      {rotatingPlaceholders[placeholderIndex]}
-                    </span>
-                    <span className="block sm:hidden">
-                      {mobileRotatingPlaceholders[placeholderIndex]}
-                    </span>
-                  </div>
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={placeholderIndex}
+                      initial={{ y: 10, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      exit={{ y: -10, opacity: 0 }}
+                      transition={{ duration: 0.32, ease: "easeOut" }}
+                      className="pointer-events-none absolute left-0 right-[58px] top-0 px-1 text-left text-[14px] leading-[1.45] text-[rgba(0,0,0,0.6)] dark:text-white/60 sm:right-0 sm:px-4 sm:text-center sm:text-[15px] md:text-[16px]"
+                      style={{ whiteSpace: "normal", wordBreak: "break-word" }}
+                    >
+                      <span className="hidden sm:block">
+                        {rotatingPlaceholders[placeholderIndex]}
+                      </span>
+                      <span className="block sm:hidden">
+                        {mobileRotatingPlaceholders[placeholderIndex]}
+                      </span>
+                    </motion.div>
+                  </AnimatePresence>
                 )}
               </div>
               <div className="absolute bottom-0 right-0 mt-auto flex justify-end">
                 <button
                   type="submit"
-                  aria-label="Send message to KevinBot"
+                  aria-label="Send prompt to ChatGPT"
                   disabled={!prompt.trim() || isLoading}
-                  className="relative inline-flex h-11 w-11 items-center justify-center rounded-full p-0 transition-colors hover:opacity-70 disabled:hover:opacity-100 bg-[rgba(0,0,0,0.04)] text-[rgba(0,0,0,0.44)] dark:bg-white/15 dark:text-white/60 enabled:bg-black enabled:text-white dark:enabled:bg-white dark:enabled:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-1 disabled:focus-visible:ring-offset-0"
+                  className="relative inline-flex h-9 w-9 items-center justify-center rounded-full p-0 transition-colors hover:opacity-70 disabled:hover:opacity-100 bg-[rgba(0,0,0,0.04)] text-[rgba(0,0,0,0.44)] dark:bg-white/15 dark:text-white/60 enabled:bg-black enabled:text-white dark:enabled:bg-white dark:enabled:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-1 disabled:focus-visible:ring-offset-0"
                 >
-                  <span className="sr-only">Send message to KevinBot</span>
+                  <span className="sr-only">Send prompt to ChatGPT</span>
                   {isLoading ? (
                     <Loader2 size={16} className="animate-spin" aria-hidden="true" />
                   ) : (
-                    <ArrowUp size={18} aria-hidden="true" />
+                    <svg
+                      width="36"
+                      height="36"
+                      viewBox="0 0 32 32"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M16 22V10m0 0-5 5m5-5 5 5"
+                        stroke="currentColor"
+                        strokeWidth="1.7"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
                   )}
                 </button>
               </div>
             </form>
-          </div>
-          <p
-            id="chatbot-disclaimer"
-            className="text-xs text-[rgba(0,0,0,0.6)] dark:text-[rgb(243,243,243)] text-center w-full max-w-4xl"
-          >
+          </motion.div>
+          <p className="text-xs text-[rgba(0,0,0,0.6)] dark:text-[rgb(243,243,243)] text-center w-full max-w-4xl">
             ChatBot can make mistakes. Check important info.
           </p>
           {error && (
-            <p role="alert" className="text-sm text-red-600 text-left w-full max-w-4xl dark:text-red-400">
+            <p className="text-sm text-red-500 text-left w-full max-w-4xl">
               {error}
             </p>
           )}

@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "description": "Kevin Zheng's personal research portfolio built with Next.js and TailwindCSS",
   "private": false,
-  "type": "module",
   "author": {
     "name": "Yuxiang (Kevin) Zheng",
     "email": "kevin.zheng@student.uts.edu.au",
@@ -23,25 +22,29 @@
     "nextjs",
     "react",
     "tailwindcss",
-    "typescript"
+    "typescript",
+    "motion",
+    "framer-motion"
   ],
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
-    "start": "node scripts/serve-static.mjs",
-    "lint": "eslint",
-    "typecheck": "tsc --noEmit"
+    "start": "next start",
+    "lint": "eslint"
   },
   "dependencies": {
+    "@vercel/analytics": "^1.5.0",
     "clsx": "^2.1.1",
     "katex": "^0.16.25",
     "lucide-react": "^0.542.0",
+    "motion": "^12.23.12",
     "next": "15.5.2",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-markdown": "^10.1.0",
     "react-syntax-highlighter": "^16.1.0",
     "rehype-katex": "^7.0.1",
+    "rehype-raw": "^7.0.0",
     "remark-deflist": "^1.0.0",
     "remark-gfm": "^4.0.1",
     "remark-math": "^6.0.0",

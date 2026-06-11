@@ -1,12 +1,14 @@
-import { Fragment } from "react";
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
-import { Mail, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin, CalendarDays, X } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { ContactBookingControl, ContactPhoneRequest } from "@/components/ContactControls";
 import { contactInfo } from "@/lib/constants/contact";
 import { socials } from "@/lib/constants/socials";
 import { GoogleScholarIcon, OrcidIcon } from "@/components/icons/AcademicIcons";
+import ContactModal from "@/components/ContactModal";
 
 const replyNotes = [
   "What is the topic and who is involved?",
@@ -27,29 +29,13 @@ const socialLinks = [
   { label: "GitHub", href: socials.github, icon: <GitHubMonoIcon className="w-4 h-4" /> },
 ];
 
-const directLines = [
-  {
-    label: "Email",
-    value: contactInfo.email,
-    hint: "Best for research, teaching, and collaboration enquiries.",
-    href: `mailto:${contactInfo.email}`,
-    icon: Mail,
-  },
-  {
-    label: "Location",
-    value: contactInfo.location,
-    hint: "Based in Sydney. Happy to meet online across time zones.",
-    icon: MapPin,
-  },
-];
-
 function LinkedInMonoIcon({ className }: { className?: string }) {
   const classes = `${className ?? ""} dark:[&>rect]:stroke-white dark:[&>rect]:fill-white dark:[&>path]:fill-black`;
   return (
     <svg
       viewBox="0 0 24 24"
-      aria-hidden="true"
-      focusable="false"
+      role="img"
+      aria-label="LinkedIn"
       className={classes}
     >
       <rect x="1" y="1" width="22" height="22" rx="4.5" fill="currentColor" stroke="currentColor" />
@@ -65,8 +51,8 @@ function GitHubMonoIcon({ className }: { className?: string }) {
   return (
     <svg
       viewBox="0 0 24 24"
-      aria-hidden="true"
-      focusable="false"
+      role="img"
+      aria-label="GitHub"
       className={className}
       fill="currentColor"
     >
@@ -76,13 +62,38 @@ function GitHubMonoIcon({ className }: { className?: string }) {
 }
 
 export default function ContactPage() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showCallInfo, setShowCallInfo] = useState(false);
+  const directLines = [
+    {
+      label: "Email",
+      value: contactInfo.email,
+      hint: "Best for research, teaching, and collaboration enquiries.",
+      href: `mailto:${contactInfo.email}`,
+      icon: Mail,
+    },
+    {
+      label: "Phone",
+      value: "Request a call",
+      hint: "I rarely answer calls. Please request and I will text first.",
+      onClick: () => setShowCallInfo(true),
+      icon: Phone,
+    },
+    {
+      label: "Location",
+      value: contactInfo.location,
+      hint: "Based in Sydney. Happy to meet online across time zones.",
+      icon: MapPin,
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-white text-foreground dark:bg-[#000000] dark:text-[#f5f5f5] font-normal">
       <Navbar />
-      <main id="main-content" tabIndex={-1} className="flex-1 mx-auto w-full max-w-5xl px-2 md:px-4 lg:px-0 py-10 flex flex-col gap-16">
+      <main className="flex-1 mx-auto w-full max-w-5xl px-2 md:px-4 lg:px-0 py-10 flex flex-col gap-16">
         <section className="mt-2 space-y-5">
           <p className="text-[12px] uppercase tracking-[0.3em] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]">Contact</p>
-          <h1 className="text-balance text-[42px] font-medium leading-tight text-foreground sm:text-[48px]">
+          <h1 className="text-[48px] font-medium leading-tight text-foreground">
             Get in touch
           </h1>
           <p className="text-[15px] md:text-base text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)] max-w-2xl leading-relaxed">
@@ -91,7 +102,7 @@ export default function ContactPage() {
           <div className="flex flex-wrap gap-3 pt-2">
             <Link
               href={`mailto:${contactInfo.email}`}
-              className="inline-flex min-h-11 items-center justify-center rounded-full px-6 py-3 text-[14px] font-medium bg-[#141414] text-white dark:bg-[#f5f5f5] dark:text-[#000000] transition-colors duration-150 hover:opacity-90 md:px-7"
+              className="px-6 md:px-7 py-3 rounded-full text-[14px] font-medium bg-[#141414] text-white dark:bg-[#f5f5f5] dark:text-[#000000] transition-colors duration-150 hover:opacity-90"
             >
               Email Kevin
             </Link>
@@ -102,15 +113,16 @@ export default function ContactPage() {
           <div className="space-y-5">
             <p className="text-[14px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]">Direct lines</p>
             <div className="border-y border-[rgba(0,0,0,0.08)] dark:border-white/15">
-              {directLines.map(({ label, value, hint, href, icon: Icon }, idx) => {
+              {directLines.map(({ label, value, hint, href, onClick, icon: Icon }, idx) => {
+                const clickable = Boolean(href || onClick);
                 const Row = (
                   <div
                     className={`flex flex-col gap-1 py-5 border-b border-[rgba(0,0,0,0.08)] dark:border-white/20 transition-colors hover:border-foreground/70 ${
                       idx === directLines.length - 1 ? "border-b-0" : ""
-                    } ${href ? "cursor-pointer" : ""}`}
+                    } ${clickable ? "cursor-pointer" : ""}`}
                   >
                     <div className="flex items-center gap-2 text-[12px] uppercase tracking-[0.26em] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.6)]">
-                      {Icon && <Icon size={14} aria-hidden="true" />}
+                      {Icon && <Icon size={14} />}
                       <span>{label}</span>
                     </div>
                     <p className="text-[17px] font-medium text-foreground">{value}</p>
@@ -118,20 +130,26 @@ export default function ContactPage() {
                   </div>
                 );
 
-                const directLine = href ? (
-                  <Link href={href} className="block hover:text-foreground transition-colors">
-                    {Row}
-                  </Link>
-                ) : (
-                  <div>{Row}</div>
-                );
-
-                return (
-                  <Fragment key={label}>
-                    {directLine}
-                    {idx === 0 && <ContactPhoneRequest />}
-                  </Fragment>
-                );
+                if (href) {
+                  return (
+                    <Link key={label} href={href} className="block hover:text-foreground transition-colors">
+                      {Row}
+                    </Link>
+                  );
+                }
+                if (onClick) {
+                  return (
+                  <button
+                    key={label}
+                    type="button"
+                    onClick={onClick}
+                    className="w-full text-left font-medium hover:text-foreground transition-colors"
+                  >
+                      {Row}
+                    </button>
+                  );
+                }
+                return <div key={label}>{Row}</div>;
               })}
             </div>
           </div>
@@ -145,18 +163,25 @@ export default function ContactPage() {
                   <p className="text-[17px] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.6)]">Clear context helps me reply quickly.</p>
                 </div>
                 <span className="px-3 py-1 rounded-full text-[11px] uppercase tracking-[0.22em] bg-[rgba(0,0,0,0.04)] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)] dark:bg-[rgba(255,255,255,0.12)]">
-                  <span className="text-foreground">Sydney time</span>
+                  <span className="text-foreground">AEDT</span>
                 </span>
               </div>
               <ul className="space-y-3 text-[17px] leading-relaxed">
                 {replyNotes.map((note) => (
-                  <li key={note} className="flex gap-2 text-black dark:text-white">
+                <li key={note} className="flex gap-2 text-black dark:text-white">
                     <span className="text-[var(--accent)]">•</span>
                     <span>{note}</span>
                   </li>
                 ))}
               </ul>
-              <ContactBookingControl />
+              <button
+                type="button"
+                onClick={() => setIsModalOpen(true)}
+                className="w-full inline-flex items-center justify-center gap-2 rounded-full border text-[15px] font-medium border-[rgba(0,0,0,0.12)] bg-white text-foreground dark:border-none dark:bg-[rgba(255,255,255,0.12)] dark:text-white py-3 transition-colors duration-150 hover:border-foreground/50"
+              >
+                <CalendarDays size={16} />
+                Book a time
+              </button>
             </div>
           </div>
         </section>
@@ -180,17 +205,16 @@ export default function ContactPage() {
             <h2 className="text-[30px] font-medium text-foreground">Find me elsewhere</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {socialLinks.map(({ label, href, icon }) => (
-                <Link
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  referrerPolicy="no-referrer"
-                  className="flex min-h-11 items-center justify-between gap-3 px-4 py-2 border border-[rgba(0,0,0,0.12)] dark:border-white/20 rounded-full text-[17px] font-medium transition-colors duration-150 hover:border-foreground/50"
-                >
-                  <span className="text-[15px] dark:text-white">{label}</span>
-                  <span className="text-[rgba(0,0,0,0.6)] dark:text-white">{icon}</span>
-                </Link>
+              <Link
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-between gap-3 px-4 py-2 border border-[rgba(0,0,0,0.12)] dark:border-white/20 rounded-full text-[17px] font-medium transition-colors duration-150 hover:border-foreground/50"
+              >
+                <span className="text-[15px] dark:text-white">{label}</span>
+                <span className="text-[rgba(0,0,0,0.6)] dark:text-white">{icon}</span>
+              </Link>
               ))}
             </div>
           </div>
@@ -198,6 +222,40 @@ export default function ContactPage() {
 
       </main>
       <Footer className="mb-4" />
+      {showCallInfo && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4"
+          onClick={() => setShowCallInfo(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Call request info"
+        >
+          <div
+            className="surface-card max-w-md w-full p-6 rounded-2xl shadow-lg"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold">Request a call</h3>
+              <button
+                type="button"
+                aria-label="Close request call dialog"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full font-medium hover:bg-[var(--accent-soft)]"
+                onClick={() => setShowCallInfo(false)}
+              >
+                <X size={18} />
+              </button>
+            </div>
+            <p className="text-[17px] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)] leading-relaxed">
+              Share your number and preferred time in the booking note. I will text first and call if it helps.
+            </p>
+          </div>
+        </div>
+      )}
+      <ContactModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        startInSchedule
+      />
     </div>
   );
 }

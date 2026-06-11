@@ -1,5 +1,7 @@
+"use client";
+
 import Link from "next/link";
-import { Building2, GraduationCap, MapPin } from "lucide-react";
+import { motion } from "motion/react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { contactInfo } from "@/lib/constants/contact";
@@ -10,39 +12,38 @@ import {
   researchFocus,
   timeline,
 } from "@/lib/constants/about";
-
-const quickFacts = [
-  { label: "Sydney based", icon: MapPin },
-  { label: "Behavioural Data Science Lab @ UTS", icon: Building2 },
-  { label: "Teaching ML + Data Science @ USYD", icon: GraduationCap },
-];
+import {
+  cardVariants,
+  containerVariants,
+} from "@/lib/animation/variants";
 
 export default function AboutPage() {
   return (
     <div className="flex flex-col min-h-screen font-sans font-normal pt-2 md:pt-0 lg:py-6 xl:py-0 xl:pb-6 overflow-visible">
       <Navbar />
-      <main
-        id="main-content"
-        tabIndex={-1}
+      <motion.main
         className="flex-1 flex flex-col items-center gap-16 px-4 md:px-16 lg:px-24 py-12"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
       >
-        <section
+        <motion.section
           className="max-w-4xl w-full flex flex-col gap-12"
+          variants={cardVariants}
+          initial="hidden"
+          animate="visible"
         >
           <div className="flex flex-col gap-6">
             <p className="text-xs uppercase tracking-[0.3em] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]">About Kevin</p>
             <div className="space-y-4">
-              <h1 className="text-balance text-4xl md:text-5xl font-medium leading-tight">Research first, people in mind</h1>
+              <h1 className="text-4xl md:text-5xl font-medium leading-tight">Research first, people in mind</h1>
               <p className="text-[17px] text-foreground whitespace-pre-line leading-relaxed">{aboutIntro}</p>
             </div>
             <div className="flex flex-col gap-4 text-sm text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]">
               <div className="flex flex-wrap gap-x-8 gap-y-2">
-                {quickFacts.map(({ label, icon: Icon }) => (
-                  <span key={label} className="inline-flex items-center gap-2 dark:text-[rgba(255,255,255,0.8)]">
-                    <Icon size={15} aria-hidden="true" />
-                    {label}
-                  </span>
-                ))}
+                <span className="dark:text-[rgba(255,255,255,0.8)]">📍 Sydney based</span>
+                <span className="dark:text-[rgba(255,255,255,0.8)]">🏛 Behavioural Data Science Lab @ UTS</span>
+                <span className="dark:text-[rgba(255,255,255,0.8)]">🧑‍🏫 Teaching ML + Data Science @ USYD</span>
               </div>
             </div>
           </div>
@@ -70,9 +71,10 @@ export default function AboutPage() {
                   <p className="text-xs uppercase tracking-[0.3em] text-[rgba(0,0,0,0.6)] mt-3 dark:text-[rgba(255,255,255,0.8)]">Manuscripts</p>
                 </div>
               </div>
+              <div className="text-sm text-foreground/70 leading-relaxed" />
             </div>
           </div>
-        </section>
+        </motion.section>
 
         <section className="w-full max-w-4xl mx-auto space-y-20">
           <div className="space-y-10">
@@ -121,7 +123,7 @@ export default function AboutPage() {
                 </Link>
                 <Link
                   href="/"
-                  className="inline-flex min-h-11 items-center justify-center text-center text-foreground/60 underline underline-offset-4 transition-colors hover:text-foreground"
+                  className="text-foreground/60 text-center underline underline-offset-4 hover:text-foreground transition-colors"
                 >
                   Back to home
                 </Link>
@@ -129,7 +131,7 @@ export default function AboutPage() {
             </div>
           </div>
         </section>
-      </main>
+      </motion.main>
       <Footer className="mb-4" />
     </div>
   );

@@ -1,32 +1,55 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import Image from "next/image";
+import { motion, AnimatePresence, type Variants } from "motion/react";
 import {
   X,
+  Mail,
+  Phone,
+  MapPin,
+  Github,
+  Linkedin,
   SendHorizonal,
+  CalendarDays,
   Check,
   Loader2,
   AlertCircle,
-  ChevronLeft,
-  ChevronRight,
 } from "lucide-react";
-import { useFocusTrap } from "@/hooks/useFocusTrap";
+import {
+  modalVariants,
+  backdropVariants,
+  textVariants,
+  iconVariants,
+} from "@/lib/animation/variants";
+import { contactInfo } from "@/lib/constants/contact";
+import { socials } from "@/lib/constants/socials";
 import { generateAvailability } from "@/lib/constants/availability";
+import { OrcidIconColor } from "@/components/icons/AcademicIcons";
 
 interface ContactModalProps {
-  dialogId?: string;
+  isOpen: boolean;
   onClose: () => void;
+  startInSchedule?: boolean;
 }
 
-export default function ContactModal({
-  dialogId = "contact-booking-dialog",
-  onClose,
-}: ContactModalProps) {
+const innerSwapVariants: Variants = {
+  enter: { opacity: 0, x: 40 },
+  center: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.4, ease: [0.4, 0, 0.2, 1] as const },
+  },
+  exit: {
+    opacity: 0,
+    x: -40,
+    transition: { duration: 0.3, ease: [0.4, 0, 0.2, 1] as const },
+  },
+};
+
+export default function ContactModal({ isOpen, onClose, startInSchedule }: ContactModalProps) {
+  const [mode, setMode] = useState<"info" | "schedule">(startInSchedule ? "schedule" : "info");
   const availability = useMemo(() => generateAvailability(new Date(), 30), []);
-  const dialogRef = useRef<HTMLDivElement | null>(null);
-  const closeButtonRef = useRef<HTMLButtonElement | null>(null);
-  const submitAbortRef = useRef<AbortController | null>(null);
-  const successDismissTimerRef = useRef<number | null>(null);
   const WINDOW_SIZE = 5;
   const SUCCESS_DISMISS_DELAY = 1400; // short pause to show "Confirmed" badge
   const [windowStart, setWindowStart] = useState(0);
@@ -39,12 +62,9 @@ export default function ContactModal({
     email: "",
     note: "",
   });
-  const trimmedName = formValues.name.trim();
-  const trimmedEmail = formValues.email.trim();
-  const trimmedNote = formValues.note.trim();
   const emailValid = useMemo(
-    () => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail),
-    [trimmedEmail]
+    () => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formValues.email),
+    [formValues.email]
   );
   const [submissionState, setSubmissionState] = useState<
     "idle" | "loading" | "success" | "error"
@@ -74,58 +94,21 @@ export default function ContactModal({
   }, [availability, bookedSlots, selectedDate]);
 
   const selectedSlot = slotsForDate.find((slot) => slot.id === selectedSlotId);
-  const nameInputId = "booking-name";
-  const emailInputId = "booking-email";
-  const emailErrorId = "booking-email-error";
-  const noteInputId = "booking-note";
-  const emailHasError = trimmedEmail.length > 0 && !emailValid;
-  useFocusTrap(dialogRef);
 
-  const resetScheduler = useCallback(() => {
+  const resetScheduler = () => {
+    setMode(startInSchedule ? "schedule" : "info");
     setWindowStart(0);
     setSelectedDate(availability[0]?.dateISO ?? "");
     setSelectedSlotId(null);
     setFormValues({ name: "", email: "", note: "" });
     setSubmissionState("idle");
-  }, [availability]);
-
-  const clearSuccessDismissTimer = useCallback(() => {
-    if (successDismissTimerRef.current === null) return;
-
-    window.clearTimeout(successDismissTimerRef.current);
-    successDismissTimerRef.current = null;
-  }, []);
-
-  const handleDismiss = useCallback(() => {
-    clearSuccessDismissTimer();
-    submitAbortRef.current?.abort();
-    submitAbortRef.current = null;
-    resetScheduler();
-    onClose();
-  }, [clearSuccessDismissTimer, onClose, resetScheduler]);
+  };
 
   useEffect(() => {
-    const originalOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    const focusTimer = window.setTimeout(() => closeButtonRef.current?.focus(), 0);
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        handleDismiss();
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      document.body.style.overflow = originalOverflow;
-      window.clearTimeout(focusTimer);
-      window.removeEventListener("keydown", handleKeyDown);
-      clearSuccessDismissTimer();
-      submitAbortRef.current?.abort();
-      submitAbortRef.current = null;
-    };
-  }, [clearSuccessDismissTimer, handleDismiss]);
+    if (isOpen && startInSchedule) {
+      setMode("schedule");
+    }
+  }, [isOpen, startInSchedule]);
 
   useEffect(() => {
     if (!availability.find((day) => day.dateISO === selectedDate)) {
@@ -148,7 +131,7 @@ export default function ContactModal({
   };
 
   const handleSubmitBooking = async () => {
-    if (!selectedSlot || !trimmedName || !trimmedEmail || !emailValid || !selectedDate) return;
+    if (!selectedSlot || !formValues.name || !formValues.email || !selectedDate) return;
     const dayMeta = availability.find((d) => d.dateISO === selectedDate);
     if (!dayMeta) return;
 
@@ -158,34 +141,28 @@ export default function ContactModal({
       ``,
       `I'd like to reserve ${dayMeta.displayLabel} at ${selectedSlot.label}.`,
       ``,
-      `Name: ${trimmedName}`,
-      `Email: ${trimmedEmail}`,
-      trimmedNote ? `Context: ${trimmedNote}` : ``,
+      `Name: ${formValues.name}`,
+      `Email: ${formValues.email}`,
+      formValues.note ? `Context: ${formValues.note}` : ``,
       ``,
       `Best,`,
-      trimmedName,
+      formValues.name,
     ]
       .filter(Boolean)
       .join("\n");
 
     setSubmissionState("loading");
-    submitAbortRef.current?.abort();
-    const submitController = new AbortController();
-    submitAbortRef.current = submitController;
-
     try {
       const response = await fetch("https://formsubmit.co/ajax/kevin.zheng@student.uts.edu.au", {
         method: "POST",
-        referrerPolicy: "no-referrer",
-        signal: submitController.signal,
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
         },
         body: JSON.stringify({
           _subject: subject,
-          name: trimmedName,
-          email: trimmedEmail,
+          name: formValues.name,
+          email: formValues.email,
           message: body,
           slot: `${dayMeta.displayLabel} · ${selectedSlot.label}`,
         }),
@@ -198,263 +175,390 @@ export default function ContactModal({
         ...prev,
         [selectedSlot.id]: true,
       }));
-      clearSuccessDismissTimer();
-      successDismissTimerRef.current = window.setTimeout(() => {
-        successDismissTimerRef.current = null;
-        resetScheduler();
+      setTimeout(() => {
         onClose();
+        resetScheduler();
       }, SUCCESS_DISMISS_DELAY);
-    } catch {
-      if (submitController.signal.aborted) return;
+    } catch (error) {
+      console.error(error);
       setSubmissionState("error");
-    } finally {
-      if (submitAbortRef.current === submitController) {
-        submitAbortRef.current = null;
-      }
     }
   };
 
   return (
-    <div
-      className="contact-modal-backdrop fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-[rgba(0,0,0,0.25)] p-3 backdrop-blur-sm sm:items-center sm:p-4"
-      onClick={() => {
-        handleDismiss();
-      }}
-    >
-      <div
-        id={dialogId}
-        ref={dialogRef}
-        className="contact-modal-panel surface-card relative max-h-[calc(100dvh-3rem)] w-full max-w-4xl overflow-y-auto p-4 sm:max-h-[90vh] sm:p-6 md:p-8 lg:p-12"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="contact-modal-title"
-        aria-describedby="contact-modal-description"
-        tabIndex={-1}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div>
-          <button
-            ref={closeButtonRef}
-            type="button"
-            aria-label="Close contact modal"
-            className="absolute right-4 top-4 z-10 inline-flex h-11 w-11 items-center justify-center rounded-full bg-[var(--accent-soft)] text-[var(--accent)] transition-colors hover:opacity-80 md:right-5 md:top-5"
-            onClick={() => {
-              handleDismiss();
-            }}
-          >
-            <X size={22} className="text-foreground" aria-hidden="true" />
-          </button>
-
-          <div className="mb-6 pr-10 text-center md:mb-12 md:pr-0">
-            <h1 id="contact-modal-title" className="mb-3 text-balance text-[34px] font-medium leading-none md:text-6xl lg:text-7xl">
-              Book a time
-            </h1>
-            <p id="contact-modal-description" className="text-[15px] leading-relaxed text-muted-foreground md:text-xl">
-              Choose a time and add a short note. I will confirm by email.
-            </p>
-          </div>
-
-          <div>
-            <form
-              className="flex flex-col gap-4 md:gap-6"
-              onSubmit={(event) => {
-                event.preventDefault();
-                void handleSubmitBooking();
-              }}
-            >
-              <div
-                className="flex flex-wrap gap-3 items-center justify-end"
-                role="status"
-                aria-live="polite"
-              >
-                {submissionState === "success" && (
-                  <span className="inline-flex items-center gap-1 text-xs uppercase tracking-[0.3em] text-green-700 dark:text-green-400">
-                    <Check size={14} aria-hidden="true" /> Confirmed
-                  </span>
-                )}
-                {submissionState === "error" && (
-                  <span className="inline-flex items-center gap-1 text-xs uppercase tracking-[0.3em] text-red-600 dark:text-red-400">
-                    <AlertCircle size={14} aria-hidden="true" /> Failed
-                  </span>
-                )}
-              </div>
-
-              <div className="rounded-[18px] bg-[var(--pill-background)] p-3 sm:p-4">
-                <div className="mb-3 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
-                  <p id="booking-date-label" className="text-xs uppercase tracking-[0.28em] text-muted-foreground">
-                    Choose a date
-                  </p>
-                  <div className="flex gap-2">
-                    <button
-                      type="button"
-                      aria-label="Show previous dates"
-                      onClick={() => shiftWindow(-1)}
-                      disabled={windowStart === 0}
-                      className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/70 text-muted-foreground transition-colors hover:bg-[var(--accent-soft)] disabled:opacity-40 dark:bg-white/8"
-                    >
-                      <ChevronLeft size={16} aria-hidden="true" />
-                    </button>
-                    <button
-                      type="button"
-                      aria-label="Show next dates"
-                      onClick={() => shiftWindow(1)}
-                      disabled={windowStart >= maxWindowIndex}
-                      className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/70 text-muted-foreground transition-colors hover:bg-[var(--accent-soft)] disabled:opacity-40 dark:bg-white/8"
-                    >
-                      <ChevronRight size={16} aria-hidden="true" />
-                    </button>
-                  </div>
-                </div>
-                <div
-                  className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap"
-                  role="group"
-                  aria-labelledby="booking-date-label"
+    <AnimatePresence mode="wait">
+      {isOpen && (
+        <motion.div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(0,0,0,0.25)] p-3 backdrop-blur-sm sm:p-4"
+          variants={backdropVariants}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+          onClick={() => {
+            onClose();
+            resetScheduler();
+          }}
+        >
+        <motion.div
+          className="surface-card relative max-h-[calc(100dvh-1.5rem)] w-full max-w-4xl overflow-y-auto p-4 sm:max-h-[90vh] sm:p-6 md:p-8 lg:p-12"
+          variants={modalVariants}
+          initial="hidden"
+          animate={{ scale: 1, opacity: 1 }}
+          exit="exit"
+          onClick={(e) => e.stopPropagation()}
+        >
+            <motion.div>
+                <motion.button
+                  type="button"
+                  aria-label="Close contact modal"
+                  className="absolute right-4 top-4 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-[var(--accent-soft)] text-[var(--accent)] transition-colors hover:opacity-80 md:right-5 md:top-5 md:h-11 md:w-11"
+                  onClick={() => {
+                    onClose();
+                    resetScheduler();
+                  }}
+                  variants={iconVariants}
+                  initial="hidden"
+                  animate="visible"
+                  whileHover="hover"
                 >
-                  {visibleDays.map((day) => {
-                    const isActive = selectedDate === day.dateISO;
-                    return (
-                      <button
-                        key={day.dateISO}
-                        type="button"
-                        onClick={() => {
-                          setSelectedDate(day.dateISO);
-                          setSelectedSlotId(null);
-                        }}
-                        aria-pressed={isActive}
-                        className={`inline-flex min-h-11 items-center justify-center rounded-full px-3 text-[13px] leading-snug transition-colors ${
-                          isActive
-                            ? "bg-[var(--accent)] text-[var(--background)]"
-                            : "bg-white/70 text-muted-foreground hover:bg-[var(--accent-soft)] dark:bg-white/8"
-                        }`}
-                      >
-                        <span className="flex items-center gap-2">
-                          {day.displayLabel}
-                          {isActive && (
-                            <span className="text-[0.65rem] uppercase tracking-[0.2em] opacity-80" aria-hidden="true">
-                              ✓
+                  <X size={22} className="text-foreground" />
+                </motion.button>
+
+                <motion.div
+                  className="mb-6 pr-10 text-center md:mb-12 md:pr-0"
+                  variants={textVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  <h1 className="mb-3 text-[34px] font-medium leading-none md:text-6xl lg:text-7xl">
+                    {mode === "info" ? "Contact me" : "Book a time"}
+                  </h1>
+                  <p className="text-[15px] leading-relaxed text-muted-foreground md:text-xl">
+                    {mode === "info"
+                      ? "Share what you need, who is involved, and any constraints. I will outline the next steps."
+                      : "Choose a time and add a short note. I will confirm by email."}
+                  </p>
+                </motion.div>
+
+                <AnimatePresence mode="wait">
+                  {mode === "info" ? (
+                <motion.div
+                  key="info"
+                  variants={innerSwapVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                >
+                  <motion.div
+                    className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-8"
+                    layout
+                    variants={textVariants}
+                    initial="hidden"
+                    animate="visible"
+                  >
+                    <motion.div
+                      className="card-row hoverable flex-col sm:flex-row items-start sm:items-center cursor-pointer"
+                      whileHover={{ scale: 1.02 }}
+                      onClick={() => window.open(`mailto:${contactInfo.email}`)}
+                    >
+                      <motion.div variants={iconVariants} initial="hidden" animate="visible">
+                        <Mail size={24} className="text-brand-accent" />
+                      </motion.div>
+                      <div>
+                        <h3 className="font-medium text-lg">Email</h3>
+                        <p className="text-muted-foreground break-all">{contactInfo.email}</p>
+                      </div>
+                    </motion.div>
+                    <motion.div
+                      className="card-row hoverable flex-col sm:flex-row items-start sm:items-center cursor-pointer"
+                      whileHover={{ scale: 1.02 }}
+                      onClick={() => window.open(`tel:${contactInfo.phoneRaw}`)}
+                    >
+                      <motion.div variants={iconVariants} initial="hidden" animate="visible">
+                        <Phone size={24} className="text-brand-accent" />
+                      </motion.div>
+                      <div>
+                        <h3 className="font-medium text-lg">Phone</h3>
+                        <p className="text-muted-foreground">{contactInfo.phone}</p>
+                      </div>
+                    </motion.div>
+
+                    <motion.div
+                      className="card-row flex-col sm:flex-row items-start sm:items-center"
+                      variants={textVariants}
+                      initial="hidden"
+                      animate="visible"
+                    >
+                      <motion.div variants={iconVariants} initial="hidden" animate="visible">
+                        <MapPin size={24} className="text-brand-accent" />
+                      </motion.div>
+                      <div>
+                        <h3 className="font-medium text-lg">Location</h3>
+                        <p className="text-muted-foreground">{contactInfo.location}</p>
+                      </div>
+                    </motion.div>
+
+                    <motion.div
+                      className="card-row hoverable flex-col sm:flex-row items-start sm:items-center cursor-pointer"
+                      variants={textVariants}
+                      initial="hidden"
+                      animate="visible"
+                      whileHover={{ scale: 1.02 }}
+                      onClick={() => setMode("schedule")}
+                    >
+                      <motion.div variants={iconVariants} initial="hidden" animate="visible">
+                        <CalendarDays size={24} className="text-brand-accent" />
+                      </motion.div>
+                      <div>
+                        <h3 className="font-medium text-lg">Availability</h3>
+                        <p className="text-muted-foreground">
+                          {contactInfo.availability} · Tap to reserve
+                        </p>
+                      </div>
+                    </motion.div>
+                  </motion.div>
+
+                  <motion.div
+                    className="border-t border-border/70 pt-6"
+                    variants={textVariants}
+                    initial="hidden"
+                    animate="visible"
+                  >
+                    <h3 className="text-xl font-medium mb-4 text-center">Connect with me</h3>
+                    <div className="flex flex-wrap justify-center gap-3">
+                      {[
+                        {
+                          label: "LinkedIn",
+                          href: socials.linkedin,
+                          icon: <Linkedin size={24} className="text-brand-accent" />,
+                        },
+                        {
+                          label: "Google Scholar",
+                          href: socials.googleScholar,
+                          icon: (
+                            <Image
+                              src="/icons/google-scholar.png"
+                              alt="Google Scholar logo"
+                              width={24}
+                              height={24}
+                              className="w-6 h-6"
+                              priority={false}
+                            />
+                          ),
+                        },
+                        {
+                          label: "ORCID",
+                          href: socials.orcid,
+                          icon: <OrcidIconColor className="w-6 h-6" />,
+                        },
+                        {
+                          label: "GitHub",
+                          href: socials.github,
+                          icon: <Github size={24} className="text-brand-accent" />,
+                        },
+                      ].map(({ icon, href, label }) => (
+                        <motion.a
+                          key={label}
+                          href={href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="card-row hoverable justify-center"
+                          variants={iconVariants}
+                          initial="hidden"
+                          animate="visible"
+                          whileHover="hover"
+                        >
+                          {icon}
+                          <span>{label}</span>
+                        </motion.a>
+                      ))}
+                    </div>
+                  </motion.div>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="schedule"
+                  variants={innerSwapVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                >
+                  <motion.div
+                    className="flex flex-col gap-4 md:gap-6"
+                    variants={textVariants}
+                    initial="hidden"
+                    animate="visible"
+                  >
+                        <div className="flex flex-wrap gap-3 items-center justify-end">
+                          {submissionState === "success" && (
+                            <span className="inline-flex items-center gap-1 text-xs uppercase tracking-[0.3em] text-green-500">
+                              <Check size={14} /> Confirmed
                             </span>
                           )}
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
+                          {submissionState === "error" && (
+                            <span className="inline-flex items-center gap-1 text-xs uppercase tracking-[0.3em] text-red-500">
+                              <AlertCircle size={14} /> Failed
+                            </span>
+                          )}
+                        </div>
 
-              <div
-                className="grid grid-cols-1 md:grid-cols-2 gap-3"
-                role="group"
-                aria-label="Available meeting times"
-              >
-                {slotsForDate.map((slot) => {
-                  const isSelected = selectedSlotId === slot.id;
-                  return (
-                    <button
-                      key={slot.id}
-                      type="button"
-                      disabled={slot.booked || submissionState === "loading"}
-                      aria-pressed={isSelected}
-                      aria-label={`${slot.label} ${slot.booked ? "booked" : isSelected ? "selected" : "available"}`}
-                      onClick={() => setSelectedSlotId(slot.id)}
-                      className={`rounded-[16px] px-3 py-3 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30 sm:px-4 sm:py-4 ${
-                        slot.booked
-                          ? "cursor-not-allowed bg-[var(--pill-background)] text-muted-foreground line-through opacity-55"
-                          : isSelected
-                            ? "bg-[var(--accent)] text-[var(--background)]"
-                            : "bg-[var(--pill-background)] hover:bg-[var(--accent-soft)]"
-                      }`}
-                    >
-                      <div className="flex items-center justify-between">
-                        <p className={`text-xs uppercase tracking-[0.3em] ${isSelected ? "text-[var(--background)] opacity-70" : "text-muted-foreground"}`}>
-                          Meeting
+                    <div className="rounded-[18px] bg-[var(--pill-background)] p-3 sm:p-4">
+                      <div className="mb-3 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
+                        <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">
+                          Choose a date
                         </p>
-                        {isSelected && (
-                          <Check size={16} className="text-current" aria-hidden="true" />
+                        <div className="flex gap-2">
+                          <button
+                            type="button"
+                            onClick={() => shiftWindow(-1)}
+                            disabled={windowStart === 0}
+                            className="inline-flex h-9 items-center rounded-full bg-white/70 px-3 text-[12px] text-muted-foreground transition-colors hover:bg-[var(--accent-soft)] disabled:opacity-40 dark:bg-white/8"
+                          >
+                            Prev
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => shiftWindow(1)}
+                            disabled={windowStart >= maxWindowIndex}
+                            className="inline-flex h-9 items-center rounded-full bg-white/70 px-3 text-[12px] text-muted-foreground transition-colors hover:bg-[var(--accent-soft)] disabled:opacity-40 dark:bg-white/8"
+                          >
+                            Next
+                          </button>
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
+                        {visibleDays.map((day) => {
+                          const isActive = selectedDate === day.dateISO;
+                          return (
+                            <button
+                              key={day.dateISO}
+                              type="button"
+                              onClick={() => {
+                                setSelectedDate(day.dateISO);
+                                setSelectedSlotId(null);
+                              }}
+                              aria-pressed={isActive}
+                              className={`inline-flex min-h-10 items-center justify-center rounded-full px-3 text-[13px] leading-snug transition-colors ${
+                                isActive
+                                  ? "bg-[var(--accent)] text-[var(--background)]"
+                                  : "bg-white/70 text-muted-foreground hover:bg-[var(--accent-soft)] dark:bg-white/8"
+                              }`}
+                            >
+                              <span className="flex items-center gap-2">
+                                {day.displayLabel}
+                                {isActive && (
+                                  <span className="text-[0.65rem] uppercase tracking-[0.2em] opacity-80">
+                                    ✓
+                                  </span>
+                                )}
+                              </span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    <motion.div className="grid grid-cols-1 md:grid-cols-2 gap-3" layout>
+                      {slotsForDate.map((slot) => {
+                        const isSelected = selectedSlotId === slot.id;
+                        return (
+                          <button
+                            key={slot.id}
+                            type="button"
+                            disabled={slot.booked || submissionState === "loading"}
+                            onClick={() => setSelectedSlotId(slot.id)}
+                            className={`rounded-[16px] px-3 py-3 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30 sm:px-4 sm:py-4 ${
+                              slot.booked
+                                ? "cursor-not-allowed bg-[var(--pill-background)] text-muted-foreground line-through opacity-55"
+                                : isSelected
+                                  ? "bg-[var(--accent)] text-[var(--background)]"
+                                  : "bg-[var(--pill-background)] hover:bg-[var(--accent-soft)]"
+                            }`}
+                          >
+                            <div className="flex items-center justify-between">
+                              <p className={`text-xs uppercase tracking-[0.3em] ${isSelected ? "text-[var(--background)] opacity-70" : "text-muted-foreground"}`}>
+                                Meeting
+                              </p>
+                              {isSelected && (
+                                <Check size={16} className="text-current" />
+                              )}
+                            </div>
+                            <p className="text-lg font-medium">{slot.label}</p>
+                          </button>
+                        );
+                      })}
+                    </motion.div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="flex flex-col gap-2">
+                        <label className="text-sm text-muted-foreground">Your name</label>
+                        <input
+                          type="text"
+                          value={formValues.name}
+                          onChange={(e) => setFormValues((prev) => ({ ...prev, name: e.target.value }))}
+                          className="rounded-[12px] border border-border bg-transparent px-4 py-3 focus:outline-none focus:border-foreground placeholder:text-muted-foreground/70"
+                          placeholder="Ada Lovelace"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        <label className="text-sm text-muted-foreground">Contact email</label>
+                        <input
+                          type="email"
+                          value={formValues.email}
+                          onChange={(e) => setFormValues((prev) => ({ ...prev, email: e.target.value }))}
+                          className="rounded-[12px] border border-border bg-transparent px-4 py-3 focus:outline-none focus:border-foreground placeholder:text-muted-foreground/70"
+                          placeholder="you@example.com"
+                          aria-invalid={formValues.email.length > 0 && !emailValid}
+                        />
+                        {!emailValid && formValues.email.length > 0 && (
+                          <span className="text-xs text-red-400">Please enter a valid email.</span>
                         )}
                       </div>
-                      <p className="text-lg font-medium">{slot.label}</p>
+                    </div>
+
+                    <div className="flex flex-col gap-2">
+                      <label className="text-sm text-muted-foreground">Notes (optional)</label>
+                      <textarea
+                        value={formValues.note}
+                        onChange={(e) => setFormValues((prev) => ({ ...prev, note: e.target.value }))}
+                        rows={3}
+                        className="rounded-[12px] border border-border bg-transparent px-4 py-3 focus:outline-none focus:border-foreground placeholder:text-muted-foreground/70"
+                        placeholder="Context, collaborators, or agenda."
+                      />
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={handleSubmitBooking}
+                      disabled={
+                        !selectedSlot ||
+                        !formValues.name ||
+                        !formValues.email ||
+                        !emailValid ||
+                        submissionState === "loading"
+                      }
+                      className="btn-primary inline-flex items-center justify-center gap-2 disabled:opacity-50"
+                    >
+                      {submissionState === "loading" ? (
+                        <>
+                          <Loader2 size={18} className="animate-spin" />
+                          Scheduling…
+                        </>
+                      ) : (
+                        <>
+                          <SendHorizonal size={18} />
+                          Confirm request
+                        </>
+                      )}
                     </button>
-                  );
-                })}
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="flex flex-col gap-2">
-                  <label htmlFor={nameInputId} className="text-sm text-muted-foreground">Your name</label>
-                  <input
-                    id={nameInputId}
-                    name="name"
-                    type="text"
-                    autoComplete="name"
-                    required
-                    value={formValues.name}
-                    onChange={(e) => setFormValues((prev) => ({ ...prev, name: e.target.value }))}
-                    className="rounded-[12px] border border-border bg-transparent px-4 py-3 focus:outline-none focus:border-foreground placeholder:text-muted-foreground/70"
-                    placeholder="Ada Lovelace"
-                  />
-                </div>
-                <div className="flex flex-col gap-2">
-                  <label htmlFor={emailInputId} className="text-sm text-muted-foreground">Contact email</label>
-                  <input
-                    id={emailInputId}
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    required
-                    value={formValues.email}
-                    onChange={(e) => setFormValues((prev) => ({ ...prev, email: e.target.value }))}
-                    className="rounded-[12px] border border-border bg-transparent px-4 py-3 focus:outline-none focus:border-foreground placeholder:text-muted-foreground/70"
-                    placeholder="you@example.com"
-                    aria-invalid={emailHasError}
-                    aria-describedby={emailHasError ? emailErrorId : undefined}
-                  />
-                  {emailHasError && (
-                    <span id={emailErrorId} className="text-xs text-red-600 dark:text-red-400">Please enter a valid email.</span>
-                  )}
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <label htmlFor={noteInputId} className="text-sm text-muted-foreground">Notes (optional)</label>
-                <textarea
-                  id={noteInputId}
-                  name="message"
-                  autoComplete="off"
-                  value={formValues.note}
-                  onChange={(e) => setFormValues((prev) => ({ ...prev, note: e.target.value }))}
-                  rows={3}
-                  className="rounded-[12px] border border-border bg-transparent px-4 py-3 focus:outline-none focus:border-foreground placeholder:text-muted-foreground/70"
-                  placeholder="Context, collaborators, or agenda."
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={
-                  !selectedSlot ||
-                  !trimmedName ||
-                  !trimmedEmail ||
-                  !emailValid ||
-                  submissionState === "loading"
-                }
-                className="btn-primary inline-flex items-center justify-center gap-2 disabled:opacity-50"
-              >
-                {submissionState === "loading" ? (
-                  <>
-                    <Loader2 size={18} className="animate-spin" aria-hidden="true" />
-                    Scheduling…
-                  </>
-                ) : (
-                  <>
-                    <SendHorizonal size={18} aria-hidden="true" />
-                    Confirm request
-                  </>
-                )}
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
+                  </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+            </motion.div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }

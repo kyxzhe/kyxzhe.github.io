@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
@@ -12,7 +13,6 @@ import {
   serializeJsonLd,
 } from "@/lib/seo/schema";
 import { formatDisplayDate } from "@/lib/utils/date";
-import { getCardCoverPath } from "@/lib/utils/images";
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
@@ -42,7 +42,7 @@ export async function generateMetadata({
   const image = {
     url: absoluteUrl(publication.cover),
     width: 1200,
-    height: 1800,
+    height: 630,
     alt: publication.title,
   };
 
@@ -51,7 +51,6 @@ export async function generateMetadata({
       absolute: `${publication.title} | Kevin Zheng`,
     },
     description: publication.summary,
-    keywords: [...publication.topics, ...publication.tags],
     alternates: {
       canonical: pageUrl,
     },
@@ -119,12 +118,12 @@ export default async function PublicationDetailPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: serializeJsonLd(article) }}
       />
-      <main id="main-content" tabIndex={-1} className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-10 px-2 py-6 md:px-4 lg:px-0">
+      <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-10 px-2 py-6 md:px-4 lg:px-0">
         <Link
           href="/publications"
-          className="inline-flex min-h-11 w-fit items-center gap-2 text-[13px] uppercase tracking-[0.24em] text-[rgba(0,0,0,0.6)] hover:text-foreground dark:text-[rgba(255,255,255,0.68)] dark:hover:text-white"
+          className="inline-flex w-fit items-center gap-2 text-[13px] uppercase tracking-[0.24em] text-[rgba(0,0,0,0.6)] hover:text-foreground dark:text-[rgba(255,255,255,0.68)] dark:hover:text-white"
         >
-          <ArrowLeft size={14} aria-hidden="true" />
+          <ArrowLeft size={14} />
           Publications
         </Link>
 
@@ -134,7 +133,7 @@ export default async function PublicationDetailPage({
               {publication.category} · {formatDisplayDate(publication.date)}
             </p>
             <div className="space-y-4">
-              <h1 className="break-words text-balance text-[40px] leading-[1.02] md:text-[58px] dark:text-white">
+              <h1 className="text-[40px] leading-[1.02] tracking-[-0.035em] md:text-[58px] dark:text-white">
                 {publication.title}
               </h1>
               <p className="max-w-3xl text-[17px] leading-relaxed text-foreground/76 dark:text-white/76">
@@ -165,16 +164,13 @@ export default async function PublicationDetailPage({
           <aside className="self-start space-y-5">
             <div className="overflow-hidden rounded-[4px] bg-[#090909]">
               <div className="relative aspect-[4/3] w-full sm:aspect-square lg:aspect-[4/5]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={getCardCoverPath(publication.cover)}
+                <Image
+                  src={publication.cover}
                   alt={publication.title}
-                  width={560}
-                  height={840}
-                  decoding="async"
-                  fetchPriority="high"
-                  className="h-full w-full object-cover object-center"
-                  loading="eager"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 280px"
+                  className="object-cover object-center"
+                  priority
                 />
               </div>
             </div>
@@ -190,11 +186,10 @@ export default async function PublicationDetailPage({
                       href={resource.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      referrerPolicy="no-referrer"
-                      className="inline-flex min-h-11 items-center justify-between gap-3 rounded-full border border-[rgba(0,0,0,0.12)] px-4 py-2 text-[14px] font-medium transition-colors hover:border-foreground/50 dark:border-white/20"
+                      className="inline-flex items-center justify-between gap-3 rounded-full border border-[rgba(0,0,0,0.12)] px-4 py-2 text-[14px] font-medium transition-colors hover:border-foreground/50 dark:border-white/20"
                     >
                       {resource.label}
-                      <ArrowUpRight size={14} aria-hidden="true" />
+                      <ArrowUpRight size={14} />
                     </Link>
                   ))}
                 </div>

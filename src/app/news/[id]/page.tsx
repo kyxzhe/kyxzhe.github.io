@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { formatNewsCategoryLabel, newsItems } from "@/lib/constants/news";
+import { newsItems } from "@/lib/constants/news";
 import { absoluteUrl, siteMetadata } from "@/lib/seo/config";
 import {
   getArticleJsonLd,
@@ -12,7 +13,6 @@ import {
   serializeJsonLd,
 } from "@/lib/seo/schema";
 import { formatDisplayDate } from "@/lib/utils/date";
-import { getCardCoverPath } from "@/lib/utils/images";
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
@@ -41,7 +41,7 @@ export async function generateMetadata({
   const image = {
     url: absoluteUrl(item.cover),
     width: 1200,
-    height: 1800,
+    height: 630,
     alt: item.title,
   };
 
@@ -50,7 +50,6 @@ export async function generateMetadata({
       absolute: `${item.title} | Kevin Zheng`,
     },
     description: item.summary,
-    keywords: item.topics,
     alternates: {
       canonical: pageUrl,
     },
@@ -115,22 +114,22 @@ export default async function NewsDetailPage({ params }: NewsPageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: serializeJsonLd(article) }}
       />
-      <main id="main-content" tabIndex={-1} className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-10 px-2 py-6 md:px-4 lg:px-0">
+      <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-10 px-2 py-6 md:px-4 lg:px-0">
         <Link
           href="/news"
-          className="inline-flex min-h-11 w-fit items-center gap-2 text-[13px] uppercase tracking-[0.24em] text-[rgba(0,0,0,0.6)] hover:text-foreground dark:text-[rgba(255,255,255,0.68)] dark:hover:text-white"
+          className="inline-flex w-fit items-center gap-2 text-[13px] uppercase tracking-[0.24em] text-[rgba(0,0,0,0.6)] hover:text-foreground dark:text-[rgba(255,255,255,0.68)] dark:hover:text-white"
         >
-          <ArrowLeft size={14} aria-hidden="true" />
+          <ArrowLeft size={14} />
           News
         </Link>
 
         <article className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_280px]">
           <div className="space-y-6">
             <p className="text-[12px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.6)]">
-              {formatNewsCategoryLabel(item.category)} · {formatDisplayDate(item.date)}
+              {item.category} · {formatDisplayDate(item.date)}
             </p>
             <div className="space-y-4">
-              <h1 className="break-words text-balance text-[40px] leading-[1.02] md:text-[58px] dark:text-white">
+              <h1 className="text-[40px] leading-[1.02] tracking-[-0.035em] md:text-[58px] dark:text-white">
                 {item.title}
               </h1>
               <p className="max-w-3xl text-[17px] leading-relaxed text-foreground/76 dark:text-white/76">
@@ -149,27 +148,23 @@ export default async function NewsDetailPage({ params }: NewsPageProps) {
                 href={item.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                referrerPolicy="no-referrer"
-                className="inline-flex min-h-11 items-center gap-2 rounded-full border border-[rgba(0,0,0,0.12)] px-5 py-2.5 text-[14px] font-medium transition-colors hover:border-foreground/50 dark:border-white/20"
+                className="inline-flex items-center gap-2 rounded-full border border-[rgba(0,0,0,0.12)] px-5 py-2.5 text-[14px] font-medium transition-colors hover:border-foreground/50 dark:border-white/20"
               >
                 {item.linkLabel ?? "Related link"}
-                <ArrowUpRight size={14} aria-hidden="true" />
+                <ArrowUpRight size={14} />
               </Link>
             )}
           </div>
 
           <aside className="self-start overflow-hidden rounded-[4px] bg-[#090909]">
             <div className="relative aspect-[4/3] w-full sm:aspect-square lg:aspect-[4/5]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={getCardCoverPath(item.cover)}
+              <Image
+                src={item.cover}
                 alt={item.title}
-                width={560}
-                height={840}
-                decoding="async"
-                fetchPriority="high"
-                className="h-full w-full object-cover object-center"
-                loading="eager"
+                fill
+                sizes="(max-width: 1024px) 100vw, 280px"
+                className="object-cover object-center"
+                priority
               />
             </div>
           </aside>
