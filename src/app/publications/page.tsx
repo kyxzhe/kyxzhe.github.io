@@ -567,6 +567,7 @@ export default function PublicationsPage() {
                         <label key={topic} className="flex min-h-11 items-center gap-2 text-[13px] leading-snug text-foreground dark:text-white">
                           <input
                             type="checkbox"
+                            value={topic}
                             checked={selectedTopicSet.has(topic)}
                             onChange={() => toggleTopic(topic)}
                           />
@@ -580,6 +581,7 @@ export default function PublicationsPage() {
                         <label key={year} className="flex min-h-11 items-center gap-2 text-[13px] leading-snug text-foreground dark:text-white">
                           <input
                             type="checkbox"
+                            value={year}
                             checked={selectedYearSet.has(year)}
                             onChange={() => toggleYear(year)}
                           />
@@ -702,6 +704,7 @@ export default function PublicationsPage() {
                     <label key={topic} className="flex min-h-11 items-center gap-2 text-[13px] leading-snug text-foreground dark:text-white">
                       <input
                         type="checkbox"
+                        value={topic}
                         checked={selectedTopicSet.has(topic)}
                         onChange={() => toggleTopic(topic)}
                       />
@@ -715,6 +718,7 @@ export default function PublicationsPage() {
                     <label key={year} className="flex min-h-11 items-center gap-2 text-[13px] leading-snug text-foreground dark:text-white">
                       <input
                         type="checkbox"
+                        value={year}
                         checked={selectedYearSet.has(year)}
                         onChange={() => toggleYear(year)}
                       />
