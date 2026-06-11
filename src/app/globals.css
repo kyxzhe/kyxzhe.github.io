@@ -68,6 +68,11 @@ html {
   outline-offset: 3px;
 }
 
+.chat-input:focus,
+.chat-input:focus-visible {
+  outline: none;
+}
+
 .skip-link {
   position: fixed;
   left: 1rem;

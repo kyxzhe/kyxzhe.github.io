@@ -57,6 +57,20 @@ const serializedHomePageJsonLd = serializeJsonLd(
   })
 );
 
+const getChatErrorMessage = (err: unknown) => {
+  const message = err instanceof Error ? err.message : "";
+  if (
+    err instanceof TypeError ||
+    message === "Load failed" ||
+    message === "Failed to fetch" ||
+    message.includes("NetworkError")
+  ) {
+    return "KevinBot is temporarily unreachable. If you are using a local preview, the remote chat service may block local requests.";
+  }
+
+  return message || "Something went wrong.";
+};
+
 export default function Home() {
   const [prompt, setPrompt] = useState("");
   const [messages, setMessages] = useChatMessages({
@@ -141,7 +155,7 @@ export default function Home() {
         }
         return prev;
       });
-      setError(err instanceof Error ? err.message : "Something went wrong.");
+      setError(getChatErrorMessage(err));
     } finally {
       if (activeRequestRef.current === controller) {
         activeRequestRef.current = null;
@@ -286,7 +300,7 @@ export default function Home() {
               <div className="relative w-full">
                 <textarea
                   placeholder=""
-                  className="w-full min-h-[64px] resize-none bg-transparent pr-16 text-[16px] leading-[1.4] text-foreground focus:outline-none dark:text-white md:min-h-[72px] md:pr-14"
+                  className="chat-input w-full min-h-[64px] resize-none appearance-none border-0 bg-transparent pr-16 text-[16px] leading-[1.4] text-foreground shadow-none outline-none focus:border-0 focus:outline-none focus:ring-0 focus-visible:outline-none dark:text-white md:min-h-[72px] md:pr-14"
                   aria-label="Ask a question"
                   aria-describedby="chatbot-disclaimer"
                   required
