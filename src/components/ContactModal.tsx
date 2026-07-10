@@ -130,18 +130,14 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
           aria-modal="true"
           aria-labelledby="contact-modal-title"
           aria-describedby="contact-modal-description"
-          className={
-            mode === "schedule"
-              ? "surface-card relative h-[min(860px,calc(100dvh-1.5rem))] w-full max-w-5xl overflow-hidden text-foreground"
-              : "surface-card relative max-h-[calc(100dvh-1.5rem)] w-full max-w-4xl overflow-y-auto p-4 sm:max-h-[90vh] sm:p-6 md:p-8 lg:p-12"
-          }
+          className="surface-card relative max-h-[calc(100dvh-1.5rem)] w-full max-w-4xl overflow-y-auto p-4 sm:max-h-[90vh] sm:p-6 md:p-8 lg:p-12"
           variants={modalVariants}
           initial="hidden"
           animate="visible"
           exit="exit"
           onClick={(e) => e.stopPropagation()}
         >
-            <motion.div className={mode === "schedule" ? "flex h-full min-h-0 flex-col" : undefined}>
+            <motion.div>
                 <motion.button
                   ref={closeButtonRef}
                   type="button"
@@ -157,32 +153,20 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                 </motion.button>
 
                 <motion.div
-                  className={
-                    mode === "schedule"
-                      ? "flex min-h-28 shrink-0 flex-col items-center justify-center border-b border-border px-16 text-center sm:px-20"
-                      : "mb-6 pr-10 text-center md:mb-12 md:pr-0"
-                  }
+                  className="mb-6 pr-10 text-center md:mb-12 md:pr-0"
                   variants={textVariants}
                   initial="hidden"
                   animate="visible"
                 >
                   <h2
                     id="contact-modal-title"
-                    className={
-                      mode === "schedule"
-                        ? "text-[30px] font-medium leading-none sm:text-[38px]"
-                        : "mb-3 text-[34px] font-medium leading-none md:text-6xl lg:text-7xl"
-                    }
+                    className="mb-3 text-[34px] font-medium leading-none md:text-6xl lg:text-7xl"
                   >
                     {mode === "info" ? "Contact me" : "Book a time"}
                   </h2>
                   <p
                     id="contact-modal-description"
-                    className={
-                      mode === "schedule"
-                        ? "mt-2 max-w-2xl text-[13px] leading-snug text-muted-foreground sm:text-[15px]"
-                        : "text-[15px] leading-relaxed text-muted-foreground md:text-xl"
-                    }
+                    className="text-[15px] leading-relaxed text-muted-foreground md:text-xl"
                   >
                     {mode === "info"
                       ? "Share what you need, who is involved, and any constraints. I will outline the next steps."
@@ -328,23 +312,22 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
               ) : (
                 <motion.div
                   key="schedule"
-                  className="min-h-0 flex-1"
                   variants={innerSwapVariants}
                   initial="enter"
                   animate="center"
                   exit="exit"
                 >
                   <motion.div
-                    className="h-full min-h-0"
+                    className="flex flex-col gap-3"
                     variants={textVariants}
                     initial="hidden"
                     animate="visible"
                   >
-                    <div className="h-full overflow-hidden bg-white">
+                    <div className="overflow-hidden rounded-[18px] bg-white">
                       <iframe
                         src={GOOGLE_CALENDAR_BOOKING_URL}
                         title="Book a 30-minute call with Kevin Zheng"
-                        className="block h-full w-full border-0 focus:outline-none"
+                        className="block h-[max(360px,calc(100dvh-12rem))] max-h-[720px] w-full border-0 focus:outline-none md:h-[max(420px,calc(90dvh-17rem))] md:max-h-[600px]"
                         loading="eager"
                       />
                     </div>
