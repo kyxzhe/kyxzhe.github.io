@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import Script from "next/script";
 import "./globals.css";
+import ConsoleProvider from "@/components/Console";
 import { defaultSeoImage, siteMetadata } from "@/lib/seo/config";
 import {
   getPersonJsonLd,
@@ -142,6 +143,7 @@ export default function RootLayout({
   return (
     <html lang={siteMetadata.language}>
       <body className={`${openAiSans.variable} antialiased`}>
+        <ConsoleProvider />
         <Script id="theme-favicon" strategy="beforeInteractive">
           {themeFaviconScript}
         </Script>

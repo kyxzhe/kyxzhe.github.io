@@ -4,7 +4,7 @@ import { defaultSeoImage, siteMetadata } from "@/lib/seo/config";
 const pageTitle = "Publications";
 const structuredTitle = "Publications | Kevin Zheng";
 const pageDescription =
-  "Research papers and preprints by Yuxiang (Kevin) Zheng on information diffusion and robust machine learning.";
+  "Research papers, preprints, and safety briefs by Yuxiang (Kevin) Zheng on information diffusion and robust machine learning.";
 
 export const metadata: Metadata = {
   title: pageTitle,

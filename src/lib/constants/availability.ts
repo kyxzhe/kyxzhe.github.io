@@ -34,7 +34,6 @@ const dateFormatter = new Intl.DateTimeFormat("en-AU", {
   weekday: "short",
   day: "numeric",
   month: "short",
-  year: "numeric",
 });
 
 const timeFormatter = new Intl.DateTimeFormat("en-AU", {

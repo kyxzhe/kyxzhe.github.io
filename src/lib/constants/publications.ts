@@ -25,6 +25,8 @@ export type Publication = {
   cover: string;
   authors: string[];
   resources?: PublicationResource[];
+  link?: string;
+  status?: string;
 };
 
 export const publications: Publication[] = [
@@ -56,5 +58,6 @@ export const publications: Publication[] = [
         url: "https://github.com/kyxzhe/EchoAlign",
       },
     ],
+    link: "https://arxiv.org/abs/2405.12969",
   },
 ];

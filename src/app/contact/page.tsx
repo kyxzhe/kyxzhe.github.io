@@ -193,7 +193,7 @@ export default function ContactPage() {
                   <p className="text-[17px] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.6)]">Clear context helps me reply quickly.</p>
                 </div>
                 <span className="px-3 py-1 rounded-full text-[11px] uppercase tracking-[0.22em] bg-[rgba(0,0,0,0.04)] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)] dark:bg-[rgba(255,255,255,0.12)]">
-                  <span className="text-foreground">Sydney time</span>
+                  <span className="text-foreground">AEDT</span>
                 </span>
               </div>
               <ul className="space-y-3 text-[17px] leading-relaxed">
@@ -210,7 +210,7 @@ export default function ContactPage() {
                 className="w-full inline-flex items-center justify-center gap-2 rounded-full border text-[15px] font-medium border-[rgba(0,0,0,0.12)] bg-white text-foreground dark:border-none dark:bg-[rgba(255,255,255,0.12)] dark:text-white py-3 transition-colors duration-150 hover:border-foreground/50"
               >
                 <CalendarDays size={16} />
-                Request a time
+                Book a time
               </button>
             </div>
           </div>

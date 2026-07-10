@@ -2,7 +2,7 @@
 
 Personal academic website for [Yuxiang (Kevin) Zheng](https://kyxzhe.github.io), a PhD researcher in machine learning at the University of Technology Sydney. The site presents Kevin's work on information diffusion, social data science, trustworthy machine learning, and learning under noisy supervision.
 
-The project is built with Next.js App Router, React, TypeScript, Tailwind CSS, Motion, and a static export target for GitHub Pages.
+The project is built with Next.js App Router, React, TypeScript, Tailwind CSS, lightweight CSS transitions, and a static export target for GitHub Pages.
 
 ## Live Site
 
@@ -13,7 +13,7 @@ The project is built with Next.js App Router, React, TypeScript, Tailwind CSS, M
 
 - **Home** (`/`): Research landing page for trustworthy machine learning, with primary calls to publications and contact plus an embedded KevinBot prompt.
 - **About** (`/about`): Biography, research focus, education timeline, teaching, and collaboration context.
-- **Publications** (`/publications`): Publication index with list/grid modes, detail pages, resources, and scholarly JSON-LD.
+- **Publications** (`/publications`): Filterable and sortable publication index with list/grid modes, detail pages, resources, and scholarly JSON-LD.
 - **News** (`/news`): Filterable and sortable research updates, awards, teaching notes, and career milestones with static detail pages.
 - **Contact** (`/contact`): Email, profile links, collaboration topics, and a lightweight scheduling request flow.
 - **KevinBot**: Visitor-facing chatbot backed by a Cloudflare Worker and Cloudflare Workers AI.
@@ -23,7 +23,7 @@ The project is built with Next.js App Router, React, TypeScript, Tailwind CSS, M
 - Next.js 15 with static export (`output: "export"`)
 - React 19 and TypeScript
 - Tailwind CSS 4 with shared utility classes in `src/app/globals.css`
-- Motion and CSS transitions for page and card interactions
+- CSS transitions for lightweight page and card interactions
 - Lucide React plus local academic profile icons
 - React Markdown, GFM, KaTeX, and syntax highlighting for chatbot responses
 - GitHub Actions deployment to GitHub Pages
@@ -75,7 +75,7 @@ Most site updates should happen in constants rather than page components.
 | Content | File |
 | --- | --- |
 | Site metadata, SEO keywords, profile links | `src/lib/seo/config.ts` |
-| Homepage copy | `src/lib/constants/siteContent.ts` |
+| Homepage and console intro copy | `src/lib/constants/siteContent.ts` |
 | About page biography, focus areas, timeline, teaching | `src/lib/constants/about.ts` |
 | Publications and resource links | `src/lib/constants/publications.ts` |
 | News and milestone entries | `src/lib/constants/news.ts` |
@@ -96,12 +96,12 @@ The homepage chatbot calls `sendChatRequest` from `src/lib/api/chat.ts`.
 - Override locally with `NEXT_PUBLIC_CHAT_API_URL` in `.env.local`
 - Request headers: `Content-Type: application/json`
 - Request body: `{ "messages": [{ "role": "user" | "assistant", "content": "..." }] }`
-- Client body budget: 80 KB; Worker hard limit: 100 KB
+- Body size limit: 100 KB before the Worker rejects the request
 - Session affinity: the client sends `X-Chat-Session` from `sessionStorage`
 - Preferred response: Server-Sent Events (`text/event-stream`) with `data:` payloads that include `{ "response": "<chunk>" }` and end with `[DONE]`
 - Compatibility response: JSON payloads with `{ "response": "<text>" }`, `{ "content": "<text>" }`, `{ "text": "<text>" }`, or OpenAI-style `choices`
 
-The Worker source lives in `cloudflare/kevin-bot/index.js`. It accepts the exact `/chat` path from the production site and localhost development origins, adds Kevin-specific system context, searches the `kevin-rag-index` AutoRAG index, and streams normalized SSE chunks from Cloudflare Workers AI.
+The Worker source lives in `cloudflare/kevin-bot/index.js`. It allows production and localhost origins, adds Kevin-specific system context, searches the `kevin-rag-index` AutoRAG index, and streams normalized SSE chunks from Cloudflare Workers AI.
 
 ## SEO & Static Output
 
@@ -109,7 +109,7 @@ The Worker source lives in `cloudflare/kevin-bot/index.js`. It accepts the exact
 - Route-specific metadata lives in each route `layout.tsx` or dynamic detail page.
 - `src/app/sitemap.ts` emits static, publication, and news routes.
 - `src/app/robots.ts` points crawlers to the sitemap.
-- `public/opengraph-image.png` provides the default Open Graph image.
+- `src/app/opengraph-image.tsx` generates the default Open Graph image.
 - `src/app/manifest.ts` defines install metadata and shortcuts.
 
 ## Deployment

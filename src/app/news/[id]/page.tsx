@@ -5,8 +5,8 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { formatNewsCategoryLabel, newsItems } from "@/lib/constants/news";
-import { absoluteUrl, defaultSeoImage, siteMetadata } from "@/lib/seo/config";
+import { newsItems } from "@/lib/constants/news";
+import { absoluteUrl, siteMetadata } from "@/lib/seo/config";
 import {
   getArticleJsonLd,
   getBreadcrumbJsonLd,
@@ -38,6 +38,12 @@ export async function generateMetadata({
   }
 
   const pageUrl = `/news/${item.id}/`;
+  const image = {
+    url: absoluteUrl(item.cover),
+    width: 1920,
+    height: 2880,
+    alt: item.title,
+  };
 
   return {
     title: {
@@ -56,13 +62,13 @@ export async function generateMetadata({
       locale: siteMetadata.ogLocale,
       publishedTime: item.date,
       authors: [siteMetadata.author.name],
-      images: [defaultSeoImage],
+      images: [image],
     },
     twitter: {
       card: "summary_large_image",
       title: item.title,
       description: item.summary,
-      images: [defaultSeoImage],
+      images: [image],
     },
   };
 }
@@ -117,7 +123,7 @@ export default async function NewsDetailPage({ params }: NewsPageProps) {
         <article className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_280px]">
           <div className="space-y-6">
             <p className="text-[12px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.6)]">
-              {formatNewsCategoryLabel(item.category)} · {formatDisplayDate(item.date)}
+              {item.category} · {formatDisplayDate(item.date)}
             </p>
             <div className="space-y-4">
               <h1 className="text-[40px] leading-[1.02] tracking-[-0.035em] md:text-[58px] dark:text-white">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
@@ -42,7 +42,7 @@ const sortOptions: { label: string; value: SortMode }[] = [
 const publicationPath = (item: Publication) => `/publications/${item.id}`;
 const pageUrl = `${siteMetadata.baseUrl}/publications/`;
 const pageDescription =
-  "Research papers and preprints by Yuxiang (Kevin) Zheng on information diffusion and robust machine learning.";
+  "Research papers, preprints, and safety briefs by Yuxiang (Kevin) Zheng on information diffusion and robust machine learning.";
 const breadcrumbJsonLd = getBreadcrumbJsonLd([
   { name: "Home", url: siteMetadata.baseUrl },
   { name: "Publications", url: pageUrl },
@@ -162,6 +162,18 @@ export default function PublicationsPage() {
   const [selectedYears, setSelectedYears] = useState<number[]>([]);
   const [filterOpen, setFilterOpen] = useState(false);
   const [sortOpen, setSortOpen] = useState(false);
+
+  useEffect(() => {
+    if (!filterOpen && !sortOpen) return;
+    const closePanels = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setFilterOpen(false);
+        setSortOpen(false);
+      }
+    };
+    document.addEventListener("keydown", closePanels);
+    return () => document.removeEventListener("keydown", closePanels);
+  }, [filterOpen, sortOpen]);
 
   const toggleTopic = (topic: string) => {
     setSelectedTopics((prev) =>
@@ -421,7 +433,7 @@ export default function PublicationsPage() {
       />
       <Navbar />
 
-      {publications.length > 1 && (filterOpen || sortOpen) && (
+      {(filterOpen || sortOpen) && (
         <div
           className="fixed inset-0 z-30"
           onClick={() => {
@@ -453,12 +465,10 @@ export default function PublicationsPage() {
 
         <div className="relative z-40 flex flex-wrap items-center justify-between gap-3 text-sm">
           <p role="status" aria-live="polite" className="text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]">
-            Showing {sortedItems.length} {sortedItems.length === 1 ? "publication" : "publications"}
+            Showing {sortedItems.length} publications
           </p>
 
           <div className="relative flex items-center gap-4 text-sm">
-            {publications.length > 1 && (
-              <>
             <div className="relative flex items-center gap-1">
               <button
                 type="button"
@@ -587,9 +597,6 @@ export default function PublicationsPage() {
                 </div>
               )}
             </div>
-              </>
-            )}
-
             <div className="flex items-center gap-2 text-[rgba(0,0,0,0.6)] dark:text-foreground/70">
               <button
                 type="button"

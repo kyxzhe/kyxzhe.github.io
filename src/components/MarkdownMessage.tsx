@@ -3,6 +3,7 @@
 import ReactMarkdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
+import remarkDeflist from "remark-deflist";
 import remarkSupersub from "remark-supersub";
 import rehypeKatex from "rehype-katex";
 import { useState, type ReactNode } from "react";
@@ -164,6 +165,17 @@ const markdownComponents = {
       {children}
     </li>
   ),
+  dl: ({ className, children, ...props }) => (
+    <dl className={cn("space-y-2", className)} {...props}>
+      {children}
+    </dl>
+  ),
+  dt: ({ className, ...props }) => (
+    <dt className={cn("font-semibold leading-[1.5]", className)} {...props} />
+  ),
+  dd: ({ className, ...props }) => (
+    <dd className={cn("pl-4 leading-[1.5] text-foreground/88 dark:text-white", className)} {...props} />
+  ),
   a: ({ className, ...props }) => (
     <a
       className={cn("underline decoration-from-font underline-offset-2 text-[var(--accent)]", className)}
@@ -199,12 +211,18 @@ const markdownComponents = {
   tbody: ({ ...props }) => (
     <tbody className="[&_td]:border [&_td]:border-[rgba(0,0,0,0.1)] [&_td]:px-3 [&_td]:py-2 dark:[&_td]:border-white/15" {...props} />
   ),
-  img: ({ alt, src }) =>
-    typeof src === "string" ? (
-      <a href={src} target="_blank" rel="noreferrer" className="underline underline-offset-2">
-        View image{typeof alt === "string" && alt ? `: ${alt}` : ""}
-      </a>
-    ) : null,
+  img: ({ alt, ...props }) => (
+    // Markdown images can be arbitrary external URLs without known dimensions.
+    // Using a native img here preserves the original response content.
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      className="max-w-full rounded-md border border-[rgba(0,0,0,0.06)] bg-white dark:border-white/10"
+      loading="lazy"
+      referrerPolicy="no-referrer"
+      alt={typeof alt === "string" && alt.length > 0 ? alt : "markdown image"}
+      {...props}
+    />
+  ),
   sup: ({ className, ...props }) => (
     <sup className={cn("align-super text-[0.85em]", className)} {...props} />
   ),
@@ -222,7 +240,7 @@ const markdownComponents = {
 const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => (
   <div className={cn("space-y-2", className)}>
     <ReactMarkdown
-      remarkPlugins={[remarkMath, remarkGfm, remarkSupersub]}
+      remarkPlugins={[remarkMath, remarkGfm, remarkDeflist, remarkSupersub]}
       rehypePlugins={[rehypeKatex]}
       skipHtml
       components={markdownComponents}

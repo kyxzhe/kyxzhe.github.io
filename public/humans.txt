@@ -16,12 +16,12 @@ Cloudflare: For the KevinBot Worker runtime
 
 /* SITE */
 
-Last update: 2026/07/10
+Last update: 2026/06/11
 Language: English
 Doctype: HTML5
 Components: React, TypeScript, Next.js 15
 Styling: Tailwind CSS 4, shared utility classes
-Animations: Motion and CSS transitions
+Animations: CSS transitions
 Icons: Lucide React
 Fonts: OpenAI Sans
 Hosting: GitHub Pages
@@ -29,6 +29,7 @@ AI: Cloudflare Workers AI
 
 /* INTERACTIONS */
 
+Console: window.kevinZheng exposes info(), links(), ascii(), collab(), notes(), ack(), and heart().
 Chat: KevinBot answers site questions from the homepage.
 
 /* PHILOSOPHY */

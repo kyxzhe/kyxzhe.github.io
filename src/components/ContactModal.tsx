@@ -13,6 +13,7 @@ import { motion, AnimatePresence, type Variants } from "motion/react";
 import {
   X,
   Mail,
+  Phone,
   MapPin,
   Github,
   Linkedin,
@@ -218,7 +219,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
     const body = [
       `Hi Kevin,`,
       ``,
-      `I'd like to request ${dayMeta.displayLabel} at ${selectedSlot.label}.`,
+      `I'd like to reserve ${dayMeta.displayLabel} at ${selectedSlot.label}.`,
       ``,
       `Name: ${trimmedName}`,
       `Email: ${trimmedEmail}`,
@@ -316,7 +317,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                     id="contact-modal-title"
                     className="mb-3 text-[34px] font-medium leading-none md:text-6xl lg:text-7xl"
                   >
-                    {mode === "info" ? "Contact me" : "Request a time"}
+                    {mode === "info" ? "Contact me" : "Book a time"}
                   </h2>
                   <p
                     id="contact-modal-description"
@@ -324,7 +325,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                   >
                     {mode === "info"
                       ? "Share what you need, who is involved, and any constraints. I will outline the next steps."
-                      : "Choose a preferred time and add a short note. I will confirm availability by email."}
+                      : "Choose a time and add a short note. I will confirm by email."}
                   </p>
                 </motion.div>
 
@@ -357,6 +358,19 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                         <p className="text-muted-foreground break-all">{contactInfo.email}</p>
                       </div>
                     </motion.a>
+                    <motion.a
+                      href={`tel:${contactInfo.phoneRaw}`}
+                      className="card-row hoverable w-full flex-col items-start text-left sm:flex-row sm:items-center"
+                      whileHover={{ scale: 1.02 }}
+                    >
+                      <motion.div variants={iconVariants} initial="hidden" animate="visible">
+                        <Phone size={24} className="text-brand-accent" />
+                      </motion.div>
+                      <div>
+                        <h3 className="font-medium text-lg">Phone</h3>
+                        <p className="text-muted-foreground">{contactInfo.phone}</p>
+                      </div>
+                    </motion.a>
                     <motion.div
                       className="card-row flex-col sm:flex-row items-start sm:items-center"
                       variants={textVariants}
@@ -387,7 +401,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                       <div>
                         <h3 className="font-medium text-lg">Availability</h3>
                         <p className="text-muted-foreground">
-                          {contactInfo.availability} · Tap to request
+                          {contactInfo.availability} · Tap to reserve
                         </p>
                       </div>
                     </motion.button>
@@ -472,7 +486,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                         >
                           {submissionState === "success" && (
                             <span className="inline-flex items-center gap-1 text-xs font-medium text-green-700 dark:text-green-400">
-                              <Check size={14} /> Request sent · Awaiting confirmation
+                              <Check size={14} /> Confirmed
                             </span>
                           )}
                           {submissionState === "error" && (
@@ -480,7 +494,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                               role="alert"
                               className="inline-flex items-center gap-1 text-xs font-medium text-red-700 dark:text-red-400"
                             >
-                              <AlertCircle size={14} /> Request failed · Please try again
+                              <AlertCircle size={14} /> Failed
                             </span>
                           )}
                         </div>
@@ -590,17 +604,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                           className="rounded-[12px] border border-border bg-transparent px-4 py-3 focus:outline-none focus:border-foreground placeholder:text-muted-foreground/70"
                           placeholder="Ada Lovelace"
                           aria-invalid={formValues.name.length > 0 && !nameValid}
-                          aria-describedby={
-                            formValues.name.length > 0 && !nameValid
-                              ? "contact-name-error"
-                              : undefined
-                          }
                         />
-                        {formValues.name.length > 0 && !nameValid && (
-                          <span id="contact-name-error" className="text-xs text-red-700 dark:text-red-400">
-                            Please enter your name.
-                          </span>
-                        )}
                       </div>
                       <div className="flex flex-col gap-2">
                         <label htmlFor="contact-email" className="text-sm text-muted-foreground">
@@ -648,10 +652,6 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                       />
                     </div>
 
-                    <p className="text-xs leading-relaxed text-muted-foreground">
-                      Submitting sends these details to FormSubmit for email delivery.
-                    </p>
-
                     <button
                       type="submit"
                       disabled={
@@ -666,12 +666,12 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                       {submissionState === "loading" ? (
                         <>
                           <Loader2 size={18} className="animate-spin" />
-                          Sending…
+                          Scheduling…
                         </>
                       ) : (
                         <>
                           <SendHorizonal size={18} />
-                          Send request
+                          Confirm request
                         </>
                       )}
                     </button>

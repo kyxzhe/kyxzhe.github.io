@@ -6,7 +6,7 @@ import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { publications } from "@/lib/constants/publications";
-import { absoluteUrl, defaultSeoImage, siteMetadata } from "@/lib/seo/config";
+import { absoluteUrl, siteMetadata } from "@/lib/seo/config";
 import {
   getArticleJsonLd,
   getBreadcrumbJsonLd,
@@ -39,6 +39,12 @@ export async function generateMetadata({
   }
 
   const pageUrl = `/publications/${publication.id}/`;
+  const image = {
+    url: absoluteUrl(publication.cover),
+    width: 1920,
+    height: 2880,
+    alt: publication.title,
+  };
 
   return {
     title: {
@@ -57,13 +63,13 @@ export async function generateMetadata({
       locale: siteMetadata.ogLocale,
       publishedTime: publication.date,
       authors: publication.authors,
-      images: [defaultSeoImage],
+      images: [image],
     },
     twitter: {
       card: "summary_large_image",
       title: publication.title,
       description: publication.summary,
-      images: [defaultSeoImage],
+      images: [image],
     },
   };
 }

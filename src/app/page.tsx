@@ -210,7 +210,6 @@ export default function Home() {
 
   const showPlaceholderOverlay = isHydrated && !prompt.trim() && visibleMessages.length === 0;
   const showCaretHint = isHydrated && !prompt.trim() && visibleMessages.length > 0;
-  const showPromptCount = prompt.length >= MAX_CHAT_MESSAGE_CHARS * 0.9;
   const homePageJsonLd = getWebPageJsonLd({
     title: siteMetadata.title,
     description: siteMetadata.description,
@@ -329,9 +328,8 @@ export default function Home() {
               <div className="relative w-full">
                 <textarea
                   placeholder=""
-                  className={`w-full min-h-[64px] resize-none rounded-lg bg-transparent pr-[58px] text-[16px] leading-[1.4] text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] dark:text-white md:min-h-[72px] md:pr-[52px] ${showPromptCount ? "pb-5" : ""}`}
+                  className="w-full min-h-[64px] resize-none rounded-lg bg-transparent pr-[58px] text-[16px] leading-[1.4] text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] dark:text-white md:min-h-[72px] md:pr-[52px]"
                   aria-label="Ask a question"
-                  aria-describedby="chat-prompt-limit"
                   maxLength={MAX_CHAT_MESSAGE_CHARS}
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
@@ -372,25 +370,14 @@ export default function Home() {
                   </AnimatePresence>
                 )}
               </div>
-              <p
-                id="chat-prompt-limit"
-                aria-live="polite"
-                className={showPromptCount
-                  ? "absolute bottom-1 left-1 text-xs text-[rgba(0,0,0,0.6)] dark:text-white/60"
-                  : "sr-only"}
-              >
-                {showPromptCount
-                  ? `${prompt.length.toLocaleString()} / ${MAX_CHAT_MESSAGE_CHARS.toLocaleString()}`
-                  : `Maximum ${MAX_CHAT_MESSAGE_CHARS.toLocaleString()} characters.`}
-              </p>
               <div className="absolute bottom-0 right-0 mt-auto flex justify-end">
                 <button
                   type="submit"
-                  aria-label="Send prompt to KevinBot"
+                  aria-label="Send prompt to ChatGPT"
                   disabled={!prompt.trim() || isLoading}
                   className="relative inline-flex h-9 w-9 items-center justify-center rounded-full p-0 transition-colors hover:opacity-70 disabled:hover:opacity-100 bg-[rgba(0,0,0,0.04)] text-[rgba(0,0,0,0.44)] dark:bg-white/15 dark:text-white/60 enabled:bg-black enabled:text-white dark:enabled:bg-white dark:enabled:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-1 disabled:focus-visible:ring-offset-0"
                 >
-                  <span className="sr-only">Send prompt to KevinBot</span>
+                  <span className="sr-only">Send prompt to ChatGPT</span>
                   {isLoading ? (
                     <Loader2 size={16} className="animate-spin" aria-hidden="true" />
                   ) : (
@@ -416,7 +403,7 @@ export default function Home() {
             </form>
           </motion.div>
           <p className="text-xs text-[rgba(0,0,0,0.6)] dark:text-[rgb(243,243,243)] text-center w-full max-w-4xl">
-            KevinBot can make mistakes. Messages are processed by Cloudflare; check important information.
+            ChatBot can make mistakes. Check important info.
           </p>
           {error && (
             <p role="alert" className="text-sm text-red-700 dark:text-red-300 text-left w-full max-w-4xl">
