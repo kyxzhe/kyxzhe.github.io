@@ -10,8 +10,8 @@ const pageTitle = "Contact";
 const structuredTitle = "Contact | Kevin Zheng";
 const pageDescription =
   "Contact details for Yuxiang (Kevin) Zheng — email, scheduling preferences, and collaboration topics for information diffusion and robust ML.";
-const pageModifiedDate = "2026-06-11";
-const pageUrl = `${siteMetadata.baseUrl}/contact`;
+const pageModifiedDate = "2026-07-10";
+const pageUrl = `${siteMetadata.baseUrl}/contact/`;
 const serializedBreadcrumbJsonLd = serializeJsonLd(
   getBreadcrumbJsonLd([
     { name: "Home", url: siteMetadata.baseUrl },
@@ -32,13 +32,13 @@ export const metadata: Metadata = {
   title: pageTitle,
   description: pageDescription,
   alternates: {
-    canonical: "/contact",
+    canonical: "/contact/",
   },
   openGraph: {
     type: "website",
     title: structuredTitle,
     description: pageDescription,
-    url: `${siteMetadata.baseUrl}/contact`,
+    url: pageUrl,
     siteName: siteMetadata.siteName,
     locale: siteMetadata.ogLocale,
     images: [defaultSeoImage],

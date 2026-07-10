@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import Script from "next/script";
 import "./globals.css";
-import ConsoleProvider from "@/components/Console";
-import { Analytics } from "@vercel/analytics/next";
 import { defaultSeoImage, siteMetadata } from "@/lib/seo/config";
 import {
   getPersonJsonLd,
@@ -15,58 +13,39 @@ import {
 const openAiSans = localFont({
   src: [
     {
-      path: '../../public/fonts/OpenAISans-Light.woff2',
+      path: '../assets/fonts/OpenAISans-Light.woff2',
       weight: '300',
       style: 'normal',
     },
     {
-      path: '../../public/fonts/OpenAISans-LightItalic.woff2',
+      path: '../assets/fonts/OpenAISans-LightItalic.woff2',
       weight: '300',
       style: 'italic',
     },
     {
-      path: '../../public/fonts/OpenAISans-Regular.woff2',
+      path: '../assets/fonts/OpenAISans-Regular.woff2',
       weight: '400',
       style: 'normal',
     },
     {
-      path: '../../public/fonts/OpenAISans-RegularItalic.woff2',
-      weight: '400',
-      style: 'italic',
-    },
-    {
-      path: '../../public/fonts/OpenAISans-Medium.woff2',    
+      path: '../assets/fonts/OpenAISans-Medium.woff2',
       weight: '500',
       style: 'normal',
     },
     {
-      path: '../../public/fonts/OpenAISans-MediumItalic.woff2',
-      weight: '500',
-      style: 'italic',
-    },
-    {
-      path: '../../public/fonts/OpenAISans-Semibold.woff2',
+      path: '../assets/fonts/OpenAISans-Semibold.woff2',
       weight: '600',
       style: 'normal',
     },
     {
-      path: '../../public/fonts/OpenAISans-SemiboldItalic.woff2',
-      weight: '600',
-      style: 'italic',
-    },
-    {
-      path: '../../public/fonts/OpenAISans-Bold.woff2',
+      path: '../assets/fonts/OpenAISans-Bold.woff2',
       weight: '700',
       style: 'normal',
-    },
-    {
-      path: '../../public/fonts/OpenAISans-BoldItalic.woff2',
-      weight: '700',
-      style: 'italic',
     },
   ],
   variable: '--font-openai-sans',
   display: 'swap',
+  preload: false,
 });
 export const metadata: Metadata = {
   metadataBase: new URL(siteMetadata.baseUrl),
@@ -116,9 +95,6 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
-  verification: {
-    google: "google7695f4aad3ebd2e9.html",
-  },
 };
 
 const themeFaviconScript = `
@@ -166,7 +142,6 @@ export default function RootLayout({
   return (
     <html lang={siteMetadata.language}>
       <body className={`${openAiSans.variable} antialiased`}>
-        <ConsoleProvider />
         <Script id="theme-favicon" strategy="beforeInteractive">
           {themeFaviconScript}
         </Script>
@@ -181,7 +156,6 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: serializeJsonLd(personJsonLd) }}
         />
         {children}
-        <Analytics />
       </body>
     </html>
   );

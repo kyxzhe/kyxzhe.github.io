@@ -6,7 +6,7 @@ import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { publications } from "@/lib/constants/publications";
-import { absoluteUrl, siteMetadata } from "@/lib/seo/config";
+import { absoluteUrl, defaultSeoImage, siteMetadata } from "@/lib/seo/config";
 import {
   getArticleJsonLd,
   getBreadcrumbJsonLd,
@@ -38,13 +38,7 @@ export async function generateMetadata({
     return {};
   }
 
-  const pageUrl = `/publications/${publication.id}`;
-  const image = {
-    url: absoluteUrl(publication.cover),
-    width: 1200,
-    height: 630,
-    alt: publication.title,
-  };
+  const pageUrl = `/publications/${publication.id}/`;
 
   return {
     title: {
@@ -63,13 +57,13 @@ export async function generateMetadata({
       locale: siteMetadata.ogLocale,
       publishedTime: publication.date,
       authors: publication.authors,
-      images: [image],
+      images: [defaultSeoImage],
     },
     twitter: {
       card: "summary_large_image",
       title: publication.title,
       description: publication.summary,
-      images: [image],
+      images: [defaultSeoImage],
     },
   };
 }
@@ -84,26 +78,23 @@ export default async function PublicationDetailPage({
     notFound();
   }
 
-  const pageUrl = absoluteUrl(`/publications/${publication.id}`);
+  const pageUrl = absoluteUrl(`/publications/${publication.id}/`);
   const breadcrumb = getBreadcrumbJsonLd([
     { name: "Home", url: siteMetadata.baseUrl },
-    { name: "Publications", url: absoluteUrl("/publications") },
+    { name: "Publications", url: absoluteUrl("/publications/") },
     { name: publication.title, url: pageUrl },
   ]);
-  const article = {
-    ...getArticleJsonLd({
-      id: "scholarly-article",
-      title: publication.title,
-      description: publication.summary,
-      url: pageUrl,
-      image: publication.cover,
-      datePublished: publication.date,
-      authors: publication.authors,
-      keywords: [...publication.topics, ...publication.tags],
-      type: "ScholarlyArticle",
-    }),
-    sameAs: publication.resources?.map((resource) => resource.url),
-  };
+  const article = getArticleJsonLd({
+    id: "scholarly-article",
+    title: publication.title,
+    description: publication.summary,
+    url: pageUrl,
+    image: publication.cover,
+    datePublished: publication.date,
+    authors: publication.authors,
+    keywords: [...publication.topics, ...publication.tags],
+    type: "ScholarlyArticle",
+  });
 
   return (
     <div className="min-h-screen bg-white text-foreground dark:bg-[#000000] dark:text-[#f5f5f5] font-medium">

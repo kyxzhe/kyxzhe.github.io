@@ -1,7 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { type ChatMessage } from "@/lib/api/chat";
+import { useCallback, useEffect, useState, type SetStateAction } from "react";
+import {
+  limitChatMessages,
+  MAX_CHAT_MESSAGES,
+  MAX_CHAT_MESSAGE_CHARS,
+  type ChatMessage,
+} from "@/lib/api/chat";
 
 interface UseChatMessagesOptions {
   storageKey: string;
@@ -31,30 +36,12 @@ function isChatMessage(item: unknown): item is ChatMessage {
   );
 }
 
-function trimMessages(
-  messages: ChatMessage[],
-  maxMessages: number,
-  maxMessageChars: number
-) {
-  const systemMessages = messages.filter((message) => message.role === "system");
-  const conversationalMessages = messages.filter((message) => message.role !== "system");
-  const nextMessages =
-    messages.length <= maxMessages
-      ? messages
-      : [...systemMessages, ...conversationalMessages.slice(-maxMessages)];
-
-  return nextMessages.map((message) => ({
-    ...message,
-    content: message.content.slice(0, maxMessageChars),
-  }));
-}
-
 export function useChatMessages(options: UseChatMessagesOptions) {
   const {
     storageKey,
     assistantGreeting,
-    maxMessages = 16,
-    maxMessageChars = 4000,
+    maxMessages = MAX_CHAT_MESSAGES,
+    maxMessageChars = MAX_CHAT_MESSAGE_CHARS,
     persistDebounceMs = 180,
   } = options;
 
@@ -80,18 +67,27 @@ export function useChatMessages(options: UseChatMessagesOptions) {
         return emptyHistory;
       }
 
-      return trimMessages(validChats, maxMessages, maxMessageChars);
+      return limitChatMessages(validChats, maxMessages, maxMessageChars);
     } catch {
       return emptyHistory;
     }
   };
 
-  const [messages, setMessages] = useState<ChatMessage[]>(getInitialMessages);
+  const [messages, setStoredMessages] = useState<ChatMessage[]>(getInitialMessages);
+  const setMessages = useCallback(
+    (action: SetStateAction<ChatMessage[]>) => {
+      setStoredMessages((previous) => {
+        const next = typeof action === "function" ? action(previous) : action;
+        return limitChatMessages(next, maxMessages, maxMessageChars);
+      });
+    },
+    [maxMessageChars, maxMessages]
+  );
 
   useEffect(() => {
     if (typeof window === "undefined") return;
     const hasHistory = messages.some((msg) => msg.role !== "system");
-    const payload = trimMessages(messages, maxMessages, maxMessageChars);
+    const payload = limitChatMessages(messages, maxMessages, maxMessageChars);
     let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
     try {

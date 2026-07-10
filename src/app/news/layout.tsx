@@ -10,13 +10,13 @@ export const metadata: Metadata = {
   title: pageTitle,
   description: pageDescription,
   alternates: {
-    canonical: "/news",
+    canonical: "/news/",
   },
   openGraph: {
     type: "website",
     title: structuredTitle,
     description: pageDescription,
-    url: `${siteMetadata.baseUrl}/news`,
+    url: `${siteMetadata.baseUrl}/news/`,
     siteName: siteMetadata.siteName,
     locale: siteMetadata.ogLocale,
     images: [defaultSeoImage],

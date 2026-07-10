@@ -10,7 +10,7 @@ export const siteMetadata = {
   language: "en-AU",
   ogLocale: "en_AU",
   ogImageAlt: "Kevin Zheng research profile and publications",
-  defaultOgImage: "/opengraph-image",
+  defaultOgImage: "/opengraph-image.png",
   author: {
     name: "Yuxiang (Kevin) Zheng",
     givenName: "Yuxiang",
@@ -46,7 +46,7 @@ export const siteMetadata = {
     "Honours Class I, University of Sydney",
     "AWS Certified Machine Learning - Specialty",
   ],
-  defaultImage: "/projects/work-1.jpg",
+  defaultImage: "/projects/work-1.webp",
   keywords: [
     "Kevin Zheng",
     "Yuxiang Zheng",

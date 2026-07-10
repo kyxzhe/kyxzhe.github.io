@@ -40,6 +40,8 @@
   --color-foreground: var(--foreground);
   --color-accent: var(--accent);
   --color-card: var(--card);
+  --color-border: var(--card-border);
+  --color-muted-foreground: var(--muted-foreground);
   --font-sans: var(--font-openai-sans);
   --font-mono: var(--font-openai-sans);
 }
@@ -51,7 +53,6 @@ body {
   font-family: var(--font-sans);
   min-height: 100vh;
   max-width: 100vw;
-  overflow-x: hidden;
 }
 
 @media (min-width: 768px) {
@@ -63,6 +64,22 @@ body {
 ::selection {
   background: rgba(0, 0, 0, 0.12);
   color: var(--foreground);
+}
+
+:where(a, button, input, textarea, select):focus-visible {
+  outline: 2px solid var(--foreground);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 @media (prefers-color-scheme: dark) {

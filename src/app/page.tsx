@@ -3,11 +3,16 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { Loader2 } from "lucide-react";
 import { useState, useCallback, useEffect, useMemo, useRef, KeyboardEvent } from "react";
-import { AnimatePresence, motion } from "motion/react";
-import { sendChatRequest, type ChatMessage } from "@/lib/api/chat";
-import MarkdownMessage from "@/components/MarkdownMessage";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import {
+  limitChatMessages,
+  MAX_CHAT_MESSAGE_CHARS,
+  sendChatRequest,
+  type ChatMessage,
+} from "@/lib/api/chat";
 import { useChatMessages } from "@/hooks/useChatMessages";
 import { siteMetadata } from "@/lib/seo/config";
 import { getWebPageJsonLd, serializeJsonLd } from "@/lib/seo/schema";
@@ -40,7 +45,9 @@ const mobileRotatingPlaceholders = [
   "Спросите об исследованиях или проектах.",
 ];
 
-const MAX_PROMPT_CHARS = 4000;
+const MarkdownMessage = dynamic(() => import("@/components/MarkdownMessage"), {
+  ssr: false,
+});
 
 const getChatErrorMessage = (err: unknown) => {
   const message = err instanceof Error ? err.message : "";
@@ -62,24 +69,33 @@ export default function Home() {
     storageKey: "chat-home-history",
   });
   const visibleMessages = useMemo(() => messages.filter((msg) => msg.role !== "system"), [messages]);
+  const latestVisibleMessageContent = visibleMessages.at(-1)?.content ?? "";
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
   const activeRequestRef = useRef<AbortController | null>(null);
+  const historyScrollRef = useRef<HTMLDivElement | null>(null);
+  const shouldFollowStreamRef = useRef(true);
+  const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
+    if (prefersReducedMotion || visibleMessages.length > 0) return;
     const rotate = () => {
       setPlaceholderIndex((prev) => (prev + 1) % rotatingPlaceholders.length);
     };
     const id = setInterval(rotate, 6000);
     return () => clearInterval(id);
-  }, []);
+  }, [prefersReducedMotion, visibleMessages.length]);
 
   const handleSend = useCallback(async () => {
-    const nextPrompt = prompt.trim().slice(0, MAX_PROMPT_CHARS);
+    const nextPrompt = prompt.trim();
     if (!nextPrompt || isLoading) return;
+    if (nextPrompt.length > MAX_CHAT_MESSAGE_CHARS) {
+      setError(`Questions can be up to ${MAX_CHAT_MESSAGE_CHARS.toLocaleString()} characters.`);
+      return;
+    }
     setIsLoading(true);
     setError(null);
     setPrompt("");
@@ -89,9 +105,10 @@ export default function Home() {
     activeRequestRef.current = controller;
 
     const userMessage: ChatMessage = { role: "user", content: nextPrompt };
-    const requestMessages: ChatMessage[] = [...messages, userMessage];
+    const requestMessages = limitChatMessages([...messages, userMessage]);
     const assistantPlaceholder: ChatMessage = { role: "assistant", content: "" };
     try {
+      shouldFollowStreamRef.current = true;
       setMessages([...requestMessages, assistantPlaceholder]);
       setIsExpanded(true);
 
@@ -133,7 +150,7 @@ export default function Home() {
       setMessages((prev) => {
         if (!prev.length) return prev;
         const last = prev[prev.length - 1];
-        if (last?.role === "assistant" && last.content === "") {
+        if (last?.role === "assistant" && last.content.trim() === "") {
           return prev.slice(0, -1);
         }
         return prev;
@@ -173,19 +190,32 @@ export default function Home() {
     };
   }, []);
 
-  const historyEndRef = useRef<HTMLDivElement | null>(null);
-
   useEffect(() => {
-    historyEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-  }, [visibleMessages, isLoading]);
+    if (!isExpanded || visibleMessages.length === 0) return;
+    if (!shouldFollowStreamRef.current) return;
+    const frame = requestAnimationFrame(() => {
+      const history = historyScrollRef.current;
+      if (history) history.scrollTop = history.scrollHeight;
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [isExpanded, latestVisibleMessageContent, visibleMessages.length]);
+
+  const handleHistoryScroll = useCallback(() => {
+    const history = historyScrollRef.current;
+    if (!history) return;
+    const distanceFromBottom =
+      history.scrollHeight - history.scrollTop - history.clientHeight;
+    shouldFollowStreamRef.current = distanceFromBottom < 48;
+  }, []);
 
   const showPlaceholderOverlay = isHydrated && !prompt.trim() && visibleMessages.length === 0;
   const showCaretHint = isHydrated && !prompt.trim() && visibleMessages.length > 0;
+  const showPromptCount = prompt.length >= MAX_CHAT_MESSAGE_CHARS * 0.9;
   const homePageJsonLd = getWebPageJsonLd({
     title: siteMetadata.title,
     description: siteMetadata.description,
     url: siteMetadata.baseUrl,
-    dateModified: "2026-05-14",
+    dateModified: "2026-07-10",
   });
 
   return (
@@ -201,7 +231,7 @@ export default function Home() {
           <p className="text-[12px] tracking-[0.34em] uppercase text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.6)]">
             KEVIN ZHENG · MACHINE LEARNING & DATA
           </p>
-          <h1 className="text-[48px] md:text-[64px] font-semibold text-foreground leading-tight lg:whitespace-nowrap">
+          <h1 className="text-[clamp(40px,15vw,48px)] md:text-[64px] font-semibold text-foreground leading-tight lg:whitespace-nowrap">
             Trustworthy Machine Learning
           </h1>
           <p className="text-[17px] md:text-[17px] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.6)] max-w-2xl leading-relaxed">
@@ -245,7 +275,16 @@ export default function Home() {
                   transition={{ duration: 0.32, ease: "easeInOut" }}
                   className="w-full flex-1"
                 >
-                    <div className="max-h-[320px] md:max-h-[360px] overflow-y-auto space-y-3 pr-[6px] pt-1">
+                    <div
+                      ref={historyScrollRef}
+                      role="log"
+                      aria-label="Conversation with KevinBot"
+                      aria-live="polite"
+                      aria-relevant="additions text"
+                      aria-busy={isLoading}
+                      onScroll={handleHistoryScroll}
+                      className="max-h-[320px] md:max-h-[360px] overflow-y-auto space-y-3 pr-[6px] pt-1"
+                    >
                       {visibleMessages.length === 0 && !isLoading ? (
                         <p className="text-[16px] leading-[1.5] text-[rgba(0,0,0,0.6)] dark:text-white/60">发送后这里会展开显示完整对话。</p>
                       ) : (
@@ -267,11 +306,14 @@ export default function Home() {
                         ))
                       )}
                       {isLoading && (
-                        <div className="flex items-center text-[rgba(0,0,0,0.6)] dark:text-white/60">
-                          <Loader2 size={16} className="animate-spin" />
+                        <div
+                          role="status"
+                          className="flex items-center text-[rgba(0,0,0,0.6)] dark:text-white/60"
+                        >
+                          <Loader2 size={16} className="animate-spin" aria-hidden="true" />
+                          <span className="sr-only">KevinBot is responding.</span>
                         </div>
                       )}
-                      <div ref={historyEndRef} />
                     </div>
                 </motion.div>
               )}
@@ -287,8 +329,10 @@ export default function Home() {
               <div className="relative w-full">
                 <textarea
                   placeholder=""
-                  className="w-full min-h-[64px] resize-none bg-transparent pr-[58px] text-[16px] leading-[1.4] text-foreground focus:outline-none dark:text-white md:min-h-[72px] md:pr-[52px]"
+                  className={`w-full min-h-[64px] resize-none rounded-lg bg-transparent pr-[58px] text-[16px] leading-[1.4] text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] dark:text-white md:min-h-[72px] md:pr-[52px] ${showPromptCount ? "pb-5" : ""}`}
                   aria-label="Ask a question"
+                  aria-describedby="chat-prompt-limit"
+                  maxLength={MAX_CHAT_MESSAGE_CHARS}
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
                   onKeyDown={handleKeyDown}
@@ -328,14 +372,25 @@ export default function Home() {
                   </AnimatePresence>
                 )}
               </div>
+              <p
+                id="chat-prompt-limit"
+                aria-live="polite"
+                className={showPromptCount
+                  ? "absolute bottom-1 left-1 text-xs text-[rgba(0,0,0,0.6)] dark:text-white/60"
+                  : "sr-only"}
+              >
+                {showPromptCount
+                  ? `${prompt.length.toLocaleString()} / ${MAX_CHAT_MESSAGE_CHARS.toLocaleString()}`
+                  : `Maximum ${MAX_CHAT_MESSAGE_CHARS.toLocaleString()} characters.`}
+              </p>
               <div className="absolute bottom-0 right-0 mt-auto flex justify-end">
                 <button
                   type="submit"
-                  aria-label="Send prompt to ChatGPT"
+                  aria-label="Send prompt to KevinBot"
                   disabled={!prompt.trim() || isLoading}
                   className="relative inline-flex h-9 w-9 items-center justify-center rounded-full p-0 transition-colors hover:opacity-70 disabled:hover:opacity-100 bg-[rgba(0,0,0,0.04)] text-[rgba(0,0,0,0.44)] dark:bg-white/15 dark:text-white/60 enabled:bg-black enabled:text-white dark:enabled:bg-white dark:enabled:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-1 disabled:focus-visible:ring-offset-0"
                 >
-                  <span className="sr-only">Send prompt to ChatGPT</span>
+                  <span className="sr-only">Send prompt to KevinBot</span>
                   {isLoading ? (
                     <Loader2 size={16} className="animate-spin" aria-hidden="true" />
                   ) : (
@@ -361,10 +416,10 @@ export default function Home() {
             </form>
           </motion.div>
           <p className="text-xs text-[rgba(0,0,0,0.6)] dark:text-[rgb(243,243,243)] text-center w-full max-w-4xl">
-            ChatBot can make mistakes. Check important info.
+            KevinBot can make mistakes. Messages are processed by Cloudflare; check important information.
           </p>
           {error && (
-            <p className="text-sm text-red-500 text-left w-full max-w-4xl">
+            <p role="alert" className="text-sm text-red-700 dark:text-red-300 text-left w-full max-w-4xl">
               {error}
             </p>
           )}

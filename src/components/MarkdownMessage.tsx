@@ -1,12 +1,11 @@
 "use client";
 
-import ReactMarkdown from "react-markdown";
+import ReactMarkdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import remarkSupersub from "remark-supersub";
-import remarkDeflist from "remark-deflist";
 import rehypeKatex from "rehype-katex";
-import { useState, type HTMLAttributes, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
 import jsx from "react-syntax-highlighter/dist/esm/languages/prism/jsx";
 import tsx from "react-syntax-highlighter/dist/esm/languages/prism/tsx";
@@ -47,215 +46,190 @@ interface MarkdownMessageProps {
   className?: string;
 }
 
-const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => {
-  const CodeBlock = ({
-    children,
-    className,
-    ...props
-  }: { children?: ReactNode; className?: string } & HTMLAttributes<HTMLElement>) => {
-    const [copied, setCopied] = useState(false);
-    const text =
-      typeof children === "string"
-        ? children
-        : Array.isArray(children)
-          ? children.join("")
-          : "";
-    const language =
-      (className?.match(/language-([\w-]+)/)?.[1] as string | undefined) || undefined;
+function CodeBlock({ children, className }: { children?: ReactNode; className?: string }) {
+  const [copied, setCopied] = useState(false);
+  const text = String(children ?? "").replace(/\n$/, "");
+  const requestedLanguage = className?.match(/language-([^\s]+)/)?.[1];
+  const language = requestedLanguage === "c++" ? "cpp" : requestedLanguage;
+  const codeBackground = "var(--pill-background)";
 
-    const handleCopy = async () => {
-      try {
-        await navigator.clipboard.writeText(text);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 1400);
-      } catch {
-        // ignore clipboard errors
-      }
-    };
-
-    const codeBackground = "var(--pill-background)";
-    const codeLabel = (language ?? "text").toLowerCase();
-
-    return (
-      <div
-        className="relative group max-w-full overflow-hidden rounded-lg border border-[rgba(255,255,255,0.08)] dark:border-white/10"
-        style={{ background: codeBackground }}
-      >
-        <div
-          className="flex items-center justify-between px-3 py-2 text-[12px] tracking-[0.12em] text-[rgb(93,93,93)] dark:text-[rgb(243,243,243)]"
-          style={{ background: codeBackground }}
-        >
-          <span className="flex-1 text-left truncate lowercase">{codeLabel}</span>
-          <button
-            type="button"
-            onClick={handleCopy}
-            className="inline-flex items-center gap-1 bg-transparent px-1.5 py-[4px] text-[12px] text-[rgb(93,93,93)] transition hover:opacity-80 dark:text-[rgb(243,243,243)]"
-            aria-label="Copy code"
-          >
-            {copied ? (
-              <>
-                <span aria-hidden="true">✓</span>
-                <span>Copied</span>
-              </>
-            ) : (
-              <span>Copy</span>
-            )}
-          </button>
-        </div>
-        <div className="max-h-[420px] overflow-auto">
-          {language ? (
-            <SyntaxHighlighter
-              language={language}
-              style={oneDark}
-              PreTag="div"
-              customStyle={{
-                margin: 0,
-                borderRadius: "0 0 10px 10px",
-                background: codeBackground,
-                padding: "12px 16px",
-              }}
-              codeTagProps={{
-                className: "text-[0.95em] leading-[1.6] font-mono",
-              }}
-              wrapLongLines={false}
-            >
-              {text}
-            </SyntaxHighlighter>
-          ) : (
-            <pre
-              className="rounded-b-lg px-4 py-3 overflow-x-auto text-[var(--foreground)]"
-              style={{ background: codeBackground }}
-            >
-              <code className={cn("block text-[0.95em] leading-[1.6] font-mono text-inherit", className)} {...props}>
-                {children}
-              </code>
-            </pre>
-          )}
-        </div>
-      </div>
-    );
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1400);
+    } catch {
+      // ignore clipboard errors
+    }
   };
 
   return (
-    <div className={cn("space-y-2", className)}>
-      <ReactMarkdown
-        remarkPlugins={[remarkMath, remarkGfm, remarkDeflist, remarkSupersub]}
-        rehypePlugins={[rehypeKatex]}
-        skipHtml
-        components={{
-          h1: ({ className, ...props }) => (
-            <h1 className={cn("text-[22px] font-semibold leading-[1.35] mt-2 mb-3", className)} {...props} />
-          ),
-          h2: ({ className, ...props }) => (
-            <h2 className={cn("text-[20px] font-semibold leading-[1.35] mt-2 mb-3", className)} {...props} />
-          ),
-          h3: ({ className, ...props }) => (
-            <h3 className={cn("text-[18px] font-semibold leading-[1.35] mt-2 mb-2", className)} {...props} />
-          ),
-          h4: ({ className, ...props }) => (
-            <h4 className={cn("text-[16px] font-semibold leading-[1.35] mt-2 mb-2", className)} {...props} />
-          ),
-          p: ({ className, ...props }) => (
-            <div className={cn("whitespace-pre-line leading-[1.5]", className)} {...props} />
-          ),
-          ol: ({ className, children, ...props }) => (
-            <ol
-              className={cn("pl-5 space-y-1 leading-[1.5]", className)}
-              style={{ listStyleType: "decimal", listStylePosition: "outside" }}
-              {...props}
-            >
-              {children}
-            </ol>
-          ),
-          ul: ({ className, children, ...props }) => (
-            <ul
-              className={cn("pl-5 space-y-1 leading-[1.5]", className)}
-              style={{ listStyleType: "disc", listStylePosition: "outside" }}
-              {...props}
-            >
-              {children}
-            </ul>
-          ),
-          li: ({ className, children, ...props }) => (
-            <li className={cn("leading-[1.5]", className)} {...props}>
-              {children}
-            </li>
-          ),
-          dl: ({ className, children, ...props }) => (
-            <dl className={cn("space-y-2", className)} {...props}>
-              {children}
-            </dl>
-          ),
-          dt: ({ className, ...props }) => (
-            <dt className={cn("font-semibold leading-[1.5]", className)} {...props} />
-          ),
-          dd: ({ className, ...props }) => (
-            <dd className={cn("pl-4 leading-[1.5] text-[rgba(255,255,255,0.88)] dark:text-white", className)} {...props} />
-          ),
-          a: ({ className, ...props }) => (
-            <a
-              className={cn("underline decoration-from-font underline-offset-2 text-[var(--accent)]", className)}
-              target="_blank"
-              rel="noreferrer"
-              {...props}
-            />
-          ),
-          code: ({
-            inline,
-            children,
-            ...props
-          }: { inline?: boolean; children?: ReactNode } & HTMLAttributes<HTMLElement>) =>
-            inline ? (
-              <code
-                className="rounded bg-[rgba(0,0,0,0.08)] px-[4px] py-[2px] text-[0.95em] font-mono text-[var(--foreground)] dark:bg-white/15"
-                {...props}
-              >
-                {children}
-              </code>
-            ) : (
-              <CodeBlock {...props}>{children}</CodeBlock>
-            ),
-          table: ({ ...props }) => (
-            <div className="overflow-x-auto">
-              <table className="w-full border-collapse text-[15px] leading-[1.5]" {...props} />
-            </div>
-          ),
-          thead: ({ ...props }) => (
-            <thead className="[&_th]:border [&_th]:border-[rgba(0,0,0,0.1)] [&_th]:px-3 [&_th]:py-2 dark:[&_th]:border-white/20 bg-[rgba(0,0,0,0.02)] dark:bg-white/5" {...props} />
-          ),
-          tbody: ({ ...props }) => (
-            <tbody className="[&_td]:border [&_td]:border-[rgba(0,0,0,0.1)] [&_td]:px-3 [&_td]:py-2 dark:[&_td]:border-white/15" {...props} />
-          ),
-          img: ({ alt, ...props }) => (
-            // Markdown images can be arbitrary external URLs without known dimensions.
-            // Using a native img here avoids broken rendering for user-provided content.
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              className="max-w-full rounded-md border border-[rgba(0,0,0,0.06)] bg-white dark:border-white/10"
-              loading="lazy"
-              referrerPolicy="no-referrer"
-              alt={typeof alt === "string" && alt.length > 0 ? alt : "markdown image"}
-              {...props}
-            />
-          ),
-          sup: ({ className, ...props }) => (
-            <sup className={cn("align-super text-[0.85em]", className)} {...props} />
-          ),
-          sub: ({ className, ...props }) => (
-            <sub className={cn("align-sub text-[0.85em]", className)} {...props} />
-          ),
-          u: ({ className, ...props }) => (
-            <u className={cn("underline underline-offset-2", className)} {...props} />
-          ),
-          hr: ({ className, ...props }) => (
-            <hr className={cn("my-3 border-t border-[rgba(255,255,255,0.3)] dark:border-white/40", className)} {...props} />
-          ),
-        }}
+    <div
+      className="relative group max-w-full overflow-hidden rounded-lg border border-[rgba(0,0,0,0.08)] dark:border-white/10"
+      style={{ background: codeBackground }}
+    >
+      <div
+        className="flex items-center justify-between px-3 py-2 text-[12px] tracking-[0.12em] text-[rgb(93,93,93)] dark:text-[rgb(243,243,243)]"
+        style={{ background: codeBackground }}
       >
-        {content}
-      </ReactMarkdown>
+        <span className="flex-1 text-left truncate lowercase">
+          {(requestedLanguage ?? "text").toLowerCase()}
+        </span>
+        <button
+          type="button"
+          onClick={handleCopy}
+          className="inline-flex items-center gap-1 rounded bg-transparent px-1.5 py-[4px] text-[12px] text-[rgb(93,93,93)] transition hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] dark:text-[rgb(243,243,243)]"
+          aria-label="Copy code"
+        >
+          {copied ? (
+            <>
+              <span aria-hidden="true">✓</span>
+              <span aria-live="polite">Copied</span>
+            </>
+          ) : (
+            <span>Copy</span>
+          )}
+        </button>
+      </div>
+      <div className="max-h-[420px] overflow-auto">
+        {language ? (
+          <SyntaxHighlighter
+            language={language}
+            style={oneDark}
+            PreTag="div"
+            customStyle={{
+              margin: 0,
+              borderRadius: "0 0 10px 10px",
+              background: codeBackground,
+              padding: "12px 16px",
+            }}
+            codeTagProps={{
+              className: "text-[0.95em] leading-[1.6] font-mono",
+            }}
+            wrapLongLines={false}
+          >
+            {text}
+          </SyntaxHighlighter>
+        ) : (
+          <pre
+            className="rounded-b-lg px-4 py-3 overflow-x-auto text-[var(--foreground)]"
+            style={{ background: codeBackground }}
+          >
+            <code className="block text-[0.95em] leading-[1.6] font-mono text-inherit">
+              {text}
+            </code>
+          </pre>
+        )}
+      </div>
     </div>
   );
-};
+}
+
+const markdownComponents = {
+  h1: ({ className, ...props }) => (
+    <h1 className={cn("text-[22px] font-semibold leading-[1.35] mt-2 mb-3", className)} {...props} />
+  ),
+  h2: ({ className, ...props }) => (
+    <h2 className={cn("text-[20px] font-semibold leading-[1.35] mt-2 mb-3", className)} {...props} />
+  ),
+  h3: ({ className, ...props }) => (
+    <h3 className={cn("text-[18px] font-semibold leading-[1.35] mt-2 mb-2", className)} {...props} />
+  ),
+  h4: ({ className, ...props }) => (
+    <h4 className={cn("text-[16px] font-semibold leading-[1.35] mt-2 mb-2", className)} {...props} />
+  ),
+  p: ({ className, ...props }) => (
+    <p className={cn("whitespace-pre-line leading-[1.5]", className)} {...props} />
+  ),
+  ol: ({ className, children, ...props }) => (
+    <ol
+      className={cn("pl-5 space-y-1 leading-[1.5]", className)}
+      style={{ listStyleType: "decimal", listStylePosition: "outside" }}
+      {...props}
+    >
+      {children}
+    </ol>
+  ),
+  ul: ({ className, children, ...props }) => (
+    <ul
+      className={cn("pl-5 space-y-1 leading-[1.5]", className)}
+      style={{ listStyleType: "disc", listStylePosition: "outside" }}
+      {...props}
+    >
+      {children}
+    </ul>
+  ),
+  li: ({ className, children, ...props }) => (
+    <li className={cn("leading-[1.5]", className)} {...props}>
+      {children}
+    </li>
+  ),
+  a: ({ className, ...props }) => (
+    <a
+      className={cn("underline decoration-from-font underline-offset-2 text-[var(--accent)]", className)}
+      target="_blank"
+      rel="noreferrer"
+      {...props}
+    />
+  ),
+  pre: ({ children }) => <>{children}</>,
+  code: ({ className, children, node, ...props }) => {
+    void node;
+    const text = String(children ?? "");
+    const isBlock = Boolean(className?.startsWith("language-") || text.includes("\n"));
+    return isBlock ? (
+      <CodeBlock className={className}>{children}</CodeBlock>
+    ) : (
+      <code
+        className="rounded bg-[rgba(0,0,0,0.08)] px-[4px] py-[2px] text-[0.95em] font-mono text-[var(--foreground)] dark:bg-white/15"
+        {...props}
+      >
+        {children}
+      </code>
+    );
+  },
+  table: ({ ...props }) => (
+    <div className="overflow-x-auto">
+      <table className="w-full border-collapse text-[15px] leading-[1.5]" {...props} />
+    </div>
+  ),
+  thead: ({ ...props }) => (
+    <thead className="[&_th]:border [&_th]:border-[rgba(0,0,0,0.1)] [&_th]:px-3 [&_th]:py-2 dark:[&_th]:border-white/20 bg-[rgba(0,0,0,0.02)] dark:bg-white/5" {...props} />
+  ),
+  tbody: ({ ...props }) => (
+    <tbody className="[&_td]:border [&_td]:border-[rgba(0,0,0,0.1)] [&_td]:px-3 [&_td]:py-2 dark:[&_td]:border-white/15" {...props} />
+  ),
+  img: ({ alt, src }) =>
+    typeof src === "string" ? (
+      <a href={src} target="_blank" rel="noreferrer" className="underline underline-offset-2">
+        View image{typeof alt === "string" && alt ? `: ${alt}` : ""}
+      </a>
+    ) : null,
+  sup: ({ className, ...props }) => (
+    <sup className={cn("align-super text-[0.85em]", className)} {...props} />
+  ),
+  sub: ({ className, ...props }) => (
+    <sub className={cn("align-sub text-[0.85em]", className)} {...props} />
+  ),
+  u: ({ className, ...props }) => (
+    <u className={cn("underline underline-offset-2", className)} {...props} />
+  ),
+  hr: ({ className, ...props }) => (
+    <hr className={cn("my-3 border-t border-[rgba(0,0,0,0.15)] dark:border-white/40", className)} {...props} />
+  ),
+} satisfies Components;
+
+const MarkdownMessage = ({ content, className }: MarkdownMessageProps) => (
+  <div className={cn("space-y-2", className)}>
+    <ReactMarkdown
+      remarkPlugins={[remarkMath, remarkGfm, remarkSupersub]}
+      rehypePlugins={[rehypeKatex]}
+      skipHtml
+      components={markdownComponents}
+    >
+      {content}
+    </ReactMarkdown>
+  </div>
+);
 
 export default MarkdownMessage;

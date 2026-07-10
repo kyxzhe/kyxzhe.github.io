@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Mail, Phone, MapPin, CalendarDays, X } from "lucide-react";
 import Navbar from "@/components/Navbar";
@@ -64,6 +64,35 @@ function GitHubMonoIcon({ className }: { className?: string }) {
 export default function ContactPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showCallInfo, setShowCallInfo] = useState(false);
+  const callTriggerRef = useRef<HTMLButtonElement>(null);
+  const callCloseButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!showCallInfo) return;
+
+    const callTrigger = callTriggerRef.current;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const focusFrame = requestAnimationFrame(() => callCloseButtonRef.current?.focus());
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setShowCallInfo(false);
+      } else if (event.key === "Tab") {
+        event.preventDefault();
+        callCloseButtonRef.current?.focus();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      cancelAnimationFrame(focusFrame);
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = previousOverflow;
+      callTrigger?.focus();
+    };
+  }, [showCallInfo]);
+
   const directLines = [
     {
       label: "Email",
@@ -141,6 +170,7 @@ export default function ContactPage() {
                   return (
                   <button
                     key={label}
+                    ref={label === "Phone" ? callTriggerRef : undefined}
                     type="button"
                     onClick={onClick}
                     className="w-full text-left font-medium hover:text-foreground transition-colors"
@@ -163,7 +193,7 @@ export default function ContactPage() {
                   <p className="text-[17px] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.6)]">Clear context helps me reply quickly.</p>
                 </div>
                 <span className="px-3 py-1 rounded-full text-[11px] uppercase tracking-[0.22em] bg-[rgba(0,0,0,0.04)] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)] dark:bg-[rgba(255,255,255,0.12)]">
-                  <span className="text-foreground">AEDT</span>
+                  <span className="text-foreground">Sydney time</span>
                 </span>
               </div>
               <ul className="space-y-3 text-[17px] leading-relaxed">
@@ -180,7 +210,7 @@ export default function ContactPage() {
                 className="w-full inline-flex items-center justify-center gap-2 rounded-full border text-[15px] font-medium border-[rgba(0,0,0,0.12)] bg-white text-foreground dark:border-none dark:bg-[rgba(255,255,255,0.12)] dark:text-white py-3 transition-colors duration-150 hover:border-foreground/50"
               >
                 <CalendarDays size={16} />
-                Book a time
+                Request a time
               </button>
             </div>
           </div>
@@ -226,17 +256,21 @@ export default function ContactPage() {
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4"
           onClick={() => setShowCallInfo(false)}
-          role="dialog"
-          aria-modal="true"
-          aria-label="Call request info"
         >
           <div
             className="surface-card max-w-md w-full p-6 rounded-2xl shadow-lg"
             onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="call-request-title"
+            aria-describedby="call-request-description"
           >
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold">Request a call</h3>
+              <h3 id="call-request-title" className="text-lg font-semibold">
+                Request a call
+              </h3>
               <button
+                ref={callCloseButtonRef}
                 type="button"
                 aria-label="Close request call dialog"
                 className="inline-flex h-11 w-11 items-center justify-center rounded-full font-medium hover:bg-[var(--accent-soft)]"
@@ -245,7 +279,7 @@ export default function ContactPage() {
                 <X size={18} />
               </button>
             </div>
-            <p className="text-[17px] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)] leading-relaxed">
+            <p id="call-request-description" className="text-[17px] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)] leading-relaxed">
               Share your number and preferred time in the booking note. I will text first and call if it helps.
             </p>
           </div>

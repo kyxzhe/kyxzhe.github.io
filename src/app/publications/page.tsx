@@ -27,7 +27,7 @@ const years = Array.from(
 ).sort((a, b) => b - a);
 
 const metrics = [
-  { label: "Manuscripts", value: "1" },
+  { label: "Manuscripts", value: publications.length.toString() },
   { label: "Reviews", value: "10+" },
   { label: "Citations", value: "2" },
 ];
@@ -40,9 +40,9 @@ const sortOptions: { label: string; value: SortMode }[] = [
 ];
 
 const publicationPath = (item: Publication) => `/publications/${item.id}`;
-const pageUrl = `${siteMetadata.baseUrl}/publications`;
+const pageUrl = `${siteMetadata.baseUrl}/publications/`;
 const pageDescription =
-  "Research papers, preprints, and safety briefs by Yuxiang (Kevin) Zheng on information diffusion and robust machine learning.";
+  "Research papers and preprints by Yuxiang (Kevin) Zheng on information diffusion and robust machine learning.";
 const breadcrumbJsonLd = getBreadcrumbJsonLd([
   { name: "Home", url: siteMetadata.baseUrl },
   { name: "Publications", url: pageUrl },
@@ -51,7 +51,7 @@ const collectionJsonLd = getCollectionPageJsonLd({
   title: "Publications | Kevin Zheng",
   description: pageDescription,
   url: pageUrl,
-  dateModified: "2026-05-14",
+  dateModified: "2026-07-10",
 });
 const itemListJsonLd = getItemListJsonLd({
   id: "publication-list",
@@ -62,7 +62,7 @@ const itemListJsonLd = getItemListJsonLd({
       id: publication.id,
       title: publication.title,
       description: publication.summary,
-      url: absoluteUrl(`/publications/${publication.id}`),
+      url: absoluteUrl(`/publications/${publication.id}/`),
       image: publication.cover,
       datePublished: publication.date,
       authors: publication.authors,
@@ -73,7 +73,7 @@ const itemListJsonLd = getItemListJsonLd({
 });
 
 const AuthorLine = ({ authors }: { authors: string[] }) => (
-  <p className="text-sm text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.44)]">
+  <p className="text-sm text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.68)]">
     {authors.map((author, index) => {
       const highlight = author.toLowerCase().includes("yuxiang zheng");
       return (
@@ -90,7 +90,7 @@ const AuthorLine = ({ authors }: { authors: string[] }) => (
 );
 
 const CardMetaLine = ({ item }: { item: Publication }) => (
-  <p className="text-[11px] uppercase tracking-[0.18em] text-[rgba(0,0,0,0.5)] dark:text-white/58">
+  <p className="text-[11px] uppercase tracking-[0.18em] text-[rgba(0,0,0,0.62)] dark:text-white/68">
     {item.category} <span className="mx-1.5">·</span> {formatDisplayDate(item.date)}
   </p>
 );
@@ -106,7 +106,7 @@ const ResourceRow = ({
   const showDot = visibleResources.length > 0;
 
   return (
-      <div className="flex flex-wrap items-center gap-2 text-[12px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.44)]">
+      <div className="flex flex-wrap items-center gap-2 text-[12px] uppercase tracking-[0.28em] text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.68)]">
       <span>{venue}</span>
       {showDot && <span>·</span>}
       {visibleResources.map((resource) => (
@@ -137,14 +137,14 @@ const ListRow = ({ item }: { item: Publication }) => {
         <p className="text-[12px] text-[rgba(0,0,0,0.62)] dark:text-[rgba(255,255,255,0.58)]">
           {item.category}
         </p>
-        <p className="text-[13px] text-[rgba(0,0,0,0.48)] dark:text-[rgba(255,255,255,0.44)]">
+        <p className="text-[13px] text-[rgba(0,0,0,0.62)] dark:text-[rgba(255,255,255,0.68)]">
           {formatDisplayDate(item.date)}
         </p>
       </div>
       <div className="min-w-0 space-y-2">
-        <h3 className="text-[17px] leading-snug text-foreground dark:text-white md:text-[18px]">
+        <h2 className="text-[17px] leading-snug text-foreground dark:text-white md:text-[18px]">
           {item.title}
-        </h3>
+        </h2>
         <AuthorLine authors={item.authors} />
         <p className="max-w-3xl text-[14px] leading-relaxed text-foreground/80 dark:text-white/78">
           {item.summary}
@@ -165,42 +165,38 @@ export default function PublicationsPage() {
 
   const toggleTopic = (topic: string) => {
     setSelectedTopics((prev) =>
-      prev.includes(topic) ? prev.filter((t) => t !== topic) : [...prev, topic]
+      prev.includes(topic) ? prev.filter((item) => item !== topic) : [...prev, topic]
     );
   };
 
   const toggleYear = (year: number) => {
     setSelectedYears((prev) =>
-      prev.includes(year) ? prev.filter((y) => y !== year) : [...prev, year]
+      prev.includes(year) ? prev.filter((item) => item !== year) : [...prev, year]
     );
   };
 
-  const filteredItems = useMemo(() => {
-    return publications.filter((item) => {
-      const topicsMatch = selectedTopics.length === 0 || selectedTopics.every((topic) => item.topics.includes(topic));
-      const yearsMatch = selectedYears.length === 0 || selectedYears.includes(new Date(item.date).getFullYear());
-      return topicsMatch && yearsMatch;
-    });
-  }, [selectedTopics, selectedYears]);
+  const filteredItems = useMemo(
+    () =>
+      publications.filter((item) => {
+        const topicsMatch =
+          selectedTopics.length === 0 || selectedTopics.some((topic) => item.topics.includes(topic));
+        const yearsMatch =
+          selectedYears.length === 0 || selectedYears.includes(new Date(item.date).getFullYear());
+        return topicsMatch && yearsMatch;
+      }),
+    [selectedTopics, selectedYears]
+  );
 
-  const sortedItems = useMemo(() => {
-    const sorted = [...filteredItems];
-    sorted.sort((a, b) => {
-      switch (sortMode) {
-        case "newest":
-          return new Date(b.date).getTime() - new Date(a.date).getTime();
-        case "oldest":
-          return new Date(a.date).getTime() - new Date(b.date).getTime();
-        case "az":
-          return a.title.localeCompare(b.title);
-        case "za":
-          return b.title.localeCompare(a.title);
-        default:
-          return 0;
-      }
-    });
-    return sorted;
-  }, [filteredItems, sortMode]);
+  const sortedItems = useMemo(
+    () =>
+      [...filteredItems].sort((a, b) => {
+        if (sortMode === "oldest") return a.date.localeCompare(b.date);
+        if (sortMode === "az") return a.title.localeCompare(b.title);
+        if (sortMode === "za") return b.title.localeCompare(a.title);
+        return b.date.localeCompare(a.date);
+      }),
+    [filteredItems, sortMode]
+  );
 
   const renderGrid = () => {
     const leadItem = sortedItems[0];
@@ -351,7 +347,7 @@ export default function PublicationsPage() {
           <section className="w-full self-center pt-10 md:pt-16 lg:w-[calc(100vw-84px)] lg:max-w-[1224px]">
             <div className="mb-6 flex items-center justify-between gap-4">
               <h2 className="text-[22px] md:text-[28px] tracking-[-0.03em] text-foreground dark:text-white">Recent publications</h2>
-              <p className="text-sm text-[rgba(0,0,0,0.45)] dark:text-white/48">Showing {sortedItems.length} items</p>
+              <p className="text-sm text-[rgba(0,0,0,0.62)] dark:text-white/68">Showing {sortedItems.length} items</p>
             </div>
 
             <div className="grid gap-x-16 gap-y-8 md:grid-cols-2">
@@ -425,7 +421,7 @@ export default function PublicationsPage() {
       />
       <Navbar />
 
-      {(filterOpen || sortOpen) && (
+      {publications.length > 1 && (filterOpen || sortOpen) && (
         <div
           className="fixed inset-0 z-30"
           onClick={() => {
@@ -446,7 +442,7 @@ export default function PublicationsPage() {
             {metrics.map((metric) => (
               <div
                 key={metric.label}
-                className="flex items-baseline gap-2 border-b border-border pb-1"
+                className="flex items-baseline gap-2 border-b border-[rgba(0,0,0,0.2)] pb-1 dark:border-white/25"
               >
                 <span className="text-xs uppercase tracking-[0.3em]">{metric.label}</span>
                 <span className="text-lg text-foreground">{metric.value}</span>
@@ -456,12 +452,17 @@ export default function PublicationsPage() {
         </section>
 
         <div className="relative z-40 flex flex-wrap items-center justify-between gap-3 text-sm">
-          <p className="text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]">Showing {sortedItems.length} publications</p>
+          <p role="status" aria-live="polite" className="text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]">
+            Showing {sortedItems.length} {sortedItems.length === 1 ? "publication" : "publications"}
+          </p>
 
           <div className="relative flex items-center gap-4 text-sm">
+            {publications.length > 1 && (
+              <>
             <div className="relative flex items-center gap-1">
               <button
                 type="button"
+                aria-expanded={filterOpen}
                 className="inline-flex min-h-11 items-center gap-1 rounded-full px-3"
                 onClick={() => {
                   setFilterOpen((prev) => !prev);
@@ -554,6 +555,7 @@ export default function PublicationsPage() {
             <div className="relative flex items-center gap-1">
               <button
                   type="button"
+                  aria-expanded={sortOpen}
                   className={`inline-flex min-h-11 items-center gap-1 rounded-full px-3 ${
                     sortOpen ? "text-foreground dark:text-white" : "text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]"
                   }`}
@@ -585,6 +587,8 @@ export default function PublicationsPage() {
                 </div>
               )}
             </div>
+              </>
+            )}
 
             <div className="flex items-center gap-2 text-[rgba(0,0,0,0.6)] dark:text-foreground/70">
               <button
@@ -596,6 +600,7 @@ export default function PublicationsPage() {
                 }`}
                 onClick={() => setViewMode("list")}
                 aria-label="List view"
+                aria-pressed={viewMode === "list"}
               >
                 <List size={16} />
               </button>
@@ -608,6 +613,7 @@ export default function PublicationsPage() {
                 }`}
                 onClick={() => setViewMode("grid")}
                 aria-label="Grid view"
+                aria-pressed={viewMode === "grid"}
               >
                 <LayoutGrid size={16} />
               </button>

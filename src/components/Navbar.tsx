@@ -13,12 +13,49 @@ export default function Navbar() {
     if (!menuOpen) return;
 
     const originalOverflow = document.body.style.overflow;
+    const trigger = document.querySelector<HTMLButtonElement>('[aria-controls="mobile-navigation"]');
+    const menu = document.getElementById('mobile-navigation');
+    const desktopQuery = window.matchMedia('(min-width: 768px)');
+    const focusable = () => [
+      trigger,
+      ...Array.from(menu?.querySelectorAll<HTMLElement>('a[href], button:not([disabled])') ?? []),
+    ].filter((item): item is HTMLElement => Boolean(item));
+
     document.body.style.overflow = 'hidden';
+    focusable()[1]?.focus();
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        closeMenu();
+        return;
+      }
+
+      if (event.key !== 'Tab') return;
+      const items = focusable();
+      const first = items[0];
+      const last = items.at(-1);
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last?.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first?.focus();
+      }
+    };
+    const handleDesktop = (event: MediaQueryListEvent) => {
+      if (event.matches) closeMenu();
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    desktopQuery.addEventListener('change', handleDesktop);
 
     return () => {
       document.body.style.overflow = originalOverflow;
+      document.removeEventListener('keydown', handleKeyDown);
+      desktopQuery.removeEventListener('change', handleDesktop);
+      if (!desktopQuery.matches) trigger?.focus();
     };
-  }, [menuOpen]);
+  }, [closeMenu, menuOpen]);
 
   return (
     <>

@@ -20,8 +20,3 @@ export function formatDisplayDate(isoDate: string) {
   if (!monthLabel) return isoDate;
   return `${day} ${monthLabel} ${year}`;
 }
-
-export function getIsoYear(isoDate: string) {
-  const year = Number(isoDate.slice(0, 4));
-  return Number.isInteger(year) && year > 0 ? year : null;
-}

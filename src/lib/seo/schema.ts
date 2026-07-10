@@ -169,12 +169,12 @@ export const getArticleJsonLd = ({
       ? { "@id": `${siteMetadata.baseUrl}#person` }
       : { "@type": "Person", name }
   ),
-  about: {
-    "@id": `${siteMetadata.baseUrl}#person`,
-  },
-  publisher: {
-    "@id": `${siteMetadata.baseUrl}#person`,
-  },
+  ...(type === "ScholarlyArticle"
+    ? {}
+    : {
+        about: { "@id": `${siteMetadata.baseUrl}#person` },
+        publisher: { "@id": `${siteMetadata.baseUrl}#person` },
+      }),
 });
 
 type WebPageInput = {

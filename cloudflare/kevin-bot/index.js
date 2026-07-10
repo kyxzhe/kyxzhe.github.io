@@ -59,8 +59,8 @@ Do not invent facts that are not clearly supported here or in the conversation.
 - When emphasis mixes Chinese and English, insert a half-width space between them inside the emphasis (for example, **中文 English**).
 
 [Mathematical notation]
-- Inline math: always use \\(...\\) for inline formulas.
-- Display math: always use \\[…\\] for block formulas, with a blank line above and below each block.
+- Inline math: always use $...$ for inline formulas.
+- Display math: always use $$...$$ for block formulas, with a blank line above and below each block.
 - Use only standard MathJax-compatible LaTeX commands (for example, \\frac, \\sqrt, \\sum, \\int); do not define custom macros or nonstandard environments.
 - Use proper LaTeX math symbols (for example, \\times instead of * or x, \\leq instead of <=).
   
@@ -141,14 +141,9 @@ function isAllowedOrigin(origin) {
   }
 }
 
-function getCorsHeaders(request) {
-  const origin = request.headers.get("Origin") || "";
-  const allowOrigin = isAllowedOrigin(origin)
-    ? origin
-    : ALLOWED_ORIGINS[0];
-
+function getCorsHeaders(origin) {
   return {
-    "Access-Control-Allow-Origin": allowOrigin,
+    "Access-Control-Allow-Origin": origin,
     "Access-Control-Allow-Methods": ALLOWED_METHODS,
     "Access-Control-Allow-Headers": "Content-Type, X-Chat-Session",
     "Access-Control-Max-Age": "86400",
@@ -361,7 +356,35 @@ async function readJsonBody(request) {
 
 const worker = {
   async fetch(request, env) {
-    const corsHeaders = getCorsHeaders(request);
+    const origin = request.headers.get("Origin") || "";
+    if (!isAllowedOrigin(origin)) {
+      return new Response(
+        JSON.stringify({ error: "Origin is not allowed" }),
+        {
+          status: 403,
+          headers: {
+            "Content-Type": "application/json",
+            "Vary": "Origin",
+            "X-Content-Type-Options": "nosniff",
+          },
+        },
+      );
+    }
+
+    const corsHeaders = getCorsHeaders(origin);
+
+    if (new URL(request.url).pathname !== "/chat") {
+      return new Response(
+        JSON.stringify({ error: "Not found" }),
+        {
+          status: 404,
+          headers: {
+            ...corsHeaders,
+            "Content-Type": "application/json",
+          },
+        },
+      );
+    }
 
     if (request.method === "OPTIONS") {
       return new Response(null, { status: 204, headers: corsHeaders });

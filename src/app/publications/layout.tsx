@@ -4,19 +4,19 @@ import { defaultSeoImage, siteMetadata } from "@/lib/seo/config";
 const pageTitle = "Publications";
 const structuredTitle = "Publications | Kevin Zheng";
 const pageDescription =
-  "Research papers, preprints, and safety briefs by Yuxiang (Kevin) Zheng on information diffusion and robust machine learning.";
+  "Research papers and preprints by Yuxiang (Kevin) Zheng on information diffusion and robust machine learning.";
 
 export const metadata: Metadata = {
   title: pageTitle,
   description: pageDescription,
   alternates: {
-    canonical: "/publications",
+    canonical: "/publications/",
   },
   openGraph: {
     type: "website",
     title: structuredTitle,
     description: pageDescription,
-    url: `${siteMetadata.baseUrl}/publications`,
+    url: `${siteMetadata.baseUrl}/publications/`,
     siteName: siteMetadata.siteName,
     locale: siteMetadata.ogLocale,
     images: [defaultSeoImage],

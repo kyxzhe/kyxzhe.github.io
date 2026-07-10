@@ -7,7 +7,7 @@ import { motion } from "motion/react";
 import { ArrowUpRight, ChevronDown, ChevronUp, Filter, LayoutGrid, List, X } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { type NewsCategory, type NewsItem, newsItems } from "@/lib/constants/news";
+import { formatNewsCategoryLabel, type NewsItem, newsItems } from "@/lib/constants/news";
 import { absoluteUrl, siteMetadata } from "@/lib/seo/config";
 import {
   getArticleJsonLd,
@@ -32,7 +32,7 @@ const sortOptions: { label: string; value: SortMode }[] = [
 ];
 
 const newsPath = (item: NewsItem) => `/news/${item.id}`;
-const pageUrl = `${siteMetadata.baseUrl}/news`;
+const pageUrl = `${siteMetadata.baseUrl}/news/`;
 const pageDescription =
   "Latest research updates, awards, talks, and milestones from Yuxiang (Kevin) Zheng on information diffusion and robust machine learning.";
 const breadcrumbJsonLd = getBreadcrumbJsonLd([
@@ -43,7 +43,7 @@ const collectionJsonLd = getCollectionPageJsonLd({
   title: "News & Updates | Kevin Zheng",
   description: pageDescription,
   url: pageUrl,
-  dateModified: "2026-05-14",
+  dateModified: "2026-07-10",
 });
 const itemListJsonLd = getItemListJsonLd({
   id: "news-list",
@@ -54,7 +54,7 @@ const itemListJsonLd = getItemListJsonLd({
       id: item.id,
       title: item.title,
       description: item.summary,
-      url: absoluteUrl(`/news/${item.id}`),
+      url: absoluteUrl(`/news/${item.id}/`),
       image: item.cover,
       datePublished: item.date,
       keywords: item.topics,
@@ -62,18 +62,6 @@ const itemListJsonLd = getItemListJsonLd({
     })
   ),
 });
-
-const categoryLabelMap: Record<NewsCategory, string> = {
-  RESEARCH: "Research",
-  AWARD: "Award",
-  MILESTONE: "Milestone",
-  TALK: "Talk",
-  TEACHING: "Teaching",
-};
-
-function formatCategoryLabel(category: string) {
-  return category === "All" ? "All" : categoryLabelMap[category as NewsCategory] ?? category;
-}
 
 const ListRow = ({ item }: { item: NewsItem }) => {
   return (
@@ -85,16 +73,16 @@ const ListRow = ({ item }: { item: NewsItem }) => {
       />
       <div className="space-y-1.5 md:pt-0.5">
         <p className="text-[12px] text-[rgba(0,0,0,0.62)] dark:text-[rgba(255,255,255,0.58)]">
-          {formatCategoryLabel(item.category)}
+          {formatNewsCategoryLabel(item.category)}
         </p>
-        <p className="text-[13px] text-[rgba(0,0,0,0.48)] dark:text-[rgba(255,255,255,0.44)]">
+        <p className="text-[13px] text-[rgba(0,0,0,0.62)] dark:text-[rgba(255,255,255,0.68)]">
           {formatDisplayDate(item.date)}
         </p>
       </div>
       <div className="min-w-0 space-y-2">
-        <h3 className="text-[17px] leading-snug text-foreground dark:text-white md:text-[18px]">
+        <h2 className="text-[17px] leading-snug text-foreground dark:text-white md:text-[18px]">
           {item.title}
-        </h3>
+        </h2>
         <p className="max-w-3xl text-[14px] leading-relaxed text-foreground/80 dark:text-white/78">
           {item.summary}
         </p>
@@ -116,8 +104,8 @@ const ListRow = ({ item }: { item: NewsItem }) => {
 
 function MetaLine({ item }: { item: NewsItem }) {
   return (
-    <p className="text-[11px] uppercase tracking-[0.18em] text-[rgba(0,0,0,0.5)] dark:text-white/58">
-      {formatCategoryLabel(item.category)} <span className="mx-1.5">·</span> {formatDisplayDate(item.date)}
+    <p className="text-[11px] uppercase tracking-[0.18em] text-[rgba(0,0,0,0.62)] dark:text-white/68">
+      {formatNewsCategoryLabel(item.category)} <span className="mx-1.5">·</span> {formatDisplayDate(item.date)}
     </p>
   );
 }
@@ -147,11 +135,17 @@ export default function NewsPage() {
     );
   };
 
+  const clearFilters = () => {
+    setActiveCategory("All");
+    setSelectedTopics([]);
+    setSelectedYears([]);
+  };
+
   const filteredItems = useMemo(() => {
     return newsItems.filter((item) => {
       const categoryMatch = activeCategory === "All" || item.category === activeCategory;
       const topicsMatch =
-        selectedTopics.length === 0 || selectedTopics.every((topic) => item.topics.includes(topic));
+        selectedTopics.length === 0 || selectedTopics.some((topic) => item.topics.includes(topic));
       const yearsMatch =
         selectedYears.length === 0 || selectedYears.includes(new Date(item.date).getFullYear());
       return categoryMatch && topicsMatch && yearsMatch;
@@ -229,6 +223,18 @@ export default function NewsPage() {
     };
   }, [leadItem, sideRailItems.length, sortedItems.length, viewMode]);
 
+  useEffect(() => {
+    if (!filterOpen && !sortOpen) return;
+    const closePanels = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setFilterOpen(false);
+        setSortOpen(false);
+      }
+    };
+    document.addEventListener("keydown", closePanels);
+    return () => document.removeEventListener("keydown", closePanels);
+  }, [filterOpen, sortOpen]);
+
   return (
     <div className="min-h-screen bg-white text-foreground dark:bg-[#000000] dark:text-[#f5f5f5] font-medium">
       <script
@@ -270,6 +276,7 @@ export default function NewsPage() {
             <button
               key={category}
               type="button"
+              aria-pressed={activeCategory === category}
               onClick={() => setActiveCategory(category)}
               className={`min-h-11 px-4 py-2 rounded-full border transition-colors ${
                 activeCategory === category
@@ -277,18 +284,20 @@ export default function NewsPage() {
                   : "bg-[rgba(0,0,0,0.04)] border-transparent text-[rgba(0,0,0,0.6)] dark:bg-[rgba(255,255,255,0.12)] dark:text-[rgba(255,255,255,0.8)] hover:border-[rgba(0,0,0,0.08)]"
               }`}
             >
-              {formatCategoryLabel(category)}
+              {formatNewsCategoryLabel(category)}
             </button>
           ))}
         </div>
 
         <div className="relative z-40 flex flex-wrap items-center justify-between gap-3 text-sm font-medium">
-          <p className="text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]">Showing {sortedItems.length} updates</p>
+          <p role="status" aria-live="polite" className="text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]">Showing {sortedItems.length} updates</p>
 
           <div className="relative flex items-center gap-4 text-sm font-medium">
             <div className="relative flex items-center gap-1">
               <button
                 type="button"
+                aria-expanded={filterOpen}
+                aria-controls="news-filters-desktop news-filters-mobile"
                 className="inline-flex min-h-11 items-center gap-1 rounded-full px-3"
                 onClick={() => {
                   setFilterOpen((prev) => !prev);
@@ -318,7 +327,7 @@ export default function NewsPage() {
                 )}
               </button>
               {filterOpen && (
-                <div className="z-50 hidden max-h-[min(34rem,calc(100vh-2rem))] flex-col overflow-hidden rounded-[8px] border border-[var(--card-border)] bg-[var(--card)]/96 text-sm shadow-[0_16px_36px_rgba(0,0,0,0.14)] backdrop-blur-md dark:bg-[#141416]/96 lg:absolute lg:right-0 lg:top-full lg:mt-2 lg:flex lg:w-[min(420px,calc(100vw-2rem))]">
+                <div id="news-filters-desktop" className="z-50 hidden max-h-[min(34rem,calc(100vh-2rem))] flex-col overflow-hidden rounded-[8px] border border-[var(--card-border)] bg-[var(--card)]/96 text-sm shadow-[0_16px_36px_rgba(0,0,0,0.14)] backdrop-blur-md dark:bg-[#141416]/96 lg:absolute lg:right-0 lg:top-full lg:mt-2 lg:flex lg:w-[min(420px,calc(100vw-2rem))]">
                   <div className="flex shrink-0 items-center justify-between px-4 pb-1 pt-3 text-sm text-foreground dark:text-white">
                     <p className="font-semibold">Filters</p>
                     <button
@@ -366,10 +375,7 @@ export default function NewsPage() {
                     <button
                       type="button"
                       className="min-h-11 px-2 underline-offset-2 hover:text-foreground dark:hover:text-white"
-                      onClick={() => {
-                        setSelectedTopics([]);
-                        setSelectedYears([]);
-                      }}
+                      onClick={clearFilters}
                     >
                       Clear all
                     </button>
@@ -381,6 +387,8 @@ export default function NewsPage() {
             <div className="relative flex items-center gap-1">
               <button
                 type="button"
+                aria-expanded={sortOpen}
+                aria-controls="news-sort-desktop news-sort-mobile"
                 className={`inline-flex min-h-11 items-center gap-1 rounded-full px-3 ${
                   sortOpen ? "text-foreground dark:text-white" : "text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]"
                 }`}
@@ -393,7 +401,7 @@ export default function NewsPage() {
                 {sortOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
               </button>
               {sortOpen && (
-                <div className="z-50 hidden flex-col gap-2 overflow-y-auto rounded-[8px] border border-[var(--card-border)] bg-[var(--card)]/96 p-3 text-sm text-foreground shadow-[0_16px_36px_rgba(0,0,0,0.14)] backdrop-blur-md dark:bg-[#141416]/96 dark:text-white lg:absolute lg:right-0 lg:top-full lg:mt-2 lg:flex lg:w-[min(256px,calc(100vw-2rem))]">
+                <div id="news-sort-desktop" className="z-50 hidden flex-col gap-2 overflow-y-auto rounded-[8px] border border-[var(--card-border)] bg-[var(--card)]/96 p-3 text-sm text-foreground shadow-[0_16px_36px_rgba(0,0,0,0.14)] backdrop-blur-md dark:bg-[#141416]/96 dark:text-white lg:absolute lg:right-0 lg:top-full lg:mt-2 lg:flex lg:w-[min(256px,calc(100vw-2rem))]">
                   {sortOptions.map((option) => (
                     <label key={option.value} className="flex min-h-11 items-center gap-2 text-foreground/80 dark:text-white/80">
                       <input
@@ -420,6 +428,7 @@ export default function NewsPage() {
                 }`}
                 onClick={() => setViewMode("list")}
                 aria-label="List view"
+                aria-pressed={viewMode === "list"}
               >
                 <List size={16} />
               </button>
@@ -432,6 +441,7 @@ export default function NewsPage() {
                 }`}
                 onClick={() => setViewMode("grid")}
                 aria-label="Grid view"
+                aria-pressed={viewMode === "grid"}
               >
                 <LayoutGrid size={16} />
               </button>
@@ -439,7 +449,7 @@ export default function NewsPage() {
           </div>
 
           {filterOpen && (
-            <div className="relative z-50 flex max-h-[min(70dvh,36rem)] w-full flex-col overflow-hidden rounded-[8px] border border-[var(--card-border)] bg-[var(--card)]/96 text-sm shadow-[0_16px_36px_rgba(0,0,0,0.14)] backdrop-blur-md dark:bg-[#141416]/96 lg:hidden">
+            <div id="news-filters-mobile" className="relative z-50 flex max-h-[min(70dvh,36rem)] w-full flex-col overflow-hidden rounded-[8px] border border-[var(--card-border)] bg-[var(--card)]/96 text-sm shadow-[0_16px_36px_rgba(0,0,0,0.14)] backdrop-blur-md dark:bg-[#141416]/96 lg:hidden">
               <div className="flex shrink-0 items-center justify-between px-4 pb-1 pt-3 text-sm text-foreground dark:text-white">
                 <p className="font-semibold">Filters</p>
                 <button
@@ -487,10 +497,7 @@ export default function NewsPage() {
                 <button
                   type="button"
                   className="min-h-11 px-2 underline-offset-2 hover:text-foreground dark:hover:text-white"
-                  onClick={() => {
-                    setSelectedTopics([]);
-                    setSelectedYears([]);
-                  }}
+                  onClick={clearFilters}
                 >
                   Clear all
                 </button>
@@ -499,7 +506,7 @@ export default function NewsPage() {
           )}
 
           {sortOpen && (
-            <div className="relative z-50 flex w-full flex-col gap-2 overflow-y-auto rounded-[8px] border border-[var(--card-border)] bg-[var(--card)]/96 p-3 text-sm text-foreground shadow-[0_16px_36px_rgba(0,0,0,0.14)] backdrop-blur-md dark:bg-[#141416]/96 dark:text-white lg:hidden">
+            <div id="news-sort-mobile" className="relative z-50 flex w-full flex-col gap-2 overflow-y-auto rounded-[8px] border border-[var(--card-border)] bg-[var(--card)]/96 p-3 text-sm text-foreground shadow-[0_16px_36px_rgba(0,0,0,0.14)] backdrop-blur-md dark:bg-[#141416]/96 dark:text-white lg:hidden">
               {sortOptions.map((option) => (
                 <label key={option.value} className="flex min-h-11 items-center gap-2 text-foreground/80 dark:text-white/80">
                   <input
@@ -526,10 +533,7 @@ export default function NewsPage() {
               <button
                 type="button"
                 className="inline-flex min-h-11 items-center text-[12px] uppercase tracking-[0.28em] text-foreground underline-offset-4 hover:underline dark:text-white"
-                onClick={() => {
-                  setSelectedTopics([]);
-                  setSelectedYears([]);
-                }}
+                onClick={clearFilters}
               >
                 Clear filters
               </button>
@@ -624,7 +628,7 @@ export default function NewsPage() {
           <section className="w-full self-center pt-10 md:pt-16 lg:w-[calc(100vw-84px)] lg:max-w-[1224px]">
             <div className="mb-6 flex items-center justify-between gap-4">
               <h2 className="text-[22px] md:text-[28px] tracking-[-0.03em] text-foreground dark:text-white">Recent updates</h2>
-              <p className="text-sm text-[rgba(0,0,0,0.45)] dark:text-white/48">Showing {sortedItems.length} items</p>
+              <p className="text-sm text-[rgba(0,0,0,0.62)] dark:text-white/68">Showing {sortedItems.length} items</p>
             </div>
 
             <div className="grid gap-x-16 gap-y-8 md:grid-cols-2">

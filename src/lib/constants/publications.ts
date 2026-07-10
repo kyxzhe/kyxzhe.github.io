@@ -25,8 +25,6 @@ export type Publication = {
   cover: string;
   authors: string[];
   resources?: PublicationResource[];
-  link?: string;
-  status?: string;
 };
 
 export const publications: Publication[] = [
@@ -40,7 +38,7 @@ export const publications: Publication[] = [
       "EchoAlign learns from noisy labels by editing images with controllable generators and selecting clean originals via feature similarity, greatly improving robustness to instance-dependent noise.",
     topics: ["Robust ML", "Noisy Labels", "Generative Models"],
     tags: ["Preprint", "Code Available"],
-    cover: "/projects/work-1.jpg",
+    cover: "/projects/work-1.webp",
     authors: [
       "Yuxiang Zheng",
       "Zhongyi Han",
@@ -58,6 +56,5 @@ export const publications: Publication[] = [
         url: "https://github.com/kyxzhe/EchoAlign",
       },
     ],
-    link: "https://arxiv.org/abs/2405.12969",
   },
 ];

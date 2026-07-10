@@ -13,12 +13,65 @@ type ChatChoice = {
 const DEFAULT_CHAT_API_URL = "https://kevin-bot.kyx-zhe.workers.dev/chat";
 const CHAT_API_URL = process.env.NEXT_PUBLIC_CHAT_API_URL ?? DEFAULT_CHAT_API_URL;
 const CHAT_SESSION_KEY = "kevin-bot-session-id";
+const CHAT_REQUEST_TIMEOUT_MS = 45_000;
+const MAX_CHAT_BODY_BYTES = 80_000;
+export const MAX_CHAT_MESSAGES = 16;
+export const MAX_CHAT_MESSAGE_CHARS = 4000;
 let cachedChatSessionId: string | null = null;
 
 export interface ChatRequestOptions {
   signal?: AbortSignal;
   onChunk?: (chunk: string) => void;
   chunkThrottleMs?: number;
+}
+
+function createRequestAbortSignal(callerSignal?: AbortSignal) {
+  const controller = new AbortController();
+  let timedOut = false;
+  const abortFromCaller = () => controller.abort();
+  const timeoutId = setTimeout(() => {
+    timedOut = true;
+    controller.abort();
+  }, CHAT_REQUEST_TIMEOUT_MS);
+
+  if (callerSignal?.aborted) {
+    abortFromCaller();
+  } else {
+    callerSignal?.addEventListener("abort", abortFromCaller, { once: true });
+  }
+
+  return {
+    signal: controller.signal,
+    didTimeOut: () => timedOut,
+    cleanup: () => {
+      clearTimeout(timeoutId);
+      callerSignal?.removeEventListener("abort", abortFromCaller);
+    },
+  };
+}
+
+export function limitChatMessages(
+  messages: ChatMessage[],
+  maxMessages = MAX_CHAT_MESSAGES,
+  maxMessageChars = MAX_CHAT_MESSAGE_CHARS,
+  maxBodyBytes = Number.POSITIVE_INFINITY
+) {
+  const limited = messages.slice(-Math.max(1, maxMessages)).map((message) => ({
+    ...message,
+    content: message.content.slice(0, maxMessageChars),
+  }));
+
+  if (Number.isFinite(maxBodyBytes)) {
+    const encoder = new TextEncoder();
+    while (
+      limited.length > 1 &&
+      encoder.encode(JSON.stringify({ messages: limited })).byteLength > maxBodyBytes
+    ) {
+      limited.shift();
+    }
+  }
+
+  return limited;
 }
 
 function getChatSessionId() {
@@ -57,38 +110,61 @@ export async function sendChatRequest(
   }
 
   const sessionId = getChatSessionId();
-  const response = await fetch(CHAT_API_URL, {
-    method: "POST",
-    referrerPolicy: "no-referrer",
-    headers: {
-      "Content-Type": "application/json",
-      ...(sessionId ? { "X-Chat-Session": sessionId } : {}),
-    },
-    body: JSON.stringify({ messages }),
-    signal: options?.signal,
-  });
+  const requestMessages = limitChatMessages(
+    messages,
+    MAX_CHAT_MESSAGES,
+    MAX_CHAT_MESSAGE_CHARS,
+    MAX_CHAT_BODY_BYTES
+  );
+  const requestAbort = createRequestAbortSignal(options?.signal);
 
-  if (!response.ok) {
-    const errorText = await readErrorText(response);
-    throw new Error(
-      `Chat service returned ${response.status}.${errorText ? ` ${errorText}` : ""}`
-    );
+  try {
+    const response = await fetch(CHAT_API_URL, {
+      method: "POST",
+      referrerPolicy: "no-referrer",
+      headers: {
+        "Content-Type": "application/json",
+        ...(sessionId ? { "X-Chat-Session": sessionId } : {}),
+      },
+      body: JSON.stringify({ messages: requestMessages }),
+      signal: requestAbort.signal,
+    });
+
+    if (!response.ok) {
+      const errorText = await readErrorText(response);
+      throw new Error(
+        `Chat service returned ${response.status}.${errorText ? ` ${errorText}` : ""}`
+      );
+    }
+
+    // Prefer streaming SSE responses.
+    const contentType = (response.headers.get("content-type") || "").toLowerCase();
+    if (contentType.includes("text/event-stream") && response.body) {
+      const reply = await readSseStream(
+        response.body,
+        options?.onChunk,
+        options?.chunkThrottleMs
+      );
+      if (reply) return reply;
+      throw new Error("Chat service returned an empty response. Please try again.");
+    }
+
+    // Support the older one-shot JSON response shape.
+    const data = await response.json().catch(() => null);
+    const reply = extractText(data);
+    if (reply) {
+      return reply.trim();
+    }
+
+    throw new Error("Chat service did not return a valid response.");
+  } catch (error) {
+    if (requestAbort.didTimeOut() && !options?.signal?.aborted) {
+      throw new Error("KevinBot took too long to respond. Please try again.");
+    }
+    throw error;
+  } finally {
+    requestAbort.cleanup();
   }
-
-  // Prefer streaming SSE responses.
-  const contentType = (response.headers.get("content-type") || "").toLowerCase();
-  if (contentType.includes("text/event-stream") && response.body) {
-    return readSseStream(response.body, options?.onChunk, options?.chunkThrottleMs);
-  }
-
-  // Support the older one-shot JSON response shape.
-  const data = await response.json().catch(() => null);
-  const reply = extractText(data);
-  if (reply) {
-    return reply.trim();
-  }
-
-  throw new Error("Chat service did not return a valid response.");
 }
 
 async function readErrorText(response: Response) {

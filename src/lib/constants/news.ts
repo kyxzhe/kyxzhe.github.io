@@ -33,7 +33,7 @@ export const newsItems: NewsItem[] = [
     summary:
       "Joined Marian-Andrei Rizoiu’s Behavioural Data Science Lab at UTS to study information diffusion and robust machine learning on social platforms.",
     topics: ["Robust ML", "Information Diffusion"],
-    cover: "/projects/work-3.jpg",
+    cover: "/projects/work-3.webp",
     link: "https://www.behavioral-ds.science/authors/kevin-zheng/",
     linkLabel: "Lab profile",
   },
@@ -45,7 +45,7 @@ export const newsItems: NewsItem[] = [
     summary:
       "Received the University Medal from the University of Sydney for my honours thesis on learning with noisy labels.",
     topics: ["Awards", "Noisy Labels"],
-    cover: "/projects/work-2.jpg",
+    cover: "/projects/work-2.webp",
   },
   {
     id: "aws-cert",
@@ -55,7 +55,7 @@ export const newsItems: NewsItem[] = [
     summary:
       "Passed the AWS Certified Machine Learning – Specialty exam, validating production-ready ML practice for large-scale systems.",
     topics: ["MLOps", "Certification"],
-    cover: "/projects/work-1.jpg",
+    cover: "/projects/work-1.webp",
     link: "https://www.credly.com/badges/b324db7a-0cb4-41b9-b3a7-a3275dde8f6b/public_url",
     linkLabel: "Show credential",
   },
@@ -67,7 +67,7 @@ export const newsItems: NewsItem[] = [
     summary:
       "Delivered a guest lecture on large language models and the GPT architecture for a postgraduate machine learning course at the University of Sydney.",
     topics: ["Teaching", "LLMs"],
-    cover: "/projects/work-4.jpg",
+    cover: "/projects/work-4.webp",
     link: "https://docs.google.com/presentation/d/1dVlNKH4T4I7cRENnod2oLhxw31iyObg0/edit?usp=sharing&ouid=108745846433296526416&rtpof=true&sd=true",
     linkLabel: "View slides",
   },
@@ -79,7 +79,7 @@ export const newsItems: NewsItem[] = [
     summary:
       "Posted the EchoAlign preprint “Can We Treat Noisy Labels as Accurate?” on arXiv, proposing to treat noisy labels as accurate by editing inputs instead of relabeling them.",
     topics: ["Noisy Labels", "Preprint", "Robust ML"],
-    cover: "/projects/work-1.jpg",
+    cover: "/projects/work-1.webp",
     link: "https://arxiv.org/abs/2405.12969",
     linkLabel: "Read preprint",
   },
@@ -91,7 +91,7 @@ export const newsItems: NewsItem[] = [
     summary:
       "Completed a combined Bachelor of Advanced Computing (Honours, Computational Data Science) and Bachelor of Science (Mathematics) at the University of Sydney and received the University Medal.",
     topics: ["Education", "Honours"],
-    cover: "/projects/work-2.jpg",
+    cover: "/projects/work-2.webp",
   },
   {
     id: "teaching-started-comp5328",
@@ -101,7 +101,7 @@ export const newsItems: NewsItem[] = [
     summary:
       "Started work as a Casual Academic in the School of Computer Science at the University of Sydney, teaching and supporting assessment for undergraduate and postgraduate computing units.",
     topics: ["Teaching", "Career"],
-    cover: "/projects/work-4.jpg",
+    cover: "/projects/work-4.webp",
   },
   {
     id: "joined-trustworthy-ml-lab",
@@ -111,6 +111,6 @@ export const newsItems: NewsItem[] = [
     summary:
       "Joined the Trustworthy Machine Learning Lab at the University of Sydney as a research assistant, working on noisy-label and semi-supervised learning.",
     topics: ["Research", "Noisy Labels", "Robust ML"],
-    cover: "/projects/work-3.jpg",
+    cover: "/projects/work-3.webp",
   },
 ];

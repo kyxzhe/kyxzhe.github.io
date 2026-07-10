@@ -39,17 +39,17 @@ export default function manifest(): MetadataRoute.Manifest {
       {
         name: "Publications",
         short_name: "Papers",
-        url: "/publications",
+        url: "/publications/",
       },
       {
         name: "News",
         short_name: "News",
-        url: "/news",
+        url: "/news/",
       },
       {
         name: "Contact",
         short_name: "Contact",
-        url: "/contact",
+        url: "/contact/",
       },
     ],
   };
