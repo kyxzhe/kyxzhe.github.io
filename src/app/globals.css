@@ -67,8 +67,17 @@ body {
 }
 
 :where(a, button, input, textarea, select):focus-visible {
-  outline: 2px solid var(--foreground);
-  outline-offset: 3px;
+  outline: none !important;
+  --tw-ring-offset-shadow: 0 0 #0000 !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+}
+
+:where(a, button):focus-visible {
+  opacity: 0.7;
+}
+
+:where(input, textarea, select):focus-visible {
+  background-color: color-mix(in srgb, currentColor 5%, transparent);
 }
 
 @media (prefers-reduced-motion: reduce) {
