@@ -4,8 +4,18 @@ import worker from "./index.js";
 
 const encoder = new TextEncoder();
 let aiCalls = 0;
+let rateLimitCalls = 0;
+let rateLimitAllowed = true;
+let lastRateLimitKey = null;
 
 const env = {
+  CHAT_RATE_LIMITER: {
+    async limit({ key }) {
+      rateLimitCalls += 1;
+      lastRateLimitKey = key;
+      return { success: rateLimitAllowed };
+    },
+  },
   AI: {
     autorag() {
       return {
@@ -30,7 +40,10 @@ const env = {
 };
 
 function chatRequest(path = "/chat", origin = "https://kyxzhe.github.io") {
-  const headers = { "Content-Type": "application/json" };
+  const headers = {
+    "Content-Type": "application/json",
+    "X-Chat-Session": "test-session",
+  };
   if (origin) headers.Origin = origin;
 
   return new Request(`https://kevin-bot.example${path}`, {
@@ -77,5 +90,14 @@ assert.equal(validRequest.status, 200);
 assert.match(validRequest.headers.get("Content-Type") || "", /text\/event-stream/);
 assert.match(await validRequest.text(), /"response":"ok"/);
 assert.equal(aiCalls, 2);
+assert.equal(rateLimitCalls, 1);
+assert.equal(lastRateLimitKey, "test-session");
+
+rateLimitAllowed = false;
+const limitedAiCalls = aiCalls;
+const rateLimitedRequest = await worker.fetch(chatRequest(), env);
+assert.equal(rateLimitedRequest.status, 429);
+assert.equal(rateLimitedRequest.headers.get("Retry-After"), "60");
+assert.equal(aiCalls, limitedAiCalls);
 
 console.log("KevinBot Worker boundary checks passed.");

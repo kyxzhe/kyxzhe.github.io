@@ -123,6 +123,7 @@ const MAX_BODY_BYTES = 100000;
 const MAX_CONTEXT_CHARS = 12000;
 const CONTEXT_SEPARATOR = "\n\n---\n\n";
 const MAX_SESSION_ID_CHARS = 128;
+const RATE_LIMIT_RETRY_SECONDS = 60;
 const CHAT_ROLES = new Set(["user", "assistant"]);
 
 function isAllowedOrigin(origin) {
@@ -481,6 +482,29 @@ const worker = {
           headers: {
             ...corsHeaders,
             "Content-Type": "application/json",
+          },
+        },
+      );
+    }
+
+    // ponytail: IP limits can group shared networks; use verified users or Turnstile if traffic grows.
+    const rateLimitKey =
+      request.headers.get("CF-Connecting-IP") ||
+      getSessionAffinity(request) ||
+      "anonymous";
+    const { success: withinRateLimit } = await env.CHAT_RATE_LIMITER.limit({
+      key: rateLimitKey,
+    });
+
+    if (!withinRateLimit) {
+      return new Response(
+        JSON.stringify({ error: "Too many requests. Please try again shortly." }),
+        {
+          status: 429,
+          headers: {
+            ...corsHeaders,
+            "Content-Type": "application/json",
+            "Retry-After": String(RATE_LIMIT_RETRY_SECONDS),
           },
         },
       );
