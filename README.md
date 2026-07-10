@@ -15,7 +15,7 @@ The project is built with Next.js App Router, React, TypeScript, Tailwind CSS, l
 - **About** (`/about`): Biography, research focus, education timeline, teaching, and collaboration context.
 - **Publications** (`/publications`): Filterable and sortable publication index with list/grid modes, detail pages, resources, and scholarly JSON-LD.
 - **News** (`/news`): Filterable and sortable research updates, awards, teaching notes, and career milestones with static detail pages.
-- **Contact** (`/contact`): Email, profile links, collaboration topics, and a lightweight scheduling request flow.
+- **Contact** (`/contact`): Email, profile links, collaboration topics, and Google Calendar appointment scheduling.
 - **KevinBot**: Visitor-facing chatbot backed by a Cloudflare Worker and Cloudflare Workers AI.
 
 ## Tech Stack
@@ -36,7 +36,7 @@ src/app/                  App Router pages, layouts, metadata, sitemap, robots, 
 src/components/           Shared UI, navigation, contact modal, markdown renderer
 src/assets/fonts/         Local OpenAI Sans font sources for next/font
 src/hooks/                Navigation and session-backed chatbot state
-src/lib/constants/        Site content, publications, news, contact, socials, availability
+src/lib/constants/        Site content, publications, news, contact, socials
 src/lib/seo/              Site metadata and JSON-LD builders
 src/lib/api/chat.ts       Client-side KevinBot request and SSE handling
 public/                   Favicons, project images, human/LLM-readable indexes
@@ -82,7 +82,6 @@ Most site updates should happen in constants rather than page components.
 | Contact details and availability text | `src/lib/constants/contact.ts` |
 | Navigation labels | `src/lib/constants/navItems.ts` |
 | Social/profile URLs | `src/lib/constants/socials.ts` |
-| Scheduling slot generation | `src/lib/constants/availability.ts` |
 | LLM-readable public summary | `public/llms.txt` |
 | Human-readable colophon | `public/humans.txt` |
 

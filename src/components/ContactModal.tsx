@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  type FormEvent,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence, type Variants } from "motion/react";
 import {
@@ -17,11 +10,7 @@ import {
   MapPin,
   Github,
   Linkedin,
-  SendHorizonal,
   CalendarDays,
-  Check,
-  Loader2,
-  AlertCircle,
 } from "lucide-react";
 import {
   modalVariants,
@@ -31,7 +20,6 @@ import {
 } from "@/lib/animation/variants";
 import { contactInfo } from "@/lib/constants/contact";
 import { socials } from "@/lib/constants/socials";
-import { generateAvailability } from "@/lib/constants/availability";
 import { OrcidIconColor } from "@/components/icons/AcademicIcons";
 
 interface ContactModalProps {
@@ -40,12 +28,10 @@ interface ContactModalProps {
   startInSchedule?: boolean;
 }
 
-const WINDOW_SIZE = 5;
-const MAX_NAME_LENGTH = 100;
-const MAX_EMAIL_LENGTH = 254;
-const MAX_NOTE_LENGTH = 2000;
+const GOOGLE_CALENDAR_BOOKING_URL =
+  "https://calendar.google.com/calendar/appointments/schedules/AcZssZ0g3LXvhwncwBncjl7jkt0zkytDlAztNt6d2vlhVBxnbPRjDgS4hCdzKSb_vuLkGHcKsSN7kDZh?gv=true";
 const FOCUSABLE_SELECTOR =
-  'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+  'a[href], button:not([disabled]), iframe, [tabindex]:not([tabindex="-1"])';
 
 const innerSwapVariants: Variants = {
   enter: { opacity: 0, x: 40 },
@@ -63,78 +49,24 @@ const innerSwapVariants: Variants = {
 
 export default function ContactModal({ isOpen, onClose, startInSchedule }: ContactModalProps) {
   const [mode, setMode] = useState<"info" | "schedule">(startInSchedule ? "schedule" : "info");
-  const [availability, setAvailability] = useState(() => generateAvailability(new Date(), 30));
   const dialogRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
-  const requestControllerRef = useRef<AbortController | null>(null);
-  const requestIdRef = useRef(0);
-  const [windowStart, setWindowStart] = useState(0);
-  const [selectedDate, setSelectedDate] = useState<string>(
-    availability[0]?.dateISO ?? ""
-  );
-  const [selectedSlotId, setSelectedSlotId] = useState<string | null>(null);
-  const [formValues, setFormValues] = useState({
-    name: "",
-    email: "",
-    note: "",
-  });
-  const trimmedName = formValues.name.trim();
-  const trimmedEmail = formValues.email.trim();
-  const trimmedNote = formValues.note.trim();
-  const nameValid = trimmedName.length > 0 && trimmedName.length <= MAX_NAME_LENGTH;
-  const emailValid =
-    trimmedEmail.length <= MAX_EMAIL_LENGTH &&
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail);
-  const [submissionState, setSubmissionState] = useState<
-    "idle" | "loading" | "success" | "error"
-  >("idle");
 
-  const visibleDays = availability.slice(windowStart, windowStart + WINDOW_SIZE);
-  const maxWindowIndex = Math.max(0, availability.length - WINDOW_SIZE);
-
-  const slotsForDate = useMemo(
-    () => availability.find((day) => day.dateISO === selectedDate)?.slots ?? [],
-    [availability, selectedDate]
-  );
-
-  const selectedSlot = slotsForDate.find((slot) => slot.id === selectedSlotId);
-
-  const resetScheduler = useCallback(() => {
+  const resetModal = useCallback(() => {
     setMode(startInSchedule ? "schedule" : "info");
-    setWindowStart(0);
-    setSelectedDate(availability[0]?.dateISO ?? "");
-    setSelectedSlotId(null);
-    setFormValues({ name: "", email: "", note: "" });
-    setSubmissionState("idle");
-  }, [availability, startInSchedule]);
+  }, [startInSchedule]);
 
   const closeModal = useCallback(() => {
-    requestIdRef.current += 1;
-    requestControllerRef.current?.abort();
-    requestControllerRef.current = null;
     onClose();
-    resetScheduler();
-  }, [onClose, resetScheduler]);
-
-  useEffect(() => {
-    if (isOpen) {
-      setAvailability(generateAvailability(new Date(), 30));
-    }
-  }, [isOpen]);
+    resetModal();
+  }, [onClose, resetModal]);
 
   useEffect(() => {
     if (isOpen && startInSchedule) {
       setMode("schedule");
     }
   }, [isOpen, startInSchedule]);
-
-  useEffect(() => {
-    if (!availability.find((day) => day.dateISO === selectedDate)) {
-      setSelectedDate(availability[windowStart]?.dateISO ?? "");
-      setSelectedSlotId(null);
-    }
-  }, [availability, selectedDate, windowStart]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -176,97 +108,10 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
       cancelAnimationFrame(focusFrame);
       document.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = previousOverflow;
-      requestIdRef.current += 1;
-      requestControllerRef.current?.abort();
-      requestControllerRef.current = null;
       previousFocusRef.current?.focus();
       previousFocusRef.current = null;
     };
   }, [closeModal, isOpen]);
-
-  const shiftWindow = (direction: -1 | 1) => {
-    const nextStart = Math.min(
-      maxWindowIndex,
-      Math.max(0, windowStart + direction * WINDOW_SIZE)
-    );
-    setWindowStart(nextStart);
-    const nextVisible = availability[nextStart];
-    if (nextVisible) {
-      setSelectedDate(nextVisible.dateISO);
-      setSelectedSlotId(null);
-    }
-  };
-
-  const handleSubmitBooking = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (
-      requestControllerRef.current ||
-      submissionState === "loading" ||
-      submissionState === "success" ||
-      !selectedSlot ||
-      selectedSlot.booked ||
-      !selectedDate ||
-      !nameValid ||
-      !emailValid ||
-      trimmedNote.length > MAX_NOTE_LENGTH
-    ) {
-      return;
-    }
-    const dayMeta = availability.find((d) => d.dateISO === selectedDate);
-    if (!dayMeta) return;
-
-    const subject = `Meeting request: ${selectedSlot.label} (${dayMeta.displayLabel})`;
-    const body = [
-      `Hi Kevin,`,
-      ``,
-      `I'd like to reserve ${dayMeta.displayLabel} at ${selectedSlot.label}.`,
-      ``,
-      `Name: ${trimmedName}`,
-      `Email: ${trimmedEmail}`,
-      trimmedNote ? `Context: ${trimmedNote}` : ``,
-      ``,
-      `Best,`,
-      trimmedName,
-    ]
-      .filter(Boolean)
-      .join("\n");
-
-    const requestId = requestIdRef.current + 1;
-    requestIdRef.current = requestId;
-    const controller = new AbortController();
-    requestControllerRef.current = controller;
-    setSubmissionState("loading");
-    try {
-      const response = await fetch("https://formsubmit.co/ajax/kevin.zheng@student.uts.edu.au", {
-        method: "POST",
-        signal: controller.signal,
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          _subject: subject,
-          name: trimmedName,
-          email: trimmedEmail,
-          message: body,
-          slot: `${dayMeta.displayLabel} · ${selectedSlot.label}`,
-        }),
-      });
-
-      if (!response.ok) throw new Error("Failed to send");
-      if (requestId !== requestIdRef.current) return;
-
-      setSubmissionState("success");
-    } catch (error) {
-      if (controller.signal.aborted || requestId !== requestIdRef.current) return;
-      console.error(error);
-      setSubmissionState("error");
-    } finally {
-      if (requestId === requestIdRef.current) {
-        requestControllerRef.current = null;
-      }
-    }
-  };
 
   return (
     <AnimatePresence mode="wait">
@@ -288,7 +133,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
           className="surface-card relative max-h-[calc(100dvh-1.5rem)] w-full max-w-4xl overflow-y-auto p-4 sm:max-h-[90vh] sm:p-6 md:p-8 lg:p-12"
           variants={modalVariants}
           initial="hidden"
-          animate={{ scale: 1, opacity: 1 }}
+          animate="visible"
           exit="exit"
           onClick={(e) => e.stopPropagation()}
         >
@@ -472,210 +317,21 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                   animate="center"
                   exit="exit"
                 >
-                  <motion.form
-                    onSubmit={handleSubmitBooking}
-                    className="flex flex-col gap-4 md:gap-6"
+                  <motion.div
+                    className="flex flex-col gap-3"
                     variants={textVariants}
                     initial="hidden"
                     animate="visible"
                   >
-                        <div
-                          className="flex min-h-5 flex-wrap items-center justify-end gap-3"
-                          aria-live="polite"
-                          aria-atomic="true"
-                        >
-                          {submissionState === "success" && (
-                            <span className="inline-flex items-center gap-1 text-xs font-medium text-green-700 dark:text-green-400">
-                              <Check size={14} /> Confirmed
-                            </span>
-                          )}
-                          {submissionState === "error" && (
-                            <span
-                              role="alert"
-                              className="inline-flex items-center gap-1 text-xs font-medium text-red-700 dark:text-red-400"
-                            >
-                              <AlertCircle size={14} /> Failed
-                            </span>
-                          )}
-                        </div>
-
-                    <div className="rounded-[18px] bg-[var(--pill-background)] p-3 sm:p-4">
-                      <div className="mb-3 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
-                        <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">
-                          Choose a date
-                        </p>
-                        <div className="flex gap-2">
-                          <button
-                            type="button"
-                            onClick={() => shiftWindow(-1)}
-                            disabled={windowStart === 0}
-                            className="inline-flex h-9 items-center rounded-full bg-white/70 px-3 text-[12px] text-muted-foreground transition-colors hover:bg-[var(--accent-soft)] disabled:opacity-40 dark:bg-white/8"
-                          >
-                            Prev
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => shiftWindow(1)}
-                            disabled={windowStart >= maxWindowIndex}
-                            className="inline-flex h-9 items-center rounded-full bg-white/70 px-3 text-[12px] text-muted-foreground transition-colors hover:bg-[var(--accent-soft)] disabled:opacity-40 dark:bg-white/8"
-                          >
-                            Next
-                          </button>
-                        </div>
-                      </div>
-                      <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
-                        {visibleDays.map((day) => {
-                          const isActive = selectedDate === day.dateISO;
-                          return (
-                            <button
-                              key={day.dateISO}
-                              type="button"
-                              onClick={() => {
-                                setSelectedDate(day.dateISO);
-                                setSelectedSlotId(null);
-                              }}
-                              aria-pressed={isActive}
-                              className={`inline-flex min-h-10 items-center justify-center rounded-full px-3 text-[13px] leading-snug transition-colors ${
-                                isActive
-                                  ? "bg-[var(--accent)] text-[var(--background)]"
-                                  : "bg-white/70 text-muted-foreground hover:bg-[var(--accent-soft)] dark:bg-white/8"
-                              }`}
-                            >
-                              <span className="flex items-center gap-2">
-                                {day.displayLabel}
-                                {isActive && (
-                                  <span className="text-[0.65rem] uppercase tracking-[0.2em] opacity-80">
-                                    ✓
-                                  </span>
-                                )}
-                              </span>
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
-
-                    <motion.div className="grid grid-cols-1 md:grid-cols-2 gap-3" layout>
-                      {slotsForDate.map((slot) => {
-                        const isSelected = selectedSlotId === slot.id;
-                        return (
-                          <button
-                            key={slot.id}
-                            type="button"
-                            disabled={slot.booked || submissionState === "loading"}
-                            onClick={() => setSelectedSlotId(slot.id)}
-                            aria-pressed={isSelected}
-                            className={`rounded-[16px] px-3 py-3 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30 sm:px-4 sm:py-4 ${
-                              slot.booked
-                                ? "cursor-not-allowed bg-[var(--pill-background)] text-muted-foreground line-through opacity-55"
-                                : isSelected
-                                  ? "bg-[var(--accent)] text-[var(--background)]"
-                                  : "bg-[var(--pill-background)] hover:bg-[var(--accent-soft)]"
-                            }`}
-                          >
-                            <div className="flex items-center justify-between">
-                              <p className={`text-xs uppercase tracking-[0.3em] ${isSelected ? "text-[var(--background)] opacity-70" : "text-muted-foreground"}`}>
-                                Meeting
-                              </p>
-                              {isSelected && (
-                                <Check size={16} className="text-current" />
-                              )}
-                            </div>
-                            <p className="text-lg font-medium">{slot.label}</p>
-                          </button>
-                        );
-                      })}
-                    </motion.div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="flex flex-col gap-2">
-                        <label htmlFor="contact-name" className="text-sm text-muted-foreground">
-                          Your name
-                        </label>
-                        <input
-                          id="contact-name"
-                          name="name"
-                          type="text"
-                          autoComplete="name"
-                          required
-                          maxLength={MAX_NAME_LENGTH}
-                          value={formValues.name}
-                          onChange={(e) => setFormValues((prev) => ({ ...prev, name: e.target.value }))}
-                          className="rounded-[12px] border border-border bg-transparent px-4 py-3 focus:outline-none focus:border-foreground placeholder:text-muted-foreground/70"
-                          placeholder="Ada Lovelace"
-                          aria-invalid={formValues.name.length > 0 && !nameValid}
-                        />
-                      </div>
-                      <div className="flex flex-col gap-2">
-                        <label htmlFor="contact-email" className="text-sm text-muted-foreground">
-                          Contact email
-                        </label>
-                        <input
-                          id="contact-email"
-                          name="email"
-                          type="email"
-                          autoComplete="email"
-                          required
-                          maxLength={MAX_EMAIL_LENGTH}
-                          value={formValues.email}
-                          onChange={(e) => setFormValues((prev) => ({ ...prev, email: e.target.value }))}
-                          className="rounded-[12px] border border-border bg-transparent px-4 py-3 focus:outline-none focus:border-foreground placeholder:text-muted-foreground/70"
-                          placeholder="you@example.com"
-                          aria-invalid={formValues.email.length > 0 && !emailValid}
-                          aria-describedby={
-                            formValues.email.length > 0 && !emailValid
-                              ? "contact-email-error"
-                              : undefined
-                          }
-                        />
-                        {!emailValid && formValues.email.length > 0 && (
-                          <span id="contact-email-error" className="text-xs text-red-700 dark:text-red-300">
-                            Please enter a valid email.
-                          </span>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col gap-2">
-                      <label htmlFor="contact-note" className="text-sm text-muted-foreground">
-                        Notes (optional)
-                      </label>
-                      <textarea
-                        id="contact-note"
-                        name="note"
-                        maxLength={MAX_NOTE_LENGTH}
-                        value={formValues.note}
-                        onChange={(e) => setFormValues((prev) => ({ ...prev, note: e.target.value }))}
-                        rows={3}
-                        className="rounded-[12px] border border-border bg-transparent px-4 py-3 focus:outline-none focus:border-foreground placeholder:text-muted-foreground/70"
-                        placeholder="Context, collaborators, or agenda."
+                    <div className="overflow-hidden rounded-[18px] bg-white">
+                      <iframe
+                        src={GOOGLE_CALENDAR_BOOKING_URL}
+                        title="Book a 30-minute call with Kevin Zheng"
+                        className="block h-[max(360px,calc(100dvh-12rem))] max-h-[720px] w-full border-0 focus:outline-none md:h-[max(420px,calc(90dvh-17rem))] md:max-h-[600px]"
+                        loading="eager"
                       />
                     </div>
-
-                    <button
-                      type="submit"
-                      disabled={
-                        !selectedSlot ||
-                        !nameValid ||
-                        !emailValid ||
-                        submissionState === "loading" ||
-                        submissionState === "success"
-                      }
-                      className="btn-primary inline-flex items-center justify-center gap-2 disabled:opacity-50"
-                    >
-                      {submissionState === "loading" ? (
-                        <>
-                          <Loader2 size={18} className="animate-spin" />
-                          Scheduling…
-                        </>
-                      ) : (
-                        <>
-                          <SendHorizonal size={18} />
-                          Confirm request
-                        </>
-                      )}
-                    </button>
-                  </motion.form>
+                  </motion.div>
                 </motion.div>
               )}
             </AnimatePresence>
