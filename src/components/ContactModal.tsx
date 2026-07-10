@@ -132,7 +132,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
           aria-describedby="contact-modal-description"
           className={
             mode === "schedule"
-              ? "relative h-[min(860px,calc(100dvh-1.5rem))] w-full max-w-5xl overflow-hidden rounded-[20px] border border-black/10 bg-white text-black shadow-[0_30px_80px_rgba(0,0,0,0.35)]"
+              ? "surface-card relative h-[min(860px,calc(100dvh-1.5rem))] w-full max-w-5xl overflow-hidden text-foreground"
               : "surface-card relative max-h-[calc(100dvh-1.5rem)] w-full max-w-4xl overflow-y-auto p-4 sm:max-h-[90vh] sm:p-6 md:p-8 lg:p-12"
           }
           variants={modalVariants}
@@ -146,24 +146,20 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                   ref={closeButtonRef}
                   type="button"
                   aria-label="Close contact modal"
-                  className={
-                    mode === "schedule"
-                      ? "absolute right-4 top-4 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-black/[0.06] text-black transition-colors hover:bg-black/10"
-                      : "absolute right-4 top-4 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-[var(--accent-soft)] text-[var(--accent)] transition-colors hover:opacity-80 md:right-5 md:top-5 md:h-11 md:w-11"
-                  }
+                  className="absolute right-4 top-4 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-[var(--accent-soft)] text-[var(--accent)] transition-colors hover:opacity-80 md:right-5 md:top-5 md:h-11 md:w-11"
                   onClick={closeModal}
                   variants={iconVariants}
                   initial="hidden"
                   animate="visible"
                   whileHover="hover"
                 >
-                  <X size={22} className={mode === "schedule" ? "text-black" : "text-foreground"} />
+                  <X size={22} className="text-foreground" />
                 </motion.button>
 
                 <motion.div
                   className={
                     mode === "schedule"
-                      ? "flex min-h-20 shrink-0 flex-col justify-center border-b border-black/10 px-5 pr-16 text-left sm:px-6"
+                      ? "flex min-h-28 shrink-0 flex-col items-center justify-center border-b border-border px-16 text-center sm:px-20"
                       : "mb-6 pr-10 text-center md:mb-12 md:pr-0"
                   }
                   variants={textVariants}
@@ -174,7 +170,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                     id="contact-modal-title"
                     className={
                       mode === "schedule"
-                        ? "text-xl font-medium leading-tight"
+                        ? "text-[30px] font-medium leading-none sm:text-[38px]"
                         : "mb-3 text-[34px] font-medium leading-none md:text-6xl lg:text-7xl"
                     }
                   >
@@ -184,7 +180,7 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
                     id="contact-modal-description"
                     className={
                       mode === "schedule"
-                        ? "mt-1 text-[13px] leading-snug text-black/55 sm:text-sm"
+                        ? "mt-2 max-w-2xl text-[13px] leading-snug text-muted-foreground sm:text-[15px]"
                         : "text-[15px] leading-relaxed text-muted-foreground md:text-xl"
                     }
                   >
