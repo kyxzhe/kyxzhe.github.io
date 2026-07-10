@@ -130,43 +130,63 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
           aria-modal="true"
           aria-labelledby="contact-modal-title"
           aria-describedby="contact-modal-description"
-          className="surface-card relative max-h-[calc(100dvh-1.5rem)] w-full max-w-4xl overflow-y-auto p-4 sm:max-h-[90vh] sm:p-6 md:p-8 lg:p-12"
+          className={
+            mode === "schedule"
+              ? "relative h-[min(860px,calc(100dvh-1.5rem))] w-full max-w-5xl overflow-hidden rounded-[20px] border border-black/10 bg-white text-black shadow-[0_30px_80px_rgba(0,0,0,0.35)]"
+              : "surface-card relative max-h-[calc(100dvh-1.5rem)] w-full max-w-4xl overflow-y-auto p-4 sm:max-h-[90vh] sm:p-6 md:p-8 lg:p-12"
+          }
           variants={modalVariants}
           initial="hidden"
           animate="visible"
           exit="exit"
           onClick={(e) => e.stopPropagation()}
         >
-            <motion.div>
+            <motion.div className={mode === "schedule" ? "flex h-full min-h-0 flex-col" : undefined}>
                 <motion.button
                   ref={closeButtonRef}
                   type="button"
                   aria-label="Close contact modal"
-                  className="absolute right-4 top-4 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-[var(--accent-soft)] text-[var(--accent)] transition-colors hover:opacity-80 md:right-5 md:top-5 md:h-11 md:w-11"
+                  className={
+                    mode === "schedule"
+                      ? "absolute right-4 top-4 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-black/[0.06] text-black transition-colors hover:bg-black/10"
+                      : "absolute right-4 top-4 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-[var(--accent-soft)] text-[var(--accent)] transition-colors hover:opacity-80 md:right-5 md:top-5 md:h-11 md:w-11"
+                  }
                   onClick={closeModal}
                   variants={iconVariants}
                   initial="hidden"
                   animate="visible"
                   whileHover="hover"
                 >
-                  <X size={22} className="text-foreground" />
+                  <X size={22} className={mode === "schedule" ? "text-black" : "text-foreground"} />
                 </motion.button>
 
                 <motion.div
-                  className="mb-6 pr-10 text-center md:mb-12 md:pr-0"
+                  className={
+                    mode === "schedule"
+                      ? "flex min-h-20 shrink-0 flex-col justify-center border-b border-black/10 px-5 pr-16 text-left sm:px-6"
+                      : "mb-6 pr-10 text-center md:mb-12 md:pr-0"
+                  }
                   variants={textVariants}
                   initial="hidden"
                   animate="visible"
                 >
                   <h2
                     id="contact-modal-title"
-                    className="mb-3 text-[34px] font-medium leading-none md:text-6xl lg:text-7xl"
+                    className={
+                      mode === "schedule"
+                        ? "text-xl font-medium leading-tight"
+                        : "mb-3 text-[34px] font-medium leading-none md:text-6xl lg:text-7xl"
+                    }
                   >
                     {mode === "info" ? "Contact me" : "Book a time"}
                   </h2>
                   <p
                     id="contact-modal-description"
-                    className="text-[15px] leading-relaxed text-muted-foreground md:text-xl"
+                    className={
+                      mode === "schedule"
+                        ? "mt-1 text-[13px] leading-snug text-black/55 sm:text-sm"
+                        : "text-[15px] leading-relaxed text-muted-foreground md:text-xl"
+                    }
                   >
                     {mode === "info"
                       ? "Share what you need, who is involved, and any constraints. I will outline the next steps."
@@ -312,22 +332,23 @@ export default function ContactModal({ isOpen, onClose, startInSchedule }: Conta
               ) : (
                 <motion.div
                   key="schedule"
+                  className="min-h-0 flex-1"
                   variants={innerSwapVariants}
                   initial="enter"
                   animate="center"
                   exit="exit"
                 >
                   <motion.div
-                    className="flex flex-col gap-3"
+                    className="h-full min-h-0"
                     variants={textVariants}
                     initial="hidden"
                     animate="visible"
                   >
-                    <div className="overflow-hidden rounded-[18px] bg-white">
+                    <div className="h-full overflow-hidden bg-white">
                       <iframe
                         src={GOOGLE_CALENDAR_BOOKING_URL}
                         title="Book a 30-minute call with Kevin Zheng"
-                        className="block h-[max(360px,calc(100dvh-12rem))] max-h-[720px] w-full border-0 focus:outline-none md:h-[max(420px,calc(90dvh-17rem))] md:max-h-[600px]"
+                        className="block h-full w-full border-0 focus:outline-none"
                         loading="eager"
                       />
                     </div>
