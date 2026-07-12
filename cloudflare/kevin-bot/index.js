@@ -402,6 +402,7 @@ function createChatStream({ env, clientMessages, retrievalMessages, userQuestion
             ],
             stream: true,
             temperature: 0.2,
+            ...(mode === "fast" ? { reasoning_effort: "low" } : {}),
           },
           aiOptions,
         );

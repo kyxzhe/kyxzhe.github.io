@@ -105,6 +105,7 @@ assert.equal(aiCalls, 2);
 assert.equal(rateLimitCalls, 1);
 assert.equal(lastRateLimitKey, "test-session");
 assert.equal(lastModel, "@cf/google/gemma-4-26b-a4b-it");
+assert.equal(lastModelInput.reasoning_effort, "low");
 assert.equal(lastSearchRequest.max_num_results, 4);
 assert.equal(lastSearchRequest.rewrite_query, false);
 assert.equal(lastSearchRequest.reranking.enabled, false);
@@ -126,6 +127,7 @@ const thinkingRequest = await worker.fetch(
 await thinkingRequest.text();
 assert.equal(lastModel, "@cf/qwen/qwen3-30b-a3b-fp8");
 assert.equal(lastModelInput.thinking, undefined);
+assert.equal(lastModelInput.reasoning_effort, undefined);
 assert.equal(lastSearchRequest.max_num_results, 8);
 assert.equal(lastSearchRequest.rewrite_query, true);
 assert.equal(lastSearchRequest.reranking.enabled, true);
