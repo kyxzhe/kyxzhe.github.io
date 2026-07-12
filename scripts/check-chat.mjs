@@ -42,9 +42,26 @@ await assert.rejects(
 );
 globalThis.fetch = originalFetch;
 
+const statuses = [];
+globalThis.fetch = async () =>
+  new Response(
+    'data: {"response":"","meta":{"stage":"searching"}}\n\ndata: {"response":"Hi"}\n\ndata: [DONE]\n\n',
+    { headers: { "Content-Type": "text/event-stream" } }
+  );
+assert.equal(
+  await sendChatRequest([{ role: "user", content: "Hello" }], {
+    chunkThrottleMs: 0,
+    onStatus: (status) => statuses.push(status),
+  }),
+  "Hi"
+);
+assert.deepEqual(statuses, ["searching"]);
+globalThis.fetch = originalFetch;
+
 const homeSource = readFileSync(new URL("../src/app/page.tsx", import.meta.url), "utf8");
 assert.match(homeSource, /shouldFollowStreamRef/);
 assert.match(homeSource, /onScroll=\{handleHistoryScroll\}/);
+assert.match(homeSource, /Searching Kevin’s knowledge/);
 
 const abortController = new AbortController();
 globalThis.fetch = async (_url, init) =>

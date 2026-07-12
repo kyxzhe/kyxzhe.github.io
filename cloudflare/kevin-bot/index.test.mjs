@@ -1,12 +1,14 @@
 import assert from "node:assert/strict";
 
-import worker from "./index.js";
+import worker, { getChatMode } from "./index.js";
 
 const encoder = new TextEncoder();
 let aiCalls = 0;
 let rateLimitCalls = 0;
 let rateLimitAllowed = true;
 let lastRateLimitKey = null;
+let lastModel = null;
+let lastSearchRequest = null;
 
 const env = {
   CHAT_RATE_LIMITER: {
@@ -19,14 +21,16 @@ const env = {
   AI: {
     autorag() {
       return {
-        async search() {
+        async search(request) {
           aiCalls += 1;
+          lastSearchRequest = request;
           return { data: [] };
         },
       };
     },
-    async run() {
+    async run(model) {
       aiCalls += 1;
+      lastModel = model;
       return new ReadableStream({
         start(controller) {
           controller.enqueue(
@@ -39,7 +43,11 @@ const env = {
   },
 };
 
-function chatRequest(path = "/chat", origin = "https://kyxzhe.github.io") {
+function chatRequest(
+  path = "/chat",
+  origin = "https://kyxzhe.github.io",
+  question = "Who is Kevin?",
+) {
   const headers = {
     "Content-Type": "application/json",
     "X-Chat-Session": "test-session",
@@ -50,7 +58,7 @@ function chatRequest(path = "/chat", origin = "https://kyxzhe.github.io") {
     method: "POST",
     headers,
     body: JSON.stringify({
-      messages: [{ role: "user", content: "Who is Kevin?" }],
+      messages: [{ role: "user", content: question }],
     }),
   });
 }
@@ -92,6 +100,30 @@ assert.match(await validRequest.text(), /"response":"ok"/);
 assert.equal(aiCalls, 2);
 assert.equal(rateLimitCalls, 1);
 assert.equal(lastRateLimitKey, "test-session");
+assert.equal(lastModel, "@cf/zai-org/glm-4.7-flash");
+assert.equal(lastSearchRequest.max_num_results, 4);
+assert.equal(lastSearchRequest.rewrite_query, false);
+assert.equal(lastSearchRequest.reranking.enabled, false);
+
+assert.equal(getChatMode("Who is Kevin?"), "fast");
+assert.equal(
+  getChatMode("请综合分析 Kevin 的研究方向之间有什么联系，并比较这些方法的权衡。"),
+  "thinking",
+);
+
+const thinkingRequest = await worker.fetch(
+  chatRequest(
+    "/chat",
+    "https://kyxzhe.github.io",
+    "请综合分析 Kevin 的研究方向之间有什么联系，并比较这些方法的权衡。",
+  ),
+  env,
+);
+await thinkingRequest.text();
+assert.equal(lastModel, "@cf/qwen/qwen3-30b-a3b-fp8");
+assert.equal(lastSearchRequest.max_num_results, 8);
+assert.equal(lastSearchRequest.rewrite_query, true);
+assert.equal(lastSearchRequest.reranking.enabled, true);
 
 rateLimitAllowed = false;
 const limitedAiCalls = aiCalls;

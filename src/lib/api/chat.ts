@@ -22,6 +22,7 @@ let cachedChatSessionId: string | null = null;
 export interface ChatRequestOptions {
   signal?: AbortSignal;
   onChunk?: (chunk: string) => void;
+  onStatus?: (status: string) => void;
   chunkThrottleMs?: number;
 }
 
@@ -143,6 +144,7 @@ export async function sendChatRequest(
       const reply = await readSseStream(
         response.body,
         options?.onChunk,
+        options?.onStatus,
         options?.chunkThrottleMs
       );
       if (reply) return reply;
@@ -221,6 +223,7 @@ function extractText(payload: unknown): string | null {
 async function readSseStream(
   stream: ReadableStream<Uint8Array>,
   onChunk?: (chunk: string) => void,
+  onStatus?: (status: string) => void,
   chunkThrottleMs = 48
 ): Promise<string> {
   const reader = stream.getReader();
@@ -229,6 +232,7 @@ async function readSseStream(
   let fullText = "";
   let pendingChunk = "";
   let done = false;
+  let streamError = "";
   let flushTimer: ReturnType<typeof setTimeout> | null = null;
 
   const flushPendingChunk = () => {
@@ -261,6 +265,16 @@ async function readSseStream(
       if (data === "[DONE]") {
         done = true;
         return;
+      }
+      try {
+        const payload = JSON.parse(data) as {
+          error?: string;
+          meta?: { stage?: string };
+        };
+        if (payload.error) streamError = payload.error;
+        if (payload.meta?.stage) onStatus?.(payload.meta.stage);
+      } catch {
+        // Non-JSON SSE data can still contain a text chunk.
       }
       const chunk = extractText(data);
       if (chunk) {
@@ -299,6 +313,8 @@ async function readSseStream(
     flushPendingChunk();
     reader.releaseLock();
   }
+
+  if (streamError) throw new Error(streamError);
 
   return fullText.trim();
 }

@@ -115,7 +115,8 @@ const ALLOWED_ORIGINS = [
   "https://kyxzhe.github.io",
 ];
 const ALLOWED_METHODS = "POST, OPTIONS";
-const MODEL_ID = "@cf/google/gemma-4-26b-a4b-it";
+const FAST_MODEL_ID = "@cf/zai-org/glm-4.7-flash";
+const THINKING_MODEL_ID = "@cf/qwen/qwen3-30b-a3b-fp8";
 const MAX_RETRIEVAL_MESSAGES = 6;
 const MAX_CHAT_MESSAGES = 16;
 const MAX_MESSAGE_CHARS = 4000;
@@ -125,6 +126,7 @@ const CONTEXT_SEPARATOR = "\n\n---\n\n";
 const MAX_SESSION_ID_CHARS = 128;
 const RATE_LIMIT_RETRY_SECONDS = 60;
 const CHAT_ROLES = new Set(["user", "assistant"]);
+const COMPLEX_QUESTION_PATTERN = /\b(analy[sz]e|compare|contrast|evaluate|explain why|reason|derive|synthesi[sz]e|trade-?offs?|step by step)\b|分析|比较|对比|评价|评估|为什么|推导|综合|联系|权衡|逐步|深入/u;
 
 function isAllowedOrigin(origin) {
   if (ALLOWED_ORIGINS.includes(origin)) {
@@ -246,10 +248,6 @@ function normalizeAiStream(stream) {
 
   return new ReadableStream({
     async start(controller) {
-      controller.enqueue(
-        encodeSse(JSON.stringify({ response: "", meta: { stage: "processing" } })),
-      );
-
       const reader = stream.getReader();
 
       const handleEventBlock = (eventBlock) => {
@@ -331,6 +329,76 @@ function buildRetrievalQuery(messages, fallbackQuestion) {
     .join("\n");
 
   return recentTurns || fallbackQuestion;
+}
+
+export function getChatMode(question) {
+  const parts = question.split(/\n|[?？]/u).filter((part) => part.trim()).length;
+  return question.length >= 220 || parts >= 3 || COMPLEX_QUESTION_PATTERN.test(question)
+    ? "thinking"
+    : "fast";
+}
+
+function createChatStream({ env, clientMessages, retrievalMessages, userQuestion, aiOptions }) {
+  const encoder = new TextEncoder();
+  const mode = getChatMode(userQuestion);
+  const encodeSse = (payload) => encoder.encode(`data: ${payload}\n\n`);
+
+  return new ReadableStream({
+    async start(controller) {
+      controller.enqueue(encodeSse(JSON.stringify({ response: "", meta: { stage: "searching", mode } })));
+
+      try {
+        const searchResult = await env.AI
+          .autorag("kevin-rag-index")
+          .search({
+            query: buildRetrievalQuery(retrievalMessages, userQuestion),
+            max_num_results: mode === "thinking" ? 8 : 4,
+            ranking_options: { score_threshold: 0.4 },
+            rewrite_query: mode === "thinking",
+            reranking: {
+              enabled: mode === "thinking",
+              model: "@cf/baai/bge-reranker-base",
+            },
+          });
+
+        const context = buildRetrievedContext(searchResult.data);
+        const systemWithContext = context
+          ? `${SYSTEM_PROMPT}\n\n[Additional context about Kevin]\n${context}`
+          : SYSTEM_PROMPT;
+
+        controller.enqueue(encodeSse(JSON.stringify({
+          response: "",
+          meta: { stage: mode === "thinking" ? "thinking" : "answering", mode },
+        })));
+
+        const aiStream = await env.AI.run(
+          mode === "thinking" ? THINKING_MODEL_ID : FAST_MODEL_ID,
+          {
+            messages: [
+              { role: "system", content: systemWithContext },
+              ...clientMessages,
+            ],
+            stream: true,
+            temperature: 0.2,
+          },
+          aiOptions,
+        );
+        const reader = normalizeAiStream(aiStream).getReader();
+
+        while (true) {
+          const { value, done } = await reader.read();
+          if (done) break;
+          controller.enqueue(value);
+        }
+        controller.close();
+      } catch (error) {
+        console.error("AI error", error);
+        controller.enqueue(encodeSse(JSON.stringify({ error: "AI call failed" })));
+        controller.enqueue(encodeSse("[DONE]"));
+        controller.close();
+      }
+    },
+  });
 }
 
 function getSessionAffinity(request) {
@@ -510,72 +578,25 @@ const worker = {
       );
     }
 
-    try {
-      const searchRequest = {
-        query: buildRetrievalQuery(retrievalMessages, userQuestion),
-        max_num_results: 10,
-        ranking_options: { score_threshold: 0.4 },
-        rewrite_query: true,
-        reranking: {
-          enabled: true,
-          model: "@cf/baai/bge-reranker-base",
-        },
-      };
-
-      const searchResult = await env.AI
-        .autorag("kevin-rag-index")
-        .search(searchRequest);
-
-      const context = buildRetrievedContext(searchResult.data);
-
-      const systemWithContext = context
-        ? `${SYSTEM_PROMPT}\n\n[Additional context about Kevin]\n${context}`
-        : SYSTEM_PROMPT;
-
-      const chatMessages = [
-        { role: "system", content: systemWithContext },
-        ...clientMessages,
-      ];
-
-      const sessionAffinity = getSessionAffinity(request);
-      const aiOptions = sessionAffinity
+    const sessionAffinity = getSessionAffinity(request);
+    const stream = createChatStream({
+      env,
+      clientMessages,
+      retrievalMessages,
+      userQuestion,
+      aiOptions: sessionAffinity
         ? { headers: { "x-session-affinity": sessionAffinity } }
-        : undefined;
+        : undefined,
+    });
 
-      const stream = await env.AI.run(
-        MODEL_ID,
-        {
-          messages: chatMessages,
-          stream: true,
-          temperature: 0.2,
-        },
-        aiOptions,
-      );
-
-      const normalizedStream = normalizeAiStream(stream);
-
-      return new Response(normalizedStream, {
-        status: 200,
-        headers: {
-          ...corsHeaders,
-          "Content-Type": "text/event-stream",
-          "Cache-Control": "no-cache",
-        },
-      });
-    } catch (error) {
-      console.error("AI error", error);
-
-      return new Response(
-        JSON.stringify({ error: "AI call failed" }),
-        {
-          status: 500,
-          headers: {
-            ...corsHeaders,
-            "Content-Type": "application/json",
-          },
-        },
-      );
-    }
+    return new Response(stream, {
+      status: 200,
+      headers: {
+        ...corsHeaders,
+        "Content-Type": "text/event-stream",
+        "Cache-Control": "no-cache",
+      },
+    });
   },
 };
 

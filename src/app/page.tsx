@@ -71,6 +71,7 @@ export default function Home() {
   const visibleMessages = useMemo(() => messages.filter((msg) => msg.role !== "system"), [messages]);
   const latestVisibleMessageContent = visibleMessages.at(-1)?.content ?? "";
   const [isLoading, setIsLoading] = useState(false);
+  const [chatStatus, setChatStatus] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
@@ -97,6 +98,7 @@ export default function Home() {
       return;
     }
     setIsLoading(true);
+    setChatStatus("Understanding…");
     setError(null);
     setPrompt("");
     activeRequestRef.current?.abort();
@@ -114,6 +116,7 @@ export default function Home() {
 
       const appendChunk = (chunk: string) => {
         if (!chunk || controller.signal.aborted) return;
+        setChatStatus(null);
         setMessages((prev) => {
           if (!prev.length) return prev;
           const updated = [...prev];
@@ -131,6 +134,13 @@ export default function Home() {
 
       const reply = await sendChatRequest(requestMessages, {
         onChunk: appendChunk,
+        onStatus: (status) => {
+          setChatStatus({
+            searching: "Searching Kevin’s knowledge…",
+            thinking: "Thinking…",
+            answering: "Answering…",
+          }[status] ?? "Working…");
+        },
         signal: controller.signal,
       });
       setMessages((prev) => {
@@ -163,6 +173,7 @@ export default function Home() {
 
       if (!controller.signal.aborted) {
         setIsLoading(false);
+        setChatStatus(null);
       }
     }
   }, [prompt, isLoading, messages, setMessages]);
@@ -310,7 +321,9 @@ export default function Home() {
                           className="flex items-center text-[rgba(0,0,0,0.6)] dark:text-white/60"
                         >
                           <Loader2 size={16} className="animate-spin" aria-hidden="true" />
-                          <span className="sr-only">KevinBot is responding.</span>
+                          <span className={chatStatus ? "ml-2 text-[14px]" : "sr-only"}>
+                            {chatStatus ?? "KevinBot is responding."}
+                          </span>
                         </div>
                       )}
                     </div>
