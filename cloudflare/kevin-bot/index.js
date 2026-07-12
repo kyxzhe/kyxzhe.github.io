@@ -125,6 +125,7 @@ const MAX_CONTEXT_CHARS = 12000;
 const CONTEXT_SEPARATOR = "\n\n---\n\n";
 const MAX_SESSION_ID_CHARS = 128;
 const RATE_LIMIT_RETRY_SECONDS = 60;
+const DAILY_LIMIT_MESSAGE = "Today's usage limit has been reached. Please try again tomorrow.";
 const CHAT_ROLES = new Set(["user", "assistant"]);
 const COMPLEX_QUESTION_PATTERN = /\b(analy[sz]e|compare|contrast|evaluate|explain why|reason|derive|synthesi[sz]e|trade-?offs?|step by step)\b|分析|比较|对比|评价|评估|为什么|推导|综合|联系|权衡|逐步|深入/u;
 
@@ -338,6 +339,27 @@ export function getChatMode(question) {
     : "fast";
 }
 
+function isDailyLimitError(error) {
+  const details = [
+    error?.code,
+    error?.status,
+    error?.message,
+    error?.cause?.code,
+    error?.cause?.status,
+    error?.cause?.message,
+  ]
+    .filter((value) => value !== undefined && value !== null)
+    .join(" ")
+    .toLowerCase();
+
+  return (
+    /(^|\s)3036(\s|$)/u.test(details) ||
+    (/(^|\s)429(\s|$)/u.test(details) &&
+      /daily|allocation|neuron|account limited/u.test(details)) ||
+    /daily free allocation|10,?000 neurons|account limited/u.test(details)
+  );
+}
+
 function createChatStream({ env, clientMessages, retrievalMessages, userQuestion, aiOptions }) {
   const encoder = new TextEncoder();
   const mode = getChatMode(userQuestion);
@@ -393,7 +415,9 @@ function createChatStream({ env, clientMessages, retrievalMessages, userQuestion
         controller.close();
       } catch (error) {
         console.error("AI error", error);
-        controller.enqueue(encodeSse(JSON.stringify({ error: "AI call failed" })));
+        controller.enqueue(encodeSse(JSON.stringify({
+          error: isDailyLimitError(error) ? DAILY_LIMIT_MESSAGE : "AI call failed",
+        })));
         controller.enqueue(encodeSse("[DONE]"));
         controller.close();
       }

@@ -10,6 +10,7 @@ let lastRateLimitKey = null;
 let lastModel = null;
 let lastModelInput = null;
 let lastSearchRequest = null;
+let aiRunError = null;
 
 const env = {
   CHAT_RATE_LIMITER: {
@@ -31,6 +32,7 @@ const env = {
     },
     async run(model, input) {
       aiCalls += 1;
+      if (aiRunError) throw aiRunError;
       lastModel = model;
       lastModelInput = input;
       return new ReadableStream({
@@ -127,6 +129,19 @@ assert.equal(lastModelInput.thinking, undefined);
 assert.equal(lastSearchRequest.max_num_results, 8);
 assert.equal(lastSearchRequest.rewrite_query, true);
 assert.equal(lastSearchRequest.reranking.enabled, true);
+
+aiRunError = Object.assign(
+  new Error("Your account has used up the daily free allocation of 10,000 neurons."),
+  { code: 3036, status: 429 },
+);
+const quotaLimitedRequest = await worker.fetch(chatRequest(), env);
+const quotaLimitedBody = await quotaLimitedRequest.text();
+assert.match(
+  quotaLimitedBody,
+  /Today's usage limit has been reached\. Please try again tomorrow\./,
+);
+assert.doesNotMatch(quotaLimitedBody, /"response":"ok"/);
+aiRunError = null;
 
 rateLimitAllowed = false;
 const limitedAiCalls = aiCalls;
