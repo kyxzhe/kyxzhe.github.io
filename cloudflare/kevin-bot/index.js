@@ -115,7 +115,7 @@ const ALLOWED_ORIGINS = [
   "https://kyxzhe.github.io",
 ];
 const ALLOWED_METHODS = "POST, OPTIONS";
-const FAST_MODEL_ID = "@cf/zai-org/glm-4.7-flash";
+const FAST_MODEL_ID = "@cf/google/gemma-4-26b-a4b-it";
 const THINKING_MODEL_ID = "@cf/qwen/qwen3-30b-a3b-fp8";
 const MAX_RETRIEVAL_MESSAGES = 6;
 const MAX_CHAT_MESSAGES = 16;
@@ -380,7 +380,6 @@ function createChatStream({ env, clientMessages, retrievalMessages, userQuestion
             ],
             stream: true,
             temperature: 0.2,
-            ...(mode === "fast" ? { thinking: { type: "disabled" } } : {}),
           },
           aiOptions,
         );
