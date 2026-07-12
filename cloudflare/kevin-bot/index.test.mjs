@@ -8,6 +8,7 @@ let rateLimitCalls = 0;
 let rateLimitAllowed = true;
 let lastRateLimitKey = null;
 let lastModel = null;
+let lastModelInput = null;
 let lastSearchRequest = null;
 
 const env = {
@@ -28,9 +29,10 @@ const env = {
         },
       };
     },
-    async run(model) {
+    async run(model, input) {
       aiCalls += 1;
       lastModel = model;
+      lastModelInput = input;
       return new ReadableStream({
         start(controller) {
           controller.enqueue(
@@ -101,6 +103,7 @@ assert.equal(aiCalls, 2);
 assert.equal(rateLimitCalls, 1);
 assert.equal(lastRateLimitKey, "test-session");
 assert.equal(lastModel, "@cf/zai-org/glm-4.7-flash");
+assert.deepEqual(lastModelInput.thinking, { type: "disabled" });
 assert.equal(lastSearchRequest.max_num_results, 4);
 assert.equal(lastSearchRequest.rewrite_query, false);
 assert.equal(lastSearchRequest.reranking.enabled, false);
@@ -121,6 +124,7 @@ const thinkingRequest = await worker.fetch(
 );
 await thinkingRequest.text();
 assert.equal(lastModel, "@cf/qwen/qwen3-30b-a3b-fp8");
+assert.equal(lastModelInput.thinking, undefined);
 assert.equal(lastSearchRequest.max_num_results, 8);
 assert.equal(lastSearchRequest.rewrite_query, true);
 assert.equal(lastSearchRequest.reranking.enabled, true);

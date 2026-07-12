@@ -1,0 +1,19 @@
+{
+  "$schema": "https://raw.githubusercontent.com/cloudflare/workers-sdk/main/packages/wrangler/config-schema.json",
+  "name": "kevin-bot",
+  "main": "index.js",
+  "compatibility_date": "2026-07-12",
+  "ai": {
+    "binding": "AI"
+  },
+  "ratelimits": [
+    {
+      "name": "CHAT_RATE_LIMITER",
+      "namespace_id": "20260710",
+      "simple": {
+        "limit": 10,
+        "period": 60
+      }
+    }
+  ]
+}
