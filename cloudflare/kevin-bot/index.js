@@ -378,6 +378,7 @@ function createChatStream({ env, clientMessages, retrievalMessages, userQuestion
           mode,
           chunks: searchResult.chunks.length,
           topScore: searchResult.chunks[0]?.score ?? null,
+          keys: searchResult.chunks.map((chunk) => chunk.item?.key ?? "unknown"),
         });
 
         const context = buildRetrievedContext(
