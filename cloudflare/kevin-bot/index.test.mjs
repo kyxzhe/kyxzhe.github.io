@@ -11,6 +11,7 @@ let lastModel = null;
 let lastModelInput = null;
 let lastSearchRequest = null;
 let aiRunError = null;
+const searchChunks = [{ text: "EchoAlign DOI: 10.1007/s11704-026-51604-z", score: 0.9 }];
 
 const env = {
   CHAT_RATE_LIMITER: {
@@ -24,7 +25,7 @@ const env = {
     async search(request) {
       aiCalls += 1;
       lastSearchRequest = request;
-      return { chunks: [] };
+      return { chunks: searchChunks };
     },
   },
   AI: {
@@ -104,6 +105,7 @@ assert.equal(rateLimitCalls, 1);
 assert.equal(lastRateLimitKey, "test-session");
 assert.equal(lastModel, "@cf/google/gemma-4-26b-a4b-it");
 assert.equal(lastModelInput.reasoning_effort, "low");
+assert.match(lastModelInput.messages[1].content, /10\.1007\/s11704-026-51604-z/);
 assert.equal(lastSearchRequest.messages.at(-1).content, "Who is Kevin?");
 assert.equal(lastSearchRequest.ai_search_options.retrieval.max_num_results, 4);
 assert.equal(lastSearchRequest.ai_search_options.retrieval.match_threshold, 0.4);

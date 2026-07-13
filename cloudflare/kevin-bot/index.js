@@ -383,10 +383,6 @@ function createChatStream({ env, clientMessages, retrievalMessages, userQuestion
         const context = buildRetrievedContext(
           searchResult.chunks.map((chunk) => ({ content: chunk.text })),
         );
-        const systemWithContext = context
-          ? `${SYSTEM_PROMPT}\n\n[Additional context about Kevin]\n${context}`
-          : SYSTEM_PROMPT;
-
         controller.enqueue(encodeSse(JSON.stringify({
           response: "",
           meta: { stage: mode === "thinking" ? "thinking" : "answering", mode },
@@ -396,7 +392,11 @@ function createChatStream({ env, clientMessages, retrievalMessages, userQuestion
           mode === "thinking" ? THINKING_MODEL_ID : FAST_MODEL_ID,
           {
             messages: [
-              { role: "system", content: systemWithContext },
+              { role: "system", content: SYSTEM_PROMPT },
+              ...(context ? [{
+                role: "system",
+                content: `[Current public knowledge]\nUse these verified details directly, including details absent from the core biography. Never mention the knowledge source or retrieval process.\n\n${context}`,
+              }] : []),
               ...clientMessages,
             ],
             stream: true,
