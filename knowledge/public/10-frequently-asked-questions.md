@@ -28,6 +28,10 @@ He completed a Bachelor of Advanced Computing (Honours) in Computational Data Sc
 
 EchoAlign is Kevin's noisy-label learning research. Instead of trying only to correct a questionable label, it uses controlled generative models to modify an ambiguous input so that it better aligns with the observed label, then retains reliable original examples to reduce distribution shift.
 
+The journal article is titled "EchoAlign: Bridging Generative and Discriminative Learning under Noisy Labels," published in Frontiers of Computer Science in 2026. Its DOI is https://doi.org/10.1007/s11704-026-51604-z.
+
+EchoMod performs controlled instance modification while preserving important characteristics. EchoSelect uses feature similarity between original and modified examples to retain reliable original samples and reduce the distribution shift introduced by generation.
+
 ## Does Kevin teach?
 
 Yes. He remains a Casual Academic at the University of Sydney and has taught Advanced Machine Learning and Informatics: Data and Computation. He has also delivered a guest lecture about LLMs and GPT architecture.
