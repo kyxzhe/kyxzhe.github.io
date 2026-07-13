@@ -338,7 +338,7 @@ export default function Home() {
               <div className="relative w-full">
                 <textarea
                   placeholder=""
-                  className="w-full min-h-[64px] resize-none rounded-lg bg-transparent pr-[58px] text-[16px] leading-[1.4] text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] dark:text-white md:min-h-[72px] md:pr-[52px]"
+                  className="w-full min-h-[64px] resize-none rounded-lg bg-transparent pr-[58px] text-[16px] leading-[1.4] text-foreground focus-visible:!bg-transparent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] dark:text-white md:min-h-[72px] md:pr-[52px]"
                   aria-label="Ask a question"
                   maxLength={MAX_CHAT_MESSAGE_CHARS}
                   value={prompt}
