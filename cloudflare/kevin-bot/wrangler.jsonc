@@ -13,6 +13,13 @@
       "remote": true
     }
   ],
+  "d1_databases": [
+    {
+      "binding": "CHAT_DB",
+      "database_name": "kevin-bot-history",
+      "database_id": "1978f6bb-f382-4eb1-8fbe-04447f7762e5"
+    }
+  ],
   "ratelimits": [
     {
       "name": "CHAT_RATE_LIMITER",

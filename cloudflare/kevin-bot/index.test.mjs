@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 
-import worker, { getChatMode } from "./index.js";
+import worker, { getChatMode, saveChatLog } from "./index.js";
 
 const encoder = new TextEncoder();
 let aiCalls = 0;
@@ -11,9 +11,32 @@ let lastModel = null;
 let lastModelInput = null;
 let lastSearchRequest = null;
 let aiRunError = null;
+let nextLogRowCount = 1;
+const dbBatches = [];
+const pendingTasks = [];
 const searchChunks = [{ text: "EchoAlign DOI: 10.1007/s11704-026-51604-z", score: 0.9 }];
 
+function statement(query) {
+  return {
+    query,
+    bindings: [],
+    bind(...bindings) {
+      this.bindings = bindings;
+      return this;
+    },
+  };
+}
+
 const env = {
+  CHAT_DB: {
+    prepare: statement,
+    async batch(statements) {
+      dbBatches.push(statements);
+      return statements.some(({ query }) => query.includes("RETURNING row_count"))
+        ? [{ success: true }, { results: [{ row_count: nextLogRowCount }] }]
+        : [{ success: true }, { success: true }];
+    },
+  },
   CHAT_RATE_LIMITER: {
     async limit({ key }) {
       rateLimitCalls += 1;
@@ -45,6 +68,7 @@ const env = {
     },
   },
 };
+const ctx = { waitUntil(task) { pendingTasks.push(task); } };
 
 function chatRequest(
   path = "/chat",
@@ -96,10 +120,14 @@ assert.equal(
 );
 assert.equal(aiCalls, 0);
 
-const validRequest = await worker.fetch(chatRequest(), env);
+const validRequest = await worker.fetch(chatRequest(), env, ctx);
 assert.equal(validRequest.status, 200);
 assert.match(validRequest.headers.get("Content-Type") || "", /text\/event-stream/);
 assert.match(await validRequest.text(), /"response":"ok"/);
+await Promise.all(pendingTasks);
+assert.match(dbBatches[0][0].query, /INSERT INTO chat_logs/);
+assert.equal(dbBatches[0][0].bindings[1], "Who is Kevin?");
+assert.equal(dbBatches[0][0].bindings[2], "ok");
 assert.equal(aiCalls, 2);
 assert.equal(rateLimitCalls, 1);
 assert.equal(lastRateLimitKey, "test-session");
@@ -114,6 +142,19 @@ assert.equal(lastSearchRequest.ai_search_options.retrieval.max_num_results, 4);
 assert.equal(lastSearchRequest.ai_search_options.retrieval.match_threshold, 0.4);
 assert.equal(lastSearchRequest.ai_search_options.query_rewrite.enabled, false);
 assert.equal(lastSearchRequest.ai_search_options.reranking.enabled, false);
+
+nextLogRowCount = 20000;
+const batchesBeforeTrim = dbBatches.length;
+await saveChatLog(env, {
+  sessionId: "trim-test",
+  userQuestion: "oldest rows",
+  answer: "trimmed",
+  mode: "fast",
+});
+assert.equal(dbBatches.length, batchesBeforeTrim + 2);
+assert.match(dbBatches.at(-1)[0].query, /DELETE FROM chat_logs/);
+assert.equal(dbBatches.at(-1)[0].bindings[0], 2000);
+nextLogRowCount = 1;
 
 assert.equal(getChatMode("Who is Kevin?"), "fast");
 assert.equal(

@@ -13,7 +13,6 @@ import {
   sendChatRequest,
   type ChatMessage,
 } from "@/lib/api/chat";
-import { useChatMessages } from "@/hooks/useChatMessages";
 import { siteMetadata } from "@/lib/seo/config";
 import { getWebPageJsonLd, serializeJsonLd } from "@/lib/seo/schema";
 
@@ -65,9 +64,7 @@ const getChatErrorMessage = (err: unknown) => {
 
 export default function Home() {
   const [prompt, setPrompt] = useState("");
-  const [messages, setMessages] = useChatMessages({
-    storageKey: "chat-home-history",
-  });
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const visibleMessages = useMemo(() => messages.filter((msg) => msg.role !== "system"), [messages]);
   const latestVisibleMessageContent = visibleMessages.at(-1)?.content ?? "";
   const [isLoading, setIsLoading] = useState(false);
@@ -416,7 +413,7 @@ export default function Home() {
             </form>
           </motion.div>
           <p className="text-xs text-[rgba(0,0,0,0.6)] dark:text-[rgb(243,243,243)] text-center w-full max-w-4xl">
-            ChatBot can make mistakes. Check important info.
+            Conversations may be privately retained for quality and safety review. Do not share sensitive information. KevinBot can make mistakes; check important information.
           </p>
           {error && (
             <p role="alert" className="text-sm text-red-700 dark:text-red-300 text-left w-full max-w-4xl">

@@ -36,6 +36,9 @@ const CONTEXT_SEPARATOR = "\n\n---\n\n";
 const MAX_SESSION_ID_CHARS = 128;
 const RATE_LIMIT_RETRY_SECONDS = 60;
 const DAILY_LIMIT_MESSAGE = "Today's usage limit has been reached. Please try again tomorrow.";
+const MAX_LOG_CHARS = 8000;
+const MAX_LOG_ROWS = 20000;
+const LOG_TRIM_ROWS = 2000;
 const CHAT_ROLES = new Set(["user", "assistant"]);
 const COMPLEX_QUESTION_PATTERN = /\b(analy[sz]e|compare|contrast|evaluate|explain why|reason|derive|synthesi[sz]e|trade-?offs?|step by step)\b|分析|比较|对比|评价|评估|为什么|推导|综合|联系|权衡|逐步|深入/u;
 
@@ -149,7 +152,7 @@ function extractChunkText(payload) {
   return null;
 }
 
-function normalizeAiStream(stream) {
+function normalizeAiStream(stream, onText) {
   const decoder = new TextDecoder();
   const encoder = new TextEncoder();
   let buffer = "";
@@ -182,6 +185,7 @@ function normalizeAiStream(stream) {
 
           const chunk = parsed ? extractChunkText(parsed) : data;
           if (chunk !== null) {
+            if (chunk) onText?.(chunk);
             controller.enqueue(encodeSse(JSON.stringify({ response: chunk })));
           }
 
@@ -230,6 +234,47 @@ function normalizeAiStream(stream) {
   });
 }
 
+async function hashSessionId(sessionId) {
+  const digest = await crypto.subtle.digest(
+    "SHA-256",
+    new TextEncoder().encode(sessionId),
+  );
+  return [...new Uint8Array(digest)]
+    .map((byte) => byte.toString(16).padStart(2, "0"))
+    .join("");
+}
+
+export async function saveChatLog(env, { sessionId, userQuestion, answer, mode }) {
+  if (!env.CHAT_DB || !sessionId || !answer) return;
+
+  const sessionHash = await hashSessionId(sessionId);
+  const results = await env.CHAT_DB.batch([
+    env.CHAT_DB.prepare(
+      "INSERT INTO chat_logs (session_hash, user_message, assistant_message, mode) VALUES (?, ?, ?, ?)",
+    ).bind(
+      sessionHash,
+      userQuestion.slice(0, MAX_LOG_CHARS),
+      answer.slice(0, MAX_LOG_CHARS),
+      mode,
+    ),
+    env.CHAT_DB.prepare(
+      "UPDATE chat_log_state SET row_count = row_count + 1 WHERE id = 1 RETURNING row_count",
+    ),
+  ]);
+
+  const rowCount = Number(results[1]?.results?.[0]?.row_count ?? 0);
+  if (rowCount < MAX_LOG_ROWS) return;
+
+  await env.CHAT_DB.batch([
+    env.CHAT_DB.prepare(
+      "DELETE FROM chat_logs WHERE id IN (SELECT id FROM chat_logs ORDER BY id LIMIT ?)",
+    ).bind(LOG_TRIM_ROWS),
+    env.CHAT_DB.prepare(
+      "UPDATE chat_log_state SET row_count = MAX(row_count - ?, 0) WHERE id = 1",
+    ).bind(LOG_TRIM_ROWS),
+  ]);
+}
+
 export function getChatMode(question) {
   const parts = question.split(/\n|[?？]/u).filter((part) => part.trim()).length;
   return question.length >= 220 || parts >= 3 || COMPLEX_QUESTION_PATTERN.test(question)
@@ -258,7 +303,7 @@ function isDailyLimitError(error) {
   );
 }
 
-function createChatStream({ env, clientMessages, retrievalMessages, userQuestion, aiOptions }) {
+function createChatStream({ env, clientMessages, retrievalMessages, userQuestion, sessionId, aiOptions, ctx }) {
   const encoder = new TextEncoder();
   const mode = getChatMode(userQuestion);
   const encodeSse = (payload) => encoder.encode(`data: ${payload}\n\n`);
@@ -316,13 +361,23 @@ function createChatStream({ env, clientMessages, retrievalMessages, userQuestion
           },
           aiOptions,
         );
-        const reader = normalizeAiStream(aiStream).getReader();
+        let answer = "";
+        const reader = normalizeAiStream(aiStream, (chunk) => {
+          if (answer.length < MAX_LOG_CHARS) {
+            answer = `${answer}${chunk}`.slice(0, MAX_LOG_CHARS);
+          }
+        }).getReader();
 
         while (true) {
           const { value, done } = await reader.read();
           if (done) break;
           controller.enqueue(value);
         }
+        ctx?.waitUntil?.(
+          saveChatLog(env, { sessionId, userQuestion, answer, mode }).catch((error) => {
+            console.error("Chat log error", error);
+          }),
+        );
         controller.close();
       } catch (error) {
         console.error("AI error", error);
@@ -359,7 +414,7 @@ async function readJsonBody(request) {
 }
 
 const worker = {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const origin = request.headers.get("Origin") || "";
     if (!isAllowedOrigin(origin)) {
       return new Response(
@@ -514,14 +569,17 @@ const worker = {
     }
 
     const sessionAffinity = getSessionAffinity(request);
+    const logSessionId = sessionAffinity || crypto.randomUUID();
     const stream = createChatStream({
       env,
       clientMessages,
       retrievalMessages,
       userQuestion,
+      sessionId: logSessionId,
       aiOptions: sessionAffinity
         ? { headers: { "x-session-affinity": sessionAffinity } }
         : undefined,
+      ctx,
     });
 
     return new Response(stream, {

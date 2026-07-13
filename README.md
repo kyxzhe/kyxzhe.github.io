@@ -35,7 +35,7 @@ The project is built with Next.js App Router, React, TypeScript, Tailwind CSS, l
 src/app/                  App Router pages, layouts, metadata, sitemap, robots, manifest
 src/components/           Shared UI, navigation, contact modal, markdown renderer
 src/assets/fonts/         Local OpenAI Sans font sources for next/font
-src/hooks/                Navigation and session-backed chatbot state
+src/hooks/                Shared navigation hooks
 src/lib/constants/        Site content, publications, news, contact, socials
 src/lib/seo/              Site metadata and JSON-LD builders
 src/lib/api/chat.ts       Client-side KevinBot request and SSE handling
@@ -101,6 +101,12 @@ The homepage chatbot calls `sendChatRequest` from `src/lib/api/chat.ts`.
 - Compatibility response: JSON payloads with `{ "response": "<text>" }`, `{ "content": "<text>" }`, `{ "text": "<text>" }`, or OpenAI-style `choices`
 
 The Worker source lives in `cloudflare/kevin-bot/index.js`. It allows production and localhost origins, adds Kevin-specific system context, and searches the `kevin-rag-index` instance through the current AI Search binding. Its Auto mode uses Gemma 4 26B-A4B with lightweight retrieval for routine questions and Qwen3-30B-A3B with enhanced retrieval for questions that need deeper analysis, while streaming progress and answer chunks over SSE. The canonical public knowledge files live in `knowledge/public/`; R2 and AI Search contain the deployed copy.
+
+Successful conversations are privately retained in the `kevin-bot-history` D1 database for owner audit. The public Worker exposes no history-reading route, stores no IP address, and hashes session IDs. It keeps at most 20,000 exchanges and removes the oldest 2,000 when full. View recent records from the authenticated Cloudflare D1 console or with:
+
+```bash
+npx wrangler d1 execute kevin-bot-history --remote --command="SELECT * FROM chat_logs ORDER BY id DESC LIMIT 100"
+```
 
 ## SEO & Static Output
 
