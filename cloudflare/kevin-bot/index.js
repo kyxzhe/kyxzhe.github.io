@@ -39,6 +39,9 @@ const DAILY_LIMIT_MESSAGE = "Today's usage limit has been reached. Please try ag
 const MAX_LOG_CHARS = 8000;
 const MAX_LOG_ROWS = 20000;
 const LOG_TRIM_ROWS = 2000;
+const ANSWER_CACHE_VERSION = "2026-07-13-1";
+const ANSWER_CACHE_TTL_SECONDS = 86400;
+const MAX_CACHE_QUESTION_CHARS = 500;
 const CHAT_ROLES = new Set(["user", "assistant"]);
 const COMPLEX_QUESTION_PATTERN = /\b(analy[sz]e|compare|contrast|evaluate|explain why|reason|derive|synthesi[sz]e|trade-?offs?|step by step)\b|分析|比较|对比|评价|评估|为什么|推导|综合|联系|权衡|逐步|深入/u;
 
@@ -244,6 +247,30 @@ async function hashSessionId(sessionId) {
     .join("");
 }
 
+async function getAnswerCacheKey(requestUrl, question) {
+  const normalized = question.normalize("NFKC").trim().replace(/\s+/gu, " ").toLowerCase();
+  const digest = await hashSessionId(`${ANSWER_CACHE_VERSION}:${normalized}`);
+  return new Request(`${new URL(requestUrl).origin}/__answer_cache/${digest}`);
+}
+
+async function readCachedAnswer(cacheKey) {
+  const cache = globalThis.caches?.default;
+  if (!cache) return null;
+  const response = await cache.match(cacheKey);
+  return response?.ok ? response.text() : null;
+}
+
+async function writeCachedAnswer(cacheKey, answer) {
+  const cache = globalThis.caches?.default;
+  if (!cache || !answer) return;
+  await cache.put(cacheKey, new Response(answer, {
+    headers: {
+      "Cache-Control": `public, max-age=${ANSWER_CACHE_TTL_SECONDS}`,
+      "Content-Type": "text/plain; charset=utf-8",
+    },
+  }));
+}
+
 export async function saveChatLog(env, { sessionId, userQuestion, answer, mode }) {
   if (!env.CHAT_DB || !sessionId || !answer) return;
 
@@ -303,7 +330,27 @@ function isDailyLimitError(error) {
   );
 }
 
-function createChatStream({ env, clientMessages, retrievalMessages, userQuestion, sessionId, aiOptions, ctx }) {
+function createCachedChatStream({ env, userQuestion, sessionId, answer, ctx }) {
+  const encoder = new TextEncoder();
+  return new ReadableStream({
+    start(controller) {
+      controller.enqueue(encoder.encode(`data: ${JSON.stringify({
+        response: "",
+        meta: { stage: "answering", mode: "fast", cached: true },
+      })}\n\n`));
+      controller.enqueue(encoder.encode(`data: ${JSON.stringify({ response: answer })}\n\n`));
+      controller.enqueue(encoder.encode("data: [DONE]\n\n"));
+      ctx?.waitUntil?.(
+        saveChatLog(env, { sessionId, userQuestion, answer, mode: "fast" }).catch((error) => {
+          console.error("Chat log error", error);
+        }),
+      );
+      controller.close();
+    },
+  });
+}
+
+function createChatStream({ env, clientMessages, retrievalMessages, userQuestion, sessionId, cacheKey, aiOptions, ctx }) {
   const encoder = new TextEncoder();
   const mode = getChatMode(userQuestion);
   const encodeSse = (payload) => encoder.encode(`data: ${payload}\n\n`);
@@ -373,11 +420,12 @@ function createChatStream({ env, clientMessages, retrievalMessages, userQuestion
           if (done) break;
           controller.enqueue(value);
         }
-        ctx?.waitUntil?.(
-          saveChatLog(env, { sessionId, userQuestion, answer, mode }).catch((error) => {
-            console.error("Chat log error", error);
-          }),
-        );
+        ctx?.waitUntil?.(Promise.all([
+          saveChatLog(env, { sessionId, userQuestion, answer, mode }),
+          ...(cacheKey ? [writeCachedAnswer(cacheKey, answer)] : []),
+        ]).catch((error) => {
+          console.error("Background task error", error);
+        }));
         controller.close();
       } catch (error) {
         console.error("AI error", error);
@@ -570,17 +618,35 @@ const worker = {
 
     const sessionAffinity = getSessionAffinity(request);
     const logSessionId = sessionAffinity || crypto.randomUUID();
-    const stream = createChatStream({
-      env,
-      clientMessages,
-      retrievalMessages,
-      userQuestion,
-      sessionId: logSessionId,
-      aiOptions: sessionAffinity
-        ? { headers: { "x-session-affinity": sessionAffinity } }
-        : undefined,
-      ctx,
-    });
+    const cacheEligible =
+      clientMessages.length === 1 &&
+      clientMessages[0].role === "user" &&
+      userQuestion.length <= MAX_CACHE_QUESTION_CHARS &&
+      getChatMode(userQuestion) === "fast";
+    const cacheKey = cacheEligible
+      ? await getAnswerCacheKey(request.url, userQuestion)
+      : null;
+    const cachedAnswer = cacheKey ? await readCachedAnswer(cacheKey) : null;
+    const stream = cachedAnswer
+      ? createCachedChatStream({
+          env,
+          userQuestion,
+          sessionId: logSessionId,
+          answer: cachedAnswer,
+          ctx,
+        })
+      : createChatStream({
+          env,
+          clientMessages,
+          retrievalMessages,
+          userQuestion,
+          sessionId: logSessionId,
+          cacheKey,
+          aiOptions: sessionAffinity
+            ? { headers: { "x-session-affinity": sessionAffinity } }
+            : undefined,
+          ctx,
+        });
 
     return new Response(stream, {
       status: 200,

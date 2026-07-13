@@ -15,6 +15,18 @@ let nextLogRowCount = 1;
 const dbBatches = [];
 const pendingTasks = [];
 const searchChunks = [{ text: "EchoAlign DOI: 10.1007/s11704-026-51604-z", score: 0.9 }];
+const answerCache = new Map();
+
+globalThis.caches = {
+  default: {
+    async match(request) {
+      return answerCache.get(request.url)?.clone();
+    },
+    async put(request, response) {
+      answerCache.set(request.url, response.clone());
+    },
+  },
+};
 
 function statement(query) {
   return {
@@ -142,6 +154,16 @@ assert.equal(lastSearchRequest.ai_search_options.retrieval.max_num_results, 4);
 assert.equal(lastSearchRequest.ai_search_options.retrieval.match_threshold, 0.4);
 assert.equal(lastSearchRequest.ai_search_options.query_rewrite.enabled, false);
 assert.equal(lastSearchRequest.ai_search_options.reranking.enabled, false);
+assert.equal(answerCache.size, 1);
+
+pendingTasks.length = 0;
+const cachedAiCalls = aiCalls;
+const cachedRequest = await worker.fetch(chatRequest(), env, ctx);
+const cachedBody = await cachedRequest.text();
+await Promise.all(pendingTasks);
+assert.match(cachedBody, /"cached":true/);
+assert.match(cachedBody, /"response":"ok"/);
+assert.equal(aiCalls, cachedAiCalls);
 
 nextLogRowCount = 20000;
 const batchesBeforeTrim = dbBatches.length;
@@ -178,6 +200,7 @@ assert.equal(lastSearchRequest.ai_search_options.retrieval.max_num_results, 8);
 assert.equal(lastSearchRequest.ai_search_options.query_rewrite.enabled, true);
 assert.equal(lastSearchRequest.ai_search_options.reranking.enabled, true);
 
+answerCache.clear();
 aiRunError = Object.assign(
   new Error("Your account has used up the daily free allocation of 10,000 neurons."),
   { code: 3036, status: 429 },

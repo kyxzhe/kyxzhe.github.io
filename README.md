@@ -102,6 +102,8 @@ The homepage chatbot calls `sendChatRequest` from `src/lib/api/chat.ts`.
 
 The Worker source lives in `cloudflare/kevin-bot/index.js`. It allows production and localhost origins, adds Kevin-specific system context, and searches the `kevin-rag-index` instance through the current AI Search binding. Its Auto mode uses Gemma 4 26B-A4B with lightweight retrieval for routine questions and Qwen3-30B-A3B with enhanced retrieval for questions that need deeper analysis, while streaming progress and answer chunks over SSE. The canonical public knowledge files live in `knowledge/public/`; R2 and AI Search contain the deployed copy.
 
+First-turn Fast answers of up to 500 characters use a versioned, exact-match Cloudflare edge cache for 24 hours. Multi-turn and Thinking requests always run normally. Bump `ANSWER_CACHE_VERSION` whenever a knowledge update must invalidate cached answers immediately.
+
 Successful conversations are privately retained in the `kevin-bot-history` D1 database for owner audit. The public Worker exposes no history-reading route, stores no IP address, and hashes session IDs. It keeps at most 20,000 exchanges and removes the oldest 2,000 when full. View recent records from the authenticated Cloudflare D1 console or with:
 
 ```bash
