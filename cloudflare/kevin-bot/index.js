@@ -370,20 +370,24 @@ function createChatStream({ env, clientMessages, retrievalMessages, userQuestion
       controller.enqueue(encodeSse(JSON.stringify({ response: "", meta: { stage: "searching", mode } })));
 
       try {
-        const searchResult = await env.AI
-          .autorag("kevin-rag-index")
-          .search({
-            query: buildRetrievalQuery(retrievalMessages, userQuestion),
-            max_num_results: mode === "thinking" ? 8 : 4,
-            ranking_options: { score_threshold: 0.4 },
-            rewrite_query: mode === "thinking",
+        const searchResult = await env.AI_SEARCH.search({
+          query: buildRetrievalQuery(retrievalMessages, userQuestion),
+          ai_search_options: {
+            retrieval: {
+              max_num_results: mode === "thinking" ? 8 : 4,
+              match_threshold: 0.4,
+            },
+            query_rewrite: { enabled: mode === "thinking" },
             reranking: {
               enabled: mode === "thinking",
               model: "@cf/baai/bge-reranker-base",
             },
-          });
+          },
+        });
 
-        const context = buildRetrievedContext(searchResult.data);
+        const context = buildRetrievedContext(
+          searchResult.chunks.map((chunk) => ({ content: chunk.text })),
+        );
         const systemWithContext = context
           ? `${SYSTEM_PROMPT}\n\n[Additional context about Kevin]\n${context}`
           : SYSTEM_PROMPT;

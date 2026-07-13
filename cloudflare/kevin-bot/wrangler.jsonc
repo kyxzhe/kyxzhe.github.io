@@ -6,6 +6,13 @@
   "ai": {
     "binding": "AI"
   },
+  "ai_search": [
+    {
+      "binding": "AI_SEARCH",
+      "instance_name": "kevin-rag-index",
+      "remote": true
+    }
+  ],
   "ratelimits": [
     {
       "name": "CHAT_RATE_LIMITER",

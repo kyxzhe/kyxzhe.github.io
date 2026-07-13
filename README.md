@@ -100,7 +100,7 @@ The homepage chatbot calls `sendChatRequest` from `src/lib/api/chat.ts`.
 - Preferred response: Server-Sent Events (`text/event-stream`) with `data:` payloads that include `{ "response": "<chunk>" }` and end with `[DONE]`
 - Compatibility response: JSON payloads with `{ "response": "<text>" }`, `{ "content": "<text>" }`, `{ "text": "<text>" }`, or OpenAI-style `choices`
 
-The Worker source lives in `cloudflare/kevin-bot/index.js`. It allows production and localhost origins, adds Kevin-specific system context, and searches the `kevin-rag-index` AI Search index. Its Auto mode uses Gemma 4 26B-A4B with lightweight retrieval for routine questions and Qwen3-30B-A3B with enhanced retrieval for questions that need deeper analysis, while streaming progress and answer chunks over SSE.
+The Worker source lives in `cloudflare/kevin-bot/index.js`. It allows production and localhost origins, adds Kevin-specific system context, and searches the `kevin-rag-index` instance through the current AI Search binding. Its Auto mode uses Gemma 4 26B-A4B with lightweight retrieval for routine questions and Qwen3-30B-A3B with enhanced retrieval for questions that need deeper analysis, while streaming progress and answer chunks over SSE. The canonical public knowledge files live in `knowledge/public/`; R2 and AI Search contain the deployed copy.
 
 ## SEO & Static Output
 

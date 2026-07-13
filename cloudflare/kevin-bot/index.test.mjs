@@ -20,16 +20,14 @@ const env = {
       return { success: rateLimitAllowed };
     },
   },
-  AI: {
-    autorag() {
-      return {
-        async search(request) {
-          aiCalls += 1;
-          lastSearchRequest = request;
-          return { data: [] };
-        },
-      };
+  AI_SEARCH: {
+    async search(request) {
+      aiCalls += 1;
+      lastSearchRequest = request;
+      return { chunks: [] };
     },
+  },
+  AI: {
     async run(model, input) {
       aiCalls += 1;
       if (aiRunError) throw aiRunError;
@@ -106,9 +104,10 @@ assert.equal(rateLimitCalls, 1);
 assert.equal(lastRateLimitKey, "test-session");
 assert.equal(lastModel, "@cf/google/gemma-4-26b-a4b-it");
 assert.equal(lastModelInput.reasoning_effort, "low");
-assert.equal(lastSearchRequest.max_num_results, 4);
-assert.equal(lastSearchRequest.rewrite_query, false);
-assert.equal(lastSearchRequest.reranking.enabled, false);
+assert.equal(lastSearchRequest.ai_search_options.retrieval.max_num_results, 4);
+assert.equal(lastSearchRequest.ai_search_options.retrieval.match_threshold, 0.4);
+assert.equal(lastSearchRequest.ai_search_options.query_rewrite.enabled, false);
+assert.equal(lastSearchRequest.ai_search_options.reranking.enabled, false);
 
 assert.equal(getChatMode("Who is Kevin?"), "fast");
 assert.equal(
@@ -128,9 +127,9 @@ await thinkingRequest.text();
 assert.equal(lastModel, "@cf/qwen/qwen3-30b-a3b-fp8");
 assert.equal(lastModelInput.thinking, undefined);
 assert.equal(lastModelInput.reasoning_effort, undefined);
-assert.equal(lastSearchRequest.max_num_results, 8);
-assert.equal(lastSearchRequest.rewrite_query, true);
-assert.equal(lastSearchRequest.reranking.enabled, true);
+assert.equal(lastSearchRequest.ai_search_options.retrieval.max_num_results, 8);
+assert.equal(lastSearchRequest.ai_search_options.query_rewrite.enabled, true);
+assert.equal(lastSearchRequest.ai_search_options.reranking.enabled, true);
 
 aiRunError = Object.assign(
   new Error("Your account has used up the daily free allocation of 10,000 neurons."),
