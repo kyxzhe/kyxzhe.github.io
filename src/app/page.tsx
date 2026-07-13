@@ -64,6 +64,7 @@ const getChatErrorMessage = (err: unknown) => {
 
 export default function Home() {
   const [prompt, setPrompt] = useState("");
+  const [hasAuditConsent, setHasAuditConsent] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const visibleMessages = useMemo(() => messages.filter((msg) => msg.role !== "system"), [messages]);
   const latestVisibleMessageContent = visibleMessages.at(-1)?.content ?? "";
@@ -89,7 +90,7 @@ export default function Home() {
 
   const handleSend = useCallback(async () => {
     const nextPrompt = prompt.trim();
-    if (!nextPrompt || isLoading) return;
+    if (!nextPrompt || isLoading || !hasAuditConsent) return;
     if (nextPrompt.length > MAX_CHAT_MESSAGE_CHARS) {
       setError(`Questions can be up to ${MAX_CHAT_MESSAGE_CHARS.toLocaleString()} characters.`);
       return;
@@ -130,6 +131,7 @@ export default function Home() {
       };
 
       const reply = await sendChatRequest(requestMessages, {
+        auditConsent: true,
         onChunk: appendChunk,
         onStatus: (status) => {
           setChatStatus({
@@ -173,7 +175,7 @@ export default function Home() {
         setChatStatus(null);
       }
     }
-  }, [prompt, isLoading, messages, setMessages]);
+  }, [prompt, isLoading, messages, hasAuditConsent]);
 
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) {
@@ -384,7 +386,7 @@ export default function Home() {
                 <button
                   type="submit"
                   aria-label="Send prompt to ChatGPT"
-                  disabled={!prompt.trim() || isLoading}
+                  disabled={!prompt.trim() || isLoading || !hasAuditConsent}
                   className="relative inline-flex h-9 w-9 items-center justify-center rounded-full p-0 transition-colors hover:opacity-70 disabled:hover:opacity-100 bg-[rgba(0,0,0,0.04)] text-[rgba(0,0,0,0.44)] dark:bg-white/15 dark:text-white/60 enabled:bg-black enabled:text-white dark:enabled:bg-white dark:enabled:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-1 disabled:focus-visible:ring-offset-0"
                 >
                   <span className="sr-only">Send prompt to ChatGPT</span>
@@ -412,9 +414,17 @@ export default function Home() {
               </div>
             </form>
           </motion.div>
-          <p className="text-xs text-[rgba(0,0,0,0.6)] dark:text-[rgb(243,243,243)] text-center w-full max-w-4xl">
-            Conversations may be privately retained for quality and safety review. Do not share sensitive information. KevinBot can make mistakes; check important information.
-          </p>
+          <label className="flex max-w-4xl items-start gap-2 text-left text-xs text-[rgba(0,0,0,0.6)] dark:text-[rgb(243,243,243)]">
+            <input
+              type="checkbox"
+              checked={hasAuditConsent}
+              onChange={(event) => setHasAuditConsent(event.target.checked)}
+              className="mt-0.5 h-4 w-4 shrink-0"
+            />
+            <span>
+              I consent to private retention of this conversation, my IP address, device and browser details, and approximate network and location metadata for analytics, quality, and safety review. Do not submit sensitive information. KevinBot can make mistakes; check important information.
+            </span>
+          </label>
           {error && (
             <p role="alert" className="text-sm text-red-700 dark:text-red-300 text-left w-full max-w-4xl">
               {error}

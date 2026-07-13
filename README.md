@@ -93,7 +93,7 @@ The homepage chatbot calls `sendChatRequest` from `src/lib/api/chat.ts`.
 
 - Default endpoint: `https://kevin-bot.kyx-zhe.workers.dev/chat`
 - Override locally with `NEXT_PUBLIC_CHAT_API_URL` in `.env.local`
-- Request headers: `Content-Type: application/json`
+- Request headers: `Content-Type: application/json` and `X-Audit-Consent: 1`
 - Request body: `{ "messages": [{ "role": "user" | "assistant", "content": "..." }] }`
 - Body size limit: 100 KB before the Worker rejects the request
 - Session affinity: the client sends `X-Chat-Session` from `sessionStorage`
@@ -104,7 +104,7 @@ The Worker source lives in `cloudflare/kevin-bot/index.js`. It allows production
 
 First-turn Fast answers of up to 500 characters use a versioned, exact-match Cloudflare edge cache for 24 hours. Multi-turn and Thinking requests always run normally. Bump `ANSWER_CACHE_VERSION` whenever a knowledge update must invalidate cached answers immediately.
 
-Successful conversations are privately retained in the `kevin-bot-history` D1 database for owner audit. The public Worker exposes no history-reading route, stores no IP address, and hashes session IDs. It keeps at most 20,000 exchanges and removes the oldest 2,000 when full. View recent records from the authenticated Cloudflare D1 console or with:
+Successful conversations are privately retained in the `kevin-bot-history` D1 database for owner audit after explicit visitor consent. The public Worker exposes no history-reading route. Records include the full retained conversation, raw and hashed session ID, IP address, User-Agent, language, referrer, approximate Cloudflare network/location metadata, cache/model details, and retrieval/generation timing. Cookies, authorization headers, credentials, and unrelated browser history are never stored. It keeps at most 4,000 exchanges and removes the oldest 400 when full, leaving capacity for the larger audit records. View recent records from the authenticated Cloudflare D1 console or with:
 
 ```bash
 npx wrangler d1 execute kevin-bot-history --remote --command="SELECT * FROM chat_logs ORDER BY id DESC LIMIT 100"

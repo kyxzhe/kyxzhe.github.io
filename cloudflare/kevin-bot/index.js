@@ -37,8 +37,10 @@ const MAX_SESSION_ID_CHARS = 128;
 const RATE_LIMIT_RETRY_SECONDS = 60;
 const DAILY_LIMIT_MESSAGE = "Today's usage limit has been reached. Please try again tomorrow.";
 const MAX_LOG_CHARS = 8000;
-const MAX_LOG_ROWS = 20000;
-const LOG_TRIM_ROWS = 2000;
+const MAX_LOG_ROWS = 4000;
+const LOG_TRIM_ROWS = 400;
+const MAX_AUDIT_JSON_CHARS = 70000;
+const MAX_METADATA_JSON_CHARS = 12000;
 const ANSWER_CACHE_VERSION = "2026-07-13-1";
 const ANSWER_CACHE_TTL_SECONDS = 86400;
 const MAX_CACHE_QUESTION_CHARS = 500;
@@ -65,7 +67,7 @@ function getCorsHeaders(origin) {
   return {
     "Access-Control-Allow-Origin": origin,
     "Access-Control-Allow-Methods": ALLOWED_METHODS,
-    "Access-Control-Allow-Headers": "Content-Type, X-Chat-Session",
+    "Access-Control-Allow-Headers": "Content-Type, X-Audit-Consent, X-Chat-Session",
     "Access-Control-Max-Age": "86400",
     "Vary": "Origin",
     "X-Content-Type-Options": "nosniff",
@@ -271,18 +273,112 @@ async function writeCachedAnswer(cacheKey, answer) {
   }));
 }
 
-export async function saveChatLog(env, { sessionId, userQuestion, answer, mode }) {
+function buildAuditContext(request, clientMessages, sessionId) {
+  const cf = request.cf || {};
+  const bot = cf.botManagement || null;
+  const requestMetadata = {
+    url: request.url,
+    method: request.method,
+    origin: request.headers.get("Origin"),
+    cfRay: request.headers.get("CF-Ray"),
+    clientAcceptEncoding: cf.clientAcceptEncoding,
+    clientQuicRtt: cf.clientQuicRtt,
+    clientTcpRtt: cf.clientTcpRtt,
+    edgeL4: cf.edgeL4,
+    requestPriority: cf.requestPriority,
+    asn: cf.asn,
+    asOrganization: cf.asOrganization,
+    colo: cf.colo,
+    country: cf.country,
+    isEUCountry: cf.isEUCountry,
+    continent: cf.continent,
+    region: cf.region,
+    regionCode: cf.regionCode,
+    city: cf.city,
+    postalCode: cf.postalCode,
+    metroCode: cf.metroCode,
+    timezone: cf.timezone,
+    latitude: cf.latitude,
+    longitude: cf.longitude,
+    httpProtocol: cf.httpProtocol,
+    tlsVersion: cf.tlsVersion,
+    tlsCipher: cf.tlsCipher,
+    botManagement: bot ? {
+      score: bot.score,
+      verifiedBot: bot.verifiedBot,
+      signedAgent: bot.signedAgent,
+      staticResource: bot.staticResource,
+      ja3Hash: bot.ja3Hash,
+      ja4: bot.ja4,
+      detectionIds: bot.detectionIds,
+    } : null,
+  };
+
+  return {
+    sessionId,
+    ipAddress: request.headers.get("CF-Connecting-IP"),
+    userAgent: request.headers.get("User-Agent"),
+    acceptLanguage: request.headers.get("Accept-Language"),
+    referrer: request.headers.get("Referer"),
+    country: cf.country || request.headers.get("CF-IPCountry"),
+    region: cf.region,
+    city: cf.city,
+    timezone: cf.timezone,
+    conversationJson: JSON.stringify(clientMessages).slice(0, MAX_AUDIT_JSON_CHARS),
+    requestMetadataJson: JSON.stringify(requestMetadata).slice(0, MAX_METADATA_JSON_CHARS),
+  };
+}
+
+export async function saveChatLog(env, {
+  audit,
+  userQuestion,
+  answer,
+  mode,
+  cacheHit = false,
+  model = null,
+  durationMs = null,
+  retrievalMs = null,
+  generationMs = null,
+  retrievalChunks = null,
+  retrievalTopScore = null,
+  retrievalKeys = [],
+}) {
+  const sessionId = audit?.sessionId;
   if (!env.CHAT_DB || !sessionId || !answer) return;
 
   const sessionHash = await hashSessionId(sessionId);
   const results = await env.CHAT_DB.batch([
     env.CHAT_DB.prepare(
-      "INSERT INTO chat_logs (session_hash, user_message, assistant_message, mode) VALUES (?, ?, ?, ?)",
+      `INSERT INTO chat_logs (
+        session_hash, session_id, ip_address, user_agent, accept_language, referrer,
+        country, region, city, timezone, user_message, assistant_message, mode,
+        conversation_json, request_metadata_json, cache_hit, model, duration_ms,
+        retrieval_ms, generation_ms, retrieval_chunks, retrieval_top_score, retrieval_keys_json
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     ).bind(
       sessionHash,
+      sessionId,
+      audit.ipAddress ?? null,
+      audit.userAgent ?? null,
+      audit.acceptLanguage ?? null,
+      audit.referrer ?? null,
+      audit.country ?? null,
+      audit.region ?? null,
+      audit.city ?? null,
+      audit.timezone ?? null,
       userQuestion.slice(0, MAX_LOG_CHARS),
       answer.slice(0, MAX_LOG_CHARS),
       mode,
+      audit.conversationJson ?? null,
+      audit.requestMetadataJson ?? null,
+      cacheHit ? 1 : 0,
+      model,
+      durationMs,
+      retrievalMs,
+      generationMs,
+      retrievalChunks,
+      retrievalTopScore,
+      JSON.stringify(retrievalKeys).slice(0, MAX_METADATA_JSON_CHARS),
     ),
     env.CHAT_DB.prepare(
       "UPDATE chat_log_state SET row_count = row_count + 1 WHERE id = 1 RETURNING row_count",
@@ -330,7 +426,7 @@ function isDailyLimitError(error) {
   );
 }
 
-function createCachedChatStream({ env, userQuestion, sessionId, answer, ctx }) {
+function createCachedChatStream({ env, userQuestion, audit, answer, requestStartedAt, ctx }) {
   const encoder = new TextEncoder();
   return new ReadableStream({
     start(controller) {
@@ -341,7 +437,15 @@ function createCachedChatStream({ env, userQuestion, sessionId, answer, ctx }) {
       controller.enqueue(encoder.encode(`data: ${JSON.stringify({ response: answer })}\n\n`));
       controller.enqueue(encoder.encode("data: [DONE]\n\n"));
       ctx?.waitUntil?.(
-        saveChatLog(env, { sessionId, userQuestion, answer, mode: "fast" }).catch((error) => {
+        saveChatLog(env, {
+          audit,
+          userQuestion,
+          answer,
+          mode: "fast",
+          cacheHit: true,
+          model: "edge-cache",
+          durationMs: Date.now() - requestStartedAt,
+        }).catch((error) => {
           console.error("Chat log error", error);
         }),
       );
@@ -350,7 +454,7 @@ function createCachedChatStream({ env, userQuestion, sessionId, answer, ctx }) {
   });
 }
 
-function createChatStream({ env, clientMessages, retrievalMessages, userQuestion, sessionId, cacheKey, aiOptions, ctx }) {
+function createChatStream({ env, clientMessages, retrievalMessages, userQuestion, audit, cacheKey, requestStartedAt, aiOptions, ctx }) {
   const encoder = new TextEncoder();
   const mode = getChatMode(userQuestion);
   const encodeSse = (payload) => encoder.encode(`data: ${payload}\n\n`);
@@ -360,6 +464,7 @@ function createChatStream({ env, clientMessages, retrievalMessages, userQuestion
       controller.enqueue(encodeSse(JSON.stringify({ response: "", meta: { stage: "searching", mode } })));
 
       try {
+        const retrievalStartedAt = Date.now();
         const searchResult = await env.AI_SEARCH.search({
           messages: retrievalMessages.length > 0
             ? retrievalMessages
@@ -376,6 +481,7 @@ function createChatStream({ env, clientMessages, retrievalMessages, userQuestion
             },
           },
         });
+        const retrievalMs = Date.now() - retrievalStartedAt;
         console.log("AI Search result", {
           mode,
           chunks: searchResult.chunks.length,
@@ -391,8 +497,10 @@ function createChatStream({ env, clientMessages, retrievalMessages, userQuestion
           meta: { stage: mode === "thinking" ? "thinking" : "answering", mode },
         })));
 
+        const model = mode === "thinking" ? THINKING_MODEL_ID : FAST_MODEL_ID;
+        const generationStartedAt = Date.now();
         const aiStream = await env.AI.run(
-          mode === "thinking" ? THINKING_MODEL_ID : FAST_MODEL_ID,
+          model,
           {
             messages: [
               { role: "system", content: SYSTEM_PROMPT },
@@ -421,7 +529,19 @@ function createChatStream({ env, clientMessages, retrievalMessages, userQuestion
           controller.enqueue(value);
         }
         ctx?.waitUntil?.(Promise.all([
-          saveChatLog(env, { sessionId, userQuestion, answer, mode }),
+          saveChatLog(env, {
+            audit,
+            userQuestion,
+            answer,
+            mode,
+            model,
+            durationMs: Date.now() - requestStartedAt,
+            retrievalMs,
+            generationMs: Date.now() - generationStartedAt,
+            retrievalChunks: searchResult.chunks.length,
+            retrievalTopScore: searchResult.chunks[0]?.score ?? null,
+            retrievalKeys: searchResult.chunks.map((chunk) => chunk.item?.key ?? "unknown"),
+          }),
           ...(cacheKey ? [writeCachedAnswer(cacheKey, answer)] : []),
         ]).catch((error) => {
           console.error("Background task error", error);
@@ -463,6 +583,7 @@ async function readJsonBody(request) {
 
 const worker = {
   async fetch(request, env, ctx) {
+    const requestStartedAt = Date.now();
     const origin = request.headers.get("Origin") || "";
     if (!isAllowedOrigin(origin)) {
       return new Response(
@@ -505,6 +626,19 @@ const worker = {
           headers: {
             ...corsHeaders,
             Allow: ALLOWED_METHODS,
+            "Content-Type": "application/json",
+          },
+        },
+      );
+    }
+
+    if (request.headers.get("X-Audit-Consent") !== "1") {
+      return new Response(
+        JSON.stringify({ error: "Consent is required" }),
+        {
+          status: 428,
+          headers: {
+            ...corsHeaders,
             "Content-Type": "application/json",
           },
         },
@@ -618,6 +752,7 @@ const worker = {
 
     const sessionAffinity = getSessionAffinity(request);
     const logSessionId = sessionAffinity || crypto.randomUUID();
+    const audit = buildAuditContext(request, clientMessages, logSessionId);
     const cacheEligible =
       clientMessages.length === 1 &&
       clientMessages[0].role === "user" &&
@@ -631,8 +766,9 @@ const worker = {
       ? createCachedChatStream({
           env,
           userQuestion,
-          sessionId: logSessionId,
+          audit,
           answer: cachedAnswer,
+          requestStartedAt,
           ctx,
         })
       : createChatStream({
@@ -640,8 +776,9 @@ const worker = {
           clientMessages,
           retrievalMessages,
           userQuestion,
-          sessionId: logSessionId,
+          audit,
           cacheKey,
+          requestStartedAt,
           aiOptions: sessionAffinity
             ? { headers: { "x-session-affinity": sessionAffinity } }
             : undefined,

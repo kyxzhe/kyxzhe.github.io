@@ -89,7 +89,11 @@ function chatRequest(
 ) {
   const headers = {
     "Content-Type": "application/json",
+    "X-Audit-Consent": "1",
     "X-Chat-Session": "test-session",
+    "CF-Connecting-IP": "203.0.113.10",
+    "User-Agent": "KevinBot test client",
+    "Accept-Language": "en-AU",
   };
   if (origin) headers.Origin = origin;
 
@@ -118,6 +122,12 @@ const wrongPath = await worker.fetch(chatRequest("/admin"), env);
 assert.equal(wrongPath.status, 404);
 assert.equal(aiCalls, 0);
 
+const noConsentRequest = chatRequest();
+noConsentRequest.headers.delete("X-Audit-Consent");
+const noConsentResponse = await worker.fetch(noConsentRequest, env);
+assert.equal(noConsentResponse.status, 428);
+assert.equal(aiCalls, 0);
+
 const localPreflight = await worker.fetch(
   new Request("https://kevin-bot.example/chat", {
     method: "OPTIONS",
@@ -138,11 +148,14 @@ assert.match(validRequest.headers.get("Content-Type") || "", /text\/event-stream
 assert.match(await validRequest.text(), /"response":"ok"/);
 await Promise.all(pendingTasks);
 assert.match(dbBatches[0][0].query, /INSERT INTO chat_logs/);
-assert.equal(dbBatches[0][0].bindings[1], "Who is Kevin?");
-assert.equal(dbBatches[0][0].bindings[2], "ok");
+assert.equal(dbBatches[0][0].bindings[1], "test-session");
+assert.equal(dbBatches[0][0].bindings[2], "203.0.113.10");
+assert.equal(dbBatches[0][0].bindings[3], "KevinBot test client");
+assert.equal(dbBatches[0][0].bindings[10], "Who is Kevin?");
+assert.equal(dbBatches[0][0].bindings[11], "ok");
 assert.equal(aiCalls, 2);
 assert.equal(rateLimitCalls, 1);
-assert.equal(lastRateLimitKey, "test-session");
+assert.equal(lastRateLimitKey, "203.0.113.10");
 assert.equal(lastModel, "@cf/google/gemma-4-26b-a4b-it");
 assert.equal(lastModelInput.reasoning_effort, "low");
 assert.match(lastModelInput.messages[1].content, /10\.1007\/s11704-026-51604-z/);
@@ -168,14 +181,14 @@ assert.equal(aiCalls, cachedAiCalls);
 nextLogRowCount = 20000;
 const batchesBeforeTrim = dbBatches.length;
 await saveChatLog(env, {
-  sessionId: "trim-test",
+  audit: { sessionId: "trim-test" },
   userQuestion: "oldest rows",
   answer: "trimmed",
   mode: "fast",
 });
 assert.equal(dbBatches.length, batchesBeforeTrim + 2);
 assert.match(dbBatches.at(-1)[0].query, /DELETE FROM chat_logs/);
-assert.equal(dbBatches.at(-1)[0].bindings[0], 2000);
+assert.equal(dbBatches.at(-1)[0].bindings[0], 400);
 nextLogRowCount = 1;
 
 assert.equal(getChatMode("Who is Kevin?"), "fast");

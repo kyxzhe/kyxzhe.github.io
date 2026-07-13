@@ -70,6 +70,9 @@ const homeSource = readFileSync(new URL("../src/app/page.tsx", import.meta.url),
 assert.match(homeSource, /shouldFollowStreamRef/);
 assert.match(homeSource, /onScroll=\{handleHistoryScroll\}/);
 assert.match(homeSource, /Searching Kevin’s knowledge/);
+assert.match(homeSource, /hasAuditConsent/);
+assert.match(homeSource, /my IP address, device and browser details/);
+assert.match(homeSource, /auditConsent: true/);
 
 const abortController = new AbortController();
 globalThis.fetch = async (_url, init) =>
