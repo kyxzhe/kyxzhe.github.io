@@ -70,9 +70,19 @@ const homeSource = readFileSync(new URL("../src/app/page.tsx", import.meta.url),
 assert.match(homeSource, /shouldFollowStreamRef/);
 assert.match(homeSource, /onScroll=\{handleHistoryScroll\}/);
 assert.match(homeSource, /Searching Kevin’s knowledge/);
-assert.match(homeSource, /hasAuditConsent/);
-assert.match(homeSource, /my IP address, device and browser details/);
-assert.match(homeSource, /auditConsent: true/);
+assert.doesNotMatch(homeSource, /hasAuditConsent/);
+assert.doesNotMatch(homeSource, /my IP address, device and browser details/);
+
+let auditConsentHeader;
+globalThis.fetch = async (_url, init) => {
+  auditConsentHeader = init.headers["X-Audit-Consent"];
+  return new Response('data: {"response":"Hi"}\n\ndata: [DONE]\n\n', {
+    headers: { "Content-Type": "text/event-stream" },
+  });
+};
+await sendChatRequest([{ role: "user", content: "Hello" }], { chunkThrottleMs: 0 });
+assert.equal(auditConsentHeader, "1");
+globalThis.fetch = originalFetch;
 
 const abortController = new AbortController();
 globalThis.fetch = async (_url, init) =>

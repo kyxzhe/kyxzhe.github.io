@@ -20,7 +20,6 @@ export const MAX_CHAT_MESSAGE_CHARS = 4000;
 let cachedChatSessionId: string | null = null;
 
 export interface ChatRequestOptions {
-  auditConsent?: boolean;
   signal?: AbortSignal;
   onChunk?: (chunk: string) => void;
   onStatus?: (status: string) => void;
@@ -132,7 +131,7 @@ export async function sendChatRequest(
       referrerPolicy: "no-referrer",
       headers: {
         "Content-Type": "application/json",
-        ...(options?.auditConsent ? { "X-Audit-Consent": "1" } : {}),
+        "X-Audit-Consent": "1",
         ...(sessionId ? { "X-Chat-Session": sessionId } : {}),
       },
       body: JSON.stringify({ messages: requestMessages }),
