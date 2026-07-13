@@ -374,6 +374,11 @@ function createChatStream({ env, clientMessages, retrievalMessages, userQuestion
             },
           },
         });
+        console.log("AI Search result", {
+          mode,
+          chunks: searchResult.chunks.length,
+          topScore: searchResult.chunks[0]?.score ?? null,
+        });
 
         const context = buildRetrievedContext(
           searchResult.chunks.map((chunk) => ({ content: chunk.text })),
