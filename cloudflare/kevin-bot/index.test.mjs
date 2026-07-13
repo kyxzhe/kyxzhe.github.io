@@ -104,6 +104,7 @@ assert.equal(rateLimitCalls, 1);
 assert.equal(lastRateLimitKey, "test-session");
 assert.equal(lastModel, "@cf/google/gemma-4-26b-a4b-it");
 assert.equal(lastModelInput.reasoning_effort, "low");
+assert.equal(lastSearchRequest.messages.at(-1).content, "Who is Kevin?");
 assert.equal(lastSearchRequest.ai_search_options.retrieval.max_num_results, 4);
 assert.equal(lastSearchRequest.ai_search_options.retrieval.match_threshold, 0.4);
 assert.equal(lastSearchRequest.ai_search_options.query_rewrite.enabled, false);

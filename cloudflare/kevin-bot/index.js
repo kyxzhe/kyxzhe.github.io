@@ -320,18 +320,6 @@ function normalizeAiStream(stream) {
   });
 }
 
-function buildRetrievalQuery(messages, fallbackQuestion) {
-  const recentTurns = messages
-    .slice(-MAX_RETRIEVAL_MESSAGES)
-    .map((message) => {
-      const speaker = message.role === "assistant" ? "Assistant" : "User";
-      return `${speaker}: ${message.content.trim()}`;
-    })
-    .join("\n");
-
-  return recentTurns || fallbackQuestion;
-}
-
 export function getChatMode(question) {
   const parts = question.split(/\n|[?？]/u).filter((part) => part.trim()).length;
   return question.length >= 220 || parts >= 3 || COMPLEX_QUESTION_PATTERN.test(question)
@@ -371,7 +359,9 @@ function createChatStream({ env, clientMessages, retrievalMessages, userQuestion
 
       try {
         const searchResult = await env.AI_SEARCH.search({
-          query: buildRetrievalQuery(retrievalMessages, userQuestion),
+          messages: retrievalMessages.length > 0
+            ? retrievalMessages
+            : [{ role: "user", content: userQuestion }],
           ai_search_options: {
             retrieval: {
               max_num_results: mode === "thinking" ? 8 : 4,
