@@ -14,7 +14,7 @@ Kevin's current research studies how information spreads online and how machine 
 
 His primary PhD supervisor is Dr Marian-Andrei Rizoiu. Dr Lin Tian is his co-supervisor. Kevin directly confirmed this supervision arrangement on 2026-07-13.
 
-Before his PhD, Kevin studied Computational Data Science and Mathematics at the University of Sydney. He completed a Bachelor of Advanced Computing (Honours) and a Bachelor of Science across 2021-2025. His Honours work was completed in an earlier stage before the combined degrees were formally completed in 2025. He also studied Mathematics and Machine Learning Theory as an exchange student at ETH Zurich in 2023-2024.
+Before his PhD, Kevin studied Computational Data Science and Mathematics at the University of Sydney. He completed a Bachelor of Advanced Computing (Honours) and a Bachelor of Science across 2021-2025. His Honours work was completed in 2024, before the combined degrees were formally completed in 2025. He also studied Mathematics and Machine Learning Theory as an exchange student at ETH Zurich in 2023-2024.
 
 Kevin received the University Medal from the University of Sydney, was a Dalyell Scholar, and holds the AWS Certified Machine Learning - Specialty certification.
 

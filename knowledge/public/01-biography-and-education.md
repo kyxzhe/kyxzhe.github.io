@@ -22,7 +22,7 @@ Kevin studied at the University of Sydney from 2021 to 2025:
 - Dalyell Scholar.
 - University Medal in Advanced Computing.
 
-Kevin confirmed that his education should be described in stages: the Honours work was completed earlier, while the combined degrees were formally completed in 2025. The existing website news date of 2024-10-03 should not be treated as the formal completion date for both degrees.
+Kevin confirmed that his education should be described in stages: the Honours work was completed in 2024, while the combined degrees were formally completed in 2025. The existing website news date of 2024-10-03 should not be treated as the formal completion date for both degrees.
 
 ## ETH Zurich
 
