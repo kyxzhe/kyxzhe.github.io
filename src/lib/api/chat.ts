@@ -30,10 +30,15 @@ function createRequestAbortSignal(callerSignal?: AbortSignal) {
   const controller = new AbortController();
   let timedOut = false;
   const abortFromCaller = () => controller.abort();
-  const timeoutId = setTimeout(() => {
-    timedOut = true;
-    controller.abort();
-  }, CHAT_REQUEST_TIMEOUT_MS);
+  let timeoutId: ReturnType<typeof setTimeout>;
+  const keepAlive = () => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      timedOut = true;
+      controller.abort();
+    }, CHAT_REQUEST_TIMEOUT_MS);
+  };
+  keepAlive();
 
   if (callerSignal?.aborted) {
     abortFromCaller();
@@ -44,6 +49,7 @@ function createRequestAbortSignal(callerSignal?: AbortSignal) {
   return {
     signal: controller.signal,
     didTimeOut: () => timedOut,
+    keepAlive,
     cleanup: () => {
       clearTimeout(timeoutId);
       callerSignal?.removeEventListener("abort", abortFromCaller);
@@ -130,6 +136,7 @@ export async function sendChatRequest(
       body: JSON.stringify({ messages: requestMessages }),
       signal: requestAbort.signal,
     });
+    requestAbort.keepAlive();
 
     if (!response.ok) {
       const errorText = await readErrorText(response);
@@ -145,7 +152,8 @@ export async function sendChatRequest(
         response.body,
         options?.onChunk,
         options?.onStatus,
-        options?.chunkThrottleMs
+        options?.chunkThrottleMs,
+        requestAbort.keepAlive
       );
       if (reply) return reply;
       throw new Error("Chat service returned an empty response. Please try again.");
@@ -224,7 +232,8 @@ async function readSseStream(
   stream: ReadableStream<Uint8Array>,
   onChunk?: (chunk: string) => void,
   onStatus?: (status: string) => void,
-  chunkThrottleMs = 48
+  chunkThrottleMs = 48,
+  keepAlive?: () => void
 ): Promise<string> {
   const reader = stream.getReader();
   const decoder = new TextDecoder();
@@ -288,6 +297,7 @@ async function readSseStream(
     while (!done) {
       const { value, done: streamDone } = await reader.read();
       if (value) {
+        keepAlive?.();
         buffer += decoder.decode(value, { stream: true });
         const parts = buffer.split(/\r?\n\r?\n/);
         buffer = parts.pop() ?? "";

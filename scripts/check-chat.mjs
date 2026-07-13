@@ -43,6 +43,12 @@ await assert.rejects(
 globalThis.fetch = originalFetch;
 
 const statuses = [];
+const originalSetTimeout = globalThis.setTimeout;
+let requestTimeouts = 0;
+globalThis.setTimeout = (callback, delay, ...args) => {
+  if (delay === 45_000) requestTimeouts += 1;
+  return originalSetTimeout(callback, delay, ...args);
+};
 globalThis.fetch = async () =>
   new Response(
     'data: {"response":"","meta":{"stage":"searching"}}\n\ndata: {"response":"Hi"}\n\ndata: [DONE]\n\n',
@@ -56,7 +62,9 @@ assert.equal(
   "Hi"
 );
 assert.deepEqual(statuses, ["searching"]);
+assert.ok(requestTimeouts >= 3);
 globalThis.fetch = originalFetch;
+globalThis.setTimeout = originalSetTimeout;
 
 const homeSource = readFileSync(new URL("../src/app/page.tsx", import.meta.url), "utf8");
 assert.match(homeSource, /shouldFollowStreamRef/);
