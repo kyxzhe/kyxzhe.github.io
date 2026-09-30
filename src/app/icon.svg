@@ -1,6 +1,7 @@
 <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect x="7" y="7" width="50" height="50" rx="14" fill="#F2F2F0" />
-  <path d="M20 13H29V51H20V13Z" fill="#08080D" />
-  <path d="M29 31L45.5 13.5L53 20.5L36.5 38L29 31Z" fill="#08080D" />
-  <path d="M29 32.5L36.5 26L54 44.5L46.5 52L29 32.5Z" fill="#08080D" />
+  <style>
+    path { stroke: #08080D; }
+    @media (prefers-color-scheme: dark) { path { stroke: #F2F2F0; } }
+  </style>
+  <path d="M43.142 17.858L53.042 27.757A6 6 0 0 1 53.042 36.243L43.142 46.142A20 20 0 1 1 43.142 17.858Z" stroke-width="5.5" stroke-linejoin="round" />
 </svg>

@@ -58,10 +58,10 @@ export const metadata: Metadata = {
   description: siteMetadata.description,
   icons: {
     icon: [
-      { url: '/favicon.ico?v7', sizes: 'any', type: 'image/x-icon' },
+      { url: '/favicon.ico?v8', sizes: 'any', type: 'image/x-icon' },
     ],
-    shortcut: '/favicon.ico?v7',
-    apple: '/apple-icon.png',
+    shortcut: '/favicon.ico?v8',
+    apple: '/apple-icon.png?v8',
   },
   authors: [{ name: siteMetadata.author.name }],
   creator: siteMetadata.author.name,
@@ -100,7 +100,7 @@ export const metadata: Metadata = {
 
 const themeFaviconScript = `
 (() => {
-  const version = 'v7';
+  const version = 'v8';
   const media = window.matchMedia('(prefers-color-scheme: dark)');
 
   const upsertLink = (id, rel, href) => {
