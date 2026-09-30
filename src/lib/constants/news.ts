@@ -26,6 +26,18 @@ export function formatNewsCategoryLabel(category: NewsCategory | "All" | string)
 
 export const newsItems: NewsItem[] = [
   {
+    id: 'preprint-passive-exposure',
+    title: 'Preprint: Reading Too Much into Context',
+    category: 'RESEARCH',
+    date: '2026-09-27',
+    summary:
+      'Our new arXiv preprint with Lin Tian and Marian-Andrei Rizoiu examines how passive exposure to external content can steer LLM decisions, including compliance with user requirements and judgements of false claims.',
+    topics: ['LLMs', 'Decision-Making', 'AI Safety', 'Preprint'],
+    cover: '/projects/work-4.webp',
+    link: 'https://arxiv.org/abs/2609.33065',
+    linkLabel: 'Read preprint',
+  },
+  {
     id: "phd-start",
     title: "Started PhD at UTS Behavioural Data Science Lab",
     category: "MILESTONE",

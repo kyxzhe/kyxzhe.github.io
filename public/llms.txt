@@ -20,6 +20,12 @@
 - Temporal graph learning
 - Multimodal representation learning
 - Learning with noisy labels
+- LLM decision-making under passive exposure
+
+## Papers and Preprints
+
+- [Reading Too Much into Context: Passive Exposure Can Steer LLM Decisions](https://arxiv.org/abs/2609.33065): 2026 arXiv preprint by Yuxiang Zheng, Lin Tian, and Marian-Andrei Rizoiu on how external content can influence LLM decisions.
+- [EchoAlign](https://arxiv.org/abs/2405.12969): Learning with noisy labels through generative instance modification and sample selection.
 
 ## Official Profiles
 

@@ -16,6 +16,8 @@ Kevin is a Sydney-based PhD candidate at UTS in the Behavioural Data Science Lab
 
 His current PhD direction studies how information and narratives spread online and how machine-learning methods can model misinformation and disinformation under real-world data complexity.
 
+His September 2026 preprint, "Reading Too Much into Context: Passive Exposure Can Steer LLM Decisions," studies the influence of external content on LLM decisions. See https://arxiv.org/abs/2609.33065 (verified 2026-09-30).
+
 ## Who supervises Kevin's PhD?
 
 His primary supervisor is Dr Marian-Andrei Rizoiu, and Dr Lin Tian is his co-supervisor.

@@ -5,7 +5,9 @@ const directory = new URL("../knowledge/public/", import.meta.url);
 const files = readdirSync(directory).filter((file) => file.endsWith(".md"));
 const knowledge = files.map((file) => readFileSync(new URL(file, directory), "utf8")).join("\n");
 
-assert.equal(files.length, 12);
+assert.equal(files.length, 13);
+assert.match(knowledge, /Reading Too Much into Context/);
+assert.match(knowledge, /https:\/\/arxiv\.org\/abs\/2609\.33065/);
 assert.match(knowledge, /Yuxiang \(Kevin\) Zheng/);
 assert.match(knowledge, /EchoAlign/);
 assert.match(knowledge, /Marian-Andrei Rizoiu/);

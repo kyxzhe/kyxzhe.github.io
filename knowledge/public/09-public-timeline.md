@@ -24,5 +24,6 @@ topics: [timeline, milestones, news]
 - **August 2025:** Received the University Medal.
 - **September 2025-Present:** PhD candidate at UTS in the Behavioural Data Science Lab.
 - **2026:** EchoAlign accepted/published in Frontiers of Computer Science under its journal title.
+- **27 September 2026:** Submitted the arXiv preprint "Reading Too Much into Context: Passive Exposure Can Steer LLM Decisions" with Lin Tian and Marian-Andrei Rizoiu. Source: https://arxiv.org/abs/2609.33065 (verified 2026-09-30).
 
 Use year or month precision as written above. Do not invent exact dates for events where the sources conflict or provide only partial dates.
