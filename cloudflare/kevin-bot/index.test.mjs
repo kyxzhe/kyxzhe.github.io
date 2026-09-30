@@ -210,11 +210,11 @@ const thinkingRequest = await worker.fetch(
   env,
 );
 await thinkingRequest.text();
-assert.equal(lastModel, "@cf/openai/gpt-oss-120b");
+assert.equal(lastModel, "@cf/qwen/qwen3.8-27b");
 assert.equal(lastModelInput.thinking, undefined);
 assert.equal(lastModelInput.reasoning_effort, "low");
-assert.equal(lastModelInput.max_tokens, 2048);
-assert.equal(lastModelInput.chat_template_kwargs, undefined);
+assert.equal(lastModelInput.max_completion_tokens, 1536);
+assert.equal(lastModelInput.chat_template_kwargs.enable_thinking, false);
 assert.equal(lastSearchRequest.ai_search_options.retrieval.max_num_results, 8);
 assert.equal(lastSearchRequest.ai_search_options.query_rewrite.enabled, false);
 assert.equal(lastSearchRequest.ai_search_options.reranking.enabled, false);
@@ -246,7 +246,7 @@ const nativeStreamResponse = await worker.fetch(
   env,
 );
 const nativeStreamBody = await nativeStreamResponse.text();
-assert.equal(lastModel, "@cf/openai/gpt-oss-120b");
+assert.equal(lastModel, "@cf/qwen/qwen3.8-27b");
 assert.match(nativeStreamBody, /"response":"Hello"/);
 assert.match(nativeStreamBody, /data: \[DONE\]/);
 assert.doesNotMatch(nativeStreamBody, /hidden reasoning|"usage"/);

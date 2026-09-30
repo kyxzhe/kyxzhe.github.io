@@ -30,7 +30,7 @@ const ALLOWED_ORIGINS = [
 ];
 const ALLOWED_METHODS = "POST, OPTIONS";
 const FAST_MODEL_ID = "@cf/google/gemma-4-26b-a4b-it";
-const THINKING_MODEL_ID = "@cf/openai/gpt-oss-120b";
+const THINKING_MODEL_ID = "@cf/qwen/qwen3.8-27b";
 const MAX_RETRIEVAL_MESSAGES = 6;
 const MAX_CHAT_MESSAGES = 16;
 const MAX_MESSAGE_CHARS = 4000;
@@ -45,7 +45,7 @@ const MAX_LOG_ROWS = 4000;
 const LOG_TRIM_ROWS = 400;
 const MAX_AUDIT_JSON_CHARS = 70000;
 const MAX_METADATA_JSON_CHARS = 12000;
-const ANSWER_CACHE_VERSION = "2026-09-30-5";
+const ANSWER_CACHE_VERSION = "2026-09-30-6";
 const ANSWER_CACHE_TTL_SECONDS = 86400;
 const MAX_CACHE_QUESTION_CHARS = 500;
 const CHAT_ROLES = new Set(["user", "assistant"]);
@@ -509,10 +509,8 @@ function createChatStream({ env, clientMessages, retrievalMessages, userQuestion
             stream: true,
             temperature: 0.2,
             reasoning_effort: "low",
-            ...(mode === "fast" ? {
-              max_completion_tokens: 1024,
-              chat_template_kwargs: { enable_thinking: false },
-            } : { max_tokens: 2048 }),
+            max_completion_tokens: mode === "thinking" ? 1536 : 1024,
+            chat_template_kwargs: { enable_thinking: false },
           },
           aiOptions,
         );
