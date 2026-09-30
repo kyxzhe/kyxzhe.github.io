@@ -652,7 +652,7 @@ export default function NewsPage() {
                           aria-label={`Read ${item.title}`}
                           className="absolute inset-0 z-10"
                         />
-                        <div className="overflow-hidden rounded-[4px] bg-[#090909]">
+                        <div className="self-start overflow-hidden rounded-[4px] bg-[#090909]">
                           <div className="relative aspect-square w-full">
                             <Image
                               src={item.cover}

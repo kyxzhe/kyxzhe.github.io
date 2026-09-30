@@ -40,7 +40,7 @@ export const publications: Publication[] = [
       'Passive exposure to external content can shift LLM decisions even when it provides no reason to change them, including choices that violate user requirements or accept false claims.',
     topics: ['LLMs', 'Decision-Making', 'AI Safety'],
     tags: ['Preprint'],
-    cover: '/projects/work-4.webp',
+    cover: '/artwork/passive-exposure.webp',
     authors: ['Yuxiang Zheng', 'Lin Tian', 'Marian-Andrei Rizoiu'],
     resources: [
       {
@@ -62,7 +62,7 @@ export const publications: Publication[] = [
       "EchoAlign learns from noisy labels by editing images with controllable generators and selecting clean originals via feature similarity, greatly improving robustness to instance-dependent noise.",
     topics: ["Robust ML", "Noisy Labels", "Generative Models"],
     tags: ["Preprint", "Code Available"],
-    cover: "/projects/work-1.webp",
+    cover: '/artwork/echoalign.webp',
     authors: [
       "Yuxiang Zheng",
       "Zhongyi Han",

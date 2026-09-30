@@ -233,7 +233,7 @@ export default function PublicationsPage() {
               className="absolute inset-0 z-10"
             />
             <div className="min-w-0 overflow-hidden rounded-[4px] bg-[#090909]">
-              <div className="relative aspect-[1.36/1] min-h-[280px] w-full sm:aspect-[1.55/1]">
+              <div className="relative aspect-[1.36/1] w-full sm:aspect-[1.55/1]">
                 <Image
                   src={leadItem.cover}
                   alt={leadItem.title}
@@ -383,7 +383,7 @@ export default function PublicationsPage() {
                           aria-label={`Read ${item.title}`}
                           className="absolute inset-0 z-10"
                         />
-                        <div className="overflow-hidden rounded-[4px] bg-[#090909]">
+                        <div className="self-start overflow-hidden rounded-[4px] bg-[#090909]">
                           <div className="relative aspect-square w-full">
                             <Image
                               src={item.cover}

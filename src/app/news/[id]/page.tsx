@@ -40,8 +40,8 @@ export async function generateMetadata({
   const pageUrl = `/news/${item.id}/`;
   const image = {
     url: absoluteUrl(item.cover),
-    width: 1920,
-    height: 2880,
+    width: 1254,
+    height: 1254,
     alt: item.title,
   };
 

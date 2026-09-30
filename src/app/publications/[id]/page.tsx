@@ -41,8 +41,8 @@ export async function generateMetadata({
   const pageUrl = `/publications/${publication.id}/`;
   const image = {
     url: absoluteUrl(publication.cover),
-    width: 1920,
-    height: 2880,
+    width: 1254,
+    height: 1254,
     alt: publication.title,
   };
 
