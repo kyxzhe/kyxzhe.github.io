@@ -20,17 +20,17 @@ export default function manifest(): MetadataRoute.Manifest {
     categories: ["education", "research"],
     icons: [
       {
-        src: "/favicon.ico?v8",
+        src: "/favicon.ico?v9",
         sizes: "16x16 32x32 48x48 64x64 128x128 256x256",
         type: "image/x-icon",
       },
       {
-        src: "/icon.svg?v8",
+        src: "/icon.svg?v9",
         sizes: "any",
         type: "image/svg+xml",
       },
       {
-        src: "/apple-icon.png?v8",
+        src: "/apple-icon.png?v9",
         sizes: "180x180",
         type: "image/png",
       },
