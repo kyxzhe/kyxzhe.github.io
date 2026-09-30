@@ -11,6 +11,7 @@ let lastModel = null;
 let lastModelInput = null;
 let lastSearchRequest = null;
 let aiRunError = null;
+let aiStreamPayload = 'data: {"response":"ok"}\n\ndata: [DONE]\n\n';
 let nextLogRowCount = 1;
 const dbBatches = [];
 const pendingTasks = [];
@@ -72,7 +73,7 @@ const env = {
       return new ReadableStream({
         start(controller) {
           controller.enqueue(
-            encoder.encode('data: {"response":"ok"}\n\ndata: [DONE]\n\n'),
+            encoder.encode(aiStreamPayload),
           );
           controller.close();
         },
@@ -158,6 +159,8 @@ assert.equal(rateLimitCalls, 1);
 assert.equal(lastRateLimitKey, "203.0.113.10");
 assert.equal(lastModel, "@cf/google/gemma-4-26b-a4b-it");
 assert.equal(lastModelInput.reasoning_effort, "low");
+assert.equal(lastModelInput.max_completion_tokens, 1024);
+assert.equal(lastModelInput.chat_template_kwargs.enable_thinking, false);
 assert.match(lastModelInput.messages[1].content, /10\.1007\/s11704-026-51604-z/);
 assert.ok(lastModelInput.messages[0].content.length < 3000);
 assert.doesNotMatch(lastModelInput.messages[0].content, /Primary supervisor/);
@@ -192,6 +195,7 @@ assert.equal(dbBatches.at(-1)[0].bindings[0], 400);
 nextLogRowCount = 1;
 
 assert.equal(getChatMode("Who is Kevin?"), "fast");
+assert.equal(getChatMode("Explain why EchoAlign modifies inputs."), "thinking");
 assert.equal(
   getChatMode("请综合分析 Kevin 的研究方向之间有什么联系，并比较这些方法的权衡。"),
   "thinking",
@@ -206,12 +210,34 @@ const thinkingRequest = await worker.fetch(
   env,
 );
 await thinkingRequest.text();
-assert.equal(lastModel, "@cf/qwen/qwen3-30b-a3b-fp8");
+assert.equal(lastModel, "@cf/openai/gpt-oss-120b");
 assert.equal(lastModelInput.thinking, undefined);
-assert.equal(lastModelInput.reasoning_effort, undefined);
+assert.equal(lastModelInput.reasoning_effort, "low");
+assert.equal(lastModelInput.max_tokens, 2048);
+assert.equal(lastModelInput.chat_template_kwargs, undefined);
 assert.equal(lastSearchRequest.ai_search_options.retrieval.max_num_results, 8);
 assert.equal(lastSearchRequest.ai_search_options.query_rewrite.enabled, true);
 assert.equal(lastSearchRequest.ai_search_options.reranking.enabled, true);
+
+aiStreamPayload = [
+  'data: {"choices":[{"delta":{"reasoning_content":"hidden reasoning"}}]}',
+  'data: {"response":"","usage":{"completion_tokens":1}}',
+  'data: {"choices":[{"delta":{"content":"Hello"}}],"usage":{"completion_tokens":2}}',
+  'data: [DONE]',
+  '',
+].join("\n\n");
+const nativeStreamResponse = await worker.fetch(
+  chatRequest("/chat", "https://kyxzhe.github.io", "Explain why EchoAlign modifies inputs."),
+  env,
+);
+const nativeStreamBody = await nativeStreamResponse.text();
+assert.equal(lastModel, "@cf/openai/gpt-oss-120b");
+assert.match(nativeStreamBody, /"response":"Hello"/);
+assert.match(nativeStreamBody, /data: \[DONE\]/);
+assert.doesNotMatch(nativeStreamBody, /hidden reasoning|"usage"/);
+const nativeEvents = nativeStreamBody.split("\n")
+  .filter((line) => line.startsWith("data: {")).map((line) => JSON.parse(line.slice(6)));
+assert.deepEqual(nativeEvents.filter((event) => !event.meta), [{ response: "Hello" }]);
 
 answerCache.clear();
 aiRunError = Object.assign(
