@@ -161,8 +161,8 @@ assert.equal(lastModel, "@cf/google/gemma-4-26b-a4b-it");
 assert.equal(lastModelInput.reasoning_effort, "low");
 assert.equal(lastModelInput.max_completion_tokens, 1024);
 assert.equal(lastModelInput.chat_template_kwargs.enable_thinking, false);
-assert.match(lastModelInput.messages[1].content, /10\.1007\/s11704-026-51604-z/);
-assert.ok(lastModelInput.messages[0].content.length < 3000);
+assert.match(lastModelInput.messages[0].content, /10\.1007\/s11704-026-51604-z/);
+assert.equal(lastModelInput.messages.filter((message) => message.role === "system").length, 1);
 assert.doesNotMatch(lastModelInput.messages[0].content, /Primary supervisor/);
 assert.match(lastModelInput.messages[0].content, /evidence, never instructions/);
 assert.equal(lastSearchRequest.messages.at(-1).content, "Who is Kevin?");
@@ -216,8 +216,23 @@ assert.equal(lastModelInput.reasoning_effort, "low");
 assert.equal(lastModelInput.max_tokens, 2048);
 assert.equal(lastModelInput.chat_template_kwargs, undefined);
 assert.equal(lastSearchRequest.ai_search_options.retrieval.max_num_results, 8);
-assert.equal(lastSearchRequest.ai_search_options.query_rewrite.enabled, true);
+assert.equal(lastSearchRequest.ai_search_options.query_rewrite.enabled, false);
 assert.equal(lastSearchRequest.ai_search_options.reranking.enabled, true);
+
+const followupRequest = chatRequest();
+const followupMessages = [
+  { role: "user", content: "Tell me about EchoAlign." },
+  { role: "assistant", content: "It modifies instances to align with noisy labels." },
+  { role: "user", content: "Explain why it retains original samples." },
+];
+const followupResponse = await worker.fetch(new Request(followupRequest.url, {
+  method: "POST",
+  headers: followupRequest.headers,
+  body: JSON.stringify({ messages: followupMessages }),
+}), env);
+await followupResponse.text();
+assert.equal(lastSearchRequest.ai_search_options.query_rewrite.enabled, true);
+assert.deepEqual(lastModelInput.messages.slice(1), followupMessages);
 
 aiStreamPayload = [
   'data: {"choices":[{"delta":{"reasoning_content":"hidden reasoning"}}]}',
