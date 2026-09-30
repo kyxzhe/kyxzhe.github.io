@@ -217,7 +217,7 @@ assert.equal(lastModelInput.max_tokens, 2048);
 assert.equal(lastModelInput.chat_template_kwargs, undefined);
 assert.equal(lastSearchRequest.ai_search_options.retrieval.max_num_results, 8);
 assert.equal(lastSearchRequest.ai_search_options.query_rewrite.enabled, false);
-assert.equal(lastSearchRequest.ai_search_options.reranking.enabled, true);
+assert.equal(lastSearchRequest.ai_search_options.reranking.enabled, false);
 
 const followupRequest = chatRequest();
 const followupMessages = [

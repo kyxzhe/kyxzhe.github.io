@@ -45,7 +45,7 @@ const MAX_LOG_ROWS = 4000;
 const LOG_TRIM_ROWS = 400;
 const MAX_AUDIT_JSON_CHARS = 70000;
 const MAX_METADATA_JSON_CHARS = 12000;
-const ANSWER_CACHE_VERSION = "2026-09-30-4";
+const ANSWER_CACHE_VERSION = "2026-09-30-5";
 const ANSWER_CACHE_TTL_SECONDS = 86400;
 const MAX_CACHE_QUESTION_CHARS = 500;
 const CHAT_ROLES = new Set(["user", "assistant"]);
@@ -473,10 +473,7 @@ function createChatStream({ env, clientMessages, retrievalMessages, userQuestion
               match_threshold: 0.4,
             },
             query_rewrite: { enabled: mode === "thinking" && retrievalMessages.length > 1 },
-            reranking: {
-              enabled: mode === "thinking",
-              model: "@cf/baai/bge-reranker-base",
-            },
+            reranking: { enabled: false },
           },
         });
         const retrievalMs = Date.now() - retrievalStartedAt;
