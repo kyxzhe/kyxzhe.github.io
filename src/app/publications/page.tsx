@@ -468,7 +468,7 @@ export default function PublicationsPage() {
             Showing {sortedItems.length} publications
           </p>
 
-          <div className="relative flex items-center gap-4 text-sm">
+          <div className="relative flex items-center gap-2 text-sm sm:gap-4">
             <div className="relative flex items-center gap-1">
               <button
                 type="button"

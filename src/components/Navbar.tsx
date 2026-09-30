@@ -59,7 +59,7 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="fixed left-0 right-0 top-0 z-40 w-full bg-[var(--background)]/90 px-6 pb-2 pt-[18px] backdrop-blur-md supports-[backdrop-filter]:bg-[var(--background)]/78 md:px-[42px] md:pt-6" role="banner">
+      <header className="fixed left-0 right-0 top-0 z-50 w-full px-6 pb-2 pt-[18px] before:absolute before:inset-0 before:bg-[var(--background)]/90 before:backdrop-blur-md supports-[backdrop-filter]:before:bg-[var(--background)]/78 md:px-[42px] md:pt-6" role="banner">
         <nav
           className="relative z-10 flex flex-row items-center justify-between px-2 py-2 md:flex-row md:items-center md:px-4"
           aria-label="Main navigation"

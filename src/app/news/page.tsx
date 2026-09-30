@@ -292,7 +292,7 @@ export default function NewsPage() {
         <div className="relative z-40 flex flex-wrap items-center justify-between gap-3 text-sm font-medium">
           <p role="status" aria-live="polite" className="text-[rgba(0,0,0,0.6)] dark:text-[rgba(255,255,255,0.8)]">Showing {sortedItems.length} updates</p>
 
-          <div className="relative flex items-center gap-4 text-sm font-medium">
+          <div className="relative flex items-center gap-2 text-sm font-medium sm:gap-4">
             <div className="relative flex items-center gap-1">
               <button
                 type="button"
